@@ -3,7 +3,6 @@
 .RData
 .Ruserdata
 
-socialranking.Rproj
 inst/doc
 .DS_Store
 /doc/
