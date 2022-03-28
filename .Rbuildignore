@@ -2,7 +2,7 @@
 ^\.Rproj\.user$
 ^ignored
 ^man-roxygen
-^doc$
+
 ^Meta$
 cran-comments.md
 ^README\.Rmd$
