@@ -17,4 +17,14 @@ test_that("manip paper example", {
     `2` = -1,
     `3` = 2
   ), class = "KramerSimpsonScores"))
+
+  expect_true(pr %:% 2 %>ks% 1)
+  expect_true(pr %:% 2 %>ks% 2)
+  expect_true(pr %:% 2 %>ks% 3)
+  expect_true(pr %:% 1 %>ks% 1)
+  expect_false(pr %:% 1 %>ks% 2)
+  expect_true(pr %:% 1 %>ks% 3)
+  expect_false(pr %:% 3 %>ks% 1)
+  expect_false(pr %:% 3 %>ks% 2)
+  expect_true(pr %:% 3 %>ks% 3)
 })

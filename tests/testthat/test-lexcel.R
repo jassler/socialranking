@@ -2,6 +2,10 @@ test_that("ranking", {
   pr <- newPowerRelation(c(1,2), ">", 1, ">", 2)
   ranking <- evaluate_promise(lexcelRanking(pr), print = TRUE)
   expect_equal(ranking$output, "1 > 2")
+  expect_true(pr %:% 1 %>lex% 2)
+  expect_false(pr %:% 2 %>lex% 1)
+  expect_true(pr %:% 1 %>duallex% 2)
+  expect_false(pr %:% 2 %>duallex% 1)
 })
 
 test_that("score vectors", {
@@ -44,4 +48,24 @@ test_that("dualLexcel", {
 
   ranking <- evaluate_promise(lexcelRanking(pr), print = TRUE)
   expect_equal(ranking$output, "1 > 2 > 3")
+
+  expect_false(pr %:% 2 %>lex% 1)
+  expect_true(pr %:% 2 %>lex% 2)
+  expect_true(pr %:% 2 %>lex% 3)
+  expect_true(pr %:% 1 %>lex% 1)
+  expect_true(pr %:% 1 %>lex% 2)
+  expect_true(pr %:% 1 %>lex% 3)
+  expect_false(pr %:% 3 %>lex% 1)
+  expect_false(pr %:% 3 %>lex% 2)
+  expect_true(pr %:% 3 %>lex% 3)
+
+  expect_true(pr %:% 2 %>duallex% 1)
+  expect_true(pr %:% 2 %>duallex% 2)
+  expect_true(pr %:% 2 %>duallex% 3)
+  expect_true(pr %:% 3 %>duallex% 1)
+  expect_false(pr %:% 3 %>duallex% 2)
+  expect_true(pr %:% 3 %>duallex% 3)
+  expect_true(pr %:% 1 %>duallex% 1)
+  expect_false(pr %:% 1 %>duallex% 2)
+  expect_false(pr %:% 1 %>duallex% 3)
 })

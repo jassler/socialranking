@@ -1,0 +1,9 @@
+* using log directory ‘/Users/felixfritz/Documents/programming/R/github/..Rcheck’
+* using R version 4.1.3 (2022-03-10)
+* using platform: aarch64-apple-darwin21.3.0 (64-bit)
+* using session charset: UTF-8
+* checking for file ‘./DESCRIPTION’ ... ERROR
+Required field missing or empty:
+  ‘Author’
+* DONE
+Status: 1 ERROR

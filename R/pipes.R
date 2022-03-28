@@ -1,6 +1,6 @@
 #' Test relation between two elements
 #'
-#' On a given `PowerRelation` object `pr`, check if `e1` relates to `e2` for a given social ranking solution.
+#' On a given `PowerRelation` object `pr`, check if `e1` relates to `e2` in a given social ranking solution.
 #'
 #' The function `testRelation` is somewhat only used to make the offered comparison operators in the package better discoverable.
 #'
@@ -37,7 +37,7 @@ testRelation <- function(powerRelation, e1) {
 #' @rdname testRelation
 #' @examples
 #' # Dominance
-#' pr %:% 1 %>dom% 2
+#' stopifnot(pr %:% 1 %>dom% 2)
 #'
 #' @export
 `%>dom%` <- function(pr_e1, e2) {
@@ -57,7 +57,7 @@ testRelation <- function(powerRelation, e1) {
 #' @rdname testRelation
 #' @examples
 #' # Cumulative dominance
-#' pr %:% 1 %>cumuldom% 2
+#' stopifnot(pr %:% 1 %>cumuldom% 2)
 #'
 #' @export
 `%>cumuldom%` <- function(pr_e1, e2) {
@@ -74,6 +74,25 @@ testRelation <- function(powerRelation, e1) {
 }
 
 
+#' @rdname testRelation
+#' @examples
+#' # CP-Majority relation
+#' stopifnot(pr %:% 1 %>cp% 2)
+#'
+#' @export
+`%>cp%` <- function(pr_e1, e2) {
+  # --- checks (generated) --- #
+  if(!is.list(pr_e1) || length(pr_e1) != 2) stop('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.')
+  powerRelation <- pr_e1[[1]]
+  e1 <- pr_e1[[2]]
+  if(!is.PowerRelation(powerRelation)) stop('Left side must be an object of type PowerRelation.')
+  if(!(e1 %in% powerRelation$elements)) stop('First element does not exist in the given PowerRelation object.')
+  stopifnot(e2 %in% powerRelation$elements)
+  stopifnot(class(e2) == class(powerRelation$elements))
+  # --- end checks --- #
+
+  sum(cpMajorityComparisonScore(powerRelation, e1, e2)) >= 0
+}
 
 #' @rdname testRelation
 #' @examples

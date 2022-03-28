@@ -15,16 +15,16 @@ RdMacros:
     mathjaxr,
     Rdpack
 Suggests: 
-    clipr (>= 0.7.1),
-    testthat (>= 3.0.0),
+    clipr (>= 0.8.0),
+    testthat (>= 3.1.2),
     kableExtra,
     knitr,
     rmarkdown
 Imports:
-    relations (>= 0.6.10),
+    relations (>= 0.6.12),
     sets (>= 1.0.21),
-    rlang (>= 0.4),
-    mathjaxr (>= 1.4-0),
-    Rdpack (>= 0.7)
+    rlang (>= 1.0.2),
+    mathjaxr (>= 1.6.0),
+    Rdpack (>= 2.3)
 Config/testthat/edition: 3
 VignetteBuilder: knitr

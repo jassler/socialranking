@@ -1,2 +1,7 @@
-^.*\.Rproj$
+^socialranking\.Rproj$
 ^\.Rproj\.user$
+^ignored
+^man-roxygen
+^doc$
+^Meta$
+cran-comments.md

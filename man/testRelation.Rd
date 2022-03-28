@@ -5,6 +5,7 @@
 \alias{\%:\%}
 \alias{\%>dom\%}
 \alias{\%>cumuldom\%}
+\alias{\%>cp\%}
 \alias{\%>banz\%}
 \alias{\%>cop\%}
 \alias{\%>ks\%}
@@ -19,6 +20,8 @@ powerRelation \%:\% e1
 pr_e1 \%>dom\% e2
 
 pr_e1 \%>cumuldom\% e2
+
+pr_e1 \%>cp\% e2
 
 pr_e1 \%>banz\% e2
 
@@ -38,7 +41,7 @@ pr_e1 \%>duallex\% e2
 \item{pr_e1}{\code{PowerRelation} and \code{e1} element, packed into a list using \code{pr \%:\% e1}}
 }
 \description{
-On a given \code{PowerRelation} object \code{pr}, check if \code{e1} relates to \code{e2} for a given social ranking solution.
+On a given \code{PowerRelation} object \code{pr}, check if \code{e1} relates to \code{e2} in a given social ranking solution.
 }
 \details{
 The function \code{testRelation} is somewhat only used to make the offered comparison operators in the package better discoverable.
@@ -52,10 +55,13 @@ pr <- newPowerRelationFromString(
 )
 
 # Dominance
-pr \%:\% 1 \%>dom\% 2
+stopifnot(pr \%:\% 1 \%>dom\% 2)
 
 # Cumulative dominance
-pr \%:\% 1 \%>cumuldom\% 2
+stopifnot(pr \%:\% 1 \%>cumuldom\% 2)
+
+# CP-Majority relation
+stopifnot(pr \%:\% 1 \%>cp\% 2)
 
 # Ordinal banzhaf relation
 stopifnot(pr \%:\% 1 \%>banz\% 2)
