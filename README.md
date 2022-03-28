@@ -5,7 +5,7 @@ See vignette for more details.
 
 ## Installation
 
-The CRAN submission is currently being processed. Meanwhile you can use the development version of the GitHub repository. Windows users must have [Rtools](https://cran.r-project.org/bin/windows/Rtools/rtools40.html) installed.
+The CRAN submission is currently being processed. Meanwhile you can use the development version of the package hosted on GitHub. Windows users must have [Rtools](https://cran.r-project.org/bin/windows/Rtools/rtools40.html) installed.
 
 ```r
 install.packages("remotes")
