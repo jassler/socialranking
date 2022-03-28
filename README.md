@@ -1,12 +1,14 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# socialranking
+# `socialranking`
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of socialranking is to …
+The package `socialranking` offers functions to represent ordinal
+information of coalitions and calculate the power relation between
+elements or players.
 
 ## Installation
 
@@ -30,7 +32,7 @@ The package `socialranking` offers functions to represent ordinal
 information of coalitions and calculate the power relation between
 elements or players.
 
-Once installed, call `library(socialranking)` to load the pacakge into
+Once installed, call `library(socialranking)` to load the package into
 your current environment.
 
 `newPowerRelation()` and `newPowerRelationFromString()` creates a

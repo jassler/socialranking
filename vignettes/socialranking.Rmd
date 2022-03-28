@@ -158,7 +158,7 @@ refDef <- function(def) {
 
 # Introduction
 
-In the literature of cooperative games, the notion of *power index* [@shapley1954method; @1964Banzhaf; @holler2013power] has been widely studied to analyse the ``influence" of individuals   taking into account  their ability   to force a decision within groups or coalitions. In practical situations, however, the information concerning the strength of coalitions  is hardly quantifiable. So, any attempt to numerically represent  the influence of groups and individuals clashes with the complex and multi-attribute nature of the problem and it seems more realistic to represent collective decision-making mechanisms using an ordinal coalitional framework based on two main ingredients: a binary relation over groups or coalitions and a ranking over the individuals.
+In the literature of cooperative games, the notion of *power index* [@shapley1954method; @1964Banzhaf; @holler2013power] has been widely studied to analyze the ``influence" of individuals   taking into account  their ability   to force a decision within groups or coalitions. In practical situations, however, the information concerning the strength of coalitions  is hardly quantifiable. So, any attempt to numerically represent  the influence of groups and individuals clashes with the complex and multi-attribute nature of the problem and it seems more realistic to represent collective decision-making mechanisms using an ordinal coalitional framework based on two main ingredients: a binary relation over groups or coalitions and a ranking over the individuals.
 
 The main objective of the package `socialranking` is to provide answers for  the general problem of how to compare the elements of a finite set $N$ given a ranking over the elements of its power-set (the set of all possible subsets of $N$). To do this, the package `socialranking` implements a portfolio of solutions from the recent literature on *social rankings* [@2017axiomaticAndAlgorithmicPerspectives; @2019OrdinalBanzhaf; @2018CPMajority; @2018CPMajoritySims; @2019PreferenceRelation; @2021Lexcel; @2021Manipulability].
 
@@ -227,7 +227,7 @@ relations::relation_incidence(rel)
 
 # `PowerRelation` Objects{#sec:prelim}
 
-We first introduce some basic definitons on binary relations. Let $X$ be a set. A set $R \subseteq X \times X$ is said a *binary relation* on $X$.
+We first introduce some basic definitions on binary relations. Let $X$ be a set. A set $R \subseteq X \times X$ is said a *binary relation* on $X$.
 For two elements $x, y \in X$, $xRy$ refers to their relation, more formally it means that $(x,y) \in R$. A binary relation $(x,y) \in R$ is said to be:
 
 * *reflexive*, if for each $x \in X, xRx$
@@ -240,7 +240,7 @@ For two elements $x, y \in X$, $xRy$ refers to their relation, more formally it 
 
 A *preorder* is defined as a reflexive and transitive relation. If it is total, it is called a *total preorder*. Additionally if it is antisymmetric, it is called a *linear order*.
 
-Let $N = \{1, 2, \dots, n\}$ be a finite set of *elements*, sometimes also called *players*. For some $p \in \{1, \ldots, 2^n\}$, let $\mathcal{P} = \{S_1, S_2, \dots, S_{p}\}$ be a set of *coalitions* such that $S_i \subseteq N$ for all $i \in \{1, \ldots, p\}$.  Thus $\mathcal{P} \subseteq 2^N$, where $2^N$ denotes the powerset of $N$ (i.e., the set of all subsets or coalitions of $N$).
+Let $N = \{1, 2, \dots, n\}$ be a finite set of *elements*, sometimes also called *players*. For some $p \in \{1, \ldots, 2^n\}$, let $\mathcal{P} = \{S_1, S_2, \dots, S_{p}\}$ be a set of *coalitions* such that $S_i \subseteq N$ for all $i \in \{1, \ldots, p\}$.  Thus $\mathcal{P} \subseteq 2^N$, where $2^N$ denotes the power set of $N$ (i.e., the set of all subsets or coalitions of $N$).
 
 $\mathcal{T}(N)$ denotes the set of all total preorders on $N$, $\mathcal{T}(\mathcal{P})$ the set of all total preorders on $\mathcal{P}$. A single total preorder $\succeq \in \mathcal{T}(\mathcal{P})$ is said a *power relation*.
 
@@ -250,7 +250,7 @@ Lastly for a given power relation in the form of $S_1 \succeq S_2 \succeq \ldots
 
 :::{.example data-latex="" .theorem text="`r exampleCounter("ex:1")`" #ex:1}
 \label{ex:1}
-Let $N=\{1,2\}$ be two players with its corresponding powerset $2^N = \{\{1,2\}, \{1\}, \{2\}, \emptyset\}$. The following power relation is given: $\succeq = \{(\{1,2\},\{2\}), (\{2\}, \emptyset), (\emptyset, \{2\}), (\emptyset, \{1\})\}$. This power relation can be rewritten in a consecutive order as: $\{1,2\} \succ \{2\} \sim \emptyset \succ \{1\}$. Its quotient order is formed by three equivalence classes $\sum_1 = \{\{1,2\}\}, \sum_2 = \{\{2\}, \emptyset\},$ and $\sum_3 = \{\{1\}\}$; so the quotient order of $\succeq$ is such that $\{\{1,2\}\} \succ \{\{2\}, \emptyset\} \succ \{\{1\}\}$.
+Let $N=\{1,2\}$ be two players with its corresponding power set $2^N = \{\{1,2\}, \{1\}, \{2\}, \emptyset\}$. The following power relation is given: $\succeq = \{(\{1,2\},\{2\}), (\{2\}, \emptyset), (\emptyset, \{2\}), (\emptyset, \{1\})\}$. This power relation can be rewritten in a consecutive order as: $\{1,2\} \succ \{2\} \sim \emptyset \succ \{1\}$. Its quotient order is formed by three equivalence classes $\sum_1 = \{\{1,2\}\}, \sum_2 = \{\{2\}, \emptyset\},$ and $\sum_3 = \{\{1\}\}$; so the quotient order of $\succeq$ is such that $\{\{1,2\}\} \succ \{\{2\}, \emptyset\} \succ \{\{1\}\}$.
 :::
 
 A *social ranking solution* (also called *social ranking* or, simply, *solution*) on $N$,
@@ -387,9 +387,9 @@ newPowerRelation(
 )
 ```
 
-## Creating Powersets
+## Creating Power sets
 
-As the number of elements $n$ increases, the number of possible coalitions increases to $|2^N| = 2^n$. `createPowerset` is a convenient function that not only creates a powerset $2^N$ which can be used to call `newPowerRelation`, but also formats the function call in such a way that makes it easy to rearrange the ordering of the coalitions. RStudio offers shortcuts Alt+Up or Alt+Down (Option+Up or Option+Down on MacOS) to move one or multiple lines of code up or down (see fig. `r refId("fig:alt", "[below](ID)")`).
+As the number of elements $n$ increases, the number of possible coalitions increases to $|2^N| = 2^n$. `createPowerset` is a convenient function that not only creates a power set $2^N$ which can be used to call `newPowerRelation`, but also formats the function call in such a way that makes it easy to rearrange the ordering of the coalitions. RStudio offers shortcuts Alt+Up or Alt+Down (Option+Up or Option+Down on MacOS) to move one or multiple lines of code up or down (see fig. `r refId("fig:alt", "[below](ID)")`).
 
 ```{r}
 createPowerset(

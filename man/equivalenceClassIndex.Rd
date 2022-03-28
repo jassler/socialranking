@@ -2,7 +2,7 @@
 % Please edit documentation in R/powerRelation.R
 \name{equivalenceClassIndex}
 \alias{equivalenceClassIndex}
-\title{Get index of equivalence class conatining a coalition}
+\title{Get index of equivalence class containing a coalition}
 \usage{
 equivalenceClassIndex(powerRelation, coalition, stopIfNotExists = TRUE)
 }

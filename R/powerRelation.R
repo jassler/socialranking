@@ -302,7 +302,7 @@ coalitionsAreIndifferent <- function(powerRelation, c1, c2) {
   equivalenceClassIndex(powerRelation, c1) == equivalenceClassIndex(powerRelation, c2)
 }
 
-#' Get index of equivalence class conatining a coalition
+#' Get index of equivalence class containing a coalition
 #'
 #' Given a `coalition` [vector][base::c()] or [sets::set()],
 #' return the index of the equivalence class it's located in.
