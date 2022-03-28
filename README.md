@@ -9,12 +9,14 @@ The CRAN submission is currently being processed. Meanwhile you can use the deve
 
 ```r
 install.packages("remotes")
-remotes::install_github("jassler/socialranking")
+remotes::install_github("jassler/socialranking", build_vignettes=TRUE)
 ```
 
 ## Usage
 
-Once installed, call `library(socialranking)` to load the pacakge into your current environment. Use `?socialranking` or `browseVignettes("socialranking")` for further resources.
+Once installed, call `library(socialranking)` to load the pacakge into your current environment.
+
+Use `?socialranking` or `browseVignettes("socialranking")` for further resources.
 
 ## License
 
