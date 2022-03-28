@@ -13,24 +13,24 @@ information of coalitions and calculate the power relation between elements or p
 is a convenient function to generate a \code{\link[=newPowerRelation]{newPowerRelation()}} function call
 for all possible coalitions.
 
-For every function that calculates the score of a given element in
-a power relation, there is a \code{ranking}-equivalent function that
-displays the ranking between elements. These include:\tabular{ll}{
-   \emph{Score Function} \tab \emph{Ranking Function} \cr
-   \code{\link[=ordinalBanzhafScores]{ordinalBanzhafScores()}} \tab \code{\link[=ordinalBanzhafRanking]{ordinalBanzhafRanking()}} \cr
-   \code{\link[=copelandScores]{copelandScores()}} \tab \code{\link[=copelandRanking]{copelandRanking()}} \cr
-   \code{\link[=kramerSimpsonScores]{kramerSimpsonScores()}} \tab \code{\link[=kramerSimpsonRanking]{kramerSimpsonRanking()}} \cr
-   \code{\link[=lexcelScores]{lexcelScores()}} \tab \code{\link[=lexcelRanking]{lexcelRanking()}} \cr
-    \tab \code{\link[=dualLexcelRanking]{dualLexcelRanking()}} \cr
-   \code{\link[=cumulativeScores]{cumulativeScores()}} \tab \code{\link[=cumulativelyDominates]{cumulativelyDominates()}}* \cr
-    \tab \code{\link[=dominates]{dominates()}}* \cr
-    \tab \code{\link[=cpMajorityComparison]{cpMajorityComparison()}}* \cr
+The functions used to analyze power relations can be grouped into comparison functions,
+score functions and ranking solutions. Ranking solutions produce a \code{SocialRankingSolution} object.\tabular{lll}{
+   Comparison Functions \tab Score Functions \tab Ranking Solutions \cr
+   \code{\link[=dominates]{dominates()}} \tab  \tab  \cr
+   \code{\link[=cumulativelyDominates]{cumulativelyDominates()}} \tab \code{\link[=cumulativeScores]{cumulativeScores()}} \tab  \cr
+   \code{\link[=cpMajorityComparison]{cpMajorityComparison()}}^1 \tab \code{\link[=copelandScores]{copelandScores()}} \tab \code{\link[=copelandRanking]{copelandRanking()}} \cr
+    \tab \code{\link[=kramerSimpsonScores]{kramerSimpsonScores()}} \tab \code{\link[=kramerSimpsonRanking]{kramerSimpsonRanking()}} \cr
+    \tab \code{\link[=lexcelScores]{lexcelScores()}} \tab \code{\link[=lexcelRanking]{lexcelRanking()}} \cr
+    \tab  \tab \code{\link[=dualLexcelRanking]{dualLexcelRanking()}} \cr
+    \tab \code{\link[=ordinalBanzhafScores]{ordinalBanzhafScores()}} \tab \code{\link[=ordinalBanzhafRanking]{ordinalBanzhafRanking()}} \cr
 }
 
 
-*These functions only compare two elements and doen't rank them.
+^1 \code{\link[=cpMajorityComparisonScore]{cpMajorityComparisonScore()}} is a faster alternative to \code{\link[=cpMajorityComparison]{cpMajorityComparison()}}, but it produces less data.
 
 \code{\link[=powerRelationMatrix]{powerRelationMatrix()}} uses \code{\link[relations:relation]{relations::relation()}} to create
 an incidence matrix between all competing coalitions. The incidence
 matrix can be displayed with \code{\link[relations:incidence]{relations::relation_incidence()}}.
+
+Use \code{browseVignettes("socialranking")} for more information.
 }
