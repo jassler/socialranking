@@ -1,6 +1,6 @@
 \documentclass{article}
 \usepackage{pdfpages}
-%\VignetteIndexEntry{stringdist C/C++ API}
+%\VignetteIndexEntry{Using socialranking pdf}
 
 \begin{document}
 \SweaveOpts{concordance=TRUE}
