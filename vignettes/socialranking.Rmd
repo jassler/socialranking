@@ -796,7 +796,7 @@ paste0(names(cumulScores), ": ", cumulScores, collapse = ', ')
 
 Similar to the Lexcel ranking, the Dual Lexcel also uses the Lexcel score vectors from definition `r refDef("def:lexcel")` to establish a ranking. However, instead of rewarding higher frequencies in high ranking coalitions, it punishes higher frequencies in lower ranking coalitions, or, it punishes mediocrity[@2021AntiLexcel].
 
-Take the values $i_k$ for $k \in \{1, \dots, m\}$ and the Lexcel score vector $\score{Lex}(i)$ from section `r refId("ch:lexcel", "[Lexicographical Excellence Solution](ch:lexcel)")`. Consider the dual lexicographical order $\geq_\textrm{DualLex}$ among vectors $\mathbf{i}$ and $\mathbf{j}$: $\mathbf{i} \geq_\textrm{DualLex} \mathbf{j}$ if either $\mathbf{i} = \mathbf{j}$ or there exists $t: i_t < j_t$ and $i_r = j_r, r\in\{t+1, \dots, m\}$.
+Take the values $i_k$ for $k \in \{1, \dots, m\}$ and the Lexcel score vector $\score{Lex}(i)$ from section `r refId("ch:lexcel", "[Lexicographical Excellence Solution](#ch:lexcel)")`. Consider the dual lexicographical order $\geq_\textrm{DualLex}$ among vectors $\mathbf{i}$ and $\mathbf{j}$: $\mathbf{i} \geq_\textrm{DualLex} \mathbf{j}$ if either $\mathbf{i} = \mathbf{j}$ or there exists $t: i_t < j_t$ and $i_r = j_r, r\in\{t+1, \dots, m\}$.
 
 ::: {.definition data-latex="" text="`r definitionCounter()`" .theorem}
 (Dual Lexicographical-Excellence relation [@2021AntiLexcel]) Let $\succeq \in \mathcal{T}(\mathcal{P})$. The *Dual Lexicographic-Excellence* relation is the binary relation $\rel{DualLex} \subseteq N \times N$ such that for all $i,j \in N$:
