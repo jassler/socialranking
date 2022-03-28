@@ -112,8 +112,8 @@ lexcelScores(pr, 1)
 ```
 
 `PowerRelation` objects can be turned into `relations` objects from the
-[relations](https://cran.r-project.org/web/packages/relations/index.html)
-package using `powerRelationMatrix()` or `as.relation()`.
+[relations](https://CRAN.R-project.org/package=relations) package using
+`powerRelationMatrix()` or `as.relation()`.
 
 Use `browseVignettes("socialranking")` for further information.
 
