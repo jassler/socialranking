@@ -4,7 +4,9 @@
 ^man-roxygen
 
 ^Meta$
-cran-comments.md
+^cran-comments.md$
 ^README\.Rmd$
 ^CRAN-SUBMISSION$
 ^doc$
+^.RData$
+^.Rhistory$

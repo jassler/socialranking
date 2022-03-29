@@ -399,7 +399,7 @@ createPowerset(
 )
 ```
 
-![Using Alt+Up or Alt+Down to move one or more lines of code](media/altupanddown.png){#fig:alt}
+![Using Alt+Up or Alt+Down to move one or more lines of code](media/altupanddown.jpg){#fig:alt}
 
 If `writeLines` and `copyToClipboard` are both set to `FALSE`, the function instead returns a list only containing coalition vectors. This list can be passed directly as `rankingCoalitions` parameter to `newPowerRelation`.
 
