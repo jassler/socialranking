@@ -1,0 +1,27 @@
+PowerRelation           PowerRelation object
+PowerRelation.default   PowerRelation object
+SocialRankingSolution   'SocialRankingSolution' object
+SocialRankingSolution.default
+                        'SocialRankingSolution' object
+coalitionsAreIndifferent
+                        Are coalitions indifferent
+copelandScores          Copeland-like method
+cpMajorityComparison    CP-Majority relation
+createPowerset          Create powerset
+cumulativeScores        Cumulative scores
+doRanking               Create 'SocialRankingSolution'
+dominates               Domination
+equivalenceClassIndex   Get index of equivalence class containing a
+                        coalition
+kramerSimpsonScores     Kramer-Simpson-like method
+lexcelScores            Lexicographical Excellence
+newPowerRelation        New Power Relation
+newPowerRelationFromString
+                        Create 'PowerRelation' object from string
+ordinalBanzhafScores    Ordinal Banzhaf
+powerRelationMatrix     Create relation matrix
+socialranking           socialranking: A package for constructing
+                        ordinal power relations and evaluating social
+                        ranking solutions
+testRelation            Test relation between two elements
+transitiveClosure       Transitive Closure

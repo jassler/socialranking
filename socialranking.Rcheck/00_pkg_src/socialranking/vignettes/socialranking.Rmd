@@ -1,0 +1,923 @@
+---
+author: | 
+  | Jochen Staudacher, Stefano Moretti, Felix Fritz
+  | (Hochschule Kempten, Université Paris Dauphine)
+  | Contact: jochen.staudacher@hs-kempten.de
+title: "`socialranking`: A package for evaluating ordinal power relations in cooperative game theory"
+date: "`r Sys.Date()`"
+output:
+  rmarkdown::html_document:
+    df_print: paged
+    theme: cerulean
+    highlight: haddock
+    css: styles.css
+    number_sections: yes
+    toc: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: false
+      smooth_scroll: true
+  rmarkdown::pdf_document:
+    latex_engine: xelatex
+    keep_tex: yes
+    toc: yes
+    toc_depth: 3
+    includes:
+      in_header: preamble.tex
+numbersections: true
+geometry: margin=3.8cm
+papersize: A4
+vignette: >
+  %\VignetteIndexEntry{Using socialranking html}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+bibliography: references.bib
+csl: biomed-central.csl
+abstract: "This document gives a brief introduction to power relations and social ranking solutions aimed at ranking elements based on their contributions within coalitions. This document accompanies version 0.1.0 of the package `socialranking`.\n\n**Keywords**: power relation, social ranking solution, cooperative game theory, dominance, cp-majority, Copeland, Kramer-Simpson, ordinal Banzhaf, dominance, lexicographical excellence, relations."
+---
+
+```{r echo=FALSE}
+library(kableExtra)
+functionTable <- data.frame(
+  "Comparison functions" = c("`dominates()`", "`cumulativelyDominates()`", "`cpMajorityComparison()`\n`cpMajorityComparisonScore()`", "", ""),
+  "Score functions" = c("", "`cumulativeScores()`", "`copelandScores()`\n`kramerSimpsonScores()`", "`lexcelScores()`", "`ordinalBanzhafScores()`"),
+  "Ranking functions" = c("", "", "`copelandRanking()`\n`kramerSimpsonRanking()`", "`lexcelRanking()`\n`dualLexcelRanking()`", "`ordinalBanzhafRanking()`")
+)
+
+if(knitr::is_latex_output()) {
+  for(i in 1:nrow(functionTable)) {
+    for(j in 1:ncol(functionTable)) {
+      if(grepl("\n", functionTable[i,j]))
+        functionTable[i,j] <- kableExtra::linebreak(functionTable[i,j])
+    }
+  }
+} else {
+  for(i in 1:nrow(functionTable)) {
+    for(j in 1:ncol(functionTable)) {
+      if(grepl("\n", functionTable[i,j]))
+        functionTable[i,j] <- gsub("\n", "<br>", functionTable[i,j])
+    }
+  }
+}
+
+# setup for tex documents
+# remove ## in front of output
+# adjust spacing before and after code chunks
+if(knitr::is_latex_output()) {
+  hook_output <- knitr::knit_hooks$get("output")
+  hook_warning <- knitr::knit_hooks$get("warning")
+  
+  # remove ##, wrap long output lines
+  knitr::knit_hooks$set(output = function(x, options) {
+    x <- knitr:::split_lines(x)
+    # x <- gsub("^## ", "#| ", x)
+    if (any(nchar(x) > 70)) x <- strwrap(x, width = 70)
+    x <- paste(x, collapse = "\n")
+    hook_output(x, options)
+    
+  }, warning = function(x, options) {
+    x <- knitr:::split_lines(x)
+    x <- gsub("^## ", "#! ", x)
+    if (any(nchar(x) > 70)) x <- strwrap(x, width = 70)
+    x <- paste(x, collapse = "\n")
+    hook_warning(x, options)
+  })
+  
+  # adjust spacing around code chunks
+  oldSource <- knitr::knit_hooks$get("source")
+  knitr::knit_hooks$set(source = function(x, options) {
+    x <- oldSource(x, options)
+  
+    if(options$echo == FALSE)
+      return(x)
+  
+    paste0(
+      '\\vspace{10pt}',
+      x,
+      '\n\\vspace{-10pt}'
+    )
+  })
+}
+
+examples <- list()
+exampleCounter <- function(id) {
+  if(missing(id)) {
+    examples[[length(examples) + 1]] <- -1
+  
+  } else if(id %in% names(examples)) {
+    stop(paste("id", id, "is already in examples"))
+  } else {
+    examples[[id]] <<- length(examples) + 1
+  }
+  return(length(examples))
+}
+
+definitions <- list()
+definitionCounter <- function(id) {
+  if(missing(id)) {
+    definitions[[length(definitions)+1]] <<- length(definitions) + 1
+    
+  } else if(id %in% names(examples)) {
+    stop(paste("id", id, "is already in examples"))
+  } else {
+    definitions[[id]] <<- length(definitions) + 1
+  }
+  length(definitions)
+}
+
+refId <- function(id, htmlTemplate = "[ID](ID)") {
+  if(knitr::is_latex_output())
+    paste0("\\ref{", id, "}")
+  else
+    gsub("ID", paste0("#", id), htmlTemplate)
+}
+
+refDef <- function(def) {
+  if(!(def %in% names(definitions)))
+    stop(paste0("Definition ", def, " is not defined"))
+  
+  if(knitr::is_latex_output())
+    paste0("\\ref{", def, "}")
+  else
+    paste0("[", definitions[[def]], "](#", def, ")")
+}
+```
+
+\newcommand{\rel}[1]{R^\succeq_\textrm{#1}}
+\newcommand{\score}[1]{\text{Score}_\text{#1}}
+
+<!--
+# ```{r eval=TRUE, echo=FALSE}
+# child_docs <- list.files(path="chapters",recursive = TRUE, pattern=".Rmd", full.names = TRUE)
+# ```
+# 
+# 
+# 
+# ```{r, child = child_docs}
+-->
+
+# Introduction
+
+In the literature of cooperative games, the notion of *power index* [@shapley1954method; @1964Banzhaf; @holler2013power] has been widely studied to analyze the ``influence" of individuals   taking into account  their ability   to force a decision within groups or coalitions. In practical situations, however, the information concerning the strength of coalitions  is hardly quantifiable. So, any attempt to numerically represent  the influence of groups and individuals clashes with the complex and multi-attribute nature of the problem and it seems more realistic to represent collective decision-making mechanisms using an ordinal coalitional framework based on two main ingredients: a binary relation over groups or coalitions and a ranking over the individuals.
+
+The main objective of the package `socialranking` is to provide answers for  the general problem of how to compare the elements of a finite set $N$ given a ranking over the elements of its power-set (the set of all possible subsets of $N$). To do this, the package `socialranking` implements a portfolio of solutions from the recent literature on *social rankings* [@2017axiomaticAndAlgorithmicPerspectives; @2019OrdinalBanzhaf; @2018CPMajority; @2018CPMajoritySims; @2019PreferenceRelation; @2021Lexcel; @2021Manipulability].
+
+## Quick Start
+
+A *power relation* (i.e, a ranking over subsets of a finite set $N$; see the Section `r refId("sec:prelim", "on [PowerRelation objects](ID)")` for a formal definition) can be constructed using the `newPowerRelation()` or `newPowerRelationFromString()` functions.
+
+```{r}
+library(socialranking)
+newPowerRelation(c(1,2), ">", 1, "~", c(), ">", 2)
+
+newPowerRelationFromString("ab > a ~ {} > b")
+
+newPowerRelationFromString("12 > 1 ~ {} > 2", asWhat = as.numeric)
+```
+
+Functions used to analyze a given `PowerRelation` object can be grouped into three main categories:
+
+* *Comparison* functions, only comparing two elements;
+* *Score* functions, calculating the scores for each element;
+* *Ranking* functions, creating `SocialRankingSolution` objects.
+
+Comparison and score functions are often used to evaluate a social ranking solution (see section `r refId("sec:prelim", "on [PowerRelation objects](ID)")` for a formal definition). Listed below are some of the most prominent functions and solutions introduced in the aforementioned papers.
+
+```{r echo=FALSE}
+kableExtra::kbl(
+  if(knitr::is_latex_output()) apply(functionTable, 1:2, function(x) gsub("`([^`]*)`", "\\\\small{\\\\texttt{\\1}}", x))
+  else functionTable,
+  col.names = c("Comparison Functions", "Score Functions", "Ranking Solutions"),
+  escape = FALSE, booktabs = TRUE
+) %>% kableExtra::kable_styling(bootstrap_options = c("hover")) %>% kableExtra::row_spec(1:(nrow(functionTable)-1), hline_after = TRUE)
+```
+
+These functions may be called as follows.
+
+```{r}
+pr <- newPowerRelationFromString("ab > ac ~ bc > a ~ c > {} > b")
+
+# a dominates b -> TRUE
+dominates(pr, "a", "b")
+
+# b does not dominate a -> FALSE
+dominates(pr, "b", "a")
+
+# calculate cumulative scores
+scores <- cumulativeScores(pr)
+# show score of element a
+scores$a
+
+# performing a bunch of rankings
+lexcelRanking(pr)
+dualLexcelRanking(pr)
+copelandRanking(pr)
+kramerSimpsonRanking(pr)
+ordinalBanzhafRanking(pr)
+```
+
+Finally an incidence matrix for all given coalitions can be constructed using `powerRelationMatrix(pr)` or `as.relation(pr)` from the `relations` package [@relationsPackage]. The incidence matrix may be displayed using `relations::relation_incidence()`.
+
+```{r}
+rel <- relations::as.relation(pr)
+rel
+
+relations::relation_incidence(rel)
+```
+
+# `PowerRelation` Objects{#sec:prelim}
+
+We first introduce some basic definitions on binary relations. Let $X$ be a set. A set $R \subseteq X \times X$ is said a *binary relation* on $X$.
+For two elements $x, y \in X$, $xRy$ refers to their relation, more formally it means that $(x,y) \in R$. A binary relation $(x,y) \in R$ is said to be:
+
+* *reflexive*, if for each $x \in X, xRx$
+* *transitive*, if for each $x, y, z \in X, xRy$ and $yRz \Rightarrow xRz$
+* *total*, if for each $x,y \in X, x \neq y \Rightarrow xRy$ or $yRx$
+* *symmetric*, if for each $x,y \in X,xRy \Leftrightarrow yRx$
+* *asymmetric*, if for each $x,y \in X,(x,y) \in R \Rightarrow (y,x) \notin R$
+* *antisymmetric*, if for each $x,y \in X,xRy \cap yRx \Rightarrow x=y$
+
+
+A *preorder* is defined as a reflexive and transitive relation. If it is total, it is called a *total preorder*. Additionally if it is antisymmetric, it is called a *linear order*.
+
+Let $N = \{1, 2, \dots, n\}$ be a finite set of *elements*, sometimes also called *players*. For some $p \in \{1, \ldots, 2^n\}$, let $\mathcal{P} = \{S_1, S_2, \dots, S_{p}\}$ be a set of *coalitions* such that $S_i \subseteq N$ for all $i \in \{1, \ldots, p\}$.  Thus $\mathcal{P} \subseteq 2^N$, where $2^N$ denotes the power set of $N$ (i.e., the set of all subsets or coalitions of $N$).
+
+$\mathcal{T}(N)$ denotes the set of all total preorders on $N$, $\mathcal{T}(\mathcal{P})$ the set of all total preorders on $\mathcal{P}$. A single total preorder $\succeq \in \mathcal{T}(\mathcal{P})$ is said a *power relation*.
+
+In a given power relation $\succeq \in \mathcal{T}(\mathcal{P})$ on $\mathcal{P} \subseteq 2^N$, its symmetric part is denoted by $\sim$ (i.e., $S \sim T$ if $S \succeq T$ and $T \succeq S$), whereas its asymmetric part is denoted by $\succ$ (i.e., $S \succ T$ if $S \succeq T$ and not $T \succeq S$). In other terms, for $S \sim T$ we say that $S$ is *indifferent* to $T$, whereas for $S \succ T$ we say that $S$ is *strictly better* than $T$.
+
+Lastly for a given power relation in the form of $S_1 \succeq S_2 \succeq \ldots \succeq S_m$, coalitions that are indifferent to one another can be grouped into *equivalence classes* $\sum_i$ such that we get the *quotient order* $\sum_1 \succ \sum_2 \succ \ldots \succ \sum_m$.
+
+:::{.example data-latex="" .theorem text="`r exampleCounter("ex:1")`" #ex:1}
+\label{ex:1}
+Let $N=\{1,2\}$ be two players with its corresponding power set $2^N = \{\{1,2\}, \{1\}, \{2\}, \emptyset\}$. The following power relation is given: $\succeq = \{(\{1,2\},\{2\}), (\{2\}, \emptyset), (\emptyset, \{2\}), (\emptyset, \{1\})\}$. This power relation can be rewritten in a consecutive order as: $\{1,2\} \succ \{2\} \sim \emptyset \succ \{1\}$. Its quotient order is formed by three equivalence classes $\sum_1 = \{\{1,2\}\}, \sum_2 = \{\{2\}, \emptyset\},$ and $\sum_3 = \{\{1\}\}$; so the quotient order of $\succeq$ is such that $\{\{1,2\}\} \succ \{\{2\}, \emptyset\} \succ \{\{1\}\}$.
+:::
+
+A *social ranking solution* (also called *social ranking* or, simply, *solution*) on $N$,
+is a function $R: \mathcal{T}(\mathcal{P}) \longrightarrow \mathcal{T}(N)$ associating to each power relation $\succeq \in \mathcal{T}(\mathcal{P})$ a total preorder $R(\succeq)$ (or $R^\succeq$) over the elements of $N$. By this definition, the notion $i R^\succeq j$ means that applying the social ranking solution to the power relation $\succeq$ gives the result that $i$ is ranked higher than or equal to $j$.
+
+## Creating `PowerRelation` Objects
+
+A power relation in the `socialranking` package is defined to be reflexive, transitive and total. In designing the package it was deemed logical to have the coalitions specified in a consecutive order, as seen in Example `r refId("ex:1", paste0("[", examples[["ex:1"]], "](ID)"))`. Each coalition in that order is split either by a `">"` (left side strictly better) or a `"~"` (two coalitions indifferent to one another). The following code chunk shows the power relation from Example `r refId("ex:1", paste0("[", examples[["ex:1"]], "](ID)"))` and how a correlating `PowerRelation` object can be constructed.
+
+```{r}
+library(socialranking)
+pr <- newPowerRelation(c(1,2), ">", 2, "~", c(), ">", 1)
+pr
+
+class(pr)
+```
+
+Notice how coalitions such as $\{1,2\}$ are written as `12` to improve readability. Similarly the function `newPowerRelationFromString` saves some typing on the user's end by interpreting each character of a coalition as a separate player. Note that spaces in that function are ignored.
+
+```{r}
+newPowerRelationFromString("12 > 2~{} > 1", asWhat = as.numeric)
+```
+
+The compact notation is only done in `PowerRelation` objects where every player is one digit or one character long. If this is not the case, curly braces and commas are added where needed.
+
+```{r}
+prLong <- newPowerRelation(
+  c("Alice", "Bob"), ">", "Bob", "~", c(), ">", "Alice"
+)
+prLong
+
+class(prLong)
+```
+
+Some may have spotted a `"SingleCharElements"` class missing in `class(prLong)` that has been there in `class(pr)`. `"SingleCharElements"` influences the way coalitions are printed. If it is removed from `class(pr)`, the output will include the same curly braces and commas displayed in `prLong`.
+
+```{r}
+class(pr) <- class(pr)[-which(class(pr) == "SingleCharElements")]
+pr
+```
+
+Internally a `PowerRelation` is a list with four attributes (see table below). Notice that every coalition vector is turned into a `set` object from the `sets` package[@setsPackage].
+
+
+```{r echo=FALSE}
+df <- data.frame(
+    c("`elements`", "`rankingCoalitions`", "`equivalenceClasses`"),
+    c("Sorted vector of elements", "Coalitions in power relation", "List containing lists, each\ncontaining coalitions in the\nsame equivalence class"),
+    c("`c(1,2)`", "`list(set(1,2),set(2),set(),set(1))`", "`list(list(set(1,2)),`\n\\phantom{list(}`list(set(2), set()),`\n\\phantom{list(}`list(set(1)))`")
+)
+
+if(knitr::is_latex_output()) {
+  df[3,2] <- kableExtra::linebreak(df[3,2])
+  df[3,3] <- kableExtra::linebreak(df[3,3])
+} else {
+  df[3,2] <- gsub("\n", "<br>", df[3,2])
+  df[3,3] <- gsub("\n", "<br>", df[3,3])
+}
+kableExtra::kbl(
+  if(knitr::is_latex_output()) apply(df, 1:2, function(x) gsub("`([^`]*)`", "\\\\small{\\\\texttt{\\1}}", x))
+  else df,
+  col.names = c("Attribute", "Description", "Value in `pr`"), escape = FALSE, booktabs = TRUE
+) %>% kableExtra::kable_styling(bootstrap_options = "hover", latex_options = c("scale_down")) %>% kableExtra::row_spec(1:(nrow(df)-1), hline_after = TRUE)
+```
+
+Since each coalition vector is turned into a `set`, coalitions such as `c(1,2)`, `c(2,1)` and `c(1,1,2,2)` are equivalent.
+
+```{r}
+prAtts <- newPowerRelation(c(2,2,1,1,2), ">", c(1,1,1), "~", c())
+prAtts
+
+prAtts$elements
+
+prAtts$rankingCoalitions
+
+prAtts$rankingComparators
+
+prAtts$equivalenceClasses
+```
+
+`equivalenceClassIndex()` determines at which index $i$ a coalition $S \in \sum_i$.
+
+```{r}
+equivalenceClassIndex(prAtts, c(2,1))
+
+equivalenceClassIndex(prAtts, 1)
+
+equivalenceClassIndex(prAtts, c())
+
+# are the given coalitions in the same equivalence class?
+coalitionsAreIndifferent(prAtts, 1, c())
+
+coalitionsAreIndifferent(prAtts, 1, c(1,2))
+```
+
+## Manipulating `PowerRelation` Objects
+
+It is strongly discouraged to directly manipulate `PowerRelation` objects, since modifying one list or vector entry would require updates on all attributes. Instead `newPowerRelation` offers two parameters `rankingCoalitions` and `rankingComparators`, each corresponding to the same named attributes of a `PowerRelation` object.
+
+```{r}
+pr
+
+# reverse power ranking
+newPowerRelation(
+  rankingCoalitions = rev(pr$rankingCoalitions),
+  rankingComparators = pr$rankingComparators
+)
+```
+
+Note that `rankingComparators` is optional. By default it assumes `rankingCoalitions` to be a linear order.
+
+```{r}
+newPowerRelation(rankingCoalitions = rev(pr$rankingCoalitions))
+```
+
+If the length of the `rankingComparators` vector is smaller or larger than the length of `rankingCoalitions`, the function silently fills in any gaps.
+
+```{r}
+# if too short -> comparator values are repeated
+newPowerRelation(
+  rankingCoalitions = as.list(1:9),
+  rankingComparators = "~"
+)
+
+newPowerRelation(
+    rankingCoalitions = as.list(letters[1:9]),
+    rankingComparators = c(">", "~", "~")
+)
+
+# if too long -> ignore excessive comparators
+newPowerRelation(
+  rankingCoalitions = pr$rankingCoalitions,
+  rankingComparators = c("~", ">", "~", ">", ">", "~")
+)
+```
+
+## Creating Power sets
+
+As the number of elements $n$ increases, the number of possible coalitions increases to $|2^N| = 2^n$. `createPowerset` is a convenient function that not only creates a power set $2^N$ which can be used to call `newPowerRelation`, but also formats the function call in such a way that makes it easy to rearrange the ordering of the coalitions. RStudio offers shortcuts Alt+Up or Alt+Down (Option+Up or Option+Down on MacOS) to move one or multiple lines of code up or down (see fig. `r refId("fig:alt", "[below](ID)")`).
+
+```{r}
+createPowerset(
+  c("a", "b", "c"),
+  writeLines = TRUE,
+  copyToClipboard = FALSE
+)
+```
+
+![Using Alt+Up or Alt+Down to move one or more lines of code](media/altupanddown.jpg){#fig:alt}
+
+If `writeLines` and `copyToClipboard` are both set to `FALSE`, the function instead returns a list only containing coalition vectors. This list can be passed directly as `rankingCoalitions` parameter to `newPowerRelation`.
+
+```{r}
+ps <- createPowerset(1:2, includeEmptySet = FALSE)
+ps
+
+newPowerRelation(rankingCoalitions = ps)
+
+newPowerRelation(rankingCoalitions = createPowerset(letters[1:4]))
+```
+
+
+# `SocialRankingSolution` Objects
+
+The main goal of the `socialranking` package is to rank elements based on a given power ranking. More formally we try to map $R: \mathcal{T}(\mathcal{P}) \rightarrow \mathcal{T}(N)$, associating to each power relation $\succeq \in \mathcal{T}(\mathcal{P})$ a total preorder $R(\succeq)$ (or $R^\succeq$) over the elements of $N$.
+
+In this context $i R^\succeq j$ tells us that, given a power relation $\succeq$ and applying a social ranking solution $R(\succeq)$, $i$ is ranked higher than or equal to $j$. From here on out, `>` and `~` also denote the asymmetric and the symmetric part of a social ranking, respectively, $i$ `>` $j$ indicating that $i$ is strictly better than $j$, whereas in $i$ `~` $j$, $i$ is indifferent to $j$.
+
+In section `r refId("ch:srsobj", "[3.1](ID)")` we show how a general `SocialRankingSolution` object can be constructed using the `doRanking` function. In the following sections, we will introduce the notion of dominance[@2017axiomaticAndAlgorithmicPerspectives], cumulative dominance[@2015Cumulative] and CP-Majority comparison[@2018CPMajority] that lets us compare two elements before diving into the social ranking solutions of the Ordinal Banzhaf Index[@2019OrdinalBanzhaf], Copeland-like and Kramer-Simpson-like methods[@2021Manipulability], and lastly the Lexicographical Excellence Solution[@2021Lexcel] (Lexcel) and the Dual Lexicographical Excellence solution[@2021AntiLexcel] (Dual Lexcel).
+
+:::{.example data-latex="" .theorem text="`r exampleCounter("ex:socialrankings")`" #ex:socialrankings}
+\label{ex:socialrankings}
+Let $\{a,b\} \succ (\{a,c\} \sim \{b,c\}) \succ (\{a\} \sim \{c\}) > \emptyset \succ \{b\}$ be a power ranking. Using the following social ranking solutions, we get:
+
+* `a > b > c` for `lexcelRanking`
+* `a > c > b` for `dualLexcelRanking`
+* `a > b ~ c` for `copelandRanking` and `kramerSimpsonRanking`
+* `a ~ c > b` for `ordinalBanzhafRanking`
+:::
+
+## Creating `SocialRankingSolution` objects\label{ch:srsobj}
+
+A `SocialRankingSolution` object represents a total preorder in $\mathcal{T}(N)$ over the elements of $N$. Internally they are saved as a list of vectors, each containing players that are indifferent to one another. This is somewhat similar to the `equivalenceClasses` attribute in `PowerRelation` objects.
+
+The function `doRanking` offers a generic way of creating `SocialRankingSolution` objects. Given a `PowerRelation` object and a sortable vector or list of scores it determines the power relation between all players. Note that `length(scores) == length(powerRelation$elements)` must be `TRUE`. Additionally each index in `scores` corresponds to the index in the sorted vector `powerRelation$elements`.
+
+```{r}
+pr <- newPowerRelationFromString("abc > ab ~ ac > bc")
+
+# pr$elements == c("a", "b", "c")
+# we define some arbitrary score vector where "a" scores highest
+# "b" and "c" both score 1, thus they are indifferent
+scores <- c(100, 1, 1)
+doRanking(pr, scores)
+
+# we can also tell doRanking to punish higher scores
+doRanking(pr, scores, decreasing = FALSE)
+```
+
+By default elements are assumed to be indifferent to one another if their scores are equal. Sometimes however other factors come into play that make it non-obvious how to compare two scores. In those cases a function comparing two scores can be passed that should return `TRUE` if the two scores are considered equal.
+
+```{r}
+scores <- c(0, 20, 21)
+# b and c are considered to be indifferent,
+# because their score difference is less than 2
+doRanking(pr, scores, isIndifferent = function(a,b) abs(a-b) < 2)
+```
+
+
+## Comparison Functions
+
+Comparison functions only compare two elements in a given power relation. They do not offer a social ranking solution. However in cases such as CP-Majority comparison, those comparison functions may be used to construct a social ranking solution in some particular cases.
+
+### Dominance {#ch:dominance}
+
+::: {.definition data-latex="" text="`r definitionCounter()`" .theorem}
+(Dominance [@2017axiomaticAndAlgorithmicPerspectives]) Given a power relation $\succeq \in \mathcal{T}(\mathcal{P})$ and two elements $i,j \in N$, $i$ *dominates* $j$ in $\succeq$ if $S \cup \{i\} \succeq S \cup \{j\}$ for each $S \in 2^{N\setminus \{i,j\}}$. $i$ also *strictly* dominates $j$ if there exists $S \in 2^{N\setminus \{i,j\}}$ such that $S \cup \{i\} \succ S \cup \{j\}$.
+:::
+
+The implication is that for every coalition $i$ and $j$ can join, $i$ has at least the same positive impact as $j$.
+
+The function `dominates(pr, e1, e2)` only returns a logical value `TRUE` if `e1` dominates `e2`, else `FALSE`. Note that `e1` not dominating `e2` does *not* indicate that `e2` dominates `e1`, nor does it imply that `e1` is indifferent to `e2`.
+
+```{r}
+pr <- newPowerRelationFromString(
+  "3 > 1 > 2 > 12 > 13 > 23",
+  asWhat = as.numeric
+)
+
+# 1 clearly dominates 2
+dominates(pr, 1, 2)
+dominates(pr, 2, 1)
+
+# 3 does not dominate 1, nor does 1 dominate 3, because
+# {}u3 > {}u1, but 2u1 > 2u3
+dominates(pr, 1, 3)
+dominates(pr, 3, 1)
+
+# an element i dominates itself, but it does not strictly dominate itself
+# because there is no Sui > Sui
+dominates(pr, 1, 1)
+dominates(pr, 1, 1, strictly = TRUE)
+```
+
+For any $S \in 2^{N \setminus \{i,j\}}$, we can only compare $S \cup \{i\} \succeq S \cup \{j\}$ if both $S \cup \{i\}$ and $S \cup \{j\}$ take part in the power relation.
+
+Additionally, for $S = \emptyset$, we also want to compare $\{i\} \succeq \{j\}$. In some situations however a comparison between singletons is not desired. For this reason the parameter `includeEmptySet` can be set to `FALSE` such that $\emptyset \cup \{i\} \succeq \emptyset \cup \{j\}$ is not considered in the CP-Majority comparison.
+
+```{r}
+pr <- newPowerRelationFromString("ac > bc ~ b > a ~ abc > ab")
+
+# FALSE because ac > bc, whereas b > a
+dominates(pr, "a", "b")
+
+# TRUE because ac > bc, ignoring b > a comparison
+dominates(pr, "a", "b", includeEmptySet = FALSE)
+```
+
+
+### Cumulative Dominance {#ch:cumul}
+
+When comparing two players $i,j \in N$, instead of looking at particular coalitions $S \in 2^{N \setminus \{i,j\}}$ they can join, we look at how many stronger coalitions they can form at each point. This property was originally introduced in [@2015Cumulative] as a regular dominance axiom.
+
+For a given power relation $\succeq \in \mathcal{T}(\mathcal{P})$ and its corresponding quotient order  $\sum_1 \succ \dots \succ \sum_m$, the power of a player $i$ is given by a vector $\textrm{Score}_\textrm{Cumul}(i) \in \mathbb{N}^m$ where we cumulatively sum the amount of times $i$ appears in $\sum_k$ for each index $k$.
+
+::: {.definition data-latex="" text="`r definitionCounter("def:cumuldomscore")`" .theorem #def:cumuldomscore}
+\label{def:cumuldomscore}
+(Cumulative Dominance Score) Given a power relation $\succeq \in \mathcal{T}(\mathcal{P})$ and its quotient order $\sum_1 \succ \dots \succ \sum_m$, the cumulative score vector $\textrm{Score}_\textrm{Cumul}(i) \in \mathbb{N}^m$ of an element $i \in N$ is given by:
+
+\begin{equation}
+    \textrm{Score}_\textrm{Cumul}(i) = \Big( \sum_{t=1}^k |\{S \in \textstyle \sum_t : i \in S\}|\Big)_{k \in \{1, \dots, m\}}
+\end{equation}
+:::
+
+::: {.definition data-latex="" text="`r definitionCounter("def:cumuldom")`" .theorem #def:cumuldom}
+\label{def:cumuldom}
+(Cumulative Dominance) Given two elements $i,j \in N$, $i$ *cumulatively dominates* $j$ in $\succeq$, if $\textrm{Score}_\textrm{Cumul}(i)_k \geq \textrm{Score}_\textrm{Cumul}(j)_k$ for each $k \in \{1, \dots, m\}$.  $i$ also *strictly* cumulatively dominates $j$ if there exists a $k$ such that $\textrm{Score}_\textrm{Cumul}(i)_k > \textrm{Score}_\textrm{Cumul}(j)_k$.
+:::
+
+For a given `PowerRelation` object `pr` and two elements `e1` and `e2`, `cumulativeScores(pr)` returns the vectors described in definition `r refDef("def:cumuldomscore")` for each element, `cumulativelyDominates(pr, e1, e2)` returns `TRUE` or `FALSE` based on definition `r refDef("def:cumuldom")`.
+
+```{r}
+pr <- newPowerRelationFromString("ab > (ac ~ bc) > (a ~ c) > {} > b")
+cumulativeScores(pr)
+
+# for each index k, $a[k] >= $b[k]
+cumulativelyDominates(pr, "a", "b")
+
+# $a[3] > $b[3], therefore a also strictly dominates b
+cumulativelyDominates(pr, "a", "b", strictly = TRUE)
+
+# $b[1] > $c[1], but $c[3] > $b[3]
+# therefore neither b nor c dominate each other
+cumulativelyDominates(pr, "b", "c")
+cumulativelyDominates(pr, "c", "b")
+```
+
+Similar to the dominance property from our previous section, two elements not dominating one or the other does not indicate that they are indifferent.
+
+### CP-Majority comparison
+
+The Ceteris Paribus Majority (CP-Majority) relation is a somewhat relaxed version of the dominance property. Instead of checking if $S \cup \{i\} \succeq S \cup \{j\}$ for all $S \in 2^{N \setminus \{i,j\}}$, the CP-Majority relation $i\rel{CP}j$ holds if the number of times $S \cup \{i\} \succeq S \cup \{j\}$ is greater than or equal to the number of times $S \cup \{j\} \succeq S \cup \{i\}$.
+
+::: {.definition data-latex="" text="`r definitionCounter()`" .theorem}
+(CP-Majority [@2018CPMajority]) Let $\succeq \in \mathcal{T}(\mathcal{P})$. The *Ceteris Paribus majority* relation is the binary relation $\rel{CP} \subseteq N \times N$ such that for all $i,j \in N$:
+
+\begin{equation}
+    i\rel{CP}j \Leftrightarrow d_{ij}(\succeq) \geq d_{ji}(\succeq)
+\end{equation}
+
+where $d_{ij}(\succeq)$ represents the cardinality of the set $D_{ij}(\succeq)$, the set of all coalitions $S \in 2^{N \setminus \{i,j\}}$ for which $S \cup \{i\} \succeq S \cup \{j\}$.
+:::
+
+`cpMajorityComparisonScore(pr, e1, e2)` calculates the two scores $d_{ij}(\succeq)$ and $-d_{ji}(\succeq)$. Notice the minus sign - that way we can use the sum of both values to determine the relation between `e1` and `e2`.
+
+```{r}
+pr <- newPowerRelationFromString("ab > (ac ~ bc) > (a ~ c) > {} > b")
+cpMajorityComparisonScore(pr, "a", "b")
+
+cpMajorityComparisonScore(pr, "b", "a")
+
+if(sum(cpMajorityComparisonScore(pr, "a", "b")) >= 0) {
+  print("a >= b")
+} else {
+  print("b > a")
+}
+```
+
+As a slight variation the logical parameter `strictly` calculates $d_{ij}(\succ)$ and $-d_{ji}(\succ)$, the number of coalitions $S \in 2^{N\setminus \{i,j\}}$ where $S\cup\{i\}\succ S\cup\{j\}$.
+
+```{r}
+# Now (ac ~ bc) is not counted
+cpMajorityComparisonScore(pr, "a", "b", strictly = TRUE)
+
+# Notice that the sum is still the same
+sum(cpMajorityComparisonScore(pr, "a", "b", strictly = FALSE)) ==
+  sum(cpMajorityComparisonScore(pr, "a", "b", strictly = TRUE))
+```
+
+Coincidentally, `cpMajorityComparisonScore` with `strictly = TRUE` can be used to determine if `e1` (strictly) dominates `e2`.
+
+`cpMajorityComparisonScore` should be used for simple and quick calculations. The more comprehensive function `cpMajorityComparison(pr, e1, e2)` does the same calculations, but in the process retains more information about all the comparisons that might be interesting to a user, i.e., the set $D_{ij}(\succeq)$ and $D_{ji}(\succeq)$ as well as the relation $i\rel{CP}j$. See the documentation for a full list of available data.
+
+```{r}
+# extract more information in cpMajorityComparison
+cpMajorityComparison(pr, "a", "b")
+
+# with strictly set to TRUE, coalition c does
+# neither appear in D_ab nor in D_ba
+cpMajorityComparison(pr, "a", "b", strictly = TRUE)
+```
+
+The CP-Majority relation can generate cycles, which is the reason that it is not offered as a social ranking solution. Instead we will introduce the [Copeland-like method] and [Kramer-Simpson-like method]`r if(knitr::is_latex_output()) " in chapters \\ref{ch:copeland} and \\ref{ch:kramerSimpson}"` that make use of the CP-Majority functions to determine a power relation between elements. For further readings on CP-Majority, see [@2018CPMajoritySims] and [@2021Manipulability].
+
+
+## Social Ranking Solutions
+
+
+### Ordinal Banzhaf
+
+The Ordinal Banzhaf Score is a vector defined by the principle of marginal contributions. Intuitively speaking, if a player joining a coalition causes it to move up in the ranking, it can be interpreted as a positive contribution. On the contrary a negative contribution means that participating causes the coalition to go down in the ranking.
+
+::: {.definition data-latex="" text="`r definitionCounter()`" .theorem}
+(Ordinal marginal contribution [@2019OrdinalBanzhaf]) Let $\succeq \in \mathcal{T}(\mathcal{P})$. For a given element $i \in N$, its *ordinal marginal contribution* $m_i^S(\succeq)$ with right to a coalition $S \in \mathcal{P}$ is defined as:
+
+\begin{equation}
+    m_i^S(\succeq) = \begin{cases}
+        \hphantom{-}1 & \textrm{if } S \cup \{i\} \succ S\\
+        -1 & \textrm{if } S \succ S \cup \{i\}\\
+        \hphantom{-}0 & \textrm{otherwise}
+    \end{cases}
+\end{equation}
+:::
+
+::: {.definition data-latex="" text="`r definitionCounter()`" .theorem}
+(Ordinal Banzhaf relation) Let $\succeq \in \mathcal{T}(\mathcal{P})$. The *Ordinal Banzhaf relation* is the binary relation $\rel{Banz} \subseteq N \times N$ such that for all $i,j \in N$:
+
+\begin{equation}
+    i\rel{Banz}j \Leftrightarrow \score{Banz}(i) \geq \score{Banz}(j),
+\end{equation}
+
+where $\score{Banz}(i) = \sum_{S} m^S_i(\succeq)$ for all $S \in N\setminus\{i\}$.
+:::
+
+Note that if $S \cup \{i\} \notin \mathcal{P}$, $m_i^S(\succeq) = 0$.
+
+The function `ordinalBanzhafScores` returns two numbers for each element: the number of coalitions $S$ where a player's contribution has a positive impact, and the number of coalitions $S$ where a player's contribution has a negative impact. These two numbers are added and elements are ranked highest to lowest.
+
+```{r}
+pr <- newPowerRelation(
+  c(1,2),
+  ">", c(1),
+  ">", c(2)
+)
+
+# both players 1 and 2 have an Ordinal Banzhaf Score of 1
+# therefore they are indifferent to one another
+ordinalBanzhafScores(pr)
+
+ordinalBanzhafRanking(pr)
+
+pr <- newPowerRelationFromString("ab > a > {} > b")
+
+# player b has a negative impact on the empty set
+# -> player b's score is 1 - 1 = 0
+# -> player a's score is 2 - 0 = 2
+sapply(ordinalBanzhafScores(pr), function(score) sum(score))
+
+ordinalBanzhafRanking(pr)
+```
+
+
+
+### Copeland-like method {#ch:copeland}
+
+The Copeland-like method of ranking elements based on the CP-Majority rule is strongly inspired by the Copeland score from social choice theory[@1951Copeland]. The score of an element $i \in N$ is determined by the amount of the pairwise CP-Majority winning comparisons $i \rel{CP} j$, minus the number of all losing comparisons $j \rel{CP} i$ against all other elements $j \in N \setminus \{i\}$.
+
+::: {.definition data-latex="" text="`r definitionCounter()`" .theorem}
+(Copeland-like relation [@2021Manipulability]) Let $\succeq \in \mathcal{T}(\mathcal{P})$. The *Copeland-like* relation is the binary relation $\rel{Cop} \subseteq N \times N$ such that for all $i,j \in N$:
+
+\begin{equation}
+    i\rel{Cop}j \Leftrightarrow \score{Cop}(i) \geq \score{Cop}(j),
+\end{equation}
+
+where $\score{Cop}(i) = |\{j \in N \setminus \{i\}: d_{ij}(\succeq) \geq d_{ji}(\succeq)\}| - |\{j \in N \setminus \{i\}: d_{ij}(\succeq) \leq d_{ji}(\succeq)\}|$
+:::
+
+`copelandScores(pr)` returns two numerical values for each element, a positive number for the winning comparisons (shown in $\score{Cop}(i)$ on the left) and a negative number for the losing comparisons (in $\score{Cop}(i)$ on the right).
+
+```{r}
+pr <- newPowerRelationFromString("(abc ~ ab ~ c ~ a) > (b ~ bc) > ac")
+scores <- copelandScores(pr)
+
+# Based on CP-Majority, a>=b and a>=c (+2), but b>=a (-1)
+scores$a
+
+sapply(copelandScores(pr), sum)
+
+copelandRanking(pr)
+```
+
+### Kramer-Simpson-like method {#ch:kramerSimpson}
+
+Strongly inspired by the Kramer-Simpson method of social choice theory[@1969Simpson;@1975Kramer], elements are ranked inversely to their greatest pairwise defeat over all possible CP-Majority comparisons.
+
+::: {.definition data-latex="" text="`r definitionCounter("def:ks")`" .theorem #def:ks}
+\label{def:ks}
+(Kramer-Simpson-like relation [@2021Manipulability]) Let $\succeq \in \mathcal{T}(\mathcal{P})$. The *Kramer-Simpson-like* relation is the binary relation $\rel{KS} \subseteq N \times N$ such that for all $i,j \in N$:
+
+\begin{equation}
+    i\rel{KS}j \Leftrightarrow \score{KS}(i) \leq \score{KS}(j),
+\end{equation}
+
+where $\score{KS}(i) = \max_j d_{ji}(\succeq)$ for all $j \in N \setminus \{i\}$.
+:::
+
+`kramerSimpsonScores(pr)` returns a single numerical value for each element, which sorted lowest to highest gives us the ranking solution.
+
+```{r}
+pr <- newPowerRelationFromString("(abc ~ ab ~ c ~ a) > (b ~ bc) > ac")
+unlist(kramerSimpsonScores(pr))
+
+kramerSimpsonRanking(pr)
+```
+
+There is a small caveat to Definition `r refDef("def:ks")`. By default this function does not compare $d_{ii}(\succeq)$. In other terms,
+the score of every element is the maximum CP-Majority comparison score against all *other* elements.
+
+This is slightly different from the definition found in [@2021Manipulability], where the CP-Majority comparison $d_{ii}(\succeq)$ is also considered. Since by definition  $d_{ii}(\succeq) = 0$, the Kramer-Simpson scores in those cases will never be negative, possibly discarding valuable information.
+
+To still account for the original definition in [@2021Manipulability], the functions `kramerSimpsonScores` and `kramerSimpsonRanking` offer a `compIvsI` parameter that can be set to `TRUE` if one wishes for $d_{ii}(\succeq)$ to be included in the comparisons.
+
+```{r}
+pr <- newPowerRelationFromString(
+  "b > (a ~ c) > ab > (ac ~ bc) > {} > abc"
+)
+kramerSimpsonRanking(pr)
+
+# notice how b's score is negative
+unlist(kramerSimpsonScores(pr))
+
+kramerSimpsonScores(pr, elements = "b", compIvsI = TRUE)
+```
+
+### Lexicographical Excellence Solution {#ch:lexcel}
+
+The idea behind the lexicographical excellence solution (Lexcel) is to reward elements appearing more frequently in higher ranked equivalence classes.
+
+For a given power relation $\succeq$ and its quotient order $\sum_1 \succ \dots \succ \sum_m$, we denote by $i_k$ the number of coalitions in $\sum_k$ containing $i$:
+
+\begin{equation}
+    i_k = |\{S \in \textstyle \sum_k: i \in S\}|
+\end{equation}
+
+for $k \in \{1, \dots, m\}$. Now, let $\score{Lex}(i)$ be the $m$-dimensional vector $\score{Lex}(i) = (i_1, \dots, i_m)$ associated to $\succeq$. Consider the lexicographic order $\geq_\textrm{Lex}$ among vectors $\mathbf{i}$ and $\mathbf{j}$: $\mathbf{i} \geq_\textrm{Lex} \mathbf{j}$ if either $\mathbf{i} = \mathbf{j}$ or there exists $t : i_r = j_r, r \in \{1,\dots,t-1\}$, and $i_t > j_t$.
+
+::: {.definition data-latex="" text="`r definitionCounter("def:lexcel")`" .theorem #def:lexcel}
+\label{def:lexcel}
+(Lexicographic-Excellence relation [@2019PreferenceRelation]) Let $\succeq \in \mathcal{T}(\mathcal{P})$ with its corresponding quotient order $\sum_1 \succ \dots \succ \sum_m$. The *Lexicographic-Excellence* relation is the binary relation $\rel{Lex} \subseteq N \times N$ such that for all $i,j \in N$:
+
+\begin{equation}
+    i\rel{Lex}j \Leftrightarrow \score{Lex}(i) \geq_{\textrm{Lex}} \score{Lex}(j)
+\end{equation}
+:::
+
+```{r}
+pr <- newPowerRelationFromString(
+  "12 > (123 ~ 23 ~ 3) > (1 ~ 2) > 13",
+  asWhat = as.numeric
+)
+
+# show the number of times an element appears in each equivalence class
+# e.g. 3 appears 3 times in [[2]] and 1 time in [[4]]
+lapply(pr$equivalenceClasses, unlist)
+
+lexScores <- lexcelScores(pr)
+for(i in names(lexScores))
+  paste0("Lexcel score of element ", i, ": ", lexScores[i])
+
+# at index 1, element 2 ranks higher than 3
+lexScores['2'] > lexScores['3']
+
+# at index 2, element 2 ranks higher than 1
+lexScores['2'] > lexScores['1']
+
+lexcelRanking(pr)
+```
+
+For some generalizations of the Lexcel solution see also [@2021Lexcel].
+
+Lexcel score vectors are very similar to the cumulative score vectors (`r refId("ch:cumul", "see section on [Cumulative Dominance](ID)")`) in that the number of times an element appears in a given equivalence class is of interest. In fact, applying the base function `cumsum` on an element's lexcel score gives us its cumulative score.
+
+```{r}
+lexcelCumulated <- lapply(lexScores, cumsum)
+cumulScores <- cumulativeScores(pr)
+
+paste0(names(lexcelCumulated), ": ", lexcelCumulated, collapse = ', ')
+paste0(names(cumulScores), ": ", cumulScores, collapse = ', ')
+```
+
+
+### Dual Lexicographical Excellence Solution
+
+Similar to the Lexcel ranking, the Dual Lexcel also uses the Lexcel score vectors from definition `r refDef("def:lexcel")` to establish a ranking. However, instead of rewarding higher frequencies in high ranking coalitions, it punishes higher frequencies in lower ranking coalitions, or, it punishes mediocrity[@2021AntiLexcel].
+
+Take the values $i_k$ for $k \in \{1, \dots, m\}$ and the Lexcel score vector $\score{Lex}(i)$ from section `r refId("ch:lexcel", "[Lexicographical Excellence Solution](#ch:lexcel)")`. Consider the dual lexicographical order $\geq_\textrm{DualLex}$ among vectors $\mathbf{i}$ and $\mathbf{j}$: $\mathbf{i} \geq_\textrm{DualLex} \mathbf{j}$ if either $\mathbf{i} = \mathbf{j}$ or there exists $t: i_t < j_t$ and $i_r = j_r, r\in\{t+1, \dots, m\}$.
+
+::: {.definition data-latex="" text="`r definitionCounter()`" .theorem}
+(Dual Lexicographical-Excellence relation [@2021AntiLexcel]) Let $\succeq \in \mathcal{T}(\mathcal{P})$. The *Dual Lexicographic-Excellence* relation is the binary relation $\rel{DualLex} \subseteq N \times N$ such that for all $i,j \in N$:
+
+\begin{equation}
+    i\rel{DualLex}j \Leftrightarrow \score{Lex}(i) \geq_\textrm{DualLex} \score{Lex}(j)
+\end{equation}
+:::
+
+The S3 class `LexcelScores` does not account for Dual Lexcel comparisons. Instead `-rev(x)` is called on a Lexcel score vector `x` such that the resulting comparisons produces a Dual Lexcel ranking solution.
+
+```{r}
+pr <- newPowerRelationFromString(
+  "12 > (123 ~ 23 ~ 3) > (1 ~ 2) > 13",
+  asWhat = as.numeric
+)
+
+lexScores <- lexcelScores(pr)
+
+# in regular Lexcel, 1 scores higher than 3
+lexScores['1'] > lexScores['3']
+
+# turn Lexcel score into Dual Lexcel score
+dualLexScores <- structure(
+  lapply(lexcelScores(pr), function(r) -rev(r)),
+  class = 'LexcelScores'
+)
+
+# now 1 scores lower than 3
+dualLexScores['1'] > dualLexScores['3']
+
+# element 2 comes out at the top in both Lexcel and Dual Lexcel
+lexcelRanking(pr)
+
+dualLexcelRanking(pr)
+```
+
+
+# Relations
+
+## Incidence Matrix
+
+In our vignette we focused more on the intuitive aspects of power relations and social ranking solutions. To reiterate, a power relation is a total preorder, or a reflexive and transitive relation $\succeq \in \mathcal{P} \times \mathcal{P}$, where $\sim$ denotes the symmetric part and $\succ$ its asymmetric part.
+
+A power relation can be viewed as an incidence matrix $(b_{ij}) = B \in \{0,1\}^{|\mathcal{P}| \times |\mathcal{P}|}$. Given two coalitions $i, j \in \mathcal{P}$, if $iRj$ then $b_{ij} = 1$, else $0$.
+
+With help of the `relations` package, the functions `relations::as.relation(pr)` and `powerRelationMatrix(pr)` turn a `PowerRelation` object into a `relation` object. `relations` then offers ways to display the `relation` object as an incidence matrix with `relation_incidence(rel)` and to test basic properties such `relation_is_linear_order(rel)`, `relation_is_acyclic(rel)` and `relation_is_antisymmetric(rel)` (see `relations` package for more [@relationsPackage]).
+
+```{r}
+pr <- newPowerRelationFromString("ab > a > {} > b")
+rel <- relations::as.relation(pr)
+
+relations::relation_incidence(rel)
+
+c(
+  relations::relation_is_acyclic(rel),
+  relations::relation_is_antisymmetric(rel),
+  relations::relation_is_linear_order(rel),
+  relations::relation_is_complete(rel),
+  relations::relation_is_reflexive(rel),
+  relations::relation_is_transitive(rel)
+)
+```
+
+Note that the columns and rows are sorted by their names in `relation_domain(rel)`, hence why each name is preceded by the ordering number.
+
+```{r}
+# a power relation where coalitions {1} and {2} are indifferent
+pr <- newPowerRelationFromString("12 > (1 ~ 2)", asWhat = as.numeric)
+rel <- relations::as.relation(pr)
+
+# we have both binary relations {1}R{2} as well as {2}R{1}
+relations::relation_incidence(rel)
+
+# FALSE
+c(
+  relations::relation_is_acyclic(rel),
+  relations::relation_is_antisymmetric(rel),
+  relations::relation_is_linear_order(rel),
+  relations::relation_is_complete(rel),
+  relations::relation_is_reflexive(rel),
+  relations::relation_is_transitive(rel)
+)
+```
+
+## Cycles and Transitive Closure
+
+A cycle in a power relation exists, if there is one coalition $S \in 2^N$ that appears twice. For example, in $\{1,2\} \succ (\{1\} \sim \emptyset) \succ \{1,2\}$, the coalition $\{1,2\}$ appears at the beginning and at the end of the power relation.
+
+Properly handling power relations and calculating social ranking solutions with cycles is somewhat ill-defined, hence a warning message is shown as soon as one is created.
+
+```{r}
+newPowerRelation(c(1,2), ">", 2, ">", 1, "~", 2, ">", c(1,2))
+```
+
+Recall that a power relation is transitive, meaning for three coalitions $x, y, z \in 2^N$, if $xRy$ and $yRz$, then $xRz$. If we introduce cycles, we pretty much introduce symmetry. Assume we have the power relation $x \succ y \succ x$. Then, even though $xRy$ and $yRx$ are defined as the asymmetric part of the power relation $\succeq$, together they form the symmetric power relation $x \sim y$.
+
+`transitiveClosure(pr)` is a function that turns a power relation with cycles into one without one. In the process of removing duplicate coalitions, it turns all asymmectric relations within a cycle into symmetric relations.
+
+```{r}
+pr <- suppressWarnings(newPowerRelation(1, '>', 2, '>', 1))
+pr
+
+transitiveClosure(pr)
+
+# two cycles, (1>3>1) and (2>23>2)
+pr <- suppressWarnings(
+  newPowerRelationFromString(
+    "1 > 3 > 1 > 2 > 23 > 2",
+    asWhat = as.numeric
+  )
+)
+
+transitiveClosure(pr)
+
+# overlapping cycles
+pr <- suppressWarnings(
+  newPowerRelationFromString("c > ac > b > ac > (a ~ b) > abc")
+)
+
+transitiveClosure(pr)
+```
+
+# Bibliography

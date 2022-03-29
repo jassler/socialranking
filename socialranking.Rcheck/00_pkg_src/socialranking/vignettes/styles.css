@@ -1,0 +1,44 @@
+.theorem {
+  display: block;
+  font-style: italic;
+  font-family: "Times New Roman";
+  color: black;
+  border-left: 2px black solid;
+  padding-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.definition[text]::before {
+  content: "Definition " attr(text) ". ";
+  font-weight: bold;
+  font-style: normal;
+}
+
+.example[text]::before {
+  content: "Example " attr(text) ". ";
+  font-weight: bold;
+  font-style: normal;
+}
+
+.theorem p {
+  display: inline;
+}
+
+div.sourceCode {
+  margin-bottom: 0;
+}
+
+.caption {
+  text-align: center;
+  font-style: italic;
+}
+
+pre.sourceCode {
+  border-radius: 4px 4px 0 0;
+  border-bottom: none;
+}
+
+pre:not([class]) {
+  border-radius: 0 0 4px 4px;
+}

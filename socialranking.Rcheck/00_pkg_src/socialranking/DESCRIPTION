@@ -1,0 +1,25 @@
+Package: socialranking
+Title: Social Ranking Solutions for Power Relations on Coalitions
+Version: 0.1.0
+Authors@R: c(
+ person("Felix", "Fritz", email = "felix.fritz@hs-kempten.de", role = c("aut", "cre")),
+ person("Jochen", "Staudacher", role = c("aut", "cph", "ths"), email = "jochen.staudacher@hs-kempten.de"),
+ person("Moretti", "Stefano", role = c("aut", "cph", "ths"), email = "stefano.moretti@lamsade.dauphine.fr"))
+Maintainer: Felix Fritz <felix.fritz@hs-kempten.de>
+Description: The notion of power index has been widely used in literature to evaluate the influence of individual players (e.g., voters, political parties, nations, stockholders, etc.) involved in a collective decision situation like an electoral system, a parliament, a council, a management board, etc., where players may form coalitions. Traditionally this ranking is determined through numerical evaluation. More often than not however only ordinal data between coalitions is known. The package 'socialranking' offers a set of solutions to rank players based on a transitive ranking between coalitions, including through CP-Majority, ordinal Banzhaf or lexicographic excellence solution summarized by Tahar Allouche, Bruno Escoffier, Stefano Moretti and Meltem Öztürk (2020, <doi:10.24963/ijcai.2020/3>).
+License: GPL-3
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
+RdMacros: mathjaxr, Rdpack
+Suggests: clipr (>= 0.8.0), testthat (>= 3.1.2), kableExtra, knitr,
+        rmarkdown
+Imports: relations (>= 0.6.12), sets (>= 1.0.21), rlang (>= 1.0.2),
+        mathjaxr (>= 1.6.0), Rdpack (>= 2.3)
+Config/testthat/edition: 3
+VignetteBuilder: knitr
+NeedsCompilation: no
+Packaged: 2022-03-29 20:37:27 UTC; felixfritz
+Author: Felix Fritz [aut, cre],
+  Jochen Staudacher [aut, cph, ths],
+  Moretti Stefano [aut, cph, ths]
