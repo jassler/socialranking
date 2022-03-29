@@ -37,7 +37,7 @@
 #' The much more efficient [`cpMajorityComparisonScore()`] only calculates `$e1$score`.
 #'
 #' Unlike Lexcel, Ordinal Banzhaf, etc., this power relation can introduce cycles. For this reason the function
-#' [`cpMajorityComparison`] and [`cpMajorityComparisonScore`] only offers direct comparisons between two elements
+#' [`cpMajorityComparison()`] and [`cpMajorityComparisonScore()`] only offers direct comparisons between two elements
 #' and not a ranking of all players. See the other CP-majority based functions that offer a way to rank all players.
 #'
 #' @template param/powerRelation
@@ -54,6 +54,8 @@
 #' \insertRef{2018CPMajority}{socialranking}
 #'
 #' \insertRef{2018CPMajoritySims}{socialranking}
+#'
+#' @return `cpMajorityComparison()` returns a list with elements described in the details.
 #'
 #' @examples
 #' pr <- newPowerRelationFromString("ac > (a ~ b) > (c ~ bc)")
@@ -179,10 +181,13 @@ cpMajorityComparison <- function(powerRelation, e1, e2, strictly = FALSE, includ
 
 #' CP-Majority score
 #'
-#' `cpMajorityComparisonScore` only returns two numbers, a positive number of coalitions where `e1` beats `e2`,
+#' `cpMajorityComparisonScore()` only returns two numbers, a positive number of coalitions where `e1` beats `e2`,
 #' and a negative number of coalitions where `e1` is beaten by `e2`.
 #'
 #' @rdname cpMajorityComparison
+#'
+#' @return `cpMajorityComparisonScore()` returns a vector of two numbers, a positive number of coalitions where `e1` beats `e2`
+#' (\mjeqn{d_{ij}(\succeq)}{d_ij(>=)}), and a negative number of coalitions where `e1` is beaten by `e2` (\mjeqn{-d_{ji}(\succeq)}{-d_ji(>=)}).
 #'
 #' @examples
 #' cpMajorityComparisonScore(pr, "a", "b") # c(1,0)

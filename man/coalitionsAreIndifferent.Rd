@@ -13,6 +13,9 @@ coalitionsAreIndifferent(powerRelation, c1, c2)
 
 \item{c2}{Coalition \link[base:c]{vector} or \code{\link[sets:set]{sets::set()}}}
 }
+\value{
+Logical value \code{TRUE} if \code{c1} and \code{c2} are in the same equivalence class, else \code{FALSE}.
+}
 \description{
 Check if coalitions are indifferent from one another, or, if they appear in the same
 equivalence class.

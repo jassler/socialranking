@@ -18,6 +18,12 @@ If \code{elements == NULL}, create vectors for all elements in \code{pr$elements
 \item{compIvsI}{If \code{TRUE}, include CP-Majority comparison \mjeqn{d_{ii}(\succeq)}{d_ii(>=)}, or, the CP-Majority
 comparison score of an element against itself, which is always 0.}
 }
+\value{
+Score function returns a list of type \code{KramerSimpsonScores} and length of \code{powerRelation$elements}
+(unless parameter \code{elements} is specified). Lower scoring elements are ranked higher.
+
+Ranking function returns corresponding \code{\link{SocialRankingSolution}} object.
+}
 \description{
 Calculate the Kramer-Simpson-like scores.
 Lower scores are better.

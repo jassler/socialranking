@@ -9,6 +9,9 @@ transitiveClosure(powerRelation)
 \arguments{
 \item{powerRelation}{A \code{PowerRelation} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
 }
+\value{
+\code{\link{PowerRelation}} object with no cycles.
+}
 \description{
 Apply transitive closure over power relation that has cycles.
 }

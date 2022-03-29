@@ -2,6 +2,7 @@
 % Please edit documentation in R/rankingBoilerplate.R
 \name{doRanking}
 \alias{doRanking}
+\alias{print.SocialRankingSolution}
 \title{Create \code{SocialRankingSolution}}
 \usage{
 doRanking(
@@ -10,6 +11,8 @@ doRanking(
   isIndifferent = function(a, b) a == b,
   decreasing = TRUE
 )
+
+\method{print}{SocialRankingSolution}(x, ...)
 }
 \arguments{
 \item{powerRelation}{A \code{PowerRelation} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
@@ -22,8 +25,8 @@ In that case the two elements are indifferent from each other, symbolized with t
 \item{decreasing}{If \code{TRUE} (default), elements with the higher scores are ranked higher.}
 }
 \value{
-A \code{SocialRankingSolution} list.
-Each element is a vector of elements that are indifferent to one another.
+A list of type \code{SocialRankingSolution}.
+Each element of the list contains a \code{\link[sets:set]{sets::set()}} of elements in \code{powerRelation} that are indifferent to one another.
 }
 \description{
 Map a power relation between coalitions to a power relation between elements, also known as a social ranking solution.

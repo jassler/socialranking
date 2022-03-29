@@ -20,6 +20,11 @@ createPowerset(
 
 \item{includeEmptySet}{If \code{TRUE}, an empty vector is added at the end}
 }
+\value{
+List of power set vectors. If \code{copyToClipboard = TRUE}, it returns nothing and only copies a
+function-call string into the clipboard. If \code{writeLines = TRUE}, it returns nothing and prints a function-call
+string that is ready to be copy-pasted.
+}
 \description{
 Given a vector of elements generate a \code{\link[=newPowerRelation]{newPowerRelation()}}-valid function call with all possible coalitions.
 }
@@ -28,5 +33,16 @@ if(interactive()) {
   createPowerset(1:3, copyToClipboard = TRUE)
   createPowerset(c("a", "b", "c", "d"), writeLines = TRUE, includeEmptySet = FALSE)
 }
+
+# without copyToClipboard or writeLines set to TRUE, it returns a list
+createPowerset(c("Alice", "Bob"), includeEmptySet = FALSE)
+## [[1]]
+## [1] "Alice" "Bob"
+##
+## [[2]]
+## [1] "Alice"
+##
+## [[3]]
+## [1] "Bob"
 
 }

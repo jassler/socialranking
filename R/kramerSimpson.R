@@ -56,6 +56,9 @@ is.na.KramerSimpsonScores <- function(x) FALSE
 #' @family CP-majority based functions
 #' @family score vector functions
 #'
+#' @return Score function returns a list of type `KramerSimpsonScores` and length of `powerRelation$elements`
+#' (unless parameter `elements` is specified). Lower scoring elements are ranked higher.
+#'
 #' @references
 #' \insertRef{2021Manipulability}{socialranking}
 #'
@@ -132,6 +135,8 @@ kramerSimpsonScores <- function(powerRelation, elements = NULL, compIvsI = FALSE
 #' @template param/powerRelation
 #'
 #' @rdname kramerSimpsonScores
+#'
+#' @template return/ranking
 #'
 #' @examples
 #' # 2 > 1 > 3

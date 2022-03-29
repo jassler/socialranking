@@ -16,6 +16,9 @@ dominates(powerRelation, e1, e2, strictly = FALSE, includeEmptySet = TRUE)
 \item{includeEmptySet}{If \code{TRUE}, check \mjeqn{\lbrace i \rbrace \succeq \lbrace j \rbrace}{\{i\} >= \{j\}} even if
 empty set is not part of the power relation.}
 }
+\value{
+Logical value \code{TRUE} if \code{e1} dominates \code{e2}, else \code{FALSE}.
+}
 \description{
 Test if one element dominates the other.
 }

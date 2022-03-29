@@ -34,10 +34,16 @@ vice versa.}
 \item{includeEmptySet}{If \code{TRUE}, check \mjeqn{\lbrace i \rbrace \succeq \lbrace j \rbrace}{\{i\} >= \{j\}} even if
 empty set is not part of the power relation.}
 }
+\value{
+\code{cpMajorityComparison()} returns a list with elements described in the details.
+
+\code{cpMajorityComparisonScore()} returns a vector of two numbers, a positive number of coalitions where \code{e1} beats \code{e2}
+(\mjeqn{d_{ij}(\succeq)}{d_ij(>=)}), and a negative number of coalitions where \code{e1} is beaten by \code{e2} (\mjeqn{-d_{ji}(\succeq)}{-d_ji(>=)}).
+}
 \description{
 The Ceteris Paribus-majority relation compares the relative success between two players joining a coalition.
 
-\code{cpMajorityComparisonScore} only returns two numbers, a positive number of coalitions where \code{e1} beats \code{e2},
+\code{cpMajorityComparisonScore()} only returns two numbers, a positive number of coalitions where \code{e1} beats \code{e2},
 and a negative number of coalitions where \code{e1} is beaten by \code{e2}.
 }
 \details{
@@ -83,7 +89,7 @@ Note that in this context the two elements \mjseqn{i} and \mjseqn{j} refer to el
 The much more efficient \code{\link[=cpMajorityComparisonScore]{cpMajorityComparisonScore()}} only calculates \verb{$e1$score}.
 
 Unlike Lexcel, Ordinal Banzhaf, etc., this power relation can introduce cycles. For this reason the function
-\code{\link{cpMajorityComparison}} and \code{\link{cpMajorityComparisonScore}} only offers direct comparisons between two elements
+\code{\link[=cpMajorityComparison]{cpMajorityComparison()}} and \code{\link[=cpMajorityComparisonScore]{cpMajorityComparisonScore()}} only offers direct comparisons between two elements
 and not a ranking of all players. See the other CP-majority based functions that offer a way to rank all players.
 }
 \examples{

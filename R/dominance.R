@@ -16,6 +16,8 @@
 #' @template param/strictly
 #' @template param/includeEmptySet
 #'
+#' @return Logical value `TRUE` if `e1` dominates `e2`, else `FALSE`.
+#'
 #' @examples
 #' pr <- newPowerRelationFromString("12 > 1 > 2", asWhat = as.numeric)
 #'

@@ -26,11 +26,13 @@
 #' @template param/powerRelation
 #' @param domainNames How should the row and column names be formatted?
 #' * `pretty`: Coalitions such as c(1,2) are formatted as 12. To ensure that it's correctly sorted alphabetically, every name is preceded by a certain amount of the invisible Unicode character \\u200b
-#' * `numericPrec`: Coalitions such as c(1,2) are formatted as 1{12}, the number in front of the curly brace marking its sorted spot. While less pretty, it won't use Unicode characters.
+#' * `numericPrec`: Coalitions such as c(1,2) are formatted as 1\{12\}, the number in front of the curly brace marking its sorted spot. While less pretty, it won't use Unicode characters.
 #' * `numeric`: Drop coalition names, only count from 1 upwards. Each number corresponds to the index in `powerRelation$rankingCoalitions`
 #' * `function(x)`: A custom function that is passed a number from `1` through `length(powerRelation$rankingCoalitions)`. Must return a `character` object.
 #'
 #' @seealso [`relations::as.relation()`]
+#'
+#' @return [`relations::relation()`] object to the corresponding power relation.
 #'
 #' @examples
 #' pr <- newPowerRelation(c(1,2), ">", 1, ">", 2)
@@ -165,6 +167,7 @@ powerRelationMatrix <- function(powerRelation, domainNames = c("pretty", "numeri
   relations::as.relation(m)
 }
 
+#' @rdname powerRelationMatrix
 #' @exportS3Method as.relation PowerRelation
 as.relation.PowerRelation <- function(x, ...) {
   powerRelationMatrix(x)

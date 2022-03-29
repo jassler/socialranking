@@ -12,11 +12,18 @@ ordinalBanzhafRanking(powerRelation)
 \arguments{
 \item{powerRelation}{A \code{PowerRelation} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
 }
+\value{
+Score function returns list of class type \code{OrdinalBanzhafScores} and length of \code{powerRelation$elements}.
+Each index contains a vector of two numbers, the number of positive and the number of negative marginal contributions.
+Those two numbers summed together gives us the actual ordinal Banzhaf score.
+
+Ranking function returns corresponding \code{\link{SocialRankingSolution}} object.
+}
 \description{
 Calculate the Ordinal Banzhaf scores, the number of
 positive and negative marginal contributions.
 
-\code{\link{ordinalBanzhafRanking}} returns the corresponding ranking.
+\code{\link[=ordinalBanzhafRanking]{ordinalBanzhafRanking()}} returns the corresponding ranking.
 }
 \details{
 \loadmathjax
@@ -26,11 +33,6 @@ determines the score of element \mjseqn{i} by adding the amount of coalitions
 its contribution impacts positively (\mjeqn{S \cup \lbrace i \rbrace \succ S}{S u \{i\} > S })
 and subtracting the amount of coalitions where its contribution
 had a negative impact (\mjeqn{S \succ S \cup \lbrace i \rbrace}{S > S u \{i\}})\insertCite{2019OrdinalBanzhaf}{socialranking}.
-
-The score function gives back a vector of two values for each
-element, the number of positive and the number of negative
-marginal contributions by a element. Summed together it results
-in the actual score.
 }
 \examples{
 # 12 > (2 ~ {}) > 1

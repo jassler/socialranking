@@ -1,3 +1,27 @@
+#' `SocialRankingSolution` object
+#'
+#' Use [`doRanking()`] to create a `SocialRankingSolution` object.
+#'
+#' @param x An object
+#' @param ... Arguments passed to or from other methods
+#'
+#' @export
+SocialRankingSolution <- function(x, ...) {
+  UseMethod('SocialRankingSolution', x)
+}
+
+#' `SocialRankingSolution` object
+#'
+#' Use [`doRanking()`] to create a `SocialRankingSolution` object.
+#'
+#' @param x An object
+#' @param ... Arguments passed to or from other methods
+#'
+#' @export
+SocialRankingSolution.default <- function(x, ...) {
+  stop('Use doRanking() to create a PowerRelation object.')
+}
+
 #' Create `SocialRankingSolution`
 #'
 #' Map a power relation between coalitions to a power relation between elements, also known as a social ranking solution.
@@ -8,8 +32,8 @@
 #' In that case the two elements are indifferent from each other, symbolized with the `"~"` operator.
 #' @param decreasing If `TRUE` (default), elements with the higher scores are ranked higher.
 #'
-#' @return A `SocialRankingSolution` list.
-#' Each element is a vector of elements that are indifferent to one another.
+#' @return A list of type `SocialRankingSolution`.
+#' Each element of the list contains a [`sets::set()`] of elements in `powerRelation` that are indifferent to one another.
 #'
 #' @examples
 #' pr <- newPowerRelationFromString("2 > 12 > 1", asWhat = as.numeric)
@@ -67,6 +91,7 @@ doRanking <- function(powerRelation, scores, isIndifferent = function(a, b) a ==
   return(orderList)
 }
 
+#' @rdname doRanking
 #' @export
 print.SocialRankingSolution <- function(x, ...) {
   l <- lapply(x, function(r) paste(r, collapse = ' ~ '))

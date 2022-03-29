@@ -29,10 +29,10 @@ is.na.CopelandScores <- function(x) FALSE
 #' [`cpMajorityComparison`]`(pr, i, j) >= 0` and subtract those where
 #' [`cpMajorityComparison`]`(pr, i, j) <= 0`.
 #'
-#' @return A list with a vector of length 2 for each `element`.
-#' Index 1 contains the number of pairwise winning comparisons,
-#' index 2 the number of pairwise losing comparisons.
-#' Index 2 is negative, so the sum of both numbers corresponds to the resulting Copeland value.
+#' @return Score function returns a list of type `CopelandScores` and length of `powerRelation$elements`
+#' (unless parameter `elements` is specified). Each element is a vector of 2 numbers,
+#' the number of pairwise winning comparisons and the number of pairwise losing comparisons.
+#' Those two numbers summed together gives us the actual ordinal Copeland score.
 #'
 #' @template param/powerRelation
 #' @template param/elements
@@ -95,6 +95,8 @@ copelandScores <- function(powerRelation, elements = NULL) {
 #' @template param/powerRelation
 #'
 #' @rdname copelandScores
+#'
+#' @template return/ranking
 #'
 #' @examples
 #' # 1 > 2 > 3

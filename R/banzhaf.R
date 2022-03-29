@@ -27,11 +27,6 @@ is.na.OrdinalBanzhafScores <- function(x) FALSE
 #' and subtracting the amount of coalitions where its contribution
 #' had a negative impact (\mjeqn{S \succ S \cup \lbrace i \rbrace}{S > S u \{i\}})\insertCite{2019OrdinalBanzhaf}{socialranking}.
 #'
-#' The score function gives back a vector of two values for each
-#' element, the number of positive and the number of negative
-#' marginal contributions by a element. Summed together it results
-#' in the actual score.
-#'
 #' @template param/powerRelation
 #'
 #' @family score vector functions
@@ -40,6 +35,10 @@ is.na.OrdinalBanzhafScores <- function(x) FALSE
 #' \insertRef{2019OrdinalBanzhaf}{socialranking}
 #'
 #' \insertRef{1964Banzhaf}{socialranking}
+#'
+#' @return Score function returns list of class type `OrdinalBanzhafScores` and length of `powerRelation$elements`.
+#' Each index contains a vector of two numbers, the number of positive and the number of negative marginal contributions.
+#' Those two numbers summed together gives us the actual ordinal Banzhaf score.
 #'
 #' @examples
 #' # 12 > (2 ~ {}) > 1
@@ -87,11 +86,13 @@ ordinalBanzhafScores <- function(powerRelation) {
 
 #' Ordinal Banzhaf Ranking
 #'
-#' [`ordinalBanzhafRanking`] returns the corresponding ranking.
+#' [`ordinalBanzhafRanking()`] returns the corresponding ranking.
 #'
 #' @template param/powerRelation
 #'
 #' @rdname ordinalBanzhafScores
+#'
+#' @template return/ranking
 #'
 #' @examples
 #' # 1 > 2

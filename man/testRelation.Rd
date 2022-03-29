@@ -3,13 +3,21 @@
 \name{testRelation}
 \alias{testRelation}
 \alias{\%:\%}
+\alias{\%>=dom\%}
 \alias{\%>dom\%}
+\alias{\%>=cumuldom\%}
 \alias{\%>cumuldom\%}
+\alias{\%>=cp\%}
 \alias{\%>cp\%}
+\alias{\%>=banz\%}
 \alias{\%>banz\%}
+\alias{\%>=cop\%}
 \alias{\%>cop\%}
+\alias{\%>=ks\%}
 \alias{\%>ks\%}
+\alias{\%>=lex\%}
 \alias{\%>lex\%}
+\alias{\%>=duallex\%}
 \alias{\%>duallex\%}
 \title{Test relation between two elements}
 \usage{
@@ -17,19 +25,35 @@ testRelation(powerRelation, e1)
 
 powerRelation \%:\% e1
 
+pr_e1 \%>=dom\% e2
+
 pr_e1 \%>dom\% e2
+
+pr_e1 \%>=cumuldom\% e2
 
 pr_e1 \%>cumuldom\% e2
 
+pr_e1 \%>=cp\% e2
+
 pr_e1 \%>cp\% e2
+
+pr_e1 \%>=banz\% e2
 
 pr_e1 \%>banz\% e2
 
+pr_e1 \%>=cop\% e2
+
 pr_e1 \%>cop\% e2
+
+pr_e1 \%>=ks\% e2
 
 pr_e1 \%>ks\% e2
 
+pr_e1 \%>=lex\% e2
+
 pr_e1 \%>lex\% e2
+
+pr_e1 \%>=duallex\% e2
 
 pr_e1 \%>duallex\% e2
 }
@@ -40,8 +64,14 @@ pr_e1 \%>duallex\% e2
 
 \item{pr_e1}{\code{PowerRelation} and \code{e1} element, packed into a list using \code{pr \%:\% e1}}
 }
+\value{
+\code{testRelation()} and \verb{\%:\%} returns \code{list(powerRelation, e1)}.
+
+Followed by a \verb{\%>=comparison\%} or \verb{\%>comparison\%} it returns \code{TRUE} or \code{FALSE}, depending on the relation between
+\code{e1} and \code{e2}.
+}
 \description{
-On a given \code{PowerRelation} object \code{pr}, check if \code{e1} relates to \code{e2} in a given social ranking solution.
+On a given \code{PowerRelation} object \code{pr}, check if \code{e1} relates to \code{e2} based on the given social ranking solution.
 }
 \details{
 The function \code{testRelation} is somewhat only used to make the offered comparison operators in the package better discoverable.
@@ -55,26 +85,63 @@ pr <- newPowerRelationFromString(
 )
 
 # Dominance
-stopifnot(pr \%:\% 1 \%>dom\% 2)
+stopifnot(pr \%:\% 1 \%>=dom\% 2)
+
+# Strict dominance
+stopifnot((pr \%:\% 1 \%>dom\% 2) == FALSE)
 
 # Cumulative dominance
+stopifnot(pr \%:\% 1 \%>=cumuldom\% 2)
+
+# Strict cumulative dominance
 stopifnot(pr \%:\% 1 \%>cumuldom\% 2)
 
 # CP-Majority relation
+stopifnot(pr \%:\% 1 \%>=cp\% 2)
+
+# Strict CP-Majority relation
 stopifnot(pr \%:\% 1 \%>cp\% 2)
 
 # Ordinal banzhaf relation
-stopifnot(pr \%:\% 1 \%>banz\% 2)
+stopifnot(pr \%:\% 1 \%>=banz\% 2)
+
+# Strict ordinal banzhaf relation
+# (meaning 1 had a strictly higher positive contribution than 2)
+stopifnot((pr \%:\% 1 \%>banz\% 2) == FALSE)
 
 # Copeland-like method
-stopifnot(pr \%:\% 1 \%>cop\% 2)
-stopifnot(pr \%:\% 2 \%>cop\% 1)
+stopifnot(pr \%:\% 1 \%>=cop\% 2)
+stopifnot(pr \%:\% 2 \%>=cop\% 1)
+
+# Strict Copeland-like method
+# (meaning pairwise winning minus pairwise losing comparison of
+# 1 is strictly higher than of 2)
+stopifnot((pr \%:\% 1 \%>cop\% 2) == FALSE)
+stopifnot((pr \%:\% 2 \%>cop\% 1) == FALSE)
+stopifnot(pr \%:\% 3 \%>cop\% 1)
 
 # Kramer-Simpson-like method
-stopifnot(pr \%:\% 2 \%>ks\% 1)
+stopifnot(pr \%:\% 1 \%>=ks\% 2)
+stopifnot(pr \%:\% 2 \%>=ks\% 1)
 
-# Lexicographical and Dual Lexicographical Excellence
+# Strict Kramer-Simpson-like method
+# (meaning ks-score of 1 is actually higher than 2)
+stopifnot((pr \%:\% 2 \%>ks\% 1) == FALSE)
+stopifnot((pr \%:\% 1 \%>ks\% 2) == FALSE)
+stopifnot(pr \%:\% 1 \%>ks\% 3)
+
+# Lexicographical and dual lexicographical excellence
+stopifnot(pr \%:\% 1 \%>=lex\% 3)
+stopifnot(pr \%:\% 3 \%>=duallex\% 1)
+
+# Strict lexicographical and dual lexicographical excellence
+# (meaning their lexicographical scores don't match)
 stopifnot(pr \%:\% 1 \%>lex\% 3)
 stopifnot(pr \%:\% 3 \%>duallex\% 1)
 
+}
+\seealso{
+Comparison function: \code{\link[=dominates]{dominates()}}, \code{\link[=cumulativelyDominates]{cumulativelyDominates()}}, \code{\link[=cpMajorityComparison]{cpMajorityComparison()}}.
+
+Score Functions: \code{\link[=ordinalBanzhafScores]{ordinalBanzhafScores()}}, \code{\link[=copelandScores]{copelandScores()}}, \code{\link[=kramerSimpsonScores]{kramerSimpsonScores()}}, \code{\link[=lexcelScores]{lexcelScores()}}.
 }

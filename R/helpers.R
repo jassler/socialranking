@@ -7,11 +7,26 @@
 #' @param writeLines Write code string to console
 #' @param includeEmptySet If `TRUE`, an empty vector is added at the end
 #'
+#' @return List of power set vectors. If `copyToClipboard = TRUE`, it returns nothing and only copies a
+#' function-call string into the clipboard. If `writeLines = TRUE`, it returns nothing and prints a function-call
+#' string that is ready to be copy-pasted.
+#'
 #' @examples
 #' if(interactive()) {
 #'   createPowerset(1:3, copyToClipboard = TRUE)
 #'   createPowerset(c("a", "b", "c", "d"), writeLines = TRUE, includeEmptySet = FALSE)
 #' }
+#'
+#' # without copyToClipboard or writeLines set to TRUE, it returns a list
+#' createPowerset(c("Alice", "Bob"), includeEmptySet = FALSE)
+#' ## [[1]]
+#' ## [1] "Alice" "Bob"
+#' ##
+#' ## [[2]]
+#' ## [1] "Alice"
+#' ##
+#' ## [[3]]
+#' ## [1] "Bob"
 #'
 #' @export
 createPowerset <- function(elements, copyToClipboard = FALSE, writeLines = FALSE, includeEmptySet = TRUE) {

@@ -20,6 +20,8 @@
 #'
 #' @template param/powerRelation
 #'
+#' @return [`PowerRelation`] object with no cycles.
+#'
 #' @examples
 #' pr <- newPowerRelation(1, ">", 2)
 #'

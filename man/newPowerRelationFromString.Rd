@@ -20,6 +20,11 @@ be interpreted as a name of an element. If character does not match, it is simpl
 \item{asWhat}{Elements are interpreted as string characters by default. \code{\link[base:numeric]{base::as.numeric}}
 or \code{\link[base:integer]{base::as.integer}} can be passed to convert those string characters into numeric values.}
 }
+\value{
+\code{PowerRelation} object containing vector of elements or players \verb{$elements}, an ordered list of
+coalitions \verb{$rankingCoalitions} and an ordered vector of comparators \verb{$rankingComparators}
+as well as an ordered list of equivalence classes \verb{$equivalenceClasses} for convenience
+}
 \description{
 \loadmathjax
 Given a pure string representation of a power relation, create a \code{PowerRelation} object.

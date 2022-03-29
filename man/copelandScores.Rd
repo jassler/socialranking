@@ -16,10 +16,12 @@ copelandRanking(powerRelation)
 If \code{elements == NULL}, create vectors for all elements in \code{pr$elements}}
 }
 \value{
-A list with a vector of length 2 for each \code{element}.
-Index 1 contains the number of pairwise winning comparisons,
-index 2 the number of pairwise losing comparisons.
-Index 2 is negative, so the sum of both numbers corresponds to the resulting Copeland value.
+Score function returns a list of type \code{CopelandScores} and length of \code{powerRelation$elements}
+(unless parameter \code{elements} is specified). Each element is a vector of 2 numbers,
+the number of pairwise winning comparisons and the number of pairwise losing comparisons.
+Those two numbers summed together gives us the actual ordinal Copeland score.
+
+Ranking function returns corresponding \code{\link{SocialRankingSolution}} object.
 }
 \description{
 Based on \code{\link[=cpMajorityComparison]{cpMajorityComparison()}}, add or subtract scores

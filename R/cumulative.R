@@ -36,6 +36,11 @@ is.na.CumulativeScores <- function(x) FALSE
 #'
 #' \insertRef{2017axiomaticAndAlgorithmicPerspectives}{socialranking}
 #'
+#' @return Score function returns a list of type `CumulativeScores` and length of `powerRelation$elements`
+#' (unless parameter `elements` is specified).
+#' Each index contains a vector of length `powerRelation$equivalenceClasses`, cumulatively counting up the number of
+#' times the given element appears in each equivalence class.
+#'
 #' @examples
 #' pr <- newPowerRelationFromString("12 > 1 > 2", asWhat = as.numeric)
 #'
@@ -84,6 +89,8 @@ cumulativeScores <- function(powerRelation, elements = NULL) {
 #' @template param/strictly
 #'
 #' @rdname cumulativeScores
+#'
+#' @return `cumulativelyDominates()` returns `TRUE` if `e1` cumulatively dominates `e2`.
 #'
 #' @examples
 #' # TRUE

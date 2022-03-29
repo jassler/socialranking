@@ -19,6 +19,14 @@ If \code{elements == NULL}, create vectors for all elements in \code{pr$elements
 
 \item{strictly}{If TRUE, check if \code{p1} \emph{strictly} dominates \code{p2}}
 }
+\value{
+Score function returns a list of type \code{CumulativeScores} and length of \code{powerRelation$elements}
+(unless parameter \code{elements} is specified).
+Each index contains a vector of length \code{powerRelation$equivalenceClasses}, cumulatively counting up the number of
+times the given element appears in each equivalence class.
+
+\code{cumulativelyDominates()} returns \code{TRUE} if \code{e1} cumulatively dominates \code{e2}.
+}
 \description{
 Calculate cumulative score vectors for each element.
 }

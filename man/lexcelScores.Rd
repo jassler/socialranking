@@ -18,6 +18,14 @@ dualLexcelRanking(powerRelation)
 \item{elements}{vector of elements of which to calculate their scores.
 If \code{elements == NULL}, create vectors for all elements in \code{pr$elements}}
 }
+\value{
+Score function returns a list of type \code{LexcelScores} and length of \code{powerRelation$elements}
+(unless parameter \code{elements} is specified).
+Each index contains a vector of length \code{powerRelation$equivalenceClasses}, the number of
+times the given element appears in each equivalence class.
+
+Ranking function returns corresponding \code{\link{SocialRankingSolution}} object.
+}
 \description{
 Calculate the Lexicographical Excellence (or Lexcel) score.
 

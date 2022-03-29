@@ -14,9 +14,12 @@ equivalenceClassIndex(powerRelation, coalition, stopIfNotExists = TRUE)
 \item{stopIfNotExists}{\code{TRUE} if an error should be thrown when the coalition given is not in the \code{PowerRelation} object.
 If \code{FALSE}, \code{-1} will be returned}
 }
+\value{
+Numeric value, equivalence class index where \code{coalition} appears in.
+}
 \description{
 Given a \code{coalition} \link[base:c]{vector} or \code{\link[sets:set]{sets::set()}},
-return the index of the equivalence class it's located in.
+return the index of the equivalence class it is located in.
 }
 \examples{
 pr <- newPowerRelation(c(1,2), ">", c(1), "~", c(2))

@@ -61,9 +61,8 @@ PowerRelation.default <- function(x, ...) {
 #' `$rankingCoalitions` list from a `PowerRelation` object.
 #' @param rankingComparators Vector of `">"` or `"~"` characters. If `rankingCoalitions` list is empty, it is ignored. If
 #' vector is empty, it uses the `">"` relation by default.
-#' @return `PowerRelation` object containing vector of elements or players `$elements`, an ordered list of
-#' coalitions `$rankingCoalitions` and an ordered vector of comparators `$rankingComparators`
-#' as well as an ordered list of equivalence classes `$equivalenceClasses` for convenience
+#'
+#' @template return/PowerRelation
 #'
 #' @references
 #' \insertRef{2017axiomaticAndAlgorithmicPerspectives}{socialranking}
@@ -221,6 +220,8 @@ generateEquivalenceClasses <- function(coalitions, rankingComparators) {
 #'
 #' @family newPowerRelation functions
 #'
+#' @template return/PowerRelation
+#'
 #' @examples
 #' # Elements: 1 2 3
 #' # 123 > 12 > 23 > 1 > (13 ~ 2)
@@ -282,6 +283,8 @@ newPowerRelationFromString <- function(string, elementNames = '[0-9a-zA-Z]', asW
 #' @param c1 Coalition [vector][base::c()] or [`sets::set()`]
 #' @param c2 Coalition [vector][base::c()] or [`sets::set()`]
 #'
+#' @return Logical value `TRUE` if `c1` and `c2` are in the same equivalence class, else `FALSE`.
+#'
 #' @examples
 #' pr <- newPowerRelation(c(1,2), ">", c(1), "~", c(2))
 #'
@@ -305,11 +308,13 @@ coalitionsAreIndifferent <- function(powerRelation, c1, c2) {
 #' Get index of equivalence class containing a coalition
 #'
 #' Given a `coalition` [vector][base::c()] or [sets::set()],
-#' return the index of the equivalence class it's located in.
+#' return the index of the equivalence class it is located in.
 #'
 #' @template param/powerRelation
 #' @param coalition a coalition vector or [`sets::set`] that is part of `powerRelation`
 #' @template param/stopIfNotExists
+#'
+#' @return Numeric value, equivalence class index where `coalition` appears in.
 #'
 #' @examples
 #' pr <- newPowerRelation(c(1,2), ">", c(1), "~", c(2))

@@ -50,6 +50,11 @@ is.na.LexcelScores <- function(x) FALSE
 #'
 #' \insertRef{2021Lexcel}{socialranking}
 #'
+#' @return Score function returns a list of type `LexcelScores` and length of `powerRelation$elements`
+#' (unless parameter `elements` is specified).
+#' Each index contains a vector of length `powerRelation$equivalenceClasses`, the number of
+#' times the given element appears in each equivalence class.
+#'
 #' @examples
 #' # note that the coalition {1} appears twice
 #' # 123 > 12 ~ 13 ~ 1 ~ {} > 23 ~ 1 ~ 2
@@ -109,6 +114,8 @@ lexcelScores <- function(powerRelation, elements = NULL) {
 #' @template param/powerRelation
 #'
 #' @rdname lexcelScores
+#'
+#' @template return/ranking
 #'
 #' @examples
 #' # 1 > 2 > 3
