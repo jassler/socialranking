@@ -11,6 +11,9 @@ SocialRankingSolution(x, ...)
 
 \item{...}{Arguments passed to or from other methods}
 }
+\value{
+No return value.
+}
 \description{
 Use \code{\link[=doRanking]{doRanking()}} to create a \code{SocialRankingSolution} object.
 }

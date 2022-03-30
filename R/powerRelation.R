@@ -6,6 +6,8 @@
 #' @param x An object
 #' @param ... Arguments passed to or from other methods
 #'
+#' @template return/noreturn
+#'
 #' @export
 PowerRelation <- function(x, ...) {
   UseMethod('PowerRelation', x)
@@ -17,6 +19,8 @@ PowerRelation <- function(x, ...) {
 #'
 #' @param x An object
 #' @param ... Arguments passed to or from other methods
+#'
+#' @template return/noreturn
 #'
 #' @export
 PowerRelation.default <- function(x, ...) {

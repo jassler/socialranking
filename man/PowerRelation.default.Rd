@@ -11,6 +11,9 @@
 
 \item{...}{Arguments passed to or from other methods}
 }
+\value{
+No return value.
+}
 \description{
 Use \code{\link[=newPowerRelation]{newPowerRelation()}} or \code{\link[=newPowerRelationFromString]{newPowerRelationFromString()}} to create a PowerRelation object.
 }

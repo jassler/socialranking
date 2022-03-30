@@ -5,6 +5,8 @@
 #' @param x An object
 #' @param ... Arguments passed to or from other methods
 #'
+#' @template return/noreturn
+#'
 #' @export
 SocialRankingSolution <- function(x, ...) {
   UseMethod('SocialRankingSolution', x)
@@ -16,6 +18,8 @@ SocialRankingSolution <- function(x, ...) {
 #'
 #' @param x An object
 #' @param ... Arguments passed to or from other methods
+#'
+#' @template return/noreturn
 #'
 #' @export
 SocialRankingSolution.default <- function(x, ...) {
