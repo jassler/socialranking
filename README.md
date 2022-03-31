@@ -12,14 +12,15 @@ elements or players.
 
 ## Installation
 
-Install the package directly from CRAN with:
+Install the package directly from
+[CRAN](https://cran.r-project.org/package=socialranking) with:
 
 ``` r
 install.packages("socialranking")
 ```
 
 You can also install the development version of socialranking from
-[GitHub](https://github.com/) with:
+[GitHub](https://github.com/jassler/socialranking) with:
 
 ``` r
 # install.packages("devtools")
