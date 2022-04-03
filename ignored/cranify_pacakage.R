@@ -1,5 +1,0 @@
-tools::compactPDF("doc/socialranking_pdf.pdf", gs_quality = "ebook")
-file.remove("vignettes/prebuilt.pdf")
-file.copy("doc/socialranking_pdf.pdf", "vignettes/prebuilt.pdf")
-devtools::build(args = "--compact-vignettes=gs+pdf")
-system("R CMD check --as-cran ~/Documents/programming/R/socialranking_0.1.0.tar.gz")
