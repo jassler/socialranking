@@ -28,3 +28,4 @@ Imports:
     Rdpack (>= 2.3)
 Config/testthat/edition: 3
 VignetteBuilder: knitr
+URL: https://jassler.github.io/socialranking/
