@@ -26,5 +26,10 @@ jobs:
           extra-packages: rcmdcheck
 
       - uses: r-lib/actions/setup-tinytex@master
+      - name: Install dependencies
+        run: |
+        remotes::install_deps(dependencies = TRUE)
+        remotes::install_cran("rcmdcheck")
+        tinytex::parse_install(text = "! LaTeX Error: File `pdfpages.sty' not found.")
 
       - uses: r-lib/actions/check-r-package@v1
