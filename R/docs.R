@@ -36,3 +36,10 @@
 #' @name socialranking
 NULL
 #> NULL
+
+release_bullets <- function() {
+  c(
+    "Updated vignettes/prebuild.pdf? (check ignored/vignetter.R)",
+    "Updated auto-generated function checks? (check ignored/checkGenerator.R)"
+  )
+}
