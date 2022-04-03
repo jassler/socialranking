@@ -32,8 +32,13 @@ local({
   devtools::build_vignettes()
 
   print(">>> Compacting doc/prebuilt.pdf <<<")
+  result <- tools::compactPDF("doc/prebuilt.pdf", gs_quality = "ebook")
 
-  print(tools::compactPDF("doc/prebuilt.pdf", gs_quality = "ebook"))
+  if(is.null(result)) {
+    warning("tools::compactPDF returned NULL. Make sure ghostscript is available and listed in PATH.")
+  } else {
+    print(result)
+  }
 
   print(">>> Moving (hopefully) compacted pdf to vignettes directory <<<")
 
