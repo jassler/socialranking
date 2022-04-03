@@ -8,6 +8,8 @@
 [![R-CMD-check](https://github.com/jassler/socialranking/workflows/R-CMD-check/badge.svg)](https://github.com/jassler/socialranking/actions)
 [![Codecov test
 coverage](https://codecov.io/gh/jassler/socialranking/branch/main/graph/badge.svg)](https://app.codecov.io/gh/jassler/socialranking?branch=main)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/socialranking)](https://CRAN.R-project.org/package=socialranking)
 <!-- badges: end -->
 
 The package `socialranking` offers functions to represent ordinal
