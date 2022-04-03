@@ -18,7 +18,8 @@ Suggests:
     clipr (>= 0.8.0),
     testthat (>= 3.1.2),
     kableExtra,
-    knitr
+    knitr,
+    covr (>= 3.5.1)
 Imports:
     relations (>= 0.6.12),
     sets (>= 1.0.21),

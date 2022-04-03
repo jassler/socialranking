@@ -11,3 +11,4 @@
 ^.RData$
 ^.Rhistory$
 ^\.github$
+^codecov\.yml$
