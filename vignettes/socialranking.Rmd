@@ -19,7 +19,6 @@ output:
       smooth_scroll: true
   rmarkdown::pdf_document:
     latex_engine: xelatex
-    keep_tex: yes
     toc: yes
     toc_depth: 3
     includes:
