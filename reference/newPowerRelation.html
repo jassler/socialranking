@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">socialranking</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0-9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0-9001</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,9 +69,7 @@ coalitions <code>$rankingCoalitions</code> and an ordered vector of comparators 
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p><script id="MathJax-script" async src="../../mathjaxr/doc/mathjax/es5/tex-chtml-full.js"></script>
-
-A power relation describes the ordinal information between coalitions.
+    <p>A power relation describes the ordinal information between coalitions.
 <code><a href="createPowerset.html">createPowerset()</a></code> offers a convenient way of creating a powerset over a set of elements that can be used to call
 the <code>newPowerRelation()</code> function. Each coalition in that case is put
 on a separate line (see example). In RStudio this allows us to easily rearrange the coalitions
@@ -83,18 +81,18 @@ using the Alt+Up or Alt+Down shortcut (Option+Up or Option+Down on MacOS).</p>
     
 
 
-<p>Let <em></em>\(N = \lbrace 1, ..., n \rbrace\) be a finite set of
+<p>Let \(N = \lbrace 1, ..., n \rbrace\) be a finite set of
 <em>elements</em> (sometimes also called players). <em></em>\(2^N\)
-describes the powerset of <em></em>\(N\), or the set of all subsets, also <em>coalitions</em>.</p>
-<p>Let <em></em>\(\mathcal{P} \subseteq 2^N\) be a collection of coalitions. A
-<em>power relation</em> on <em></em>\(\mathcal{P}\) is a total preorder
-<em></em>\(\succeq \subseteq \mathcal{P} \times \mathcal{P}\).</p>
-<p>With that, <em></em>\(\mathcal{T}(\mathcal{P})\) denotes the family of all power relations on every
-collection <em></em>\(\mathcal{P} \subseteq 2^N\). Given a <em>power relation</em>
-<em></em>\(\succeq \in \mathcal{T}(\mathcal{P})\), <em></em>\(\sim\) denotes its symmetric
-part whereas <em></em>\(\succ\) its asymmetric part. For example, let <em></em>\(S, T \in \mathcal{P}\). Then:</p>
-<p>\[S \sim T \textrm{ if } S \succeq T \textrm{ and } T \succeq S\]</p>
-<p>\[S \succ T \textrm{ if } S \succeq T \textrm{ and not } T \succeq S\]</p>
+describes the powerset of \(N\), or the set of all subsets, also <em>coalitions</em>.</p>
+<p>Let \(\mathcal{P} \subseteq 2^N\) be a collection of coalitions. A
+<em>power relation</em> on \(\mathcal{P}\) is a total preorder
+\(\succeq \subseteq \mathcal{P} \times \mathcal{P}\).</p>
+<p>With that, \(\mathcal{T}(\mathcal{P})\) denotes the family of all power relations on every
+collection \(\mathcal{P} \subseteq 2^N\). Given a <em>power relation</em>
+\(\succeq \in \mathcal{T}(\mathcal{P})\), \(\sim\) denotes its symmetric
+part whereas \(\succ\) its asymmetric part. For example, let \(S, T \in \mathcal{P}\). Then:</p>
+<p>$$S \sim T \textrm{ if } S \succeq T \textrm{ and } T \succeq S$$</p>
+<p>$$S \succ T \textrm{ if } S \succeq T \textrm{ and not } T \succeq S$$</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
