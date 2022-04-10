@@ -24,7 +24,6 @@ as well as an ordered list of equivalence classes \verb{$equivalenceClasses} for
 Create a \code{PowerRelation} object based on coalition parameters separated by \code{">"} or \code{"~"}.
 }
 \details{
-\loadmathjax
 A power relation describes the ordinal information between coalitions.
 \code{\link[=createPowerset]{createPowerset()}} offers a convenient way of creating a powerset over a set of elements that can be used to call
 the \code{newPowerRelation()} function. Each coalition in that case is put
@@ -36,22 +35,22 @@ A coalition is a \link[base:c]{vector} or a \code{\link[sets:set]{sets::set()}}.
 \section{Mathematical background}{
 
 
-Let \mjeqn{N = \lbrace 1, ..., n \rbrace}{N = \{1, ..., n\}} be a finite set of
-\emph{elements} (sometimes also called players). \mjseqn{2^N}
-describes the powerset of \mjseqn{N}, or the set of all subsets, also \emph{coalitions}.
+Let \eqn{N = \lbrace 1, ..., n \rbrace}{N = \{1, ..., n\}} be a finite set of
+\emph{elements} (sometimes also called players). \mjeqn{2^N}{2^N}
+describes the powerset of \eqn{N}{N}, or the set of all subsets, also \emph{coalitions}.
 
-Let \mjeqn{\mathcal{P} \subseteq 2^N}{P \\subseteq 2^N} be a collection of coalitions. A
-\emph{power relation} on \mjeqn{\mathcal{P}}{P} is a total preorder
-\mjeqn{\succeq \subseteq \mathcal{P} \times \mathcal{P}}{>= \\subseteq P x P}.
+Let \eqn{\mathcal{P} \subseteq 2^N}{P \\subseteq 2^N} be a collection of coalitions. A
+\emph{power relation} on \eqn{\mathcal{P}}{P} is a total preorder
+\eqn{\succeq \subseteq \mathcal{P} \times \mathcal{P}}{>= \\subseteq P x P}.
 
-With that, \mjeqn{\mathcal{T}(\mathcal{P})}{T(P)} denotes the family of all power relations on every
-collection \mjeqn{\mathcal{P} \subseteq 2^N}{P \\subseteq 2^N}. Given a \emph{power relation}
-\mjeqn{\succeq \in \mathcal{T}(\mathcal{P})}{>= in T(P)}, \mjeqn{\sim}{~} denotes its symmetric
-part whereas \mjeqn{\succ}{>} its asymmetric part. For example, let \mjeqn{S, T \in \mathcal{P}}{S, T in P}. Then:
+With that, \eqn{\mathcal{T}(\mathcal{P})}{T(P)} denotes the family of all power relations on every
+collection \eqn{\mathcal{P} \subseteq 2^N}{P \\subseteq 2^N}. Given a \emph{power relation}
+\eqn{\succeq \in \mathcal{T}(\mathcal{P})}{>= in T(P)}, \eqn{\sim}{~} denotes its symmetric
+part whereas \eqn{\succ}{>} its asymmetric part. For example, let \eqn{S, T \in \mathcal{P}}{S, T in P}. Then:
 
-\mjdeqn{S \sim T \textrm{ if } S \succeq T \textrm{ and } T \succeq S}{S ~ T if S >= T and T >= S}
+\deqn{S \sim T \textrm{ if } S \succeq T \textrm{ and } T \succeq S}{S ~ T if S >= T and T >= S}
 
-\mjdeqn{S \succ T \textrm{ if } S \succeq T \textrm{ and not } T \succeq S}{S > T if S >= T and not T >= S}
+\deqn{S \succ T \textrm{ if } S \succeq T \textrm{ and not } T \succeq S}{S > T if S >= T and not T >= S}
 }
 
 \examples{

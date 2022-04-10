@@ -32,7 +32,6 @@ PowerRelation.default <- function(x, ...) {
 #'
 #' Create a `PowerRelation` object based on coalition parameters separated by `">"` or `"~"`.
 #'
-#' \loadmathjax
 #' A power relation describes the ordinal information between coalitions.
 #' [`createPowerset()`] offers a convenient way of creating a powerset over a set of elements that can be used to call
 #' the `newPowerRelation()` function. Each coalition in that case is put
@@ -43,22 +42,22 @@ PowerRelation.default <- function(x, ...) {
 #'
 #' @section Mathematical background:
 #'
-#' Let \mjeqn{N = \lbrace 1, ..., n \rbrace}{N = \{1, ..., n\}} be a finite set of
-#' *elements* (sometimes also called players). \mjseqn{2^N}
-#' describes the powerset of \mjseqn{N}, or the set of all subsets, also *coalitions*.
+#' Let \eqn{N = \lbrace 1, ..., n \rbrace}{N = \{1, ..., n\}} be a finite set of
+#' *elements* (sometimes also called players). \mjeqn{2^N}{2^N}
+#' describes the powerset of \eqn{N}{N}, or the set of all subsets, also *coalitions*.
 #'
-#' Let \mjeqn{\mathcal{P} \subseteq 2^N}{P \\subseteq 2^N} be a collection of coalitions. A
-#' *power relation* on \mjeqn{\mathcal{P}}{P} is a total preorder
-#' \mjeqn{\succeq \subseteq \mathcal{P} \times \mathcal{P}}{>= \\subseteq P x P}.
+#' Let \eqn{\mathcal{P} \subseteq 2^N}{P \\subseteq 2^N} be a collection of coalitions. A
+#' *power relation* on \eqn{\mathcal{P}}{P} is a total preorder
+#' \eqn{\succeq \subseteq \mathcal{P} \times \mathcal{P}}{>= \\subseteq P x P}.
 #'
-#' With that, \mjeqn{\mathcal{T}(\mathcal{P})}{T(P)} denotes the family of all power relations on every
-#' collection \mjeqn{\mathcal{P} \subseteq 2^N}{P \\subseteq 2^N}. Given a *power relation*
-#' \mjeqn{\succeq \in \mathcal{T}(\mathcal{P})}{>= in T(P)}, \mjeqn{\sim}{~} denotes its symmetric
-#' part whereas \mjeqn{\succ}{>} its asymmetric part. For example, let \mjeqn{S, T \in \mathcal{P}}{S, T in P}. Then:
+#' With that, \eqn{\mathcal{T}(\mathcal{P})}{T(P)} denotes the family of all power relations on every
+#' collection \eqn{\mathcal{P} \subseteq 2^N}{P \\subseteq 2^N}. Given a *power relation*
+#' \eqn{\succeq \in \mathcal{T}(\mathcal{P})}{>= in T(P)}, \eqn{\sim}{~} denotes its symmetric
+#' part whereas \eqn{\succ}{>} its asymmetric part. For example, let \eqn{S, T \in \mathcal{P}}{S, T in P}. Then:
 #'
-#' \mjdeqn{S \sim T \textrm{ if } S \succeq T \textrm{ and } T \succeq S}{S ~ T if S >= T and T >= S}
+#' \deqn{S \sim T \textrm{ if } S \succeq T \textrm{ and } T \succeq S}{S ~ T if S >= T and T >= S}
 #'
-#' \mjdeqn{S \succ T \textrm{ if } S \succeq T \textrm{ and not } T \succeq S}{S > T if S >= T and not T >= S}
+#' \deqn{S \succ T \textrm{ if } S \succeq T \textrm{ and not } T \succeq S}{S > T if S >= T and not T >= S}
 #'
 #' @param ... Coalition vector, comparison character (`">"` or `"~"`), coalition vector, comparison character, coalition vector, ...
 #' @param rankingCoalitions List of ordered coalition vectors. If empty, it is ignored. Corresponds to
@@ -134,7 +133,7 @@ PowerRelation.default <- function(x, ...) {
 #' newPowerRelation(rankingCoalitions = newOrdering)
 #'
 #' @export
-newPowerRelation <- function(..., rankingCoalitions = list(), rankingComparators = c()) {
+newPowerRelation <- function(..., rankingCoalitions = list(), rankingComparators = c(), equivalenceClasses = list()) {
   ranking <- if(length(rankingCoalitions) > 1) {
     if(length(rankingComparators) == 0)
       rankingComparators <- '>'
@@ -146,6 +145,21 @@ newPowerRelation <- function(..., rankingCoalitions = list(), rankingComparators
       l[i*2+1] <- list(rankingCoalitions[[i+1]])
     }
     l
+  } else if(length(equivalenceClasses) > 0) {
+    l <- list()
+    for(eq in equivalenceClasses) {
+      first <- TRUE
+      for(coal in eq) {
+        if(first) {
+          first <- FALSE
+        } else {
+          l[[length(l)+1]] <- '~'
+        }
+        l[length(l)+1] <- list(coal)
+      }
+      l[[length(l)+1]] <- '>'
+    }
+    l[-length(l)]
   } else if(...length() == 1 && is.list(..1)) {
     ranking <- ..1
   } else {
@@ -390,4 +404,5 @@ print.PowerRelation <- function(x, ...) {
   ))
 
   cat(eClasses, sep = ' > ')
+  cat('\n')
 }
