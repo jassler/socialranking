@@ -1,4 +1,4 @@
-# socialranking 0.1.0-9002 (change this part until 0.1.1 is released)
+# socialranking 0.1.0-9003 (change this part until 0.1.1 is released)
 
 * Added parameter `equivalenceClasses` to `newPowerRelation`
 * Fix lexcel equals operator

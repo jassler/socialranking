@@ -36,9 +36,7 @@ listRankingResults <- function(P) {
 
   pr <- prs()
   while(!is.null(pr)) {
-    print(pr)
-    print(paste("lex: ", capture.output(lexcelRanking(pr))))
-    r$banz <- c(r$banz, ti = capture.output(ordinalBanzhafRanking(pr)))
+    r$banz <- c(r$banz, capture.output(ordinalBanzhafRanking(pr)))
     r$cope <- c(r$cope, capture.output(copelandRanking(pr)))
     r$ks <- c(r$ks, capture.output(kramerSimpsonRanking(pr)))
     r$lex <- c(r$lex, capture.output(lexcelRanking(pr)))
