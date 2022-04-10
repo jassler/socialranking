@@ -3,7 +3,7 @@ pkgdown: 2.0.2
 pkgdown_sha: ~
 articles:
   socialranking: socialranking.html
-last_built: 2022-04-10T09:45Z
+last_built: 2022-04-10T11:27Z
 urls:
   reference: https://jassler.github.io/socialranking/reference
   article: https://jassler.github.io/socialranking/articles
