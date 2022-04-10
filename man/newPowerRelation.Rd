@@ -4,7 +4,12 @@
 \alias{newPowerRelation}
 \title{New Power Relation}
 \usage{
-newPowerRelation(..., rankingCoalitions = list(), rankingComparators = c())
+newPowerRelation(
+  ...,
+  rankingCoalitions = list(),
+  rankingComparators = c(),
+  equivalenceClasses = list()
+)
 }
 \arguments{
 \item{...}{Coalition vector, comparison character (\code{">"} or \code{"~"}), coalition vector, comparison character, coalition vector, ...}
@@ -14,6 +19,8 @@ newPowerRelation(..., rankingCoalitions = list(), rankingComparators = c())
 
 \item{rankingComparators}{Vector of \code{">"} or \code{"~"} characters. If \code{rankingCoalitions} list is empty, it is ignored. If
 vector is empty, it uses the \code{">"} relation by default.}
+
+\item{equivalenceClasses}{Nested list of coalition vectors that are indifferent to another. If empty, it is ignored.}
 }
 \value{
 \code{PowerRelation} object containing vector of elements or players \verb{$elements}, an ordered list of
@@ -24,6 +31,7 @@ as well as an ordered list of equivalence classes \verb{$equivalenceClasses} for
 Create a \code{PowerRelation} object based on coalition parameters separated by \code{">"} or \code{"~"}.
 }
 \details{
+\loadmathjax
 A power relation describes the ordinal information between coalitions.
 \code{\link[=createPowerset]{createPowerset()}} offers a convenient way of creating a powerset over a set of elements that can be used to call
 the \code{newPowerRelation()} function. Each coalition in that case is put
@@ -35,22 +43,22 @@ A coalition is a \link[base:c]{vector} or a \code{\link[sets:set]{sets::set()}}.
 \section{Mathematical background}{
 
 
-Let \eqn{N = \lbrace 1, ..., n \rbrace}{N = \{1, ..., n\}} be a finite set of
+Let \mjeqn{N = \lbrace 1, ..., n \rbrace}{N = \{1, ..., n\}} be a finite set of
 \emph{elements} (sometimes also called players). \mjeqn{2^N}{2^N}
-describes the powerset of \eqn{N}{N}, or the set of all subsets, also \emph{coalitions}.
+describes the powerset of \mjeqn{N}{N}, or the set of all subsets, also \emph{coalitions}.
 
-Let \eqn{\mathcal{P} \subseteq 2^N}{P \\subseteq 2^N} be a collection of coalitions. A
-\emph{power relation} on \eqn{\mathcal{P}}{P} is a total preorder
-\eqn{\succeq \subseteq \mathcal{P} \times \mathcal{P}}{>= \\subseteq P x P}.
+Let \mjeqn{\mathcal{P} \subseteq 2^N}{P \\subseteq 2^N} be a collection of coalitions. A
+\emph{power relation} on \mjeqn{\mathcal{P}}{P} is a total preorder
+\mjeqn{\succeq \subseteq \mathcal{P} \times \mathcal{P}}{>= \\subseteq P x P}.
 
-With that, \eqn{\mathcal{T}(\mathcal{P})}{T(P)} denotes the family of all power relations on every
-collection \eqn{\mathcal{P} \subseteq 2^N}{P \\subseteq 2^N}. Given a \emph{power relation}
-\eqn{\succeq \in \mathcal{T}(\mathcal{P})}{>= in T(P)}, \eqn{\sim}{~} denotes its symmetric
-part whereas \eqn{\succ}{>} its asymmetric part. For example, let \eqn{S, T \in \mathcal{P}}{S, T in P}. Then:
+With that, \mjeqn{\mathcal{T}(\mathcal{P})}{T(P)} denotes the family of all power relations on every
+collection \mjeqn{\mathcal{P} \subseteq 2^N}{P \\subseteq 2^N}. Given a \emph{power relation}
+\mjeqn{\succeq \in \mathcal{T}(\mathcal{P})}{>= in T(P)}, \mjeqn{\sim}{~} denotes its symmetric
+part whereas \mjeqn{\succ}{>} its asymmetric part. For example, let \mjeqn{S, T \in \mathcal{P}}{S, T in P}. Then:
 
-\deqn{S \sim T \textrm{ if } S \succeq T \textrm{ and } T \succeq S}{S ~ T if S >= T and T >= S}
+\mjdeqn{S \sim T \textrm{ if } S \succeq T \textrm{ and } T \succeq S}{S ~ T if S >= T and T >= S}
 
-\deqn{S \succ T \textrm{ if } S \succeq T \textrm{ and not } T \succeq S}{S > T if S >= T and not T >= S}
+\mjdeqn{S \succ T \textrm{ if } S \succeq T \textrm{ and not } T \succeq S}{S > T if S >= T and not T >= S}
 }
 
 \examples{
@@ -110,6 +118,14 @@ newPowerRelation(rankingCoalitions = newOrdering, rankingComparators = pr$rankin
 
 # 3 > 23 > 1 > 2 > 13 > 123 > 12
 newPowerRelation(rankingCoalitions = newOrdering)
+
+# using equivalenceClasses parameter
+# (12 ~ 13 ~ 123) > (1 ~ 3 ~ {}) > (2 ~ 23)
+newPowerRelation(equivalenceClasses = list(
+  list(c(1,2), c(1,3), c(1,2,3)),
+  list(1, 3, c()),
+  list(2, c(2,3))
+))
 
 }
 \references{
