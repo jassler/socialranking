@@ -107,6 +107,17 @@ newPowerRelation(rankingCoalitions = createPowerset(1:3))
 # 123 > (12 ~ 13) > (23 ~ 1) > (2 ~ 3) > {}
 newPowerRelation(rankingCoalitions = createPowerset(1:3), rankingComparators = c(">", "~"))
 
+# using equivalenceClasses parameter
+# (12 ~ 13 ~ 123) > (1 ~ 3 ~ {}) > (2 ~ 23)
+pr <- newPowerRelation(equivalenceClasses = list(
+  list(c(1,2), c(1,3), c(1,2,3)),
+  list(1, 3, c()),
+  list(2, c(2,3))
+))
+# and manipulating the order of the equivalence classes
+# (1 ~ 3 ~ {}) > (2 ~ 23) > (12 ~ 13 ~ 123)
+newPowerRelation(equivalenceClasses = pr$equivalenceClasses[c(2,3,1)])
+
 
 # It's discouraged to directly change the ordering of a power relation inside a
 # PowerRelation object. Instead extract rankingCoalitions, rearrange the list
@@ -118,14 +129,6 @@ newPowerRelation(rankingCoalitions = newOrdering, rankingComparators = pr$rankin
 
 # 3 > 23 > 1 > 2 > 13 > 123 > 12
 newPowerRelation(rankingCoalitions = newOrdering)
-
-# using equivalenceClasses parameter
-# (12 ~ 13 ~ 123) > (1 ~ 3 ~ {}) > (2 ~ 23)
-newPowerRelation(equivalenceClasses = list(
-  list(c(1,2), c(1,3), c(1,2,3)),
-  list(1, 3, c()),
-  list(2, c(2,3))
-))
 
 }
 \references{
