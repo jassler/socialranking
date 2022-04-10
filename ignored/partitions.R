@@ -24,17 +24,30 @@ prGenerator <- function(P) {
   }
 }
 
-# for(part in parts) {
-#   pr <- newPowerRelation(equivalenceClasses = rapply(unclass(part), function(i) P[i], how="replace"))
-#   print(pr)
-# }
-# x <- c(2,4,6)       # Substitute the vector for which you want partitions
-# parts <- listParts(length(x))
-# out <- rapply(parts, function(ii) x[ii], how="replace")
-#
-# # This step is for cosmetic purposes only. It allows you to take advantage of
-# # the `print.equivalence` print method when printing the object to a console
-# for(i in seq_along(out)) class(out[[i]]) <- c("list", "equivalence")
-# out
-# newPowerRelation(equivalenceClasses = unlist(listParts(c(3))[[5]], recursive = F))
-# listParts(3)
+listRankingResults <- function(P) {
+  prs <- prGenerator(P)
+  r <- list(
+    banz = c(),
+    cope = c(),
+    ks = c(),
+    lex = c(),
+    duallex = c()
+  )
+
+  pr <- prs()
+  while(!is.null(pr)) {
+    print(pr)
+    print(paste("lex: ", capture.output(lexcelRanking(pr))))
+    r$banz <- c(r$banz, ti = capture.output(ordinalBanzhafRanking(pr)))
+    r$cope <- c(r$cope, capture.output(copelandRanking(pr)))
+    r$ks <- c(r$ks, capture.output(kramerSimpsonRanking(pr)))
+    r$lex <- c(r$lex, capture.output(lexcelRanking(pr)))
+    r$duallex <- c(r$duallex, capture.output(dualLexcelRanking(pr)))
+    pr <- prs()
+  }
+
+  r
+}
+
+
+

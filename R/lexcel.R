@@ -2,7 +2,7 @@
 `[.LexcelScores` <- function(x, i, ...) structure(unclass(x)[i], class = 'LexcelScores')
 
 #' @export
-`==.LexcelScores` <- function(a, b) {identical(a, b)}
+`==.LexcelScores` <- function(a, b) {identical(a[[1]], b[[1]])}
 
 #' @export
 `>.LexcelScores` <- function(a, b) {
