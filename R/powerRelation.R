@@ -317,6 +317,8 @@ newPowerRelationFromString <- function(string, elementNames = '[0-9a-zA-Z]', asW
 #'
 #' @return Logical value `TRUE` if `c1` and `c2` are in the same equivalence class, else `FALSE`.
 #'
+#' @family equivalence class lookup functions
+#'
 #' @examples
 #' pr <- newPowerRelation(c(1,2), ">", c(1), "~", c(2))
 #'
@@ -340,13 +342,15 @@ coalitionsAreIndifferent <- function(powerRelation, c1, c2) {
 #' Get index of equivalence class containing a coalition
 #'
 #' Given a `coalition` [vector][base::c()] or [sets::set()],
-#' return the index of the equivalence class it is located in.
+#' return a singular index number of the equivalence class it is located in.
 #'
 #' @template param/powerRelation
 #' @param coalition a coalition vector or [`sets::set`] that is part of `powerRelation`
 #' @template param/stopIfNotExists
 #'
 #' @return Numeric value, equivalence class index where `coalition` appears in.
+#'
+#' @family equivalence class lookup functions
 #'
 #' @examples
 #' pr <- newPowerRelation(c(1,2), ">", c(1), "~", c(2))
@@ -386,6 +390,32 @@ equivalenceClassIndex <- function(powerRelation, coalition, stopIfNotExists = TR
   } else {
     return(i)
   }
+}
+
+#' Get all equivalence class indexes
+#'
+#' For one or more `coalitions`, return all equivalence class indexes they appear in.
+#'
+#' @template param/powerRelation
+#' @param coalition a coalition vector or [`sets::set`] that is part of `powerRelation`
+#'
+#' @return Numeric vector contatining indexes of `powerRelation$equivalenceClasses` containing `coalitions`.
+#' Empty if none exist.
+#'
+#' @family equivalence class lookup functions
+#'
+#' @examples
+#' pr <- newPowerRelation(c(1,2), ">", c(1), "~", c(2))
+#'
+equivalenceClassIndexes <- function(powerRelation, coalition) {
+  # --- checks (generated) --- #
+  stopifnot(is.PowerRelation(powerRelation))
+  # --- end checks --- #
+
+  coalition <- sets::as.set(coalition)
+  which(sapply(powerRelation$equivalenceClasses, function(eq) {
+    any(coalition == eq)
+  }))
 }
 
 #' @rdname PowerRelation

@@ -19,7 +19,7 @@ Numeric value, equivalence class index where \code{coalition} appears in.
 }
 \description{
 Given a \code{coalition} \link[base:c]{vector} or \code{\link[sets:set]{sets::set()}},
-return the index of the equivalence class it is located in.
+return a singular index number of the equivalence class it is located in.
 }
 \examples{
 pr <- newPowerRelation(c(1,2), ">", c(1), "~", c(2))
@@ -43,3 +43,9 @@ tryCatch(
 stopifnot(-1 == equivalenceClassIndex(pr, c(), stopIfNotExists = FALSE))
 
 }
+\seealso{
+Other equivalence class lookup functions: 
+\code{\link{coalitionsAreIndifferent}()},
+\code{\link{equivalenceClassIndexes}()}
+}
+\concept{equivalence class lookup functions}
