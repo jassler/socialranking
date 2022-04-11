@@ -376,14 +376,16 @@ equivalenceClassIndex <- function(powerRelation, coalition, stopIfNotExists = TR
   # --- end checks --- #
 
   coalition <- sets::as.set(coalition)
-  for(i in 1:length(powerRelation$equivalenceClasses)) {
-    if(any(sapply(powerRelation$equivalenceClasses[[i]], '==', x = coalition)))
-      return(i)
-  }
-  if(stopIfNotExists)
-    stop(paste0('The coalition {', paste(coalition, collapse = ', '), '} does not appear in the power relation'))
-  else
+  i <- which(sapply(powerRelation$equivalenceClasses, function(eq) {
+    any(coalition == eq)
+  }))
+  if(length(i) == 0) {
+    if(stopIfNotExists)
+      stop(paste0('The coalition {', paste(coalition, collapse = ', '), '} does not appear in the power relation'))
     return(-1)
+  } else {
+    return(i)
+  }
 }
 
 #' @rdname PowerRelation
