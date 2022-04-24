@@ -99,4 +99,18 @@ doRanking <- function(powerRelation, scores, isIndifferent = function(a, b) a ==
 print.SocialRankingSolution <- function(x, ...) {
   l <- lapply(x, function(r) paste(r, collapse = ' ~ '))
   cat(unlist(l), sep = ' > ')
+  cat('\n')
+}
+
+#' @export
+`==.SocialRankingSolution` <- function(a, b) {
+  if(length(a) != length(b))
+    return(FALSE)
+  for(i in seq_along(a)) {
+    if(length(a[[i]]) != length(b[[i]]))
+      return(FALSE)
+    if(!all(a[[i]] %in% b[[i]]))
+      return(FALSE)
+  }
+  return(TRUE)
 }

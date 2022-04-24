@@ -27,6 +27,22 @@ PowerRelation.default <- function(x, ...) {
   stop('Use newPowerRelation() or newPowerRelationFromString() to create a PowerRelation object.')
 }
 
+#' @export
+`==.PowerRelation` <- function(a, b) {
+  if(length(a$equivalenceClasses) != length(b$equivalenceClasses))
+    return(FALSE)
+
+  for(i in seq_along(a$equivalenceClasses)) {
+    if(length(a$equivalenceClasses[[i]]) != length(b$equivalenceClasses[[i]]))
+      return(FALSE)
+    for(cl in a$equivalenceClasses[[i]]) {
+      if(all(cl != b$equivalenceClasses[[i]]))
+        return(FALSE)
+    }
+  }
+  return(TRUE)
+}
+
 
 #' New Power Relation
 #'
@@ -390,32 +406,6 @@ equivalenceClassIndex <- function(powerRelation, coalition, stopIfNotExists = TR
   } else {
     return(i)
   }
-}
-
-#' Get all equivalence class indexes
-#'
-#' For one or more `coalitions`, return all equivalence class indexes they appear in.
-#'
-#' @template param/powerRelation
-#' @param coalition a coalition vector or [`sets::set`] that is part of `powerRelation`
-#'
-#' @return Numeric vector contatining indexes of `powerRelation$equivalenceClasses` containing `coalitions`.
-#' Empty if none exist.
-#'
-#' @family equivalence class lookup functions
-#'
-#' @examples
-#' pr <- newPowerRelation(c(1,2), ">", c(1), "~", c(2))
-#'
-equivalenceClassIndexes <- function(powerRelation, coalition) {
-  # --- checks (generated) --- #
-  stopifnot(is.PowerRelation(powerRelation))
-  # --- end checks --- #
-
-  coalition <- sets::as.set(coalition)
-  which(sapply(powerRelation$equivalenceClasses, function(eq) {
-    any(coalition == eq)
-  }))
 }
 
 #' @rdname PowerRelation

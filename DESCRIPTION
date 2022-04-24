@@ -1,6 +1,6 @@
 Package: socialranking
 Title: Social Ranking Solutions for Power Relations on Coalitions
-Version: 0.1.0-9004
+Version: 0.1.1
 Authors@R: c(
  person("Felix", "Fritz", email = "felix.fritz@hs-kempten.de", role = c("aut", "cre")),
  person("Jochen", "Staudacher", role = c("aut", "cph", "ths"), email = "jochen.staudacher@hs-kempten.de"),
@@ -17,8 +17,9 @@ RdMacros:
 Suggests: 
     clipr (>= 0.8.0),
     testthat (>= 3.1.2),
-    kableExtra,
-    knitr,
+    xfun (>= 0.30.0),
+    knitr (>= 1.38.0),
+    rmarkdown (>= 2.13.0),
     covr (>= 3.5.1)
 Imports:
     relations (>= 0.6.12),

@@ -36,29 +36,6 @@ abstract: "This document gives a brief introduction to power relations and socia
 ---
 
 ```{r echo=FALSE}
-library(kableExtra)
-functionTable <- data.frame(
-  "Comparison functions" = c("`dominates()`", "`cumulativelyDominates()`", "`cpMajorityComparison()`\n`cpMajorityComparisonScore()`", "", ""),
-  "Score functions" = c("", "`cumulativeScores()`", "`copelandScores()`\n`kramerSimpsonScores()`", "`lexcelScores()`", "`ordinalBanzhafScores()`"),
-  "Ranking functions" = c("", "", "`copelandRanking()`\n`kramerSimpsonRanking()`", "`lexcelRanking()`\n`dualLexcelRanking()`", "`ordinalBanzhafRanking()`")
-)
-
-if(knitr::is_latex_output()) {
-  for(i in 1:nrow(functionTable)) {
-    for(j in 1:ncol(functionTable)) {
-      if(grepl("\n", functionTable[i,j]))
-        functionTable[i,j] <- kableExtra::linebreak(functionTable[i,j])
-    }
-  }
-} else {
-  for(i in 1:nrow(functionTable)) {
-    for(j in 1:ncol(functionTable)) {
-      if(grepl("\n", functionTable[i,j]))
-        functionTable[i,j] <- gsub("\n", "<br>", functionTable[i,j])
-    }
-  }
-}
-
 # setup for tex documents
 # remove ## in front of output
 # adjust spacing before and after code chunks
@@ -182,14 +159,17 @@ Functions used to analyze a given `PowerRelation` object can be grouped into thr
 
 Comparison and score functions are often used to evaluate a social ranking solution (see section `r refId("sec:prelim", "on [PowerRelation objects](ID)")` for a formal definition). Listed below are some of the most prominent functions and solutions introduced in the aforementioned papers.
 
-```{r echo=FALSE}
-kableExtra::kbl(
-  if(knitr::is_latex_output()) apply(functionTable, 1:2, function(x) gsub("`([^`]*)`", "\\\\small{\\\\texttt{\\1}}", x))
-  else functionTable,
-  col.names = c("Comparison Functions", "Score Functions", "Ranking Solutions"),
-  escape = FALSE, booktabs = TRUE
-) %>% kableExtra::kable_styling(bootstrap_options = c("hover")) %>% kableExtra::row_spec(1:(nrow(functionTable)-1), hline_after = TRUE)
+````{=html}
+```{r, echo=FALSE, results='asis'}
+xfun::file_string("tables/functionTable.html")
 ```
+````
+````{=latex}
+```{r, echo=FALSE, results='asis'}
+xfun::file_string("tables/functionTable.tex")
+```
+````
+
 
 These functions may be called as follows.
 
@@ -294,26 +274,16 @@ pr
 Internally a `PowerRelation` is a list with four attributes (see table below). Notice that every coalition vector is turned into a `set` object from the `sets` package[@setsPackage].
 
 
-```{r echo=FALSE}
-df <- data.frame(
-    c("`elements`", "`rankingCoalitions`", "`equivalenceClasses`"),
-    c("Sorted vector of elements", "Coalitions in power relation", "List containing lists, each\ncontaining coalitions in the\nsame equivalence class"),
-    c("`c(1,2)`", "`list(set(1,2),set(2),set(),set(1))`", "`list(list(set(1,2)),`\n\\phantom{list(}`list(set(2), set()),`\n\\phantom{list(}`list(set(1)))`")
-)
-
-if(knitr::is_latex_output()) {
-  df[3,2] <- kableExtra::linebreak(df[3,2])
-  df[3,3] <- kableExtra::linebreak(df[3,3])
-} else {
-  df[3,2] <- gsub("\n", "<br>", df[3,2])
-  df[3,3] <- gsub("\n", "<br>", df[3,3])
-}
-kableExtra::kbl(
-  if(knitr::is_latex_output()) apply(df, 1:2, function(x) gsub("`([^`]*)`", "\\\\small{\\\\texttt{\\1}}", x))
-  else df,
-  col.names = c("Attribute", "Description", "Value in `pr`"), escape = FALSE, booktabs = TRUE
-) %>% kableExtra::kable_styling(bootstrap_options = "hover", latex_options = c("scale_down")) %>% kableExtra::row_spec(1:(nrow(df)-1), hline_after = TRUE)
+````{=html}
+```{r, echo=FALSE, results='asis'}
+xfun::file_string('tables/prObject.html')
 ```
+````
+````{=latex}
+```{r, echo=FALSE, results='asis'}
+xfun::file_string('tables/prObject.tex')
+```
+````
 
 Since each coalition vector is turned into a `set`, coalitions such as `c(1,2)`, `c(2,1)` and `c(1,1,2,2)` are equivalent.
 

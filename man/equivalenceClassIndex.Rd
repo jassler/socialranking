@@ -45,7 +45,6 @@ stopifnot(-1 == equivalenceClassIndex(pr, c(), stopIfNotExists = FALSE))
 }
 \seealso{
 Other equivalence class lookup functions: 
-\code{\link{coalitionsAreIndifferent}()},
-\code{\link{equivalenceClassIndexes}()}
+\code{\link{coalitionsAreIndifferent}()}
 }
 \concept{equivalence class lookup functions}

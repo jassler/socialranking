@@ -1,7 +1,8 @@
-# socialranking 0.1.0-9004 (change this part until 0.1.1 is released)
+# socialranking 0.1.1
 
-* Added parameter `equivalenceClasses` to `newPowerRelation`
-* Added `equivalenceClassIndexes` to return multiple eq numbers if power relation is cyclic
+* Added parameter `equivalenceClasses` to `newPowerRelation()`
+* Removed kableExtra from Suggests
+* Fix `equivalenceClassIndex()` takes cycles into account
 * Fix lexcel equals operator
 
 # socialranking 0.1.0 (2022-03-28)
