@@ -1,8 +1,4 @@
-# socialranking 0.1.3
-
-# socialranking 0.1.2
-
-# socialranking 0.1.1
+# socialranking 0.1.1 (2022-04-25)
 
 * Added parameter `equivalenceClasses` to `newPowerRelation()`
 * Removed kableExtra from Suggests

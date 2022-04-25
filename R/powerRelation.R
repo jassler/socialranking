@@ -308,7 +308,7 @@ newPowerRelationFromString <- function(string, elementNames = '[0-9a-zA-Z]', asW
 
   coals[length(coals)+1] <- list(asWhat(coalition))
 
-  if(identical(asWhat, identity) && class(unlist(coals)) == 'character' && all(grepl("^[0-9]+$", unlist(coals)))) {
+  if(identical(asWhat, identity) && is.character(unlist(coals)) && all(grepl("^[0-9]+$", unlist(coals)))) {
     coals <- lapply(coals, as.numeric)
     message('Note: Called as.numeric on all elements.\nIf you wanted the elements to be represented as characters instead, call newPowerRelationFromString again and set asWhat = as.character')
   }
