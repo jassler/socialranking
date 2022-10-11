@@ -5,7 +5,7 @@ Authors@R: c(
  person("Felix", "Fritz", email = "felix.fritz@dauphine.eu", role = c("aut", "cre")),
  person("Jochen", "Staudacher", role = c("aut", "cph", "ths"), email = "jochen.staudacher@hs-kempten.de"),
  person("Moretti", "Stefano", role = c("aut", "cph", "ths"), email = "stefano.moretti@lamsade.dauphine.fr"))
-Maintainer: Felix Fritz <felix.fritz@hs-kempten.de>
+Maintainer: Felix Fritz <felix.fritz@dauphine.eu>
 Description: The notion of power index has been widely used in literature to evaluate the influence of individual players (e.g., voters, political parties, nations, stockholders, etc.) involved in a collective decision situation like an electoral system, a parliament, a council, a management board, etc., where players may form coalitions. Traditionally this ranking is determined through numerical evaluation. More often than not however only ordinal data between coalitions is known. The package 'socialranking' offers a set of solutions to rank players based on a transitive ranking between coalitions, including through CP-Majority, ordinal Banzhaf or lexicographic excellence solution summarized by Tahar Allouche, Bruno Escoffier, Stefano Moretti and Meltem Öztürk (2020, <doi:10.24963/ijcai.2020/3>).
 License: GPL-3
 Encoding: UTF-8
