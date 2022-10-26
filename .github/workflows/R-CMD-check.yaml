@@ -15,7 +15,7 @@ jobs:
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
 
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         config:
           - {os: macos-latest,   r: 'release'}
@@ -43,6 +43,10 @@ jobs:
         with:
           extra-packages: any::rcmdcheck
           needs: check
+
+      - uses: xu-cheng/latex-action@v2
+        with:
+          latexmk_use_xelatex: true
 
       - uses: r-lib/actions/check-r-package@v2
         with:
