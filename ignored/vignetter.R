@@ -6,7 +6,7 @@ createTables <- function(df, name, col.names = NA, extras = function(kb) {kb}) {
   ))
   df <- apply(df, 2, function(x) gsub("`([^`]+)`", "<code>\\1</code>", x))
 
-  if(length(col.names == 1) && is.na(col.names)) {
+  if(length(col.names) == 1 && is.na(col.names)) {
     col.names <- gsub("\\.", " ", colnames(df))
   }
   col.namesLat <- gsub("`([^`]+)`", "\\\\texttt{\\1}", col.names)

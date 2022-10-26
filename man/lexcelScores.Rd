@@ -52,9 +52,9 @@ A Lexcel score for an element is a vector where
 each index counts the number of times it appears in the
 equivalence class. Here we would get:
 
-\mjeqn{\textrm{lexcel}(1) = [ 1, 3, 1 ]}{lexcel(1) = \link{1,3,1}},
-\mjeqn{\textrm{lexcel}(2) = [1, 1, 2 ]}{lexcel(2) = \link{1,1,2}},
-\mjeqn{\textrm{lexcel}(3) = [1, 1, 1 ]}{lexcel(3) = \link{1,1,1}}.
+\mjeqn{\textrm{lexcel}(1) = \[ 1, 3, 1 \]}{lexcel(1) = [1,3,1]},
+\mjeqn{\textrm{lexcel}(2) = \[1, 1, 2 \]}{lexcel(2) = [1,1,2]},
+\mjeqn{\textrm{lexcel}(3) = \[1, 1, 1 \]}{lexcel(3) = [1,1,1]}.
 }
 \section{Lexcel Ranking}{
 
