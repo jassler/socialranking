@@ -35,13 +35,13 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="active nav-item">
+<li class="nav-item">
   <a class="nav-link" href="../articles/socialranking.html">Get started</a>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
-<li class="nav-item dropdown">
+<li class="active nav-item dropdown">
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/socialranking_pdf.html">`socialranking`: A package for evaluating ordinal power relations in cooperative game theory</a>
@@ -76,7 +76,7 @@ Contact: <a href="mailto:jochen.staudacher@hs-kempten.de" class="email">jochen.s
             <h4 data-toc-skip class="date">2022-10-26</h4>
       
       
-      <div class="d-none name"><code>socialranking.Rmd</code></div>
+      <div class="d-none name"><code>socialranking_pdf.Rmd</code></div>
     </div>
 
     
@@ -160,40 +160,6 @@ ranking solution (see section on <a href="#sec:prelim">PowerRelation
 objects</a> for a formal definition). Listed below are some of the most
 prominent functions and solutions introduced in the aforementioned
 papers.</p>
-<table class="table table table-hover" style="margin-left: auto; margin-right: auto;">
-<thead><tr>
-<th style="text-align:left;"> Comparison functions </th>
-   <th style="text-align:left;"> Score functions </th>
-   <th style="text-align:left;"> Ranking functions </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> <code><a href="../reference/dominates.html">dominates()</a></code> </td>
-   <td style="text-align:left;">  </td>
-   <td style="text-align:left;">  </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> <code><a href="../reference/cumulativeScores.html">cumulativelyDominates()</a></code> </td>
-   <td style="text-align:left;"> <code><a href="../reference/cumulativeScores.html">cumulativeScores()</a></code> </td>
-   <td style="text-align:left;">  </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> <code><a href="../reference/cpMajorityComparison.html">cpMajorityComparison()</a></code><br><code><a href="../reference/cpMajorityComparison.html">cpMajorityComparisonScore()</a></code> </td>
-   <td style="text-align:left;"> <code><a href="../reference/copelandScores.html">copelandScores()</a></code><br><code><a href="../reference/kramerSimpsonScores.html">kramerSimpsonScores()</a></code> </td>
-   <td style="text-align:left;"> <code><a href="../reference/copelandScores.html">copelandRanking()</a></code><br><code><a href="../reference/kramerSimpsonScores.html">kramerSimpsonRanking()</a></code> </td>
-  </tr>
-<tr>
-<td style="text-align:left;">  </td>
-   <td style="text-align:left;"> <code><a href="../reference/lexcelScores.html">lexcelScores()</a></code> </td>
-   <td style="text-align:left;"> <code><a href="../reference/lexcelScores.html">lexcelRanking()</a></code><br><code><a href="../reference/lexcelScores.html">dualLexcelRanking()</a></code> </td>
-  </tr>
-<tr>
-<td style="text-align:left;">  </td>
-   <td style="text-align:left;"> <code><a href="../reference/ordinalBanzhafScores.html">ordinalBanzhafScores()</a></code> </td>
-   <td style="text-align:left;"> <code><a href="../reference/ordinalBanzhafScores.html">ordinalBanzhafRanking()</a></code> </td>
-  </tr>
-</tbody>
-</table>
 <p>These functions may be called as follows.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/newPowerRelationFromString.html">newPowerRelationFromString</a></span><span class="op">(</span><span class="st">"ab &gt; ac ~ bc &gt; a ~ c &gt; {} &gt; b"</span><span class="op">)</span></span>
@@ -388,30 +354,6 @@ and commas displayed in <code>prLong</code>.</p>
 attributes (see table below). Notice that every coalition vector is
 turned into a <code>set</code> object from the <code>sets</code>
 package<span class="citation">[12]</span>.</p>
-<table class="table table table-hover" style="margin-left: auto; margin-right: auto;">
-<thead><tr>
-<th style="text-align:left;"> Attribute </th>
-   <th style="text-align:left;"> Description </th>
-   <th style="text-align:left;"> Value in <code>pr</code> </th>
-  </tr></thead>
-<tbody>
-<tr>
-<td style="text-align:left;"> <code>elements</code> </td>
-   <td style="text-align:left;"> Sorted vector of elements </td>
-   <td style="text-align:left;"> <code>c(1,2)</code> </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> <code>rankingCoalitions</code> </td>
-   <td style="text-align:left;"> Coalitions in power relation </td>
-   <td style="text-align:left;"> <code>list(set(1,2),set(2),set(),set(1))</code> </td>
-  </tr>
-<tr>
-<td style="text-align:left;"> <code>equivalenceClasses</code> </td>
-   <td style="text-align:left;"> List containing lists, each<br>containing coalitions in the<br>same equivalence class </td>
-   <td style="text-align:left;"> <code>list(list(set(1,2)),</code><br><code>list(set(2), set()),</code><br><code>list(set(1)))</code> </td>
-  </tr>
-</tbody>
-</table>
 <p>Since each coalition vector is turned into a <code>set</code>,
 coalitions such as <code>c(1,2)</code>, <code>c(2,1)</code> and
 <code>c(1,1,2,2)</code> are equivalent.</p>
