@@ -10,6 +10,7 @@
 coverage](https://codecov.io/gh/jassler/socialranking/branch/main/graph/badge.svg)](https://app.codecov.io/gh/jassler/socialranking?branch=main)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/socialranking)](https://CRAN.R-project.org/package=socialranking)
+[![R-CMD-check](https://github.com/jassler/socialranking/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jassler/socialranking/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The package `socialranking` offers functions to represent ordinal
