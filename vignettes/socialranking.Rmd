@@ -164,11 +164,6 @@ Comparison and score functions are often used to evaluate a social ranking solut
 xfun::file_string("tables/functionTable.html")
 ```
 ````
-````{=latex}
-```{r, echo=FALSE, results='asis'}
-xfun::file_string("tables/functionTable.tex")
-```
-````
 
 
 These functions may be called as follows.
@@ -277,11 +272,6 @@ Internally a `PowerRelation` is a list with four attributes (see table below). N
 ````{=html}
 ```{r, echo=FALSE, results='asis'}
 xfun::file_string('tables/prObject.html')
-```
-````
-````{=latex}
-```{r, echo=FALSE, results='asis'}
-xfun::file_string('tables/prObject.tex')
 ```
 ````
 

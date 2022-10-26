@@ -59,7 +59,7 @@ local({
   range <- which(lines == s | lines == e)
 
   if(length(range) != 2) {
-    stop(paste0("Expected to find one line with '", s, "' and one line with '", e, "'. Instead found ", length(range), " lines: ", paste(range, collapse = ", ")))
+    stop(paste0("Expected to find one line with '", s, "' and one line with '", e, "'. Instead found ", length(range), " lines:\n  ", paste(range, collapse = "\n  ")))
   }
 
   if(lines[range[1]] != s || lines[range[2]] != e) {
@@ -74,28 +74,41 @@ local({
   print(paste(">>> Deleting lines", range[1], "to", range[2]-1, "<<<"))
   print(paste(">>> Found vignette entry in line", entry, "<<<"))
 
-  lines[entry] <- '  %\\VignetteIndexEntry{prebuilt vignette for pdf}'
+  lines[entry] <- '  %\\VignetteIndexEntry{socialranking vignette pdf}'
   lines <- gsub("xfun::file_string\\((?:'|\")vignettes/([^'\"]+)(?:'|\")\\)", "xfun::file_string('\\1')", lines)
 
 
-  print(">>> Writing lines to vignettes/prebuilt.Rmd <<<")
+  html_sections <- which(lines == '````{=html}')
+  print(paste(">>> Changing the following lines from ````{=html} to ````{=latex}:", paste(html_sections, collapse = ", "), "<<<"))
+  lines[html_sections] <- '````{=latex}'
 
-  writeLines(lines[-(range[1]:(range[2]-1))], 'vignettes/prebuilt.Rmd')
-  devtools::build_vignettes()
+  html_sections <- which(startsWith(lines, 'xfun::file_string'))
+  print(paste(">>> Making sure the following lines look for .tex files instead of .html files:", paste(html_sections, collapse = ", "), "<<<"))
 
-  print(">>> Compacting doc/prebuilt.pdf <<<")
-  result <- tools::compactPDF("doc/prebuilt.pdf", gs_quality = "ebook")
-
-  if(is.null(result)) {
-    warning("tools::compactPDF returned NULL. Make sure ghostscript is available and listed in PATH.")
-  } else {
-    print(result)
+  for(i in html_sections) {
+    lines[i] <- stringr::str_replace_all(lines[i], '\\.html"', '\\.tex"')
+    lines[i] <- stringr::str_replace_all(lines[i], "\\.html'", "\\.tex'")
   }
 
-  print(">>> Moving (hopefully) compacted pdf to vignettes directory <<<")
 
-  file.rename('doc/prebuilt.pdf', 'vignettes/prebuilt.pdf')
-  file.remove('vignettes/prebuilt.Rmd')
+  print(">>> Writing lines to vignettes/socialranking_pdf.Rmd <<<")
+  writeLines(lines[-(range[1]:(range[2]-1))], 'vignettes/socialranking_pdf.Rmd')
+
+#  devtools::build_vignettes()
+#
+#  print(">>> Compacting doc/prebuilt.pdf <<<")
+#  result <- tools::compactPDF("doc/prebuilt.pdf", gs_quality = "ebook")
+#
+#  if(is.null(result)) {
+#    warning("tools::compactPDF returned NULL. Make sure ghostscript is available and listed in PATH.")
+#  } else {
+#    print(result)
+#  }
+#
+#  print(">>> Moving (hopefully) compacted pdf to vignettes directory <<<")
+#
+#  file.rename('doc/prebuilt.pdf', 'vignettes/prebuilt.pdf')
+#  file.remove('vignettes/prebuilt.Rmd')
 
   print(">>> Done <<<")
 })
