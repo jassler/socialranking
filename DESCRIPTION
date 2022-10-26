@@ -15,18 +15,18 @@ RdMacros:
     mathjaxr,
     Rdpack
 Suggests: 
-    clipr (>= 0.8.0),
-    testthat (>= 3.1.2),
-    xfun (>= 0.30.0),
-    knitr (>= 1.38.0),
-    rmarkdown (>= 2.13.0),
-    covr (>= 3.5.1)
+    clipr (>= 0.8),
+    testthat (>= 3.1.5),
+    xfun (>= 0.34),
+    knitr (>= 1.40),
+    rmarkdown (>= 2.17),
+    covr (>= 3.6.1)
 Imports:
     relations (>= 0.6.12),
     sets (>= 1.0.21),
-    rlang (>= 1.0.2),
+    rlang (>= 1.0.6),
     mathjaxr (>= 1.6.0),
-    Rdpack (>= 2.3)
+    Rdpack (>= 2.4)
 Config/testthat/edition: 3
 VignetteBuilder: knitr
 URL: https://jassler.github.io/socialranking/
