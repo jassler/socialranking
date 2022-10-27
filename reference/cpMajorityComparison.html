@@ -127,7 +127,7 @@ Given two elements <em></em>\(i\) and <em></em>\(j\), go through each coalition 
 <p><code>cpMajorityComparison()</code> tries to retain all that information. The list returned contains the following information.
 Note that in this context the two elements <em></em>\(i\) and <em></em>\(j\) refer to element 1 and element 2 respectively.</p><ul><li><p><code>$e1</code>: list of information about element 1</p><ul><li><p><code>$e1$name</code>: name of element 1</p></li>
 <li><p><code>$e1$score</code>: score <em></em>\(d_{ij}(\succeq)\). <em></em>\(d_{ij}(\succ)\) if <code>strictly == TRUE</code></p></li>
-<li><p><code>$e1$winningCoalitions</code>: list of coalition <code><a href="https://rdrr.io/pkg/sets/man/set.html" class="external-link">sets::set</a></code>s <em></em>\(S \in D_{ij}(\succeq)\).  <em></em>\(S \in D_{ij}(\succ)\) if <code>strictly == TRUE</code></p></li>
+<li><p><code>$e1$winningCoalitions</code>: list of coalition <code><a href="https://rdrr.io/pkg/sets/man/set.html" class="external-link">sets::set</a></code>s <em></em>\(S \in D_{ij}(\succeq)\). <em></em>\(S \in D_{ij}(\succ)\) if <code>strictly == TRUE</code></p></li>
 </ul></li>
 <li><p><code>$e2</code>: list of information about element 2</p><ul><li><p><code>$e2$name</code>: name of element 2</p></li>
 <li><p><code>$e1$score</code>: score <em></em>\(d_{ji}(\succeq)\). <em></em>\(d_{ji}(\succ)\) if <code>strictly == TRUE</code></p></li>
@@ -135,7 +135,7 @@ Note that in this context the two elements <em></em>\(i\) and <em></em>\(j\) ref
 </ul></li>
 <li><p><code>$winner</code>: name of higher scoring element. <code>NULL</code> if they are indifferent.</p></li>
 <li><p><code>$loser</code>: name of lower scoring element. <code>NULL</code> if they are indifferent.</p></li>
-<li><p><code>$tuples</code>: a list of coalitions <em></em>\(S \in 2^{N \setminus \lbrace i, j \rbrace}\) with:</p><ul><li><p><code>$tuples[[x]]$coalition</code>: <code><a href="https://rdrr.io/pkg/sets/man/set.html" class="external-link">sets::set</a></code>, the coalition <em></em>\(S\)</p></li>
+<li><p><code>$tuples</code>: a list of coalitions <em></em>\(S \in 2^{N \setminus \lbrace i, j \rbrace }\) with:</p><ul><li><p><code>$tuples[[x]]$coalition</code>: <code><a href="https://rdrr.io/pkg/sets/man/set.html" class="external-link">sets::set</a></code>, the coalition <em></em>\(S\)</p></li>
 <li><p><code>$tuples[[x]]$included</code>: logical, <code>TRUE</code> if <em></em>\(S \cup \lbrace i \rbrace\) and <em></em>\(S \cup \lbrace j \rbrace\) are in the power relation</p></li>
 <li><p><code>$tuples[[x]]$winner</code>: name of the winning element <em></em>\(i\) where <em></em>\(S \cup \lbrace i \rbrace \succ S \cup \lbrace j \rbrace\). It is <code>NULL</code> if <em></em>\(S \cup \lbrace i \rbrace \sim S \cup \lbrace j \rbrace\)</p></li>
 <li><p><code>$tuples[[x]]$e1</code>: index <em></em>\(x_1\) at which <em></em>\(S \cup \lbrace i \rbrace \in \sum_{x_1}\)</p></li>
