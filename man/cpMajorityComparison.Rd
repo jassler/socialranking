@@ -66,7 +66,7 @@ Note that in this context the two elements \mjseqn{i} and \mjseqn{j} refer to el
 \itemize{
 \item \verb{$e1$name}: name of element 1
 \item \verb{$e1$score}: score \mjeqn{d_{ij}(\succeq)}{d_ij(>=)}. \mjeqn{d_{ij}(\succ)}{d_ij(>)} if \code{strictly == TRUE}
-\item \verb{$e1$winningCoalitions}: list of coalition \code{\link[sets:set]{sets::set}}s \mjeqn{S \in D_{ij}(\succeq)}{S in D_ij(>=)}.  \mjeqn{S \in D_{ij}(\succ)}{S in D_ij(>)} if \code{strictly == TRUE}
+\item \verb{$e1$winningCoalitions}: list of coalition \code{\link[sets:set]{sets::set}}s \mjeqn{S \in D_{ij}(\succeq)}{S in D_ij(>=)}. \mjeqn{S \in D_{ij}(\succ)}{S in D_ij(>)} if \code{strictly == TRUE}
 }
 \item \verb{$e2}: list of information about element 2
 \itemize{
@@ -76,7 +76,7 @@ Note that in this context the two elements \mjseqn{i} and \mjseqn{j} refer to el
 }
 \item \verb{$winner}: name of higher scoring element. \code{NULL} if they are indifferent.
 \item \verb{$loser}: name of lower scoring element. \code{NULL} if they are indifferent.
-\item \verb{$tuples}: a list of coalitions \mjeqn{S \in 2^{N \setminus \lbrace i, j \rbrace}}{S in 2^(N - \{i,j\})} with:
+\item \verb{$tuples}: a list of coalitions \mjeqn{S \in 2^{N \setminus \lbrace i, j \rbrace }}{S in 2^(N - \{i,j\})} with:
 \itemize{
 \item \verb{$tuples[[x]]$coalition}: \code{\link[sets:set]{sets::set}}, the coalition \mjseqn{S}
 \item \verb{$tuples[[x]]$included}: logical, \code{TRUE} if \mjeqn{S \cup \lbrace i \rbrace}{Su\{i\}} and \mjeqn{S \cup \lbrace j \rbrace}{Su\{j\}} are in the power relation

@@ -20,14 +20,14 @@
 #' * `$e1`: list of information about element 1
 #'   * `$e1$name`: name of element 1
 #'   * `$e1$score`: score \mjeqn{d_{ij}(\succeq)}{d_ij(>=)}. \mjeqn{d_{ij}(\succ)}{d_ij(>)} if `strictly == TRUE`
-#'   * `$e1$winningCoalitions`: list of coalition [`sets::set`]s \mjeqn{S \in D_{ij}(\succeq)}{S in D_ij(>=)}.  \mjeqn{S \in D_{ij}(\succ)}{S in D_ij(>)} if `strictly == TRUE`
+#'   * `$e1$winningCoalitions`: list of coalition [`sets::set`]s \mjeqn{S \in D_{ij}(\succeq)}{S in D_ij(>=)}. \mjeqn{S \in D_{ij}(\succ)}{S in D_ij(>)} if `strictly == TRUE`
 #' * `$e2`: list of information about element 2
 #'   * `$e2$name`: name of element 2
 #'   * `$e1$score`: score \mjeqn{d_{ji}(\succeq)}{d_ji(>=)}. \mjeqn{d_{ji}(\succ)}{d_ji(>)} if `strictly == TRUE`
 #'   * `$e1$winningCoalitions`: list of coalition [`sets::set`]s \mjeqn{S \in D_{ji}(\succeq)}{S in D_ji(>=)}.  \mjeqn{S \in D_{ji}(\succ)}{S in D_ji(>)} if `strictly == TRUE`
 #' * `$winner`: name of higher scoring element. `NULL` if they are indifferent.
 #' * `$loser`: name of lower scoring element. `NULL` if they are indifferent.
-#' * `$tuples`: a list of coalitions \mjeqn{S \in 2^{N \setminus \lbrace i, j \rbrace}}{S in 2^(N - \{i,j\})} with:
+#' * `$tuples`: a list of coalitions \mjeqn{S \in 2^{N \setminus \lbrace i, j \rbrace }}{S in 2^(N - \{i,j\})} with:
 #'   * `$tuples[[x]]$coalition`: [`sets::set`], the coalition \mjseqn{S}
 #'   * `$tuples[[x]]$included`: logical, `TRUE` if \mjeqn{S \cup \lbrace i \rbrace}{Su\{i\}} and \mjeqn{S \cup \lbrace j \rbrace}{Su\{j\}} are in the power relation
 #'   * `$tuples[[x]]$winner`: name of the winning element \mjseqn{i} where \mjeqn{S \cup \lbrace i \rbrace \succ S \cup \lbrace j \rbrace}{S u \{i\} > S u \{j\}}. It is `NULL` if \mjeqn{S \cup \lbrace i \rbrace \sim S \cup \lbrace j \rbrace}{S u \{i\} ~ S u \{j\}}
