@@ -16,8 +16,8 @@ RdMacros:
     Rdpack
 Suggests: 
     clipr (>= 0.8),
-    testthat (>= 3.1.5),
-    xfun (>= 0.34),
+    testthat (>= 3.1.2),
+    xfun (>= 0.30.0),
     knitr (>= 1.40),
     rmarkdown (>= 2.17),
     covr (>= 3.6.1)
