@@ -48,4 +48,5 @@ jobs:
         with:
           upload-snapshots: true
 
-      - uses: r-lib/actions/setup-tinytex@v2
+      - run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", "--ignore-vignettes"), build_args = c("--no-build-vignettes"), error_on = "warning", check_dir = "check")
+        shell: Rscript {0}
