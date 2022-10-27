@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   socialranking: socialranking.html
   socialranking_pdf: socialranking_pdf.html
-last_built: 2022-10-27T14:05Z
+last_built: 2022-10-27T14:57Z
 urls:
   reference: https://jassler.github.io/socialranking/reference
   article: https://jassler.github.io/socialranking/articles
