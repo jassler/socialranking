@@ -7,7 +7,6 @@ title: "`socialranking`: A package for evaluating ordinal power relations in coo
 date: "`r Sys.Date()`"
 output:
   rmarkdown::pdf_document:
-    latex_engine: xelatex
     toc: yes
     toc_depth: 3
     includes:

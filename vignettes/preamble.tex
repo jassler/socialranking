@@ -6,13 +6,16 @@
 \usepackage{amsfonts}
 \usepackage{booktabs}
 \usepackage{makecell}
+\usepackage[utf8]{inputenc}
+
+\DeclareUnicodeCharacter{200B}{}
 
 \theoremstyle{definition}
 \newtheorem{example}{Example}
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}
 
-\setlength{\OuterFrameSep}{0pt}
+% \setlength{\OuterFrameSep}{0pt}
 \makeatletter
 \preto{\@verbatim}{\topsep=0pt \partopsep=0pt }
 \makeatother

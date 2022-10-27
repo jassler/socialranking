@@ -18,7 +18,6 @@ output:
       collapsed: false
       smooth_scroll: true
   rmarkdown::pdf_document:
-    latex_engine: xelatex
     toc: yes
     toc_depth: 3
     includes:
