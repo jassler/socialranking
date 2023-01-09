@@ -39,3 +39,14 @@ test_that("doRanking named", {
   result <- evaluate_promise(doRanking(structure(c(3, 1, 1), names = c("Bacon", "Egg", "Salt")), decreasing = FALSE), print = TRUE)
   expect_equal(result$output, "Egg ~ Salt > Bacon")
 })
+
+test_that("doRanking compare", {
+  result <- evaluate_promise(doRanking(c(1,2,3), compare = function(a,b) a - b), print = TRUE)
+  expect_equal(result$output, "3 > 2 > 1")
+
+  result <- evaluate_promise(doRanking(c(1,2,3), compare = function(a,b) b - a), print = TRUE)
+  expect_equal(result$output, "1 > 2 > 3")
+
+  result <- evaluate_promise(doRanking(c(1,2,3), compare = function(a,b) a - a), print = TRUE)
+  expect_equal(result$output, "1 ~ 2 ~ 3")
+})

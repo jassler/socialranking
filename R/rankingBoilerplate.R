@@ -122,7 +122,6 @@ doRanking <- function(scores, compare = NULL, decreasing = TRUE) {
   orderItem <- sets::set(orderedIndexes[1])
   orderList <- list()
 
-  isEquiv <- if(is.null(compare))
   for(o in orderedIndexes[-1]) {
     if(any(sapply(orderItem, function(x) isEquiv(scores[o], scores[x])))) {
       orderItem <- orderItem | sets::set(o)
@@ -146,12 +145,12 @@ customOrder <- function(scores, compare) {
   comps <- expand.grid(x = indices, y = indices)
   comps$diff <- apply(comps, 1, function(x) {
     if(is.list(scores)) {
-      compare(scores[[x[1]]], scores[[x[2]]]) > 0
+      compare(scores[[x[1]]], scores[[x[2]]]) <= 0
     } else {
-      compare(scores[x[1]], scores[x[2]]) > 0
+      compare(scores[x[1]], scores[x[2]]) <= 0
     }
   })
-  as.numeric(names(sort(table(comps$x, comps$diff)[,2])))
+  as.numeric(names(sort(table(comps$x, comps$diff)[,1])))
 }
 
 #' @export
