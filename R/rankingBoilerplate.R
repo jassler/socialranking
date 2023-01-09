@@ -103,13 +103,17 @@ doRanking <- function(scores, compare = NULL, decreasing = TRUE) {
   elements <- names(scores)
   if(is.null(elements)) {
     elements <- seq(scores)
+  } else if(all(grepl("^[0-9]+$", elements))) {
+    elements <- as.integer(elements)
   }
 
   if(is.null(compare)) {
     orderedIndexes <- order(scores)
-    compare <- function(a,b) { if(a == b) 0 else 1 }
+    isEquiv <- function(a,b) { a == b }
+
   } else {
     orderedIndexes <- customOrder(scores, compare)
+    isEquiv <- function(a,b) { compare(a[[1]], b[[1]]) == 0 }
   }
   if(decreasing) {
     orderedIndexes <- rev(orderedIndexes)
@@ -118,8 +122,9 @@ doRanking <- function(scores, compare = NULL, decreasing = TRUE) {
   orderItem <- sets::set(orderedIndexes[1])
   orderList <- list()
 
+  isEquiv <- if(is.null(compare))
   for(o in orderedIndexes[-1]) {
-    if(any(sapply(orderItem, function(x) compare(scores[[o]], scores[[x]]) == 0))) {
+    if(any(sapply(orderItem, function(x) isEquiv(scores[o], scores[x])))) {
       orderItem <- orderItem | sets::set(o)
     } else {
       orderList[[length(orderList)+1]] <- orderItem
