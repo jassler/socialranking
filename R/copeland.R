@@ -104,8 +104,5 @@ copelandScores <- function(powerRelation, elements = NULL) {
 #'
 #' @export
 copelandRanking <- function(powerRelation) {
-  doRanking(
-    powerRelation,
-    copelandScores(powerRelation)
-  )
+  doRanking(copelandScores(powerRelation))
 }

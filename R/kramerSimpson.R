@@ -144,8 +144,5 @@ kramerSimpsonScores <- function(powerRelation, elements = NULL, compIvsI = FALSE
 #'
 #' @export
 kramerSimpsonRanking <- function(powerRelation, compIvsI = FALSE) {
-  doRanking(
-    powerRelation,
-    kramerSimpsonScores(powerRelation, compIvsI = compIvsI)
-  )
+  doRanking(kramerSimpsonScores(powerRelation, compIvsI = compIvsI))
 }

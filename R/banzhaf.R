@@ -100,8 +100,5 @@ ordinalBanzhafScores <- function(powerRelation) {
 #'
 #' @export
 ordinalBanzhafRanking <- function(powerRelation) {
-  doRanking(
-    powerRelation,
-    ordinalBanzhafScores(powerRelation)
-  )
+  doRanking(ordinalBanzhafScores(powerRelation))
 }

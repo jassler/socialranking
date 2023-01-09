@@ -123,10 +123,7 @@ lexcelScores <- function(powerRelation, elements = NULL) {
 #'
 #' @export
 lexcelRanking <- function(powerRelation) {
-  doRanking(
-    powerRelation,
-    lexcelScores(powerRelation)
-  )
+  doRanking(lexcelScores(powerRelation))
 }
 
 #' Dual Lexcel Ranking
@@ -157,8 +154,8 @@ lexcelRanking <- function(powerRelation) {
 #'
 #' @export
 dualLexcelRanking <- function(powerRelation) {
-  doRanking(
-    powerRelation,
-    structure(lapply(lexcelScores(powerRelation), function(r) -rev(r)), class = 'LexcelScores')
-  )
+  doRanking(structure(
+    lapply(lexcelScores(powerRelation), function(r) -rev(r)),
+    class = 'LexcelScores'
+  ))
 }
