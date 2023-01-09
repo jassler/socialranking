@@ -4,22 +4,16 @@
 \alias{doRanking}
 \title{Create \code{SocialRankingSolution}}
 \usage{
-doRanking(
-  powerRelation,
-  scores,
-  isIndifferent = function(a, b) a == b,
-  decreasing = TRUE
-)
+doRanking(scores, compare = NULL, decreasing = TRUE)
 }
 \arguments{
-\item{powerRelation}{A \code{PowerRelation} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
+\item{scores}{A sortable vector or list of element scores. If \code{names(scores)} is not \code{NULL}, those will be used as element names.
+Else a number sequence corresponding to the elements is generated.}
 
-\item{scores}{A sortable vector or list of element scores}
+\item{compare}{Optional comparison function taking in two elements and returning a numerical value based on the relation between
+these two elements. If set to \code{NULL}, the default \code{\link[=order]{order()}} function is called. See details for more information.}
 
-\item{isIndifferent}{A function that returns \code{TRUE}, if given two elements from \code{scores} the order doesn't matter.
-In that case the two elements are indifferent from each other, symbolized with the \code{"~"} operator.}
-
-\item{decreasing}{If \code{TRUE} (default), elements with the higher scores are ranked higher.}
+\item{decreasing}{If \code{TRUE} (default), elements with higher scores are ranked higher.}
 }
 \value{
 A list of type \code{SocialRankingSolution}.
@@ -28,7 +22,30 @@ Each element of the list contains a \code{\link[sets:set]{sets::set()}} of eleme
 \description{
 Map a power relation between coalitions to a power relation between elements, also known as a social ranking solution.
 }
+\details{
+A normal sort function is used to get the order of \code{scores} and determine the ranking from highest to lowest scoring element
+(or lowest to highest scoring if \code{decreasing} is set to \code{FALSE}). This works in instances where the score vector contains simple
+numerical values that are easily sortable.
+
+In more complex scenarios it may be necessary to introduce a custom comparison function to determine the relation between elements.
+In the case of \code{LexcelScore}, a custom S3 class is introduced that implements the \code{[}, \code{==} and \code{>} operator (see examples).
+
+To circumvent the introduction of S3 classes, a function can be assigned to the \code{compare} parameter. It must take two parameters
+(i.e. \verb{function(a, b)}) and returns one of the following:
+\itemize{
+\item \verb{> 0} (positive value) if score \code{a} is ranked higher than score \code{b}
+\item \verb{< 0} (negative value) if score \code{a} is ranked lower than score \code{b}
+\item \verb{= 0} if both scores \code{a} and \code{b} are considered equal.
+}
+
+This means for instance that \code{doRanking(c(a=3,b=2,c=2), compare = function(a,b) a - b)} ranks elements with higher scores higher
+(here \code{a > b ~ c}), whereas \code{doRanking(c(a=3,b=2,c=2), compare = function(a,b) b - a)} favors elements with lower scores (\code{b ~ c > a}).
+
+If the \code{compare} is set to \code{NULL}, the default \code{\link[=order]{order()}} function is called. This means that for lists an S3 class has to be
+implemented supporting the indexing and comparison operators. See examples for more.
+}
 \examples{
+# TODO work on examples
 pr <- newPowerRelationFromString("2 > 12 > 1", asWhat = as.numeric)
 
 # we define our own social ranking solution.
@@ -55,5 +72,15 @@ doRanking(
   isIndifferent = function(x, y) abs(x - y) < 2,
   decreasing = FALSE
 )
+
+
+`[.LexcelScores` <- function(x, i, ...) structure(unclass(x)[i], class = 'LexcelScores')
+`==.LexcelScores` <- function(a, b) {identical(a[[1]], b[[1]])}
+`>.LexcelScores` <- function(a, b) {
+  a <- a[[1]]
+  b <- b[[1]]
+  i <- which(a != b)
+  length(i) > 0 && a[i[1]] > b[i[1]]
+ }
 
 }

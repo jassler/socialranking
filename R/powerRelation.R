@@ -163,7 +163,7 @@ PowerRelation.default <- function(x, ...) {
 #' newPowerRelation(rankingCoalitions = newOrdering)
 #'
 #' @export
-newPowerRelation <- function(..., rankingCoalitions = list(), rankingComparators = c(), equivalenceClasses = list()) {
+newPowerRelation <- function(..., rankingCoalitions = list(), rankingComparators = c(), equivalenceClasses = list(), makeTotal = FALSE) {
   ranking <- if(length(rankingCoalitions) > 1) {
     if(length(rankingComparators) == 0)
       rankingComparators <- '>'
@@ -233,10 +233,16 @@ newPowerRelation <- function(..., rankingCoalitions = list(), rankingComparators
   value$elements <- unique(sort(unlist(value$rankingCoalitions)))
   value$equivalenceClasses <- generateEquivalenceClasses(value$rankingCoalitions, value$rankingComparators)
 
-  if(all(nchar(value$elements) == 1))
-    structure(value, class = c('PowerRelation', 'SingleCharElements'))
-  else
-    structure(value, class = 'PowerRelation')
+  classes <- c('PowerRelation', if(all(nchar(value$elements) == 1)) 'SingleCharElements')
+  structure(value, class = classes)
+}
+
+makeTotalPowerRelation <- function(powerRelation) {
+  # --- checks (generated) --- #
+  stopifnot(is.PowerRelation(powerRelation))
+  # --- end checks --- #
+
+
 }
 
 

@@ -35,9 +35,24 @@ rankLexicographically <- function(m, order = NULL) {
   doRanking(NULL, l, rownames(m))
 }
 
+mySort <- function(someList, compare) {
+  indices <- seq_along(someList)
+  comps <- expand.grid(x = indices, y = indices)
+  comps$diff <- apply(comps, 1, function(x) {
+    if(is.list(someList)) {
+      compare(someList[[x[1]]], someList[[x[2]]])
+    } else {
+      compare(someList[x[1]], someList[x[2]])
+    }
+  })
+  answer <- as.numeric(names(sort(table(comps$x, comps$diff)[,2])))
+  result <- someList[answer]
+  attributes(result) <- attributes(someList)
+  names(result) <- names(someList)[answer]
+  return(result)
+}
 
 if(interactive()) {
-  tabl <- generateRandomTable(c("a", "b", "c"))
-
-
+  # tabl <- generateRandomTable(c("a", "b", "c"))
+  # mySort(list('abc', 'de', 'fghi'), function(a,b) nchar(a) > nchar(b))
 }
