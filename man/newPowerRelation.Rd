@@ -138,6 +138,8 @@ newPowerRelation(rankingCoalitions = newOrdering)
 \insertRef{2019Lexcel}{socialranking}
 }
 \seealso{
+\code{\link[=makePowerRelationMonotonic]{makePowerRelationMonotonic()}}
+
 Other newPowerRelation functions: 
 \code{\link{newPowerRelationFromString}()}
 }

@@ -92,6 +92,7 @@ PowerRelation.default <- function(x, ...) {
 #' \insertRef{2019Lexcel}{socialranking}
 #'
 #' @family newPowerRelation functions
+#' @seealso [makePowerRelationMonotonic()]
 #'
 #' @examples
 #' if(interactive())
@@ -237,6 +238,35 @@ newPowerRelation <- function(..., rankingCoalitions = list(), rankingComparators
   structure(value, class = classes)
 }
 
+#' Make Power Relation monotonic
+#'
+#' Given a `powerRelation` object, make its order monotonic.
+#'
+#' A power relation is monotonic if, for a coalition \eqn{S \subseteq N}{S subset of N},
+#'
+#' \deqn{T \subset S \Leftrightarrow S \succeq T.}{T subset of S <=> S >= T.}
+#'
+#' This also moves any super sets that are ranked below a subset into the same
+#' equivalence class of the subset.
+#'
+#' @template param/powerRelation
+#'
+#' @template return/PowerRelation
+#'
+#' @examples
+#' pr <- newPowerRelationFromString('ab > ac > abc > b > a > {} > c < bc')
+#' makePowerRelationMonotonic(pr)
+#' # (abc ~ ab) > ac > (bc ~ b) > a > (c ~ {})
+#'
+#' # notice that missing coalitions are automatically added
+#' # (except for the empty set)
+#' pr <- newPowerRelationFromString('a > b > c')
+#' makePowerRelationMonotonic(pr)
+#' # (abc ~ ab ~ ac ~ a) > (bc ~ b) > c
+#'
+#' pr <- newPowerRelationFromString('a > {} > b > c')
+#' makePowerRelationMonotonic(pr)
+#' # (abc ~ ab ~ ac ~ a) > (bc ~ b ~ c ~ {})
 makePowerRelationMonotonic <- function(powerRelation) {
   # --- checks (generated) --- #
   stopifnot(is.PowerRelation(powerRelation))
