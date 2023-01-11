@@ -237,12 +237,25 @@ newPowerRelation <- function(..., rankingCoalitions = list(), rankingComparators
   structure(value, class = classes)
 }
 
-makeTotalPowerRelation <- function(powerRelation) {
+makePowerRelationMonotonic <- function(powerRelation) {
   # --- checks (generated) --- #
   stopifnot(is.PowerRelation(powerRelation))
   # --- end checks --- #
 
+  els <- powerRelation$elements
+  allCoals <- createPowerset(els)
+  newEqs <- list()
+  for(eq in powerRelation$equivalenceClasses) {
+    indeces <- sapply(allCoals, function(x) any(sets::set_is_subset(eq, sets::as.set(x))))
+    if(any(indeces)) {
+      newEqs[[length(newEqs) + 1]] <- allCoals[indeces]
+      allCoals <- allCoals[!indeces]
+    } else if(length(allCoals) == 0) {
+      break
+    }
+  }
 
+  newPowerRelation(equivalenceClasses = newEqs)
 }
 
 
