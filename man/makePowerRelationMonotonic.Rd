@@ -39,4 +39,10 @@ makePowerRelationMonotonic(pr)
 pr <- newPowerRelationFromString('a > {} > b > c')
 makePowerRelationMonotonic(pr)
 # (abc ~ ab ~ ac ~ a) > (bc ~ b ~ c ~ {})
+
 }
+\seealso{
+Other helper functions transorming existing \code{PowerRelation} objects: 
+\code{\link{makePowerRelationTotal}()}
+}
+\concept{helper functions transorming existing \code{PowerRelation} objects}

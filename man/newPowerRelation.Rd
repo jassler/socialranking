@@ -8,8 +8,7 @@ newPowerRelation(
   ...,
   rankingCoalitions = list(),
   rankingComparators = c(),
-  equivalenceClasses = list(),
-  makeTotal = FALSE
+  equivalenceClasses = list()
 )
 }
 \arguments{
