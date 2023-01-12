@@ -69,34 +69,7 @@ SocialRankingSolution.default <- function(x, ...) {
 #' scores <- c(`1` = 2, `2` = 1)
 #'
 #' # 2 > 1
-#' doRanking(
-#'   pr,
-#'   scores,
-#'   isIndifferent = function(x, y) x == y,
-#'   decreasing = FALSE
-#' )
-#'
-#' # Suppose for a player to be ranked higher than the other,
-#' # their positions have to be at least 2 apart.
-#' # This means player 1 and 2 are indifferent,
-#' # if they are right next to each other in the power relation.
-#' # 2 ~ 1
-#' doRanking(
-#'   pr,
-#'   scores,
-#'   isIndifferent = function(x, y) abs(x - y) < 2,
-#'   decreasing = FALSE
-#' )
-#'
-#'
-#' `[.LexcelScores` <- function(x, i, ...) structure(unclass(x)[i], class = 'LexcelScores')
-#' `==.LexcelScores` <- function(a, b) {identical(a[[1]], b[[1]])}
-#' `>.LexcelScores` <- function(a, b) {
-#'   a <- a[[1]]
-#'   b <- b[[1]]
-#'   i <- which(a != b)
-#'   length(i) > 0 && a[i[1]] > b[i[1]]
-#'  }
+#' doRanking(scores)
 #'
 #' @export
 doRanking <- function(scores, compare = NULL, decreasing = TRUE) {

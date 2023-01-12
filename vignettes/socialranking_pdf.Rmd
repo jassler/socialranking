@@ -391,10 +391,11 @@ pr <- newPowerRelationFromString("abc > ab ~ ac > bc")
 # we define some arbitrary score vector where "a" scores highest
 # "b" and "c" both score 1, thus they are indifferent
 scores <- c(100, 1, 1)
-doRanking(pr, scores)
+# doRanking(pr, scores)
+# TODO
 
 # we can also tell doRanking to punish higher scores
-doRanking(pr, scores, decreasing = FALSE)
+# doRanking(pr, scores, decreasing = FALSE)
 ```
 
 By default elements are assumed to be indifferent to one another if their scores are equal. Sometimes however other factors come into play that make it non-obvious how to compare two scores. In those cases a function comparing two scores can be passed that should return `TRUE` if the two scores are considered equal.
@@ -403,7 +404,8 @@ By default elements are assumed to be indifferent to one another if their scores
 scores <- c(0, 20, 21)
 # b and c are considered to be indifferent,
 # because their score difference is less than 2
-doRanking(pr, scores, isIndifferent = function(a,b) abs(a-b) < 2)
+# doRanking(pr, scores, isIndifferent = function(a,b) abs(a-b) < 2)
+# TODO
 ```
 
 
