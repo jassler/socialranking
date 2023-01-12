@@ -19,13 +19,12 @@ is.na.OrdinalBanzhafScores <- function(x) FALSE
 #' Calculate the Ordinal Banzhaf scores, the number of
 #' positive and negative marginal contributions.
 #'
-#' \loadmathjax
 #' Inspired by the Banzhaf index \insertCite{1964Banzhaf}{socialranking}, the Ordinal Banzhaf
-#' determines the score of element \mjseqn{i} by adding the amount of coalitions
-#' \mjeqn{S \subseteq N \setminus \lbrace i \rbrace}{S \\subseteq N \\ \{i\}}
-#' its contribution impacts positively (\mjeqn{S \cup \lbrace i \rbrace \succ S}{S u \{i\} > S })
+#' determines the score of element \eqn{i}{i} by adding the amount of coalitions
+#' \eqn{S \subseteq N \setminus \lbrace i \rbrace}{S \\subseteq N \\ \{i\}}
+#' its contribution impacts positively (\eqn{S \cup \lbrace i \rbrace \succ S}{S u \{i\} > S })
 #' and subtracting the amount of coalitions where its contribution
-#' had a negative impact (\mjeqn{S \succ S \cup \lbrace i \rbrace}{S > S u \{i\}})\insertCite{2019OrdinalBanzhaf}{socialranking}.
+#' had a negative impact (\eqn{S \succ S \cup \lbrace i \rbrace}{S > S u \{i\}})\insertCite{2019OrdinalBanzhaf}{socialranking}.
 #'
 #' @template param/powerRelation
 #'
@@ -100,8 +99,5 @@ ordinalBanzhafScores <- function(powerRelation) {
 #'
 #' @export
 ordinalBanzhafRanking <- function(powerRelation) {
-  doRanking(
-    powerRelation,
-    ordinalBanzhafScores(powerRelation)
-  )
+  doRanking(ordinalBanzhafScores(powerRelation))
 }

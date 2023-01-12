@@ -7,7 +7,7 @@
 coalitionsAreIndifferent(powerRelation, c1, c2)
 }
 \arguments{
-\item{powerRelation}{A \code{PowerRelation} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
+\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
 
 \item{c1}{Coalition \link[base:c]{vector} or \code{\link[sets:set]{sets::set()}}}
 

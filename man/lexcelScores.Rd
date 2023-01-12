@@ -13,7 +13,7 @@ lexcelRanking(powerRelation)
 dualLexcelRanking(powerRelation)
 }
 \arguments{
-\item{powerRelation}{A \code{PowerRelation} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
+\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
 
 \item{elements}{vector of elements of which to calculate their scores.
 If \code{elements == NULL}, create vectors for all elements in \code{pr$elements}}
@@ -35,52 +35,51 @@ Calculate the Lexicographical Excellence (or Lexcel) score.
 participation, it punishes mediocrity.
 }
 \details{
-\loadmathjax
-An equivalence class \mjeqn{\sum_i}{Sum_i} holds all coalitions
+An equivalence class \eqn{\sum_i}{Sum_i} holds all coalitions
 that are indifferent from one another. In a given power relation created with
 \code{\link[=newPowerRelation]{newPowerRelation()}}, the equivalence classes are saved in \verb{$equivalenceClasses}.
 
 E.g. for a power relation defined as
-\mjeqn{123 \succ (12 \sim 13 \sim 1 \sim \emptyset) \succ (23 \sim 1 \sim 2)}{123 > (12 ~ 13 ~ 1) > (23 ~ 1 ~ 2)}
+\eqn{123 \succ (12 \sim 13 \sim 1 \sim \emptyset) \succ (23 \sim 1 \sim 2)}{123 > (12 ~ 13 ~ 1) > (23 ~ 1 ~ 2)}
 we would get the following equivalence classes:
 
-\mjeqn{\sum_1 = \lbrace 123 \rbrace}{Sum_1 = \{123\}},
-\mjeqn{\sum_2 = \lbrace 12, 13, 1, \emptyset \rbrace}{Sum_2 = \{12, 13, 1, empty set\}},
-\mjeqn{\sum_3 = \lbrace 23, 1, 2 \rbrace}{Sum_3 = \{23, 1, 2\}}.
+\eqn{\sum_1 = \lbrace 123 \rbrace}{Sum_1 = \{123\}},
+\eqn{\sum_2 = \lbrace 12, 13, 1, \emptyset \rbrace}{Sum_2 = \{12, 13, 1, empty set\}},
+\eqn{\sum_3 = \lbrace 23, 1, 2 \rbrace}{Sum_3 = \{23, 1, 2\}}.
 
 A Lexcel score for an element is a vector where
 each index counts the number of times it appears in the
 equivalence class. Here we would get:
 
-\mjeqn{\textrm{lexcel}(1) = [ 1, 3, 1 ]}{lexcel(1) = [1,3,1]},
-\mjeqn{\textrm{lexcel}(2) = [ 1, 1, 2 ]}{lexcel(2) = [1,1,2]},
-\mjeqn{\textrm{lexcel}(3) = [ 1, 1, 1 ]}{lexcel(3) = [1,1,1]}.
+\eqn{\textrm{lexcel}(1) = [ 1, 3, 1 ]}{lexcel(1) = [1,3,1]},
+\eqn{\textrm{lexcel}(2) = [ 1, 1, 2 ]}{lexcel(2) = [1,1,2]},
+\eqn{\textrm{lexcel}(3) = [ 1, 1, 1 ]}{lexcel(3) = [1,1,1]}.
 }
 \section{Lexcel Ranking}{
 
 
 The most "excellent contribution" of an element determines its ranking against the other elements.
-Given two Lexcel score vectors \mjeqn{\textrm{Score}(i)}{Score(i)}
-and \mjeqn{\textrm{Score}(j)}{Score(j)}, the first index \mjseqn{x} where
-\mjeqn{\textrm{Score}(i)_x \neq \textrm{Score}(j)_x}{Score(i)_x != Score(j)_x}
+Given two Lexcel score vectors \eqn{\textrm{Score}(i)}{Score(i)}
+and \eqn{\textrm{Score}(j)}{Score(j)}, the first index \eqn{x}{x} where
+\eqn{\textrm{Score}(i)_x \neq \textrm{Score}(j)_x}{Score(i)_x != Score(j)_x}
 determines which element should be ranked higher.
 
-From the previous example this would be \mjseqn{1 > 2 > 3}, because:
+From the previous example this would be \eqn{1 > 2 > 3}{1 > 2 > 3}, because:
 
-\mjeqn{\textrm{Score}(1)_2 = 3 > \textrm{Score}(2)_2 = \textrm{Score}(3)_2 = 1}{Score(1)_2 = 3 > Score(2) = Score(3) = 1},
-\mjeqn{\textrm{Score}(2)_3 = 2 > \textrm{Score}(3)_3 = 1}{Score(2)_3 = 2 > Score(3)_3 = 1}.
+\eqn{\textrm{Score}(1)_2 = 3 > \textrm{Score}(2)_2 = \textrm{Score}(3)_2 = 1}{Score(1)_2 = 3 > Score(2) = Score(3) = 1},
+\eqn{\textrm{Score}(2)_3 = 2 > \textrm{Score}(3)_3 = 1}{Score(2)_3 = 2 > Score(3)_3 = 1}.
 }
 
 \section{Dual Lexcel Ranking}{
 
 
 The dual lexcel works in reverse order and, instead of rewarding high
-scores, punishes mediocrity. In that case we get \mjseqn{3 > 1 > 2}
+scores, punishes mediocrity. In that case we get \eqn{3 > 1 > 2}{3 > 1 > 2}
 because:
 
-\mjeqn{\textrm{Score}(3)_3 < \textrm{Score}(2)_3}{Score(3)_3 < Score(2)_3} and
-\mjeqn{\textrm{Score}(3)_2 < \textrm{Score}(1)_2}{Score(3)_2 < Score(1)_3},
-\mjeqn{\textrm{Score}(1)_3 < \textrm{Score}(2)_3}{Score(1)_3 < Score(2)_3}.
+\eqn{\textrm{Score}(3)_3 < \textrm{Score}(2)_3}{Score(3)_3 < Score(2)_3} and
+\eqn{\textrm{Score}(3)_2 < \textrm{Score}(1)_2}{Score(3)_2 < Score(1)_3},
+\eqn{\textrm{Score}(1)_3 < \textrm{Score}(2)_3}{Score(1)_3 < Score(2)_3}.
 }
 
 \examples{

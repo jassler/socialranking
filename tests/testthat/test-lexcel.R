@@ -77,3 +77,28 @@ test_that("dualLexcel", {
   expect_false(pr %:% 1 %>duallex% 2)
   expect_false(pr %:% 1 %>duallex% 3)
 })
+
+test_that('lexcel named', {
+  pr <- newPowerRelationFromString('abc > bc > ac > a > b > c > ab > {}')
+  ranking <- evaluate_promise(lexcelRanking(pr), print = TRUE)
+  expect_equal(ranking$output, 'c > b > a')
+
+  ranking <- evaluate_promise(dualLexcelRanking(pr), print = TRUE)
+  expect_equal(ranking$output, 'c > a > b')
+
+  # abc~ab~a~c > b~bc > ac
+  pr <- newPowerRelation(
+    c("Apple","Banana","Citrus"),
+    "~", c("Apple","Banana"),
+    "~", c("Citrus"),
+    "~", c("Apple"),
+    ">", c("Banana"),
+    "~", c("Banana","Citrus"),
+    ">", c("Apple","Citrus")
+  )
+  ranking <- evaluate_promise(lexcelRanking(pr), print = TRUE)
+  expect_equal(ranking$output, 'Apple > Banana > Citrus')
+
+  ranking <- evaluate_promise(dualLexcelRanking(pr), print = TRUE)
+  expect_equal(ranking$output, 'Banana > Apple > Citrus')
+})

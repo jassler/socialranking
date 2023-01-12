@@ -46,9 +46,8 @@ PowerRelation.default <- function(x, ...) {
 
 #' New Power Relation
 #'
-#' Create a `PowerRelation` object based on coalition parameters separated by `">"` or `"~"`.
+#' Create a [`PowerRelation`] object based on coalition parameters separated by `">"` or `"~"`.
 #'
-#' \loadmathjax
 #' A power relation describes the ordinal information between coalitions.
 #' [`createPowerset()`] offers a convenient way of creating a powerset over a set of elements that can be used to call
 #' the `newPowerRelation()` function. Each coalition in that case is put
@@ -59,26 +58,26 @@ PowerRelation.default <- function(x, ...) {
 #'
 #' @section Mathematical background:
 #'
-#' Let \mjeqn{N = \lbrace 1, ..., n \rbrace}{N = \{1, ..., n\}} be a finite set of
-#' *elements* (sometimes also called players). \mjeqn{2^N}{2^N}
-#' describes the powerset of \mjeqn{N}{N}, or the set of all subsets, also *coalitions*.
+#' Let \eqn{N = \lbrace 1, ..., n \rbrace}{N = \{1, ..., n\}} be a finite set of
+#' *elements* (sometimes also called players). \eqn{2^N}{2^N}
+#' describes the powerset of \eqn{N}{N}, or the set of all subsets, also *coalitions*.
 #'
-#' Let \mjeqn{\mathcal{P} \subseteq 2^N}{P \\subseteq 2^N} be a collection of coalitions. A
-#' *power relation* on \mjeqn{\mathcal{P}}{P} is a total preorder
-#' \mjeqn{\succeq \subseteq \mathcal{P} \times \mathcal{P}}{>= \\subseteq P x P}.
+#' Let \eqn{\mathcal{P} \subseteq 2^N}{P \\subseteq 2^N} be a collection of coalitions. A
+#' *power relation* on \eqn{\mathcal{P}}{P} is a total preorder
+#' \eqn{\succeq \subseteq \mathcal{P} \times \mathcal{P}}{>= \\subseteq P x P}.
 #'
-#' With that, \mjeqn{\mathcal{T}(\mathcal{P})}{T(P)} denotes the family of all power relations on every
-#' collection \mjeqn{\mathcal{P} \subseteq 2^N}{P \\subseteq 2^N}. Given a *power relation*
-#' \mjeqn{\succeq \in \mathcal{T}(\mathcal{P})}{>= in T(P)}, \mjeqn{\sim}{~} denotes its symmetric
-#' part whereas \mjeqn{\succ}{>} its asymmetric part. For example, let \mjeqn{S, T \in \mathcal{P}}{S, T in P}. Then:
+#' With that, \eqn{\mathcal{T}(\mathcal{P})}{T(P)} denotes the family of all power relations on every
+#' collection \eqn{\mathcal{P} \subseteq 2^N}{P \\subseteq 2^N}. Given a *power relation*
+#' \eqn{\succeq \in \mathcal{T}(\mathcal{P})}{>= in T(P)}, \eqn{\sim}{~} denotes its symmetric
+#' part whereas \eqn{\succ}{>} its asymmetric part. For example, let \eqn{S, T \in \mathcal{P}}{S, T in P}. Then:
 #'
-#' \mjdeqn{S \sim T \textrm{ if } S \succeq T \textrm{ and } T \succeq S}{S ~ T if S >= T and T >= S}
+#' \deqn{S \sim T \textrm{ if } S \succeq T \textrm{ and } T \succeq S}{S ~ T if S >= T and T >= S}
 #'
-#' \mjdeqn{S \succ T \textrm{ if } S \succeq T \textrm{ and not } T \succeq S}{S > T if S >= T and not T >= S}
+#' \deqn{S \succ T \textrm{ if } S \succeq T \textrm{ and not } T \succeq S}{S > T if S >= T and not T >= S}
 #'
 #' @param ... Coalition vector, comparison character (`">"` or `"~"`), coalition vector, comparison character, coalition vector, ...
 #' @param rankingCoalitions List of ordered coalition vectors. If empty, it is ignored. Corresponds to
-#' `$rankingCoalitions` list from a `PowerRelation` object.
+#' `$rankingCoalitions` list from a [`PowerRelation`] object.
 #' @param rankingComparators Vector of `">"` or `"~"` characters. If `rankingCoalitions` list is empty, it is ignored. If
 #' vector is empty, it uses the `">"` relation by default.
 #' @param equivalenceClasses Nested list of coalition vectors that are indifferent to another. If empty, it is ignored.
@@ -92,6 +91,7 @@ PowerRelation.default <- function(x, ...) {
 #' \insertRef{2019Lexcel}{socialranking}
 #'
 #' @family newPowerRelation functions
+#' @seealso [makePowerRelationMonotonic()]
 #'
 #' @examples
 #' if(interactive())
@@ -233,10 +233,101 @@ newPowerRelation <- function(..., rankingCoalitions = list(), rankingComparators
   value$elements <- unique(sort(unlist(value$rankingCoalitions)))
   value$equivalenceClasses <- generateEquivalenceClasses(value$rankingCoalitions, value$rankingComparators)
 
-  if(all(nchar(value$elements) == 1))
-    structure(value, class = c('PowerRelation', 'SingleCharElements'))
-  else
-    structure(value, class = 'PowerRelation')
+  classes <- c('PowerRelation', if(all(nchar(value$elements) == 1)) 'SingleCharElements')
+  structure(value, class = classes)
+}
+
+#' Make Power Relation monotonic
+#'
+#' Given a `powerRelation` object, make its order monotonic.
+#'
+#' A power relation is monotonic if, for a coalition \eqn{S \subseteq N}{S subset of N},
+#'
+#' \deqn{T \subset S \Leftrightarrow S \succeq T.}{T subset of S <=> S >= T.}
+#'
+#' This also moves any super sets that are ranked below a subset into the same
+#' equivalence class of the subset.
+#'
+#' @template param/powerRelation
+#'
+#' @template return/PowerRelation
+#'
+#' @family helper functions transorming existing [`PowerRelation`] objects
+#'
+#' @examples
+#' pr <- newPowerRelationFromString('ab > ac > abc > b > a > {} > c < bc')
+#' makePowerRelationMonotonic(pr)
+#' # (abc ~ ab) > ac > (bc ~ b) > a > (c ~ {})
+#'
+#' # notice that missing coalitions are automatically added
+#' # (except for the empty set)
+#' pr <- newPowerRelationFromString('a > b > c')
+#' makePowerRelationMonotonic(pr)
+#' # (abc ~ ab ~ ac ~ a) > (bc ~ b) > c
+#'
+#' pr <- newPowerRelationFromString('a > {} > b > c')
+#' makePowerRelationMonotonic(pr)
+#' # (abc ~ ab ~ ac ~ a) > (bc ~ b ~ c ~ {})
+#'
+#' @export
+makePowerRelationMonotonic <- function(powerRelation) {
+  # --- checks (generated) --- #
+  stopifnot(is.PowerRelation(powerRelation))
+  # --- end checks --- #
+
+  els <- powerRelation$elements
+  allCoals <- createPowerset(els)
+  newEqs <- list()
+  for(eq in powerRelation$equivalenceClasses) {
+    indeces <- sapply(allCoals, function(x) any(sets::set_is_subset(eq, sets::as.set(x))))
+    if(any(indeces)) {
+      newEqs[[length(newEqs) + 1]] <- allCoals[indeces]
+      allCoals <- allCoals[!indeces]
+    } else if(length(allCoals) == 0) {
+      break
+    }
+  }
+
+  newPowerRelation(equivalenceClasses = newEqs)
+}
+
+#' Make Power Relation total
+#'
+#' Append an equivalence to a power relation with all its missing coalitions to make it total.
+#'
+#' A power relation is total if for every \eqn{S, T \subseteq N}{S, T subset or equal to N},
+#'
+#' \deqn{S \succeq T\text{ or }T \succeq S.}{S>=T or T>=S.}
+#'
+#' In other words, we can compare every coalition against every other coalition there is.
+#' The function simply adds the coalitions missing from the [`PowerRelation`] object to make it total behind the last equivalence class there is.
+#'
+#' @template param/powerRelation
+#' @param includeEmptySet If `TRUE`, include the empty set in the last equivalence class if it is missing from the power relation.
+#'
+#' @template return/PowerRelation
+#'
+#' @family helper functions transorming existing [`PowerRelation`] objects
+#'
+#' @examples
+#' pr <- newPowerRelation(c(1,2), '>', 3)
+#' # 12 > 3
+#'
+#' makePowerRelationTotal(pr)
+#' # 12 > 3 > (123 ~ 13 ~ 23 ~ 1 ~ 2 ~ {})
+#'
+#' makePowerRelationTotal(pr, includeEmptySet = FALSE)
+#' # 12 > 3 > (123 ~ 13 ~ 23 ~ 1 ~ 2)
+#'
+#' @export
+makePowerRelationTotal <- function(powerRelation, includeEmptySet = TRUE) {
+  # --- checks (generated) --- #
+  stopifnot(is.PowerRelation(powerRelation))
+  # --- end checks --- #
+  els <- powerRelation$elements
+  allCoals <- createPowerset(els, includeEmptySet = includeEmptySet)
+  missing <- setdiff(lapply(allCoals, sets::as.set), powerRelation$rankingCoalitions)
+  newPowerRelation(equivalenceClasses = append(powerRelation$equivalenceClasses, list(missing)))
 }
 
 
@@ -250,17 +341,16 @@ generateEquivalenceClasses <- function(coalitions, rankingComparators) {
   )
 }
 
-#' Create `PowerRelation` object from string
+#' Create [`PowerRelation`] object from string
 #'
-#' \loadmathjax
-#' Given a pure string representation of a power relation, create a `PowerRelation` object.
+#' Given a pure string representation of a power relation, create a [`PowerRelation`] object.
 #'
 #' Elements in this power relation are assumed to be one character long.
 #' E.g., the coalitions `"{1,2,3}"` and `123` are equivalent, given that the `elementNames`
 #' parameter tells the function to only interpret the characters `1`, `2` and `3` as valid element names.
 #'
-#' @param string String representation of a power relation. Special characters such as \mjeqn{\succ}{\\succ} and
-#' \mjeqn{\sim}{\\sim} are replaced with their ASCII equivalents `>` and `~` respectively.
+#' @param string String representation of a power relation. Special characters such as \eqn{\succ}{\\succ} and
+#' \eqn{\sim}{\\sim} are replaced with their ASCII equivalents `>` and `~` respectively.
 #' @param elementNames Regular expression to match single characters in string input that should
 #' be interpreted as a name of an element. If character does not match, it is simply ignored.
 #' @param asWhat Elements are interpreted as string characters by default. [`base::as.numeric`]

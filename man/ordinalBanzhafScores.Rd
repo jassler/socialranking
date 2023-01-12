@@ -10,7 +10,7 @@ ordinalBanzhafScores(powerRelation)
 ordinalBanzhafRanking(powerRelation)
 }
 \arguments{
-\item{powerRelation}{A \code{PowerRelation} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
+\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
 }
 \value{
 Score function returns list of class type \code{OrdinalBanzhafScores} and length of \code{powerRelation$elements}.
@@ -26,13 +26,12 @@ positive and negative marginal contributions.
 \code{\link[=ordinalBanzhafRanking]{ordinalBanzhafRanking()}} returns the corresponding ranking.
 }
 \details{
-\loadmathjax
 Inspired by the Banzhaf index \insertCite{1964Banzhaf}{socialranking}, the Ordinal Banzhaf
-determines the score of element \mjseqn{i} by adding the amount of coalitions
-\mjeqn{S \subseteq N \setminus \lbrace i \rbrace}{S \\subseteq N \\ \{i\}}
-its contribution impacts positively (\mjeqn{S \cup \lbrace i \rbrace \succ S}{S u \{i\} > S })
+determines the score of element \eqn{i}{i} by adding the amount of coalitions
+\eqn{S \subseteq N \setminus \lbrace i \rbrace}{S \\subseteq N \\ \{i\}}
+its contribution impacts positively (\eqn{S \cup \lbrace i \rbrace \succ S}{S u \{i\} > S })
 and subtracting the amount of coalitions where its contribution
-had a negative impact (\mjeqn{S \succ S \cup \lbrace i \rbrace}{S > S u \{i\}})\insertCite{2019OrdinalBanzhaf}{socialranking}.
+had a negative impact (\eqn{S \succ S \cup \lbrace i \rbrace}{S > S u \{i\}})\insertCite{2019OrdinalBanzhaf}{socialranking}.
 }
 \examples{
 # 12 > (2 ~ {}) > 1

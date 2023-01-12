@@ -1,4 +1,4 @@
-test_that("ranking", {
+test_that("banz ranking", {
   pr <- newPowerRelation(c(1,2), ">", 1, ">", 2)
   ranking <- evaluate_promise(ordinalBanzhafRanking(pr), print = TRUE)
   expect_equal(ranking$output, "1 ~ 2")
@@ -59,7 +59,7 @@ test_that("ranking", {
   expect_equal(ranking$output, "1 ~ 2")
 })
 
-test_that("scores", {
+test_that("banz scores", {
   pr <- newPowerRelation(c(1,2), ">", 1, ">", 2)
   expect_equal(ordinalBanzhafScores(pr), structure(list(
     `1` = c(1,0),
@@ -77,4 +77,23 @@ test_that("scores", {
     `1` = c(1,-1),
     `2` = c(1,0)
   ), class = "OrdinalBanzhafScores"))
+})
+
+test_that('banz named', {
+  pr <- newPowerRelationFromString('abc > bc > ac > a > b > c > ab > {}')
+  ranking <- evaluate_promise(ordinalBanzhafRanking(pr), print = TRUE)
+  expect_equal(ranking$output, 'c > a ~ b')
+
+  # abc~ab~a~c > b~bc > ac
+  pr <- newPowerRelation(
+    c("Apple","Banana","Citrus"),
+    "~", c("Apple","Banana"),
+    "~", c("Citrus"),
+    "~", c("Apple"),
+    ">", c("Banana"),
+    "~", c("Banana","Citrus"),
+    ">", c("Apple","Citrus")
+  )
+  ranking <- evaluate_promise(lexcelRanking(pr), print = TRUE)
+  expect_equal(ranking$output, 'Apple > Banana > Citrus')
 })

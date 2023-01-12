@@ -13,7 +13,7 @@ powerRelationMatrix(
 \method{as.relation}{PowerRelation}(x, ...)
 }
 \arguments{
-\item{powerRelation}{A \code{PowerRelation} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
+\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
 
 \item{domainNames}{How should the row and column names be formatted?
 \itemize{
@@ -31,14 +31,13 @@ powerRelationMatrix(
 \code{\link[relations:relation]{relations::relation()}} object to the corresponding power relation.
 }
 \description{
-For a given \code{PowerRelation} object create a \code{\link[relations:relation]{relations::relation()}} object.
+For a given \code{\link{PowerRelation}} object create a \code{\link[relations:relation]{relations::relation()}} object.
 }
 \details{
-\loadmathjax
-Turn a \code{PowerRelation} object into a \code{\link[relations:relation]{relations::relation()}} object. The incidence matrix can be viewed with
+Turn a \code{\link{PowerRelation}} object into a \code{\link[relations:relation]{relations::relation()}} object. The incidence matrix can be viewed with
 \code{\link[relations:incidence]{relations::relation_incidence()}}.
 
-The columns and rows of a \code{PowerRelation} object are ordered by \code{powerRelation$rankingCoalitions}.
+The columns and rows of a \code{\link{PowerRelation}} object are ordered by \code{powerRelation$rankingCoalitions}.
 The \code{relations} package automatically sorts the columns and rows by their domain names, which is the reason the
 parameter \code{domainNames} is included. This way we ensure that the columns and rows are sorted by
 the order of the power relation.
@@ -46,15 +45,15 @@ the order of the power relation.
 \section{Cycles}{
 
 
-A \code{PowerRelation} object is defined as being transitive. If a power relation includes a cycle,
+A \code{\link{PowerRelation}} object is defined as being transitive. If a power relation includes a cycle,
 meaning that the same coalition appears twice in the ranking, all coalitions within that cycle will be considered
 to be indifferent from one another.
 
-For example, given the power relation \mjeqn{1 \succ 2 \succ 3 \succ 1 \succ 12}{1 > 2 > 3 > 1 > 12},
-the relation is somewhat equivalent to \mjeqn{1 \sim 2 \sim 3 \succ 12}{1 ~ 2 ~ 3 > 12}. There is no way
+For example, given the power relation \eqn{1 \succ 2 \succ 3 \succ 1 \succ 12}{1 > 2 > 3 > 1 > 12},
+the relation is somewhat equivalent to \eqn{1 \sim 2 \sim 3 \succ 12}{1 ~ 2 ~ 3 > 12}. There is no way
 to check for cycles in the incidence matrix only.
 
-Call \code{\link[=transitiveClosure]{transitiveClosure()}} to remove cycles in a \code{PowerRelation} object.
+Call \code{\link[=transitiveClosure]{transitiveClosure()}} to remove cycles in a \code{\link{PowerRelation}} object.
 }
 
 \examples{

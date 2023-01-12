@@ -1,27 +1,26 @@
 #' Create relation matrix
 #'
-#' For a given `PowerRelation` object create a [`relations::relation()`] object.
+#' For a given [`PowerRelation`] object create a [`relations::relation()`] object.
 #'
-#' \loadmathjax
-#' Turn a `PowerRelation` object into a [`relations::relation()`] object. The incidence matrix can be viewed with
+#' Turn a [`PowerRelation`] object into a [`relations::relation()`] object. The incidence matrix can be viewed with
 #' [`relations::relation_incidence()`].
 #'
-#' The columns and rows of a `PowerRelation` object are ordered by `powerRelation$rankingCoalitions`.
+#' The columns and rows of a [`PowerRelation`] object are ordered by `powerRelation$rankingCoalitions`.
 #' The `relations` package automatically sorts the columns and rows by their domain names, which is the reason the
 #' parameter `domainNames` is included. This way we ensure that the columns and rows are sorted by
 #' the order of the power relation.
 #'
 #' @section Cycles:
 #'
-#' A `PowerRelation` object is defined as being transitive. If a power relation includes a cycle,
+#' A [`PowerRelation`] object is defined as being transitive. If a power relation includes a cycle,
 #' meaning that the same coalition appears twice in the ranking, all coalitions within that cycle will be considered
 #' to be indifferent from one another.
 #'
-#' For example, given the power relation \mjeqn{1 \succ 2 \succ 3 \succ 1 \succ 12}{1 > 2 > 3 > 1 > 12},
-#' the relation is somewhat equivalent to \mjeqn{1 \sim 2 \sim 3 \succ 12}{1 ~ 2 ~ 3 > 12}. There is no way
+#' For example, given the power relation \eqn{1 \succ 2 \succ 3 \succ 1 \succ 12}{1 > 2 > 3 > 1 > 12},
+#' the relation is somewhat equivalent to \eqn{1 \sim 2 \sim 3 \succ 12}{1 ~ 2 ~ 3 > 12}. There is no way
 #' to check for cycles in the incidence matrix only.
 #'
-#' Call [`transitiveClosure()`] to remove cycles in a `PowerRelation` object.
+#' Call [`transitiveClosure()`] to remove cycles in a [`PowerRelation`] object.
 #'
 #' @template param/powerRelation
 #' @param domainNames How should the row and column names be formatted?

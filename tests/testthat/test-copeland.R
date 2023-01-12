@@ -57,3 +57,21 @@ test_that("manip paper example", {
 
   expect_equal(copelandScores(pr), structure(list(`1` = c(2,-1), `2` = c(2,-2), `3` = c(1,-2)), class = "CopelandScores"))
 })
+
+test_that('copeland named', {
+  pr <- newPowerRelationFromString('(abc ~ ab ~ c ~ a) > (b ~ bc) > ac')
+  ranking <- evaluate_promise(copelandRanking(pr), print = TRUE)
+  expect_equal(ranking$output, 'a > b > c')
+
+  pr <- newPowerRelation(
+    c("Apple","Banana","Citrus"),
+    "~", c("Apple","Banana"),
+    "~", c("Citrus"),
+    "~", c("Apple"),
+    ">", c("Banana"),
+    "~", c("Banana","Citrus"),
+    ">", c("Apple","Citrus")
+  )
+  ranking <- evaluate_promise(copelandRanking(pr), print = TRUE)
+  expect_equal(ranking$output, 'Apple > Banana > Citrus')
+})

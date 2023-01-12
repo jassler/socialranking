@@ -17,15 +17,14 @@ is.na.CopelandScores <- function(x) FALSE
 #' Based on [`cpMajorityComparison()`], add or subtract scores
 #' based on how an element fares against the others.
 #'
-#' \loadmathjax
 #' Strongly inspired by the Copeland score of social choice theory \insertCite{1951Copeland}{socialranking},
 #' the Copeland-like solution is based on the net flow of the CP-majority graph \insertCite{2021Manipulability}{socialranking}.
 #'
 #' Individuals are ordered according to the number of pairwise winning comparisons, minus the number of pairwise losing comparisons,
 #' over the set of all CP-comparisons.
 #'
-#' More formally, in a given `PowerRelation pr` with element \mjseqn{i}, count the number of elements
-#' \mjeqn{j \in N \setminus \lbrace i \rbrace}{j in N - \{i\}} where
+#' More formally, in a given `PowerRelation pr` with element \eqn{i}{i}, count the number of elements
+#' \eqn{j \in N \setminus \lbrace i \rbrace}{j in N - \{i\}} where
 #' [`cpMajorityComparison`]`(pr, i, j) >= 0` and subtract those where
 #' [`cpMajorityComparison`]`(pr, i, j) <= 0`.
 #'
@@ -104,8 +103,5 @@ copelandScores <- function(powerRelation, elements = NULL) {
 #'
 #' @export
 copelandRanking <- function(powerRelation) {
-  doRanking(
-    powerRelation,
-    copelandScores(powerRelation)
-  )
+  doRanking(copelandScores(powerRelation))
 }

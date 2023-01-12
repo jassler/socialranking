@@ -2,7 +2,7 @@
 % Please edit documentation in R/powerRelation.R
 \name{newPowerRelationFromString}
 \alias{newPowerRelationFromString}
-\title{Create \code{PowerRelation} object from string}
+\title{Create \code{\link{PowerRelation}} object from string}
 \usage{
 newPowerRelationFromString(
   string,
@@ -11,8 +11,8 @@ newPowerRelationFromString(
 )
 }
 \arguments{
-\item{string}{String representation of a power relation. Special characters such as \mjeqn{\succ}{\\succ} and
-\mjeqn{\sim}{\\sim} are replaced with their ASCII equivalents \code{>} and \code{~} respectively.}
+\item{string}{String representation of a power relation. Special characters such as \eqn{\succ}{\\succ} and
+\eqn{\sim}{\\sim} are replaced with their ASCII equivalents \code{>} and \code{~} respectively.}
 
 \item{elementNames}{Regular expression to match single characters in string input that should
 be interpreted as a name of an element. If character does not match, it is simply ignored.}
@@ -21,13 +21,12 @@ be interpreted as a name of an element. If character does not match, it is simpl
 or \code{\link[base:integer]{base::as.integer}} can be passed to convert those string characters into numeric values.}
 }
 \value{
-\code{PowerRelation} object containing vector of elements or players \verb{$elements}, an ordered list of
+\code{\link{PowerRelation}} object containing vector of elements or players \verb{$elements}, an ordered list of
 coalitions \verb{$rankingCoalitions} and an ordered vector of comparators \verb{$rankingComparators}
 as well as an ordered list of equivalence classes \verb{$equivalenceClasses} for convenience
 }
 \description{
-\loadmathjax
-Given a pure string representation of a power relation, create a \code{PowerRelation} object.
+Given a pure string representation of a power relation, create a \code{\link{PowerRelation}} object.
 }
 \details{
 Elements in this power relation are assumed to be one character long.
