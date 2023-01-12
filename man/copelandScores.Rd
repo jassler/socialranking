@@ -10,7 +10,7 @@ copelandScores(powerRelation, elements = NULL)
 copelandRanking(powerRelation)
 }
 \arguments{
-\item{powerRelation}{A \code{PowerRelation} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
+\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
 
 \item{elements}{vector of elements of which to calculate their scores.
 If \code{elements == NULL}, create vectors for all elements in \code{pr$elements}}
@@ -30,15 +30,14 @@ based on how an element fares against the others.
 \code{copelandRanking} returns the corresponding ranking.
 }
 \details{
-\loadmathjax
 Strongly inspired by the Copeland score of social choice theory \insertCite{1951Copeland}{socialranking},
 the Copeland-like solution is based on the net flow of the CP-majority graph \insertCite{2021Manipulability}{socialranking}.
 
 Individuals are ordered according to the number of pairwise winning comparisons, minus the number of pairwise losing comparisons,
 over the set of all CP-comparisons.
 
-More formally, in a given \verb{PowerRelation pr} with element \mjseqn{i}, count the number of elements
-\mjeqn{j \in N \setminus \lbrace i \rbrace}{j in N - \{i\}} where
+More formally, in a given \verb{PowerRelation pr} with element \eqn{i}{i}, count the number of elements
+\eqn{j \in N \setminus \lbrace i \rbrace}{j in N - \{i\}} where
 \code{\link{cpMajorityComparison}}\verb{(pr, i, j) >= 0} and subtract those where
 \code{\link{cpMajorityComparison}}\verb{(pr, i, j) <= 0}.
 }

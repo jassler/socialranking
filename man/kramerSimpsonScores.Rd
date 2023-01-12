@@ -10,12 +10,12 @@ kramerSimpsonScores(powerRelation, elements = NULL, compIvsI = FALSE)
 kramerSimpsonRanking(powerRelation, compIvsI = FALSE)
 }
 \arguments{
-\item{powerRelation}{A \code{PowerRelation} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
+\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
 
 \item{elements}{vector of elements of which to calculate their scores.
 If \code{elements == NULL}, create vectors for all elements in \code{pr$elements}}
 
-\item{compIvsI}{If \code{TRUE}, include CP-Majority comparison \mjeqn{d_{ii}(\succeq)}{d_ii(>=)}, or, the CP-Majority
+\item{compIvsI}{If \code{TRUE}, include CP-Majority comparison \eqn{d_{ii}(\succeq)}{d_ii(>=)}, or, the CP-Majority
 comparison score of an element against itself, which is always 0.}
 }
 \value{
@@ -31,33 +31,32 @@ Lower scores are better.
 \code{\link{kramerSimpsonRanking}} returns the corresponding ranking.
 }
 \details{
-\loadmathjax
 Inspired by the Kramer-Simpson method of social choice theory \insertCite{1969Simpson}{socialranking} \insertCite{1975Kramer}{socialranking}, the \emph{Kramer-Simpson-like}
 method compares each element against all other elements using the CP-Majority rule.
 
-For a given element \mjseqn{i} calculate the \code{\link{cpMajorityComparisonScore}}
-against all elements \mjseqn{j}, \mjeqn{d_{ji}(\succeq)}{d_ji(>=)} (notice that \mjseqn{i} and
-\mjseqn{j} are in reverse order).
-\mjeqn{\max_{j \in N \setminus \lbrace i \rbrace}(d_{ji}(\succeq))}{max_{j in N \\ {i}}(d_ji(>=))} then
+For a given element \eqn{i}{i} calculate the \code{\link{cpMajorityComparisonScore}}
+against all elements \eqn{j}{j}, \eqn{d_{ji}(\succeq)}{d_ji(>=)} (notice that \eqn{i}{i} and
+\eqn{j}{j} are in reverse order).
+\eqn{\max_{j \in N \setminus \lbrace i \rbrace}(d_{ji}(\succeq))}{max_{j in N \\ {i}}(d_ji(>=))} then
 determines the final score, where lower scoring elements are ranked higher.
 }
 \section{Note}{
 
 
-By default this function does not compare \mjeqn{d_{ii}(\succeq)}{d_ii(>=)}. In other terms,
+By default this function does not compare \eqn{d_{ii}(\succeq)}{d_ii(>=)}. In other terms,
 the score of every element is the maximum CP-Majority comparison score against all other elements.
 
 This is slightly different from definitions found in
-\insertCite{2021Manipulability}{socialranking}. Since by definition  \mjeqn{d_{ii}(\succeq) = 0}{d_ii(>=) = 0}
+\insertCite{2021Manipulability}{socialranking}. Since by definition  \eqn{d_{ii}(\succeq) = 0}{d_ii(>=) = 0}
 always holds, the Kramer-Simpson scores in those cases will never be negative, possibly discarding valuable
 information.
 
 For this reason \code{kramerSimpsonScores} and \code{kramerSimpsonRanking} includes a
-\code{compIvsI} parameter that can be set to \code{TRUE} if one wishes for \mjeqn{d_{ii}(\succeq) = 0}{d_ii(>=) = 0}
+\code{compIvsI} parameter that can be set to \code{TRUE} if one wishes for \eqn{d_{ii}(\succeq) = 0}{d_ii(>=) = 0}
 to be included in the comparisons. Put into mathematical terms, if:\tabular{ll}{
    \code{compIvsI} \tab Score definition \cr
-   \code{FALSE} \tab \mjeqn{\max_{j \in N \setminus \lbrace i \rbrace}(d_{ji}(\succeq))}{max_{j in N \\ {i}}(d_ji(>=))} \cr
-   \code{TRUE} \tab \mjeqn{\max_{j \in N}(d_{ji}(\succeq))}{max_{j in N}(d_ji(>=))} \cr
+   \code{FALSE} \tab \eqn{\max_{j \in N \setminus \lbrace i \rbrace}(d_{ji}(\succeq))}{max_{j in N \\ {i}}(d_ji(>=))} \cr
+   \code{TRUE} \tab \eqn{\max_{j \in N}(d_{ji}(\succeq))}{max_{j in N}(d_ji(>=))} \cr
 }
 }
 

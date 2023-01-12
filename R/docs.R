@@ -3,7 +3,7 @@
 #' The package `socialranking` offers functions to represent ordinal
 #' information of coalitions and calculate the power relation between elements or players.
 #'
-#' [`newPowerRelation()`] creates a `PowerRelation` object. [`createPowerset()`]
+#' [`newPowerRelation()`] creates a [`PowerRelation`] object. [`createPowerset()`]
 #' is a convenient function to generate a [`newPowerRelation()`] function call
 #' for all possible coalitions.
 #'
@@ -30,7 +30,6 @@
 #'
 #' @importFrom Rdpack reprompt
 #' @importFrom relations as.relation
-#' @importFrom mathjaxr preview_rd
 #'
 #' @docType package
 #' @name socialranking

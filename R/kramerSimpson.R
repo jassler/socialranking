@@ -18,39 +18,38 @@ is.na.KramerSimpsonScores <- function(x) FALSE
 #' Calculate the Kramer-Simpson-like scores.
 #' Lower scores are better.
 #'
-#' \loadmathjax
 #' Inspired by the Kramer-Simpson method of social choice theory \insertCite{1969Simpson}{socialranking} \insertCite{1975Kramer}{socialranking}, the _Kramer-Simpson-like_
 #' method compares each element against all other elements using the CP-Majority rule.
 #'
-#' For a given element \mjseqn{i} calculate the [`cpMajorityComparisonScore`]
-#' against all elements \mjseqn{j}, \mjeqn{d_{ji}(\succeq)}{d_ji(>=)} (notice that \mjseqn{i} and
-#' \mjseqn{j} are in reverse order).
-#' \mjeqn{\max_{j \in N \setminus \lbrace i \rbrace}(d_{ji}(\succeq))}{max_{j in N \\ {i}}(d_ji(>=))} then
+#' For a given element \eqn{i}{i} calculate the [`cpMajorityComparisonScore`]
+#' against all elements \eqn{j}{j}, \eqn{d_{ji}(\succeq)}{d_ji(>=)} (notice that \eqn{i}{i} and
+#' \eqn{j}{j} are in reverse order).
+#' \eqn{\max_{j \in N \setminus \lbrace i \rbrace}(d_{ji}(\succeq))}{max_{j in N \\ {i}}(d_ji(>=))} then
 #' determines the final score, where lower scoring elements are ranked higher.
 #'
 #' @section Note:
 #'
-#' By default this function does not compare \mjeqn{d_{ii}(\succeq)}{d_ii(>=)}. In other terms,
+#' By default this function does not compare \eqn{d_{ii}(\succeq)}{d_ii(>=)}. In other terms,
 #' the score of every element is the maximum CP-Majority comparison score against all other elements.
 #'
 #' This is slightly different from definitions found in
-#' \insertCite{2021Manipulability}{socialranking}. Since by definition  \mjeqn{d_{ii}(\succeq) = 0}{d_ii(>=) = 0}
+#' \insertCite{2021Manipulability}{socialranking}. Since by definition  \eqn{d_{ii}(\succeq) = 0}{d_ii(>=) = 0}
 #' always holds, the Kramer-Simpson scores in those cases will never be negative, possibly discarding valuable
 #' information.
 #'
 #' For this reason `kramerSimpsonScores` and `kramerSimpsonRanking` includes a
-#' `compIvsI` parameter that can be set to `TRUE` if one wishes for \mjeqn{d_{ii}(\succeq) = 0}{d_ii(>=) = 0}
+#' `compIvsI` parameter that can be set to `TRUE` if one wishes for \eqn{d_{ii}(\succeq) = 0}{d_ii(>=) = 0}
 #' to be included in the comparisons. Put into mathematical terms, if:
 #'
 #' | `compIvsI` | Score definition                                                                                   |
 #' | ---------- | -------------------------------------------------------------------------------------------------- |
-#' | `FALSE`    | \mjeqn{\max_{j \in N \setminus \lbrace i \rbrace}(d_{ji}(\succeq))}{max_{j in N \\ {i}}(d_ji(>=))} |
-#' | `TRUE`     | \mjeqn{\max_{j \in N}(d_{ji}(\succeq))}{max_{j in N}(d_ji(>=))}                                    |
+#' | `FALSE`    | \eqn{\max_{j \in N \setminus \lbrace i \rbrace}(d_{ji}(\succeq))}{max_{j in N \\ {i}}(d_ji(>=))} |
+#' | `TRUE`     | \eqn{\max_{j \in N}(d_{ji}(\succeq))}{max_{j in N}(d_ji(>=))}                                    |
 #'
 #'
 #' @template param/powerRelation
 #' @template param/elements
-#' @param compIvsI If `TRUE`, include CP-Majority comparison \mjeqn{d_{ii}(\succeq)}{d_ii(>=)}, or, the CP-Majority
+#' @param compIvsI If `TRUE`, include CP-Majority comparison \eqn{d_{ii}(\succeq)}{d_ii(>=)}, or, the CP-Majority
 #' comparison score of an element against itself, which is always 0.
 #'
 #' @family CP-majority based functions

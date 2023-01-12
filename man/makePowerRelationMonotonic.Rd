@@ -7,10 +7,10 @@
 makePowerRelationMonotonic(powerRelation)
 }
 \arguments{
-\item{powerRelation}{A \code{PowerRelation} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
+\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
 }
 \value{
-\code{PowerRelation} object containing vector of elements or players \verb{$elements}, an ordered list of
+\code{\link{PowerRelation}} object containing vector of elements or players \verb{$elements}, an ordered list of
 coalitions \verb{$rankingCoalitions} and an ordered vector of comparators \verb{$rankingComparators}
 as well as an ordered list of equivalence classes \verb{$equivalenceClasses} for convenience
 }
@@ -42,7 +42,7 @@ makePowerRelationMonotonic(pr)
 
 }
 \seealso{
-Other helper functions transorming existing \code{PowerRelation} objects: 
+Other helper functions transorming existing \code{\link{PowerRelation}} objects: 
 \code{\link{makePowerRelationTotal}()}
 }
-\concept{helper functions transorming existing \code{PowerRelation} objects}
+\concept{helper functions transorming existing \code{\link{PowerRelation}} objects}

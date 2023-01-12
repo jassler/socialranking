@@ -7,7 +7,7 @@
 transitiveClosure(powerRelation)
 }
 \arguments{
-\item{powerRelation}{A \code{PowerRelation} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
+\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
 }
 \value{
 \code{\link{PowerRelation}} object with no cycles.
@@ -16,19 +16,18 @@ transitiveClosure(powerRelation)
 Apply transitive closure over power relation that has cycles.
 }
 \details{
-\loadmathjax
 A power relation is a binary relationship between coalitions that is transitive.
-For coalitions \mjeqn{a, b, c \in 2^N}{a, b, c in 2^N}, this means that if \mjeqn{a \succ b}{a > b} and
-\mjeqn{b \succ c}{b > c}, then \mjeqn{a \succ c}{a > c}.
+For coalitions \eqn{a, b, c \in 2^N}{a, b, c in 2^N}, this means that if \eqn{a \succ b}{a > b} and
+\eqn{b \succ c}{b > c}, then \eqn{a \succ c}{a > c}.
 
 A power relation with cycles is not transitive. A transitive closure over a power relation removes all cycles and turns it into a
 transitive relation placing all coalitions within a cycle in the same equivalence class.
-If \mjeqn{a \succ b \succ a}{a > b > a}, from the symmetric definition in \code{\link[=newPowerRelation]{newPowerRelation()}} we
-therefore assume that \mjeqn{a \sim b}{a ~ b}. Similarly if
-\mjeqn{a \succ b_1 \succ b_2 \succ \dots \succ b_n \succ a}{a > b_1 > b_2 > ... > b_n > a}, the transitive closure turns it into
-\mjeqn{a \sim b_1 \sim b_2 \sim \dots \sim b_n}{a ~ b_1 ~ b_2 ~ ... ~ b_n}.
+If \eqn{a \succ b \succ a}{a > b > a}, from the symmetric definition in \code{\link[=newPowerRelation]{newPowerRelation()}} we
+therefore assume that \eqn{a \sim b}{a ~ b}. Similarly if
+\eqn{a \succ b_1 \succ b_2 \succ \dots \succ b_n \succ a}{a > b_1 > b_2 > ... > b_n > a}, the transitive closure turns it into
+\eqn{a \sim b_1 \sim b_2 \sim \dots \sim b_n}{a ~ b_1 ~ b_2 ~ ... ~ b_n}.
 
-\code{transitiveClosure()} transforms a \code{PowerRelation} object with cycles into a \code{Powerrelation} object without cycles.
+\code{transitiveClosure()} transforms a \code{\link{PowerRelation}} object with cycles into a \code{Powerrelation} object without cycles.
 As described in the previous paragraph, all coalitions within a cycle then are put into the same equivalence class
 and all duplicate coalitions are removed.
 }

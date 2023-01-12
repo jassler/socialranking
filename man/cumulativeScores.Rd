@@ -10,7 +10,7 @@ cumulativeScores(powerRelation, elements = NULL)
 cumulativelyDominates(powerRelation, e1, e2, strictly = FALSE)
 }
 \arguments{
-\item{powerRelation}{A \code{PowerRelation} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
+\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
 
 \item{elements}{vector of elements of which to calculate their scores.
 If \code{elements == NULL}, create vectors for all elements in \code{pr$elements}}
@@ -31,7 +31,6 @@ times the given element appears in each equivalence class.
 Calculate cumulative score vectors for each element.
 }
 \details{
-\loadmathjax
 An element's cumulative score vector is calculated by cumulatively adding up the
 amount of times it appears in each equivalence class in the \code{powerRelation}. E.g. in a linear power relation with
 eight coalitions, if element 1 appears in coalitions placed at 1, 3, and 6,
@@ -40,11 +39,11 @@ its score vector is [1, 1, 2, 2, 2, 3, 3, 3].
 \section{Dominance}{
 
 
-\mjseqn{i} dominates \mjseqn{j} if for each index
-\mjeqn{x, \textrm{Score}(i)_x \geq \textrm{Score}(j)_x}{x, Score(i)_x >= Score(j)_x}.
+\eqn{i}{i} dominates \eqn{j}{j} if for each index
+\eqn{x, \textrm{Score}(i)_x \geq \textrm{Score}(j)_x}{x, Score(i)_x >= Score(j)_x}.
 
-\mjseqn{i} \emph{strictly} dominates \mjseqn{j}, if additionally
-\mjeqn{\textrm{Score}(i) \neq \textrm{Score}(j)}{Score(i) != Score(j)}.
+\eqn{i}{i} \emph{strictly} dominates \eqn{j}{j}, if additionally
+\eqn{\textrm{Score}(i) \neq \textrm{Score}(j)}{Score(i) != Score(j)}.
 }
 
 \examples{

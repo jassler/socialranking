@@ -1,6 +1,6 @@
 #' Test relation between two elements
 #'
-#' On a given `PowerRelation` object `pr`, check if `e1` relates to `e2` based on the given social ranking solution.
+#' On a given [`PowerRelation`] object `pr`, check if `e1` relates to `e2` based on the given social ranking solution.
 #'
 #' The function `testRelation` is somewhat only used to make the offered comparison operators in the package better discoverable.
 #'
@@ -9,7 +9,7 @@
 #'
 #' @template param/powerRelation
 #' @template param/e1and2
-#' @param pr_e1 `PowerRelation` and `e1` element, packed into a list using `pr %:% e1`
+#' @param pr_e1 [`PowerRelation`] and `e1` element, packed into a list using `pr %:% e1`
 #'
 #' @return `testRelation()` and `%:%` returns `list(powerRelation, e1)`.
 #'

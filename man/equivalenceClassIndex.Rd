@@ -7,11 +7,11 @@
 equivalenceClassIndex(powerRelation, coalition, stopIfNotExists = TRUE)
 }
 \arguments{
-\item{powerRelation}{A \code{PowerRelation} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
+\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
 
 \item{coalition}{a coalition vector or \code{\link[sets:set]{sets::set}} that is part of \code{powerRelation}}
 
-\item{stopIfNotExists}{\code{TRUE} if an error should be thrown when the coalition given is not in the \code{PowerRelation} object.
+\item{stopIfNotExists}{\code{TRUE} if an error should be thrown when the coalition given is not in the \code{\link{PowerRelation}} object.
 If \code{FALSE}, \code{-1} will be returned}
 }
 \value{

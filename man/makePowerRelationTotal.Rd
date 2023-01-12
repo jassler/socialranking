@@ -7,13 +7,12 @@
 makePowerRelationTotal(powerRelation, includeEmptySet = TRUE)
 }
 \arguments{
-\item{powerRelation}{A \code{PowerRelation} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
+\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
 
-\item{includeEmptySet}{If \code{TRUE}, check \mjeqn{\lbrace i \rbrace \succeq \lbrace j \rbrace}{\{i\} >= \{j\}} even if
-empty set is not part of the power relation.}
+\item{includeEmptySet}{If \code{TRUE}, include the empty set in the last equivalence class if it is missing from the power relation.}
 }
 \value{
-\code{PowerRelation} object containing vector of elements or players \verb{$elements}, an ordered list of
+\code{\link{PowerRelation}} object containing vector of elements or players \verb{$elements}, an ordered list of
 coalitions \verb{$rankingCoalitions} and an ordered vector of comparators \verb{$rankingComparators}
 as well as an ordered list of equivalence classes \verb{$equivalenceClasses} for convenience
 }
@@ -40,7 +39,7 @@ makePowerRelationTotal(pr, includeEmptySet = FALSE)
 
 }
 \seealso{
-Other helper functions transorming existing \code{PowerRelation} objects: 
+Other helper functions transorming existing \code{\link{PowerRelation}} objects: 
 \code{\link{makePowerRelationMonotonic}()}
 }
-\concept{helper functions transorming existing \code{PowerRelation} objects}
+\concept{helper functions transorming existing \code{\link{PowerRelation}} objects}
