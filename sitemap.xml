@@ -73,6 +73,12 @@
     <loc>https://jassler.github.io/socialranking/reference/lexcelScores.html</loc>
   </url>
   <url>
+    <loc>https://jassler.github.io/socialranking/reference/makePowerRelationMonotonic.html</loc>
+  </url>
+  <url>
+    <loc>https://jassler.github.io/socialranking/reference/makePowerRelationTotal.html</loc>
+  </url>
+  <url>
     <loc>https://jassler.github.io/socialranking/reference/newPowerRelation.html</loc>
   </url>
   <url>
