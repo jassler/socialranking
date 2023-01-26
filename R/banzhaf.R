@@ -59,7 +59,6 @@ ordinalBanzhafScores <- function(powerRelation) {
   # --- checks (generated) --- #
   stopifnot(is.PowerRelation(powerRelation))
   # --- end checks --- #
-  # TODO check for normalization
 
   result <- list()
   for(e in powerRelation$elements) {

@@ -19,7 +19,8 @@ Suggests:
     xfun (>= 0.30.0),
     knitr (>= 1.40),
     rmarkdown (>= 2.17),
-    covr (>= 3.6.1)
+    covr (>= 3.6.1),
+    partitions (>= 1.10.7)
 Imports:
     relations (>= 0.6.12),
     sets (>= 1.0.21),

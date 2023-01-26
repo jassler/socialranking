@@ -17,7 +17,6 @@ prGenerator <- function(P) {
         return(NULL)
       parts <<- parts[-1]
       perms <<- permutate(seq_along(parts[[1]]))
-      print(paste(total-length(parts), "/", total, ":", capture.output(parts[[1]])))
     }
 
     #eqs <- rapply(parts[[1]], function(i) P[i], how = "replace")
