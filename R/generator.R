@@ -4,7 +4,41 @@
 #' Based on a list of coalitions, create a generator function that returns a new [`PowerRelation`] object with every call.
 #' `NULL` is returned once every possible power relation has been generated.
 #'
+#' Using the `partitions` library, [`partitions::compositions()`] is used to create all possible partitions over the set of coalitions.
+#' For every partition, [`partitions::multinomial()`] is used to create all permutations over the order of the coalitions.
+#'
+#' Note that the number of power relations (or total preorders) grows incredibly fast.
+#'
+#' The Stirling number of second kind \eqn{S(n,k)}{S(n,k)} gives us the number of \eqn{k}{k} partitions over \eqn{n}{n} elements.
+#'
+#' \deqn{S(n,k) = \frac{1}{k!}\sum_{j=0}^{k} (-1)^j \binom{k}{j}(k-j)^n}{S(n,k) = 1/k! * sum_(j=0)^(k) -1^j binom(k,j) (k-j)^n}
+#'
+#' For example, with 4 coalitions (n = 4) there are 6 ways to split it into k = 3 partitions.
+#' The sum of all partitions of any size is also known as the Bell number (\eqn{B_n = \sum_{k=0}^n S(n,k)}{B_n = S(n,0) + S(n,1) + ... + S(n,n)}, see also [`numbers::bell()`]).
+#'
+#' Regarding total preorders \eqn{\mathcal{T}(X)}{T(X)} over a set \eqn{X}{X}, the Stirling number of second kind can be used to determine the number of all possible total preorders \eqn{|\mathcal{T}(X)|}{|T(X)|}.
+#'
+#' \deqn{|\mathcal{T}(X)| = \sum_{k=0}^{|X|} k! * S(|X|, k)}{|T(X)| = Sum_{k=0}^{|X|} k! * S(|X|, k)}
+#'
+#' In literature, it is referred to as the ordered Bell number or Fubini number.
+#'
+#' In the context of social rankings we may consider total preorders over the set of coalitions \eqn{2^N}{2^N} for a given set of elements or players \eqn{N}{N}.
+#' Here, the number of coalitions doubles with every new element.
+#' The number of preorders then are:
+#'
+#' | # of elements | # of coalitions | # of total preorders  | 1ms / computation |
+#' | ------------- | --------------- | --------------------  | ----------------- |
+#' | 0             | 1               | 1                     | 1ms               |
+#' | 1             | 2               | 3                     | 3ms               |
+#' | 2             | 4               | 75                    | 75ms              |
+#' | 3             | 7 (w/o empty set) | 47,293              | 47 seconds        |
+#' | 3             | 8               | 545,835               | 9 minutes         |
+#' | 4             | 15 (w/o empty set) | 230,283,190,977,853 | 7,302 years      |
+#' | 4             | 16              | 5,315,654,681,981,355 | 168,558 years     |
+#'
 #' @param coalitions List of coalition vectors. An empty coalition can be set with `c()`.
+#' @param startWithLinearOrder If set to `TRUE`, the first [`PowerRelation`] object generated will be a linear order in the order of the list of `coalitions` they are given.
+#' If set to `FALSE`, the first [`PowerRelation`] object generated will have a single equivalence class containing all coalitions, as in, every coalition is equally powerful.
 #'
 #' @return A generator function.
 #' Every time this generator function is called, a different [`PowerRelation`] object is returned.
@@ -16,10 +50,8 @@
 #'
 #' gen <- powerRelationGenerator(coalitions)
 #'
-#' pr <- gen()
-#' while(!is.null) {
+#' while(!is.null(pr <- gen())) {
 #'   print(pr)
-#'   pr <- gen()
 #' }
 #' # (ab ~ a ~ b)
 #' # (ab ~ a) > b
@@ -34,11 +66,29 @@
 #' # b > ab > a
 #' # a > b > ab
 #' # b > a > ab
+#'
+#' # from now on, gen() always returns NULL
+#' gen()
 #' # NULL
 #'
 #' @export
-powerRelationGenerator <- function(coalitions) {
+powerRelationGenerator <- function(coalitions, startWithLinearOrder = FALSE) {
   rlang::check_installed('partitions')
+
+  if(length(coalitions) == 0) return(function() NULL)
+
+  # created once, used every time upon generating a new PowerRelation object
+  elements <- unique(sort(unlist(coalitions)))
+  classes <- c('PowerRelation', if(all(nchar(elements) == 1)) 'SingleCharElements')
+
+  if(length(coalitions) == 1) {
+    pr <- newPowerRelation(coalitions[[1]])
+    return(function() { p <- pr; pr <<- NULL; p })
+  }
+
+  if(length(coalitions) > 20) {
+    warning('More than 20 coalitions were given. partitions::compositions() is called to generate all partitions beforehand. This may dampen or exceed system resources.')
+  }
 
   compositions <- partitions::compositions(length(coalitions))
   compositions <- compositions[,apply(compositions, 2, function(x) {
@@ -49,7 +99,7 @@ powerRelationGenerator <- function(coalitions) {
   r <- nrow(compositions)
   compositions <- compositions[,order(apply(compositions, 2, function(x)
     sum(sapply(seq_along(x), function(i) x[i] * (r + 1 - i)))
-  ), decreasing = TRUE)]
+  ), decreasing = !startWithLinearOrder)]
 
   compI <- 1
   part <- Filter(function(x) x != 0, compositions[,1])
@@ -57,21 +107,21 @@ powerRelationGenerator <- function(coalitions) {
   partCum <- c(0, cumsum(part))
   permsI <- 0
 
-  # created once, used every time upon generating a new PowerRelation object
-  elements <- unique(sort(unlist(coalitions)))
-  classes <- c('PowerRelation', if(all(nchar(elements) == 1)) 'SingleCharElements')
+  nextPartition <- function() {
+    compI <<- compI + 1
+    part <<- Filter(function(x) x != 0, compositions[,compI])
+    perms <<- partitions::multinomial(part)
+    partCum <<- c(0, cumsum(part))
+
+    permsI <<- 1
+  }
 
   function() {
     if(permsI >= ncol(perms)) {
       if(compI >= ncol(compositions))
         return(NULL)
 
-      compI <<- compI + 1
-      part <<- Filter(function(x) x != 0, compositions[,compI])
-      perms <<- partitions::multinomial(part)
-      partCum <<- c(0, cumsum(part))
-
-      permsI <<- 1
+      nextPartition()
     } else {
       permsI <<- permsI + 1
     }

@@ -196,10 +196,6 @@ newPowerRelation <- function(..., rankingCoalitions = list(), rankingComparators
     rlang::list2(...)
   }
 
-  if(length(ranking) < 3) {
-    stop(paste("ranking parameter must have at least", 3, "items, got", length(ranking)))
-  }
-
   if(length(ranking) %% 2 != 1) {
     stop("ranking parameter must be a list where the length is uneven. Index 1 contains a vector representing the highest rated coalition. The next coalitions in the ranking are separated with '>' (strictly better) or '~' (indifferent). Use createPowerset(elements, writeLines=T) to get a template list you can work from.")
   }
@@ -208,7 +204,10 @@ newPowerRelation <- function(..., rankingCoalitions = list(), rankingComparators
   value <- list()
 
   value$rankingCoalitions <- lapply(ranking[seq(1, length(ranking), by = 2)], function(x) sets::as.set(x))
-  value$rankingComparators <- unlist(ranking[seq(2, length(ranking), by = 2)])
+  if(length(ranking) > 1)
+    value$rankingComparators <- unlist(ranking[seq(2, length(ranking), by = 2)])
+  else
+    value$rankingComparators <- c()
 
   if(any(value$rankingComparators != ">" & value$rankingComparators != "~")) {
     stop(paste("Each coalition in ranking list must be separated by a '>' or '~' character, got:", paste(unlist(ranking[seq(2, length(ranking), by = 2)]), collapse = ", ")))
