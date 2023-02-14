@@ -1,5 +1,5 @@
 test_that("doRanking works", {
-  pr <- newPowerRelationFromString("12 > 1 > 3 > 23 > 123 ~ 13", asWhat = as.numeric)
+  pr <- as.PowerRelation("12 > 1 > 3 > 23 > 123 ~ 13")
 
   result <- evaluate_promise(doRanking(c(1, 2, 3)), print = TRUE)
   expect_equal(result$output, "3 > 2 > 1")

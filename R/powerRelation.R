@@ -185,8 +185,15 @@ createLookupTables <- function(equivalenceClasses) {
   #   # todo
   # }
 
-  keyList <- lapply(equivalenceClasses, hash::make.keys)
+  keyList <- tryCatch(
+    { lapply(equivalenceClasses, hash::make.keys) },
+    error = function(e) { stop('Power relation must contain at least two coalitions and cannot have empty equivalence classes.') }
+  )
   keys <- unlist(keyList)
+
+  if(length(keys) <= 1) {
+    stop('Power relation must contain at least two coalitions.')
+  }
 
   coalitionLookup <- hash::hash(keys = keys    , values = rep(list(c()), length(keys)))
   elementLookup   <- hash::hash(keys = elements, values = rep(list(c()), length(elements)))
@@ -211,12 +218,12 @@ createLookupTables <- function(equivalenceClasses) {
     }
   }
   if(length(duplicates) > 0) {
-    warning(paste0('Found ', length(duplicates), ' duplicate coalition', if(length(duplicates) > 1) 's', ', listed below. This may violate transitivity and cause issues with certain ranking solutions. You may want to take a look at socialranking::transitiveClosure().\n    - ', paste(duplicates, collapse = '\n    - ')))
+    warning(paste0('Found ', length(duplicates), ' duplicate coalition', if(length(duplicates) > 1) 's', ', listed below. This violates transitivity and can cause issues with certain ranking solutions. You may want to take a look at socialranking::transitiveClosure().\n    - ', paste(duplicates, collapse = '\n    - ')))
   }
 
   return(list(
     elements = elements,
-    coalitionLookup = function(v) coalitionLookup[[paste(v)]],
+    coalitionLookup = function(v) coalitionLookup[[hash::make.keys(list(sort(v)))]],
     elementLookup = function(e) elementLookup[[paste(e)]]
   ))
 }

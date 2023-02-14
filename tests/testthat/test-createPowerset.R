@@ -11,18 +11,18 @@ test_that("with empty set", {
     c()
   ))
 
-  result <- evaluate_promise(createPowerset(c("a", "b", "c"), writeLines = TRUE), print = TRUE)
+  result <- evaluate_promise(createPowerset(c("a", "b", "c"), result = 'print'), print = TRUE)
   expect_equal(result$output,
-'newPowerRelation(
-  c("a", "b", "c"),
-  ">", c("a", "b"),
-  ">", c("a", "c"),
-  ">", c("b", "c"),
-  ">", c("a"),
-  ">", c("b"),
-  ">", c("c"),
-  ">", c(),
-)')
+'as.PowerRelation("
+  abc
+  > ab
+  > ac
+  > bc
+  > a
+  > b
+  > c
+  > {}
+")')
 })
 
 test_that("without empty set", {
@@ -37,15 +37,26 @@ test_that("without empty set", {
     c(3)
   ))
 
-  result <- evaluate_promise(createPowerset(c("a", "b", "c"), writeLines = TRUE, includeEmptySet = FALSE), print = TRUE)
+  result <- evaluate_promise(createPowerset(c("a", "b", "c"), includeEmptySet = FALSE, result = 'print'), print = TRUE)
   expect_equal(result$output,
-               'newPowerRelation(
-  c("a", "b", "c"),
-  ">", c("a", "b"),
-  ">", c("a", "c"),
-  ">", c("b", "c"),
-  ">", c("a"),
-  ">", c("b"),
-  ">", c("c"),
-)')
+'as.PowerRelation("
+  abc
+  > ab
+  > ac
+  > bc
+  > a
+  > b
+  > c
+")')
+})
+
+test_that("longer names", {
+  result <- evaluate_promise(createPowerset(c('ab', 'cd'), result = 'print'), print = TRUE)
+  expect_equal(result$output,
+'PowerRelation(rlang::list2(
+  list(c("ab", "cd")),
+  list(c("ab")),
+  list(c("cd")),
+  list(c()),
+))')
 })

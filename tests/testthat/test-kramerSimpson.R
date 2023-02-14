@@ -1,14 +1,5 @@
 test_that("manip paper example", {
-  pr <- newPowerRelation(
-    2,
-    ">", 1,
-    "~", 3,
-    ">", c(1,2),
-    ">", c(1,3),
-    "~", c(2,3),
-    ">", c(),
-    ">", c(1,2,3)
-  )
+  pr <- as.PowerRelation('2 > 1 ~ 3 > 12 > 13 ~ 23 > {} > 123')
 
   ranking <- evaluate_promise(kramerSimpsonRanking(pr), print = TRUE)
   expect_equal(ranking$output, "2 > 1 > 3")
@@ -40,7 +31,7 @@ test_that("manip paper example", {
 })
 
 test_that('kramer named', {
-  pr <- newPowerRelationFromString('b > (a ~ c) > ab > (ac ~ bc) > {} > abc')
+  pr <- as.PowerRelation('b > (a ~ c) > ab > (ac ~ bc) > {} > abc')
   ranking <- evaluate_promise(kramerSimpsonRanking(pr, compIvsI = FALSE), print = TRUE)
   expect_equal(ranking$output, 'b > a > c')
 
