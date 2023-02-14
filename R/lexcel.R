@@ -79,7 +79,6 @@ lexcelScores <- function(powerRelation, elements = NULL) {
   # --- checks (generated) --- #
   stopifnot(is.PowerRelation(powerRelation))
   if(is.null(elements)) elements <- powerRelation$elements
-  else if(!is.null(err <- powerRelationHasElements(powerRelation, elements))) stop(err)
   # --- end checks --- #
 
   result <- list()
