@@ -12,9 +12,16 @@ makePowerRelationTotal(powerRelation, includeEmptySet = TRUE)
 \item{includeEmptySet}{If \code{TRUE}, include the empty set in the last equivalence class if it is missing from the power relation.}
 }
 \value{
-\code{\link{PowerRelation}} object containing vector of elements or players \verb{$elements}, an ordered list of
-coalitions \verb{$rankingCoalitions} and an ordered vector of comparators \verb{$rankingComparators}
-as well as an ordered list of equivalence classes \verb{$equivalenceClasses} for convenience
+\code{\link{PowerRelation}} object containing the following values:
+\itemize{
+\item \verb{$elements}: vector of elements
+\item \verb{$eqs}: equivalence classes. Nested list of lists, each containing vectors representing groups of elements in the same equivalence class
+\item \verb{$coalitionLookup}: \verb{function(v)} taking a coalition vector \code{v} as input and returning the equivalence class it belongs to (or a vector of equivalence classes if the coalition appears multiple times).
+\item \verb{$elementLookup}: \verb{function(e)} taking an element \code{e} as input and returning a list of 2-sized tuples, each representing which equivalence class and which index inside that equivalence class that element appears in.
+}
+
+If \verb{$elements}, \verb{$coalitionLookup} and \verb{$elementLookup} are known beforehand, they can be passed to the function to bypass its own possibly resource-intensive initialization process.
+Since these values are so tightly coupled to the \verb{$eqs} list, however, this is only ever encouraged if the time gains are undoubtedly justified.
 }
 \description{
 Append an equivalence to a power relation with all its missing coalitions to make it total.

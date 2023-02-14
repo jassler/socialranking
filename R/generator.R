@@ -44,6 +44,8 @@
 #' Every time this generator function is called, a different [`PowerRelation`] object is returned.
 #' Once all possible power relations have been generated, the generator function returns `NULL`.
 #'
+#' @family generator functions
+#'
 #' @examples
 #' coalitions <- createPowerset(c('a','b'), includeEmptySet = FALSE)
 #' # list(c('a','b'), 'a', 'b')
@@ -70,6 +72,13 @@
 #' # from now on, gen() always returns NULL
 #' gen()
 #' # NULL
+#'
+#' # Use generateNextPartition() to skip certain partitions
+#' gen <- powerRelationGenerator(coalitions)
+#'
+#' gen <- generateNextPartition(gen)
+#' gen <- generateNextPartition(gen)
+#' gen()
 #'
 #' @export
 powerRelationGenerator <- function(coalitions, startWithLinearOrder = FALSE) {
@@ -138,6 +147,48 @@ powerRelationGenerator <- function(coalitions, startWithLinearOrder = FALSE) {
       })
     ), class = classes)
   }
+}
+
+#' Next partition
+#'
+#' Skip to next partition of the generator.
+#'
+#' @param gen A generator.
+#' @return A generator function.
+#' If the generator is already down to its last partition, it will throw an error.
+#'
+#' @family generator functions
+#'
+#' @examples
+#' coalitions <- createPowerset(c('a','b'), includeEmptySet = FALSE)
+#' # list(c('a','b'), 'a', 'b')
+#'
+#' gen <- powerRelationGenerator(coalitions)
+#' gen()
+#' # (ab ~ a ~ b)
+#'
+#' gen()
+#' # (ab ~ a) > b
+#'
+#' # skipping partition of size two, where the first partition has
+#' # 2 coalitions and the second partition has 1 coalition
+#' gen <- generateNextPartition(gen)
+#' gen()
+#' # ab > (a ~ b)
+#'
+#' # only remaining partition is one of size 3, wherein each
+#' # equivalence class is of size 1
+#' gen <- generateNextPartition(gen)
+#' gen()
+#' # ab > a > b
+#'
+#' # calling it now throws a subscript out of bounds error
+#' if(interactive()) {
+#'   generateNextPartition(gen)
+#' }
+generateNextPartition <- function(gen) {
+  environment(gen)$nextPartition()
+  gen
 }
 
 

@@ -1,239 +1,211 @@
-
-#' PowerRelation object
-#'
-#' Use [`newPowerRelation()`] or [`newPowerRelationFromString()`] to create a PowerRelation object.
-#'
-#' @param x An object
-#' @param ... Arguments passed to or from other methods
-#'
-#' @template return/noreturn
-#'
-#' @export
-PowerRelation <- function(x, ...) {
-  UseMethod('PowerRelation', x)
-}
-
-#' PowerRelation object
-#'
-#' Use [`newPowerRelation()`] or [`newPowerRelationFromString()`] to create a PowerRelation object.
-#'
-#' @param x An object
-#' @param ... Arguments passed to or from other methods
-#'
-#' @template return/noreturn
-#'
-#' @export
-PowerRelation.default <- function(x, ...) {
-  stop('Use newPowerRelation() or newPowerRelationFromString() to create a PowerRelation object.')
-}
-
 #' @export
 `==.PowerRelation` <- function(a, b) {
-  if(length(a$equivalenceClasses) != length(b$equivalenceClasses))
+  if(length(a$eqs) != length(b$eqs))
     return(FALSE)
 
-  for(i in seq_along(a$equivalenceClasses)) {
-    if(length(a$equivalenceClasses[[i]]) != length(b$equivalenceClasses[[i]]))
+  for(i in seq_along(a$eqs)) {
+    if(length(a$eqs[[i]]) != length(b$eqs[[i]]))
       return(FALSE)
-    for(cl in a$equivalenceClasses[[i]]) {
-      if(all(cl != b$equivalenceClasses[[i]]))
-        return(FALSE)
+
+    for(cl in a$eqs[[i]]) {
+      if(any(sapply(b$eqs[[i]], function(x) all(cl == x))))
+        next
+      return(FALSE)
     }
   }
   return(TRUE)
 }
 
 
-#' New Power Relation
+#' PowerRelation object
 #'
-#' Create a [`PowerRelation`] object based on coalition parameters separated by `">"` or `"~"`.
+#' Create a `PowerRelation` object.
 #'
-#' A power relation describes the ordinal information between coalitions.
-#' [`createPowerset()`] offers a convenient way of creating a powerset over a set of elements that can be used to call
-#' the `newPowerRelation()` function. Each coalition in that case is put
-#' on a separate line (see example). In RStudio this allows us to easily rearrange the coalitions
-#' using the Alt+Up or Alt+Down shortcut (Option+Up or Option+Down on MacOS).
+#' A power relation describes the ordinal information between elements.
+#' Here specifically, we are interested in the power relation of coalitions, or groups of elements.
+#' Each coalition is assumed to be a [vector][base::c()] containing zero (empty coalition), one (singleton) or more elements.
 #'
-#' A coalition is a [vector][base::c()] or a [`sets::set()`]. Every vector is turned into a [`sets::set()`].
+#' [`createPowerset()`] offers a convenient way of creating a power set over a set of elements that can be used to call `PowerRelation()` or [`as.PowerRelation()`].
+#'
+#' Trying to figure out what equivalence class certain coalitions or elements belong to is quite common.
+#' For these sets of problems, the functions `$coalitionLookup(v)` and `$elementLookup(e)` should be utilized.
 #'
 #' @section Mathematical background:
 #'
-#' Let \eqn{N = \lbrace 1, ..., n \rbrace}{N = \{1, ..., n\}} be a finite set of
-#' *elements* (sometimes also called players). \eqn{2^N}{2^N}
-#' describes the powerset of \eqn{N}{N}, or the set of all subsets, also *coalitions*.
+#' Let \eqn{N = \lbrace 1, ..., n \rbrace}{N = \{1, ..., n\}} be a finite set of *elements* (also called players).
+#' Any subset \eqn{S \subseteq N}{S \\subseteq N} is considered to be a group or coalition of elements,
+#' where \eqn{\{\}}{\{\}} is referred to as the empty coalition, \eqn{\{i\}}{\{i\}} as a singleton (a coalition of size 1), and \eqn{N}{N} as the grand coalition.
+#' The power set \eqn{2^N}{2^N} denotes the set of all subsets over \eqn{N}{N}.
 #'
-#' Let \eqn{\mathcal{P} \subseteq 2^N}{P \\subseteq 2^N} be a collection of coalitions. A
-#' *power relation* on \eqn{\mathcal{P}}{P} is a total preorder
-#' \eqn{\succeq \subseteq \mathcal{P} \times \mathcal{P}}{>= \\subseteq P x P}.
+#' Let \eqn{\mathcal{P} \subseteq 2^N}{P \\subseteq 2^N} be a collection of coalitions.
+#' A *power relation* on \eqn{\mathcal{P}}{P} is a total preorder \eqn{\succeq \subseteq \mathcal{P} \times \mathcal{P}}{>= \\subseteq P x P}.
+#' That is, for any two coalitions \eqn{S, T \in \mathcal{P}}{S, T in P}, either \eqn{(S,T) \in \succeq}{(S,T) in >=}, or \eqn{(T,S) \in \succeq}{(T,S) in >=}, or both.
+#' In other words, we can compare any two groups of elements in \eqn{\mathcal{P}}{P} and determine, if one group is better, worse, or equivalent to the other.
 #'
-#' With that, \eqn{\mathcal{T}(\mathcal{P})}{T(P)} denotes the family of all power relations on every
-#' collection \eqn{\mathcal{P} \subseteq 2^N}{P \\subseteq 2^N}. Given a *power relation*
-#' \eqn{\succeq \in \mathcal{T}(\mathcal{P})}{>= in T(P)}, \eqn{\sim}{~} denotes its symmetric
-#' part whereas \eqn{\succ}{>} its asymmetric part. For example, let \eqn{S, T \in \mathcal{P}}{S, T in P}. Then:
+#' More commonly, the relation \eqn{(S,T) \in \succeq}{(S,T) in >=} is notated directly as \eqn{S \succeq T}{S >= T}.
 #'
-#' \deqn{S \sim T \textrm{ if } S \succeq T \textrm{ and } T \succeq S}{S ~ T if S >= T and T >= S}
+#' \eqn{\mathcal{T}(\mathcal{P})}{T(P)} denotes the family of all power relations on every collection \eqn{\mathcal{P} \subseteq 2^N}{P \\subseteq 2^N}.
+#' Given a power relation \eqn{\succeq \in \mathcal{T}(\mathcal{P})}{>= in T(P)}, \eqn{\sim}{~} denotes its symmetric part whereas \eqn{\succ}{>} its asymmetric part.
+#' Let \eqn{S, T \in \mathcal{P}}{S, T in P}.
+#' Then,
 #'
-#' \deqn{S \succ T \textrm{ if } S \succeq T \textrm{ and not } T \succeq S}{S > T if S >= T and not T >= S}
+#' \deqn{S \sim T \textrm{ if } S \succeq T \textrm{ and } T \succeq S,}{S ~ T if S >= T and T >= S,}
 #'
-#' @param ... Coalition vector, comparison character (`">"` or `"~"`), coalition vector, comparison character, coalition vector, ...
-#' @param rankingCoalitions List of ordered coalition vectors. If empty, it is ignored. Corresponds to
-#' `$rankingCoalitions` list from a [`PowerRelation`] object.
-#' @param rankingComparators Vector of `">"` or `"~"` characters. If `rankingCoalitions` list is empty, it is ignored. If
-#' vector is empty, it uses the `">"` relation by default.
-#' @param equivalenceClasses Nested list of coalition vectors that are indifferent to another. If empty, it is ignored.
+#' \deqn{S \succ T \textrm{ if } S \succeq T \textrm{ and not } T \succeq S.}{S > T if S >= T and not T >= S.}
 #'
+#' Coalitions who are deemed equivalent (\eqn{S \sim T}{S ~ T}) can be collected into an equivalence class \eqn{\Sigma_i}{E_i}.
+#' The list of equivalence classes forms a linear order, \eqn{\Sigma_1 \succ \Sigma_2 \succ \dots \succ \Sigma_m}{E_1 > E_2 > ... > E_m}.
 #'
-#' @template return/PowerRelation
+#' @section Mathematical example:
+#'
+#' As an example, consider the elements \eqn{N = \{\textrm{apple}, \textrm{banana}, \textrm{chocolate}\}}{N = \{apple, banana, chocolate\}}.
+#' Each of them individually may go well with pancakes, but we are also interested in the combination of condiments.
+#' If we consider all possibilities, we will have to compare the sets
+#'
+#' \deqn{\mathcal{P} = 2^N = \{\{a,b,c\}, \{a,b\}, \{a,c\}, \{b,c\}, \{a\}, \{b\}, \{c\}, \{\}\}.}{P = 2^N = \{\{a,b,c\}, \{a,b\}, \{a,c\}, \{b,c\}, \{a\}, \{b\}, \{c\}, \{\}\}.}
+#'
+#' Looking for a way to rank this group of objects, one may arrive at the following total preorder \eqn{\succeq \in \mathcal{T}(\mathcal{P})}{>= in T(P)}:
+#'
+#' \deqn{\{b,c\} \succ (\{a\} \sim \{c\}) \succ \{b\} \succ \{\} \succ (\{a,b,c\} \sim \{a,b\} \sim \{a, c\}).}{>=: \{b,c\} > (\{a\} ~ \{c\}) > \{b\} > \{\} > (\{a,b,c\} ~ \{a,b\} ~ \{a, c\}).}
+#'
+#' In this particular case, we get five equivalence classes.
+#'
+#' \deqn{\Sigma_1 = \{\{b,c\}\}\\
+#' \Sigma_2 = \{\{a\}, \{c\}\}\\
+#' \Sigma_3 = \{\{b\}\}\\
+#' \Sigma_4 = \{\{\}\}\\
+#' \Sigma_5 = \{\{a,b,c\},\{a,b\},\{a,c\}\}
+#' }{}
 #'
 #' @references
 #' \insertRef{2017axiomaticAndAlgorithmicPerspectives}{socialranking}
 #'
 #' \insertRef{2019Lexcel}{socialranking}
 #'
-#' @family newPowerRelation functions
-#' @seealso [makePowerRelationMonotonic()]
+#' \insertRef{2021Lexcel}{socialranking}
+#'
+#' @param equivalenceClasses A nested list of lists, each containing coalitions or groups represented as vectors that are in the same equivalence class.
+#' @param elements Vector of elements in power relation. Only set this value if you know what you are doing. See Details for more.
+#' @param coalitionLookup A function taking a vector parameter and returning an index. See return value for more details. Only set this value if you know what you are doing.
+#' @param elementLookup A function taking an element and returning a list of 2-sized tuples. See return value for more details. Only set this value if you know what you are doing.
+#'
+#' @template return/PowerRelation
 #'
 #' @examples
+#' pr <- PowerRelation(list(
+#'   list(c(1,2,3)),
+#'   list(c(1, 2), 2, 3),
+#'   list(c(2, 3), c()),
+#'   list(c(1, 3)),
+#'   list(1)
+#' ))
+#'
+#' pr
+#' # 123 > (12 ~ 2 ~ 3) > (23 ~ {}) > 13 > 1
+#'
+#' stopifnot(pr$elements == 1:3)
+#' stopifnot(pr$coalitionLookup(1) == 5)
+#' stopifnot(pr$coalitionLookup(c()) == 3)
+#' stopifnot(pr$coalitionLookup(c(1,2)) == 2)
+#'
+#' # find coalitions an element appears in
+#' for(t in pr$elementLookup(2)) {
+#'   stopifnot(2 %in% pr$eqs[[t[1]]][[t[2]]])
+#' }
+#'
+#' # use createPowerset to help generate a valid function call
+#' # note that the function call looks different if elements are only one character long
 #' if(interactive())
-#'   createPowerset(1:3, copyToClipboard = TRUE)
+#'   createPowerset(c("apple", "banana", "chocolate"), result = "copy")
 #'
 #' # pasted clipboard and rearranged lines using
 #' # Alt + Up, and
 #' # Alt + Down shortcut in RStudio
-#' pr <- newPowerRelation(
-#'   c(1,2),
-#'   ">", c(1,2,3),
-#'   ">", c(1,3),
-#'   "~", c(2),
-#'   ">", c(1),
-#'   "~", c(2,3),
-#'   "~", c(3),
-#' )
-#'
-#' # Elements: 1 2 3
-#' # 12 > 123 > (13 ~ 2) > (1 ~ 23 ~ 3)
-#' print(pr)
-#'
-#' # {1, 2, 3}
-#' pr$elements
-#'
-#' # {1, 2}, {1, 2, 3}, {1, 3}, {2}, {1}, {2, 3}, {3}
-#' pr$rankingCoalitions
-#'
-#' # ">" ">" "~" ">" ">" ">"
-#' pr$rankingComparators
-#'
-#' # {{1, 2}}, {{1, 2, 3}}, {{1, 3}, {2}}, {{1}, {2, 3}, {3}}
-#' pr$equivalenceClasses
-#'
-#' # not all coalitions of a powerset have to be present
-#' newPowerRelation(c(1,2), ">", c(1))
-#'
-#' # cycles produce a warning (but no errors)
-#' newPowerRelation(c(1,2), ">", c(1), ">", c(1,2))
-#'
-#' # use createPowerset directly
-#' # 123 > 12 > 13 > 23 > 1 > 2 > 3 > {}
-#' newPowerRelation(rankingCoalitions = createPowerset(1:3))
-#'
-#' # 123 > (12 ~ 13) > (23 ~ 1) > (2 ~ 3) > {}
-#' newPowerRelation(rankingCoalitions = createPowerset(1:3), rankingComparators = c(">", "~"))
-#'
-#' # using equivalenceClasses parameter
-#' # (12 ~ 13 ~ 123) > (1 ~ 3 ~ {}) > (2 ~ 23)
-#' pr <- newPowerRelation(equivalenceClasses = list(
-#'   list(c(1,2), c(1,3), c(1,2,3)),
-#'   list(1, 3, c()),
-#'   list(2, c(2,3))
+#' PowerRelation(rlang::list2(
+#'   list(c("banana", "chocolate")),
+#'   list(c("apple"),
+#'        c("chocolate")),
+#'   list(c("banana")),
+#'   list(c()),
+#'   list(c("apple", "banana", "chocolate"),
+#'        c("apple", "banana"),
+#'        c("apple", "chocolate")),
 #' ))
-#' # and manipulating the order of the equivalence classes
-#' # (1 ~ 3 ~ {}) > (2 ~ 23) > (12 ~ 13 ~ 123)
-#' newPowerRelation(equivalenceClasses = pr$equivalenceClasses[c(2,3,1)])
-#'
-#'
-#' # It's discouraged to directly change the ordering of a power relation inside a
-#' # PowerRelation object. Instead extract rankingCoalitions, rearrange the list
-#' # and pass it to newPowerRelation
-#' newOrdering <- rev(pr$rankingCoalitions)
-#'
-#' # 3 > 23 > (1 ~ 2) > (13 ~ 123 ~ 12)
-#' newPowerRelation(rankingCoalitions = newOrdering, rankingComparators = pr$rankingComparators)
-#'
-#' # 3 > 23 > 1 > 2 > 13 > 123 > 12
-#' newPowerRelation(rankingCoalitions = newOrdering)
+#' # {banana, chocolate} > ({apple} ~ {chocolate}) > {banana} > {} > ...
 #'
 #' @export
-newPowerRelation <- function(..., rankingCoalitions = list(), rankingComparators = c(), equivalenceClasses = list()) {
-  ranking <- if(length(rankingCoalitions) > 1) {
-    if(length(rankingComparators) == 0)
-      rankingComparators <- '>'
-    rankingComparators <- rep(rankingComparators, length.out = length(rankingCoalitions) - 1)
+PowerRelation <- function(equivalenceClasses, elements = NULL, coalitionLookup = NULL, elementLookup = NULL) {
 
-    l <- list(rankingCoalitions[[1]])
-    for(i in 1:length(rankingComparators)) {
-      l[[i*2]] <- rankingComparators[i]
-      l[i*2+1] <- list(rankingCoalitions[[i+1]])
-    }
-    l
-  } else if(length(equivalenceClasses) > 0) {
-    l <- list()
-    for(eq in equivalenceClasses) {
-      first <- TRUE
-      for(coal in eq) {
-        if(first) {
-          first <- FALSE
-        } else {
-          l[[length(l)+1]] <- '~'
-        }
-        l[length(l)+1] <- list(coal)
+  if(is.null(elements) || is.null(coalitionLookup) || is.null(elementLookup)) {
+    equivalenceClasses <- lapply(equivalenceClasses, lapply, sort)
+    lookupTables <- createLookupTables(equivalenceClasses)
+    elements        <- lookupTables$elements
+    coalitionLookup <- lookupTables$coalitionLookup
+    elementLookup   <- lookupTables$elementLookup
+  }
+
+  classes <- c('PowerRelation', if(all(nchar(elements) == 1)) 'SingleCharElements')
+
+  structure(list(
+    elements = elements,
+    eqs = equivalenceClasses,
+    coalitionLookup = coalitionLookup,
+    elementLookup = elementLookup
+  ), class = classes)
+}
+
+createLookupTables <- function(equivalenceClasses) {
+  elements <- unique(sort(unlist(equivalenceClasses)))
+
+  # if(noDuplicates) {
+  #   coalitionLookup <- hash::hash(
+  #     keys = unlist(equivalenceClasses, recursive = FALSE),
+  #     values = unlist(sapply(
+  #       seq_along(equivalenceClasses),
+  #       function(i) rep(i, length(equivalenceClasses[[i]]))
+  #     ))
+  #   )
+  #   elementLookup <- hash::hash(
+  #     keys = elements,
+  #     values = rep(list(c()), length(elements))
+  #   )
+  #   # todo
+  # }
+
+  keyList <- lapply(equivalenceClasses, hash::make.keys)
+  keys <- unlist(keyList)
+
+  coalitionLookup <- hash::hash(keys = keys    , values = rep(list(c()), length(keys)))
+  elementLookup   <- hash::hash(keys = elements, values = rep(list(c()), length(elements)))
+
+  duplicates <- sets::set()
+  for(i in seq_along(keyList)) {
+    for(j in seq_along(keyList[[i]])) {
+      k <- keyList[[i]][j]
+      v <- c(coalitionLookup[[k]], i)
+      coalitionLookup[[k]] <- v
+
+      if(length(v) > 1)
+        duplicates <- sets::set_union(duplicates, k)
+
+      els <- equivalenceClasses[[i]][[j]]
+      if(length(els) == 0)
+        next
+
+      for(el in hash::make.keys(equivalenceClasses[[i]][[j]])) {
+        elementLookup[[el]] <- append(elementLookup[[el]], list(c(i,j)))
       }
-      l[[length(l)+1]] <- '>'
     }
-    l[-length(l)]
-  } else if(...length() == 1 && is.list(..1)) {
-    ranking <- ..1
-  } else {
-    rlang::list2(...)
+  }
+  if(length(duplicates) > 0) {
+    warning(paste0('Found ', length(duplicates), ' duplicate coalition', if(length(duplicates) > 1) 's', ', listed below. This may violate transitivity and cause issues with certain ranking solutions. You may want to take a look at socialranking::transitiveClosure().\n    - ', paste(duplicates, collapse = '\n    - ')))
   }
 
-  if(length(ranking) %% 2 != 1) {
-    stop("ranking parameter must be a list where the length is uneven. Index 1 contains a vector representing the highest rated coalition. The next coalitions in the ranking are separated with '>' (strictly better) or '~' (indifferent). Use createPowerset(elements, writeLines=T) to get a template list you can work from.")
-  }
-
-  # value <- list(ranking = lapply(ranking, function(x) sets::as.tuple(x)))
-  value <- list()
-
-  value$rankingCoalitions <- lapply(ranking[seq(1, length(ranking), by = 2)], function(x) sets::as.set(x))
-  if(length(ranking) > 1)
-    value$rankingComparators <- unlist(ranking[seq(2, length(ranking), by = 2)])
-  else
-    value$rankingComparators <- c()
-
-  if(any(value$rankingComparators != ">" & value$rankingComparators != "~")) {
-    stop(paste("Each coalition in ranking list must be separated by a '>' or '~' character, got:", paste(unlist(ranking[seq(2, length(ranking), by = 2)]), collapse = ", ")))
-  }
-
-  uniques <- unique(value$rankingCoalitions)
-  duplicates <- duplicated(value$rankingCoalitions)
-  if(any(duplicates)) {
-    duplicates <- unique(value$rankingCoalitions[duplicates])
-    duplicates <- sapply(
-      duplicates,
-      function(x) paste0('{', paste(x, collapse = ', '), '}')
-    )
-    warning(paste0(
-      'Found the following ',
-      if(length(duplicates) == 1) 'duplicate' else 'duplicates',
-      '. Did you mean to introduce cycles?\n  ',
-      paste(duplicates, collapse = '\n  ')
-    ))
-  }
-
-  value$elements <- unique(sort(unlist(value$rankingCoalitions)))
-  value$equivalenceClasses <- generateEquivalenceClasses(value$rankingCoalitions, value$rankingComparators)
-
-  classes <- c('PowerRelation', if(all(nchar(value$elements) == 1)) 'SingleCharElements')
-  structure(value, class = classes)
+  return(list(
+    elements = elements,
+    coalitionLookup = function(v) coalitionLookup[[paste(v)]],
+    elementLookup = function(e) elementLookup[[paste(e)]]
+  ))
 }
 
 #' Make Power Relation monotonic
@@ -340,71 +312,6 @@ generateEquivalenceClasses <- function(coalitions, rankingComparators) {
   )
 }
 
-#' Create [`PowerRelation`] object from string
-#'
-#' Given a pure string representation of a power relation, create a [`PowerRelation`] object.
-#'
-#' Elements in this power relation are assumed to be one character long.
-#' E.g., the coalitions `"{1,2,3}"` and `123` are equivalent, given that the `elementNames`
-#' parameter tells the function to only interpret the characters `1`, `2` and `3` as valid element names.
-#'
-#' @param string String representation of a power relation. Special characters such as \eqn{\succ}{\\succ} and
-#' \eqn{\sim}{\\sim} are replaced with their ASCII equivalents `>` and `~` respectively.
-#' @param elementNames Regular expression to match single characters in string input that should
-#' be interpreted as a name of an element. If character does not match, it is simply ignored.
-#' @param asWhat Elements are interpreted as string characters by default. [`base::as.numeric`]
-#' or [`base::as.integer`] can be passed to convert those string characters into numeric values.
-#'
-#' @family newPowerRelation functions
-#'
-#' @template return/PowerRelation
-#'
-#' @examples
-#' # Elements: 1 2 3
-#' # 123 > 12 > 23 > 1 > (13 ~ 2)
-#' newPowerRelationFromString("123 > 12 > 23 > 1 > 13 ~ 2", asWhat = as.numeric)
-#'
-#' # commas, braces and spaces are ignored by default
-#' # notice that since an empty set is not a valid name of an element,
-#' # it is simply ignored. Since there are no valid elements at the
-#' # end, it is interpreted as an empty set.
-#' newPowerRelationFromString("{1,2,3} > {1,3} > {1,2 } ~ \u2205", asWhat = as.numeric)
-#'
-#' # use unvoncentional names
-#' pr <- newPowerRelationFromString(".,; > .;~.,~,; > .~,~;", elementNames = "[.,;]")
-#' stopifnot(pr$elements == sort(c(".", ",", ";")))
-#'
-#' @export
-newPowerRelationFromString <- function(string, elementNames = '[0-9a-zA-Z]', asWhat = identity) {
-  coalition <- c()
-  isAllNumbers <- TRUE
-
-  coals <- list()
-  comps <- c()
-
-  for(s in strsplit(string, '')[[1]]) {
-    if(s == '>' || s == '~' || s == '\u227B' || s == '\u223C') {
-      if(s == '\u227B') s <- '>'
-      else if(s == '\u223C') s <- '~'
-      coals[length(coals)+1] <- list(asWhat(coalition))
-      comps <- c(comps, s)
-      coalition <- c()
-
-    } else if(grepl(elementNames, s)) {
-      coalition <- c(coalition, s)
-    }
-  }
-
-  coals[length(coals)+1] <- list(asWhat(coalition))
-
-  if(identical(asWhat, identity) && is.character(unlist(coals)) && all(grepl("^[0-9]+$", unlist(coals)))) {
-    coals <- lapply(coals, as.numeric)
-    message('Note: Called as.numeric on all elements.\nIf you wanted the elements to be represented as characters instead, call newPowerRelationFromString again and set asWhat = as.character')
-  }
-
-  newPowerRelation(rankingCoalitions = coals, rankingComparators = comps)
-}
-
 
 #' Are coalitions indifferent
 #'
@@ -506,8 +413,6 @@ is.PowerRelation <- function(x, ...) {
 #' @rdname PowerRelation
 #' @export
 print.PowerRelation <- function(x, ...) {
-  cat('Elements: ', paste(x$elements, collapse = ' '), '\n', sep = '')
-
   p <- if('SingleCharElements' %in% class(x)) {
     function(pl) if(length(pl) > 0) paste(pl, collapse = '') else '{}'
   } else {
@@ -515,7 +420,7 @@ print.PowerRelation <- function(x, ...) {
   }
 
   eClasses <- unlist(lapply(
-    x$equivalenceClasses,
+    x$eqs,
     function(e) {
       el <- unlist(lapply(
         e,
@@ -530,4 +435,28 @@ print.PowerRelation <- function(x, ...) {
 
   cat(eClasses, sep = ' > ')
   cat('\n')
+}
+
+#' New Power Relation
+#'
+#' Deprecated. Use [`PowerRelation()`] instead.
+#'
+#' @param ... Any parameter.
+#' @template return/noreturn
+#'
+#' @export
+newPowerRelation <- function(...) {
+  stop("This function has been deprecated. Use PowerRelation() instead.")
+}
+
+#' Create [`PowerRelation`] object from string
+#'
+#' Deprecated. Use [`as.PowerRelation()`] instead.
+#'
+#' @param ... Any parameter.
+#' @template return/noreturn
+#'
+#' @export
+newPowerRelationFromString <- function(...) {
+  stop("This function has been deprecated. Use as.PowerRelation() instead.")
 }

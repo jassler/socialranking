@@ -80,4 +80,16 @@ while(!is.null(pr <- gen())) {
 gen()
 # NULL
 
+# Use generateNextPartition() to skip certain partitions
+gen <- powerRelationGenerator(coalitions)
+
+gen <- generateNextPartition(gen)
+gen <- generateNextPartition(gen)
+gen()
+
 }
+\seealso{
+Other generator functions: 
+\code{\link{generateNextPartition}()}
+}
+\concept{generator functions}
