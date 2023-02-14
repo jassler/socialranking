@@ -114,13 +114,26 @@
 #' }
 #'
 #' # use createPowerset to help generate a valid function call
+#' if(interactive())
+#'   createPowerset(letters[1:3], result = "copy")
+#'
+#' # pasted, rearranged using alt+up / alt+down in RStudio
+#  as.PowerRelation("
+#    a
+#    ~ ab
+#    < abc
+#    < bc
+#    < {}
+#    ~ b
+#    < ac
+#    < c
+#  ")
+#'
 #' # note that the function call looks different if elements are only one character long
 #' if(interactive())
 #'   createPowerset(c("apple", "banana", "chocolate"), result = "copy")
 #'
-#' # pasted clipboard and rearranged lines using
-#' # Alt + Up, and
-#' # Alt + Down shortcut in RStudio
+#' # pasted clipboard
 #' PowerRelation(rlang::list2(
 #'   list(c("banana", "chocolate")),
 #'   list(c("apple"),

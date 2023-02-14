@@ -3,6 +3,8 @@ as.PowerRelation <- function(x, ..., comparators = NULL) {
   UseMethod('as.PowerRelation')
 }
 
+#' @rdname PowerRelation
+#'
 #' @export
 as.PowerRelation.character <- function(x) {
   eqs <- stringr::str_replace_all(x, '[^0-9a-zA-Z>~\u227B\u223C]', '')
