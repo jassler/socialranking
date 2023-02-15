@@ -84,7 +84,7 @@ lexcelScores <- function(powerRelation, elements = NULL) {
   result <- list()
   for(e in elements) {
     result[[paste(e)]] <- unlist(lapply(
-      powerRelation$equivalenceClasses,
+      powerRelation$eqs,
       function(coalition) sum(e == unlist(coalition))
     ))
   }

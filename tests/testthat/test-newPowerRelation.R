@@ -12,9 +12,9 @@ test_that("basic", {
 })
 
 test_that("element types", {
-  pr <- PowerRelation(list(list(c("a",2)), list("a", 2))))
+  pr <- PowerRelation(list(list(c("a",2)), list("a", 2)))
   expect_equal(pr$elements, c('2','a'))
-  expect_equal(pr$eqs, list(list(c('2','a')), list(c(''), sets::set(2))))
+  expect_equal(pr$eqs, list(list(c('2','a')), list(c('a'), c(2))))
 })
 
 test_that("too few coalitions error", {
@@ -32,10 +32,13 @@ test_that("from string", {
 
 
   pr <- as.PowerRelation("12 > (1 ~ 2).:;-*/\\")
-  expect_equal(pr, newPowerRelation(list(list(c(1,2), list(1, 2)))))
+  expect_equal(pr, PowerRelation(list(list(c(1,2)), list(1, 2))))
 
   pr <- as.PowerRelation("a ~ {} > b")
-  expect_equal(pr, newPowerRelation(list(list("a", c()), list("b"))))
+  expect_equal(pr, PowerRelation(list(list("a", c()), list("b"))))
+
+  pr <- as.PowerRelation("{} > a > b")
+  expect_equal(pr, PowerRelation(list(list(c()), list("a"), list("b"))))
 })
 
 
@@ -44,7 +47,7 @@ test_that("output", {
   expect_equal(result$output, "1 > (2 ~ 12)")
 
 
-  result <- evaluate_promise(newPowerRelation(c("de", "at"), ">", "b", "~", c("de", "b")), print = TRUE)
+  result <- evaluate_promise(PowerRelation(list(list(c('de','at')),list('b',c('de','b')))), print = TRUE)
   expect_equal(result$output, "{at, de} > ({b} ~ {b, de})")
 })
 
@@ -53,16 +56,16 @@ test_that("cycle warning", {
   result <- evaluate_promise(as.PowerRelation("1 > 1"))
   expect_length(result$warnings, 1)
   expect_equal(result$warnings[1], "Found 1 duplicate coalition, listed below. This violates transitivity and can cause issues with certain ranking solutions. You may want to take a look at socialranking::transitiveClosure().
-  - 1")
+    - 1")
 
   result <- evaluate_promise(as.PowerRelation("1 > 1 ~ 2 > 2"))
   expect_length(result$warnings, 1)
   expect_equal(result$warnings[1], "Found 2 duplicate coalitions, listed below. This violates transitivity and can cause issues with certain ranking solutions. You may want to take a look at socialranking::transitiveClosure().
-  - 1
-  - 2")
+    - 1
+    - 2")
 
   result <- evaluate_promise(as.PowerRelation("12 > 12 ~ 123 > 12"))
   expect_length(result$warnings, 1)
   expect_equal(result$warnings[1], "Found 1 duplicate coalition, listed below. This violates transitivity and can cause issues with certain ranking solutions. You may want to take a look at socialranking::transitiveClosure().
-  - c(1, 2)")
+    - c(1, 2)")
 })

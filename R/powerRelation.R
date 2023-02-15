@@ -223,7 +223,7 @@ createLookupTables <- function(equivalenceClasses) {
 
   return(list(
     elements = elements,
-    coalitionLookup = function(v) coalitionLookup[[hash::make.keys(list(sort(v)))]],
+    coalitionLookup = function(v, default = -1) { r <- coalitionLookup[[hash::make.keys(list(sort(v)))]]; if(!is.null(r)) r else default},
     elementLookup = function(e) elementLookup[[paste(e)]]
   ))
 }
@@ -371,10 +371,44 @@ coalitionsAreIndifferent <- function(powerRelation, c1, c2) {
   equivalenceClassIndex(powerRelation, c1) == equivalenceClassIndex(powerRelation, c2)
 }
 
+#' @rdname PowerRelation
+#' @export
+is.PowerRelation <- function(x, ...) {
+  'PowerRelation' %in% class(x)
+}
+
+#' @rdname PowerRelation
+#' @export
+print.PowerRelation <- function(x, ...) {
+  p <- if('SingleCharElements' %in% class(x)) {
+    function(pl) if(length(pl) > 0) paste(pl, collapse = '') else '{}'
+  } else {
+    function(pl) paste0('{', paste(pl, collapse = ', '), '}')
+  }
+
+  eClasses <- unlist(lapply(
+    x$eqs,
+    function(e) {
+      el <- unlist(lapply(
+        e,
+        function(r) p(r)
+      ))
+      if(length(el) == 1)
+        el
+      else
+        paste0('(', paste(el, collapse = ' ~ '), ')')
+    }
+  ))
+
+  cat(eClasses, sep = ' > ')
+  cat('\n')
+}
+
 #' Get index of equivalence class containing a coalition
 #'
-#' Given a `coalition` [vector][base::c()] or [sets::set()],
-#' return a singular index number of the equivalence class it is located in.
+#' Deprecated. Try to use powerRelation$coalitionLookup() instead.
+#'
+#' Given a `coalition` [vector][base::c()] or [sets::set()], return a singular index number of the equivalence class it is located in.
 #'
 #' @template param/powerRelation
 #' @param coalition a coalition vector or [`sets::set`] that is part of `powerRelation`
@@ -411,8 +445,10 @@ equivalenceClassIndex <- function(powerRelation, coalition, stopIfNotExists = TR
   stopifnot(is.PowerRelation(powerRelation))
   # --- end checks --- #
 
+  warning(paste0('Deprecated. Use powerRelation$coalitionLookup(c(', paste(coalition, collapse = ', '), ')) instead.'))
+
   coalition <- sets::as.set(coalition)
-  i <- which(sapply(powerRelation$equivalenceClasses, function(eq) {
+  i <- which(sapply(powerRelation$eqs, function(eq) {
     any(coalition == eq)
   }))
   if(length(i) == 0) {
@@ -422,39 +458,6 @@ equivalenceClassIndex <- function(powerRelation, coalition, stopIfNotExists = TR
   } else {
     return(i)
   }
-}
-
-#' @rdname PowerRelation
-#' @export
-is.PowerRelation <- function(x, ...) {
-  'PowerRelation' %in% class(x)
-}
-
-#' @rdname PowerRelation
-#' @export
-print.PowerRelation <- function(x, ...) {
-  p <- if('SingleCharElements' %in% class(x)) {
-    function(pl) if(length(pl) > 0) paste(pl, collapse = '') else '{}'
-  } else {
-    function(pl) paste0('{', paste(pl, collapse = ', '), '}')
-  }
-
-  eClasses <- unlist(lapply(
-    x$eqs,
-    function(e) {
-      el <- unlist(lapply(
-        e,
-        function(r) p(r)
-      ))
-      if(length(el) == 1)
-        el
-      else
-        paste0('(', paste(el, collapse = ' ~ '), ')')
-    }
-  ))
-
-  cat(eClasses, sep = ' > ')
-  cat('\n')
 }
 
 #' New Power Relation
@@ -480,3 +483,4 @@ newPowerRelation <- function(...) {
 newPowerRelationFromString <- function(...) {
   stop("This function has been deprecated. Use as.PowerRelation() instead.")
 }
+

@@ -62,20 +62,20 @@ test_that("banz ranking", {
 test_that("banz scores", {
   pr <- as.PowerRelation('12 > 1 > 2')
   expect_equal(ordinalBanzhafScores(pr), structure(list(
-    `1` = c(1,0),
-    `2` = c(1,0)
+    `1` = c(1,0,1),
+    `2` = c(1,0,1)
   ), class = "OrdinalBanzhafScores"))
 
   pr <- as.PowerRelation('12 > 2 > {} > 1')
   expect_equal(ordinalBanzhafScores(pr), structure(list(
-    `1` = c(1,-1),
-    `2` = c(2,0)
+    `1` = c(1,-1,0),
+    `2` = c(2,0,0)
   ), class = "OrdinalBanzhafScores"))
 
   pr <- as.PowerRelation('12 > 2 ~ {} > 1')
   expect_equal(ordinalBanzhafScores(pr), structure(list(
-    `1` = c(1,-1),
-    `2` = c(1,0)
+    `1` = c(1,-1,0),
+    `2` = c(1,0,0)
   ), class = "OrdinalBanzhafScores"))
 })
 

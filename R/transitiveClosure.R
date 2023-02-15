@@ -48,26 +48,23 @@ transitiveClosure <- function(powerRelation) {
   stopifnot(is.PowerRelation(powerRelation))
   # --- end checks --- #
 
-  duplicateTrues <- duplicated(powerRelation$rankingCoalitions)
-  duplicates <- unique(powerRelation$rankingCoalitions[duplicateTrues])
+  rankingCoalitions <- unlist(powerRelation$eqs, recursive = FALSE)
+  duplicateTrues <- duplicated(rankingCoalitions)
+  duplicates <- unique(rankingCoalitions[duplicateTrues])
 
-  newCompares <- powerRelation$rankingComparators
+  newEqs <- powerRelation$eqs
+  for(duplicate in rev(duplicates)) {
+    indexes <- sort(unique(powerRelation$coalitionLookup(duplicate)))
+    if(length(indexes) == 1)
+      next
 
-  for(duplicate in duplicates) {
-    found <- which(powerRelation$rankingCoalitions == duplicate)
-    for(i in min(found):(max(found)-1)) {
-      newCompares[i] <- '~'
-    }
+    toAdd <- seq.int(indexes[1]+1, indexes[length(indexes)])
+
+    newEqs[[indexes[1]]] <- append(newEqs[[indexes[1]]], unlist(newEqs[toAdd], recursive = FALSE))
+    newEqs[toAdd] <- rep(list(NULL), length(toAdd))
   }
 
-  newCoalitions <- powerRelation$rankingCoalitions[!duplicateTrues]
-  if(any(duplicateTrues))
-    newCompares <- newCompares[-(which(duplicateTrues)-1)]
-
-  newList <- list(newCoalitions[[1]])
-  for(i in seq_along(newCompares)) {
-    newList <- append(newList, list(newCompares[i], newCoalitions[[i+1]]))
-  }
-
-  newPowerRelation(newList)
+  newEqs <- Filter(function(l) length(l) > 0, newEqs)
+  newEqs <- lapply(newEqs, function(eq) eq[!duplicated(eq)])
+  PowerRelation(newEqs)
 }

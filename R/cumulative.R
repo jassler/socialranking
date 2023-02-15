@@ -61,7 +61,7 @@ cumulativeScores <- function(powerRelation, elements = NULL) {
   for(e in elements) {
 
     result[[paste(e)]] <- unlist(unlist(lapply(
-      powerRelation$equivalenceClasses,
+      powerRelation$eqs,
       function(coalitions) sum(e == unlist(coalitions))
     )))
 

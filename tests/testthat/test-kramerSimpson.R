@@ -39,18 +39,18 @@ test_that('kramer named', {
   expect_equal(ranking$output, 'b > a > c')
 
   # abc~ab~a~c > b~bc > ac
-  pr <- newPowerRelation(
-    c("Apple","Banana","Citrus"),
-    "~", c("Apple","Banana"),
-    "~", c("Citrus"),
-    "~", c("Apple"),
-    ">", c("Banana"),
-    "~", c("Banana","Citrus"),
-    ">", c("Apple","Citrus")
-  )
-  ranking <- evaluate_promise(lexcelRanking(pr), print = TRUE)
-  expect_equal(ranking$output, 'Apple > Banana > Citrus')
+  # '2 > 1 ~ 3 > 12 > 13 ~ 23 > {} > 123'
+  pr <- PowerRelation(list(
+    list(c("Banana")),
+    list(c("Apple"), c("Citrus")),
+    list(c("Apple", "Banana")),
+    list(c("Apple", "Citrus"), c("Banana", "Citrus")),
+    list(c()),
+    list(c("Apple", "Banana", "Citrus"))
+  ))
+  ranking <- evaluate_promise(kramerSimpsonRanking(pr, compIvsI = TRUE), print = TRUE)
+  expect_equal(ranking$output, 'Banana > Apple > Citrus')
 
-  ranking <- evaluate_promise(dualLexcelRanking(pr), print = TRUE)
+  ranking <- evaluate_promise(kramerSimpsonRanking(pr, compIvsI = FALSE), print = TRUE)
   expect_equal(ranking$output, 'Banana > Apple > Citrus')
 })

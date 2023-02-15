@@ -6,7 +6,7 @@ test_that("works", {
   }
 
   # 1
-  pr <- newPowerRelation(c(1,2), ">", 1, ">", 2)
+  pr <- as.PowerRelation('12 > 1 > 2')
   expect_equal(
     powerRelationMatrix(pr),
     rel(c(
@@ -17,7 +17,7 @@ test_that("works", {
   )
 
   # 2
-  pr <- newPowerRelation(c(1,2), ">", 1, "~", 2)
+  pr <- as.PowerRelation('12 > 1 ~ 2')
   expect_equal(
     powerRelationMatrix(pr),
     rel(c(
@@ -28,7 +28,7 @@ test_that("works", {
   )
 
   # 3
-  pr <- newPowerRelation(c(1,2), ">", 2, ">", 1)
+  pr <- as.PowerRelation('12 > 2 > 1')
   expect_equal(
     powerRelationMatrix(pr),
     rel(c(
@@ -47,7 +47,7 @@ test_that("cycles", {
   }
 
   # 12 > 1 > 2 > 1
-  pr <- suppressWarnings(newPowerRelation(c(1,2), ">", 1, ">", 2, ">", 1))
+  pr <- suppressWarnings(as.PowerRelation('12 > 1 > 2 > 1'))
   expect_equal(
     powerRelationMatrix(pr),
     rel(c(
@@ -59,7 +59,7 @@ test_that("cycles", {
   )
 
   # 1 > 2 > 12 > 1
-  pr <- suppressWarnings(newPowerRelation(1, ">", 2, ">", c(1,2), ">", 1))
+  pr <- suppressWarnings(as.PowerRelation('1 > 2 > 12 > 1'))
   expect_equal(
     powerRelationMatrix(pr),
     rel(c(
@@ -71,7 +71,7 @@ test_that("cycles", {
   )
 
   # 1 > 2 > 1 > 12
-  pr <- suppressWarnings(newPowerRelation(1, ">", 2, ">", 1, ">", c(1,2)))
+  pr <- suppressWarnings(as.PowerRelation('1 > 2 > 1 > 12'))
   expect_equal(
     powerRelationMatrix(pr),
     rel(c(

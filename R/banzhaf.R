@@ -3,12 +3,12 @@
 
 #' @export
 `==.OrdinalBanzhafScores` <- function(a, b) {
-  sum(a[[1]]) == sum(b[[1]])
+  sum(a[[1]][-3]) == sum(b[[1]][-3])
 }
 
 #' @export
 `>.OrdinalBanzhafScores` <- function(a, b) {
-  sum(a[[1]]) > sum(b[[1]])
+  sum(a[[1]][-3]) > sum(b[[1]][-3])
 }
 
 #' @export
@@ -16,8 +16,7 @@ is.na.OrdinalBanzhafScores <- function(x) FALSE
 
 #' Ordinal Banzhaf
 #'
-#' Calculate the Ordinal Banzhaf scores, the number of
-#' positive and negative marginal contributions.
+#' Calculate the Ordinal Banzhaf scores, the number of positive and negative marginal contributions.
 #'
 #' Inspired by the Banzhaf index \insertCite{1964Banzhaf}{socialranking}, the Ordinal Banzhaf
 #' determines the score of element \eqn{i}{i} by adding the amount of coalitions
@@ -55,28 +54,28 @@ is.na.OrdinalBanzhafScores <- function(x) FALSE
 #' ordinalBanzhafScores(pr)
 #'
 #' @export
-ordinalBanzhafScores <- function(powerRelation) {
+ordinalBanzhafScores <- function(powerRelation, elements = NULL) {
   # --- checks (generated) --- #
   stopifnot(is.PowerRelation(powerRelation))
+  if(is.null(elements)) elements <- powerRelation$elements
   # --- end checks --- #
 
   result <- list()
-  for(e in powerRelation$elements) {
-    result[[paste(e)]] <- c(0, 0)
-  }
-
-  for(coalition in powerRelation$rankingCoalitions) {
-    for(e in coalition) {
-      withoutIndex <- equivalenceClassIndex(powerRelation, coalition - sets::set(e), stopIfNotExists = FALSE)
-      if(withoutIndex == -1)
-        next
-
-      diff <- withoutIndex - equivalenceClassIndex(powerRelation, coalition)
-      if(diff < 0)
-        result[[paste(e)]][2] <- result[[paste(e)]][2] - 1
-      else if(diff > 0)
-        result[[paste(e)]][1] <- result[[paste(e)]][1] + 1
+  for(i in seq_along(elements)) {
+    score <- c(0,0,0)
+    for(coalition in createPowerset(powerRelation$elements[-i])) {
+      e1 <- powerRelation$coalitionLookup(coalition)
+      e2 <- powerRelation$coalitionLookup(c(coalition, elements[i]))
+      if(e1 == -1 || e2 == -1) {
+        score[3] <- score[3] + 1
+      } else if(e1 < e2) {
+        score[2] <- score[2] - 1
+      } else if(e2 < e1) {
+        score[1] <- score[1] + 1
+      }
     }
+
+    result[[paste(elements[i])]] <- score
   }
 
   structure(result, class = 'OrdinalBanzhafScores')

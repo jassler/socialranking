@@ -89,7 +89,7 @@ makeListCopyable <- function(elements, l, writeLines, copyToClipboard) {
   if(all(nchar(elements) == 1)) {
     formatted <- sapply(l, paste, collapse = '')
     for(i in which(sapply(l, is.null))) formatted[i] <- "{}"
-    formatted <- paste(formatted, collapse = '\n  < ')
+    formatted <- paste(formatted, collapse = '\n  > ')
     paste0('as.PowerRelation("\n  ', formatted, '\n")')
   } else {
     if(class(elements) == 'character') {
@@ -106,21 +106,3 @@ makeListCopyable <- function(elements, l, writeLines, copyToClipboard) {
     paste0('PowerRelation(rlang::list2(\n  ', formatted, ',\n))')
   }
 }
-
-
-# This function does not call stop, because R's stack trace sometimes behaves inconsistently.
-powerRelationHasElements <- function(powerRelation, elements) {
-  notAnElement <- setdiff(elements, powerRelation$elements)
-  if(length(notAnElement) > 0) {
-    return(paste(
-      if(length(notAnElement) == 1) 'The element' else 'The elements',
-      paste(notAnElement, collapse = ', '),
-      if(length(notAnElement) == 1) 'does' else 'do',
-      'not appear in any of the coalitions of the power relation given. Only valid elements are',
-      paste(powerRelation$elements, collapse = ', ')
-    ))
-  } else {
-    return(NULL)
-  }
-}
-
