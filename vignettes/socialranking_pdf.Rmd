@@ -137,6 +137,10 @@ PowerRelation(list(list(c(1,2)), list(1, c()), list(2)))
 as.PowerRelation("12 > 1 ~ {} > 2")
 
 as.PowerRelation("ab > a ~ {} > b")
+
+as.PowerRelation(list(c(1,2), 1, c(), 2))
+
+as.PowerRelation(list(c(1,2), 1, c(), 2), comparators = c(">", "~", ">"))
 ```
 
 Functions used to analyze a given `PowerRelation` object can be grouped into three main categories:
@@ -237,7 +241,7 @@ class(pr)
 Notice how coalitions such as $\{1,2\}$ are written as `12` to improve readability. Similarly, passing a string to the function `as.PowerRelation()` saves some typing on the user's end by interpreting each character of a coalition as a separate element. Note that spaces in that function are ignored.
 
 ```{r}
-as.PowerRelation("12 > 2~{} > 1", asWhat = as.numeric)
+as.PowerRelation("12 > 2~{} > 1")
 ```
 
 The compact notation is only done in `PowerRelation` objects where every element is one digit or one character long. If this is not the case, curly braces and commas are added where needed.
@@ -269,100 +273,82 @@ xfun::file_string('tables/prObject.tex')
 ```
 ````
 
-Since each coalition vector is turned into a `set`, coalitions such as `c(1,2)`, `c(2,1)` and `c(1,1,2,2)` are equivalent.
+While coalitions are formally defined as sets, meaning the order doesn't matter and each element is unique, the package tries to stay flexible.
+As such, coalitions will only be sorted during initialization, but duplicate elements will not be removed.
 
 ```{r}
-prAtts <- newPowerRelation(c(2,2,1,1,2), ">", c(1,1,1), "~", c())
+prAtts <- PowerRelation(list(
+  list(c(2,2,1,1,2)),
+  list(c(2,1), c())
+))
 prAtts
 
 prAtts$elements
 
-prAtts$rankingCoalitions
+prAtts$coalitionLookup(c(1,2))
+prAtts$coalitionLookup(c(2,1))
+prAtts$coalitionLookup(c(2,1,2,1,2))
 
-prAtts$rankingComparators
-
-prAtts$equivalenceClasses
-```
-
-`equivalenceClassIndex()` determines at which index $i$ a coalition $S \in \sum_i$.
-
-```{r}
-equivalenceClassIndex(prAtts, c(2,1))
-
-equivalenceClassIndex(prAtts, 1)
-
-equivalenceClassIndex(prAtts, c())
-
-# are the given coalitions in the same equivalence class?
-coalitionsAreIndifferent(prAtts, 1, c())
-
-coalitionsAreIndifferent(prAtts, 1, c(1,2))
+prAtts$elementLookup(2)
 ```
 
 ## Manipulating `PowerRelation` Objects
 
-It is strongly discouraged to directly manipulate `PowerRelation` objects, since modifying one list or vector entry would require updates on all attributes. Instead `newPowerRelation` offers two parameters `rankingCoalitions` and `rankingComparators`, each corresponding to the same named attributes of a `PowerRelation` object.
+It is strongly discouraged to directly manipulate `PowerRelation` objects, since multiple attributes in the object are so tightly coupled, requiring updates in multiple places.
+Instead, it is advisable to simply create new `PowerRelation` objects.
+
+For permutating equivalence classes, it is possible to take the equivalence classes in `$eqs` and use a vector of indexes to move them around.
 
 ```{r}
 pr
 
-# reverse power ranking
-newPowerRelation(
-  rankingCoalitions = rev(pr$rankingCoalitions),
-  rankingComparators = pr$rankingComparators
-)
+PowerRelation(pr$eqs[c(2, 3, 1)])
+
+PowerRelation(rev(pr$eqs))
 ```
 
-Note that `rankingComparators` is optional. By default it assumes `rankingCoalitions` to be a linear order.
+For permutating individual coalitions, using `as.PowerRelation.list()` may be more convenient since it doesn't require nested list indexing.
 
 ```{r}
-newPowerRelation(rankingCoalitions = rev(pr$rankingCoalitions))
-```
+pr
 
-If the length of the `rankingComparators` vector is smaller or larger than the length of `rankingCoalitions`, the function silently fills in any gaps.
+coalitions <- unlist(pr$eqs, recursive = FALSE)
+compares <- c(">", "~", ">")
+as.PowerRelation(coalitions[c(2,1,3,4)], comparators = compares)
 
-```{r}
-# if too short -> comparator values are repeated
-newPowerRelation(
-  rankingCoalitions = as.list(1:9),
-  rankingComparators = "~"
-)
+# notice that the length of comparators does not need to match length(coalitions)-1
+as.PowerRelation(rev(coalitions), comparators = c("~", ">"))
 
-newPowerRelation(
-    rankingCoalitions = as.list(letters[1:9]),
-    rankingComparators = c(">", "~", "~")
-)
-
-# if too long -> ignore excessive comparators
-newPowerRelation(
-  rankingCoalitions = pr$rankingCoalitions,
-  rankingComparators = c("~", ">", "~", ">", ">", "~")
-)
+# not setting the comparators parameter turns it into a linear order
+as.PowerRelation(coalitions)
 ```
 
 ## Creating Power sets
 
-As the number of elements $n$ increases, the number of possible coalitions increases to $|2^N| = 2^n$. `createPowerset` is a convenient function that not only creates a power set $2^N$ which can be used to call `newPowerRelation`, but also formats the function call in such a way that makes it easy to rearrange the ordering of the coalitions. RStudio offers shortcuts Alt+Up or Alt+Down (Option+Up or Option+Down on MacOS) to move one or multiple lines of code up or down (see fig. `r refId("fig:alt", "[below](ID)")`).
+As the number of elements $n$ increases, the number of possible coalitions increases to $|2^N| = 2^n$. `createPowerset` is a convenient function that not only creates a power set $2^N$ which can be used to call `PowerRelation` or `as.PowerRelation`, but also formats the function call in such a way that makes it easy to rearrange the ordering of the coalitions.
+RStudio offers shortcuts such as Alt+Up or Alt+Down (Option+Up or Option+Down on MacOS) to move one or multiple lines of code up or down (see fig. `r refId("fig:alt", "[below](ID)")`).
 
 ```{r}
 createPowerset(
   c("a", "b", "c"),
-  writeLines = TRUE,
-  copyToClipboard = FALSE
+  result = "print"
 )
 ```
 
 ![Using Alt+Up or Alt+Down to move one or more lines of code](media/altupanddown.jpg){#fig:alt}
 
-If `writeLines` and `copyToClipboard` are both set to `FALSE`, the function instead returns a list only containing coalition vectors. This list can be passed directly as `rankingCoalitions` parameter to `newPowerRelation`.
+By default, `createPowerset()` returns the power set in the form of a list. This list can be passed directly to `as.PowerRelation()` to create a linear order.
 
 ```{r}
 ps <- createPowerset(1:2, includeEmptySet = FALSE)
 ps
 
-newPowerRelation(rankingCoalitions = ps)
+as.PowerRelation(ps)
 
-newPowerRelation(rankingCoalitions = createPowerset(letters[1:4]))
+# equivalent
+PowerRelation(list(ps))
+
+as.PowerRelation(createPowerset(letters[1:4]))
 ```
 
 
@@ -388,30 +374,33 @@ Let $\{a,b\} \succ (\{a,c\} \sim \{b,c\}) \succ (\{a\} \sim \{c\}) > \emptyset \
 
 A `SocialRankingSolution` object represents a total preorder in $\mathcal{T}(N)$ over the elements of $N$. Internally they are saved as a list of vectors, each containing players that are indifferent to one another. This is somewhat similar to the `equivalenceClasses` attribute in `PowerRelation` objects.
 
-The function `doRanking` offers a generic way of creating `SocialRankingSolution` objects. Given a `PowerRelation` object and a sortable vector or list of scores it determines the power relation between all players. Note that `length(scores) == length(powerRelation$elements)` must be `TRUE`. Additionally each index in `scores` corresponds to the index in the sorted vector `powerRelation$elements`.
+The function `doRanking` offers a generic way of creating `SocialRankingSolution` objects.
+Given a sortable vector or list of scores it determines the power relation between all players, where the names of the elements are determined from the `names()` attribute of `scores`.
+Hence, a `PowerRelation` object is not necessary to create a `SocialRankingSolution` object.
 
 ```{r}
-pr <- newPowerRelationFromString("abc > ab ~ ac > bc")
-
-# pr$elements == c("a", "b", "c")
-# we define some arbitrary score vector where "a" scores highest
-# "b" and "c" both score 1, thus they are indifferent
-scores <- c(100, 1, 1)
-# doRanking(pr, scores)
-# TODO
+# we define some arbitrary score vector where "a" scores highest.
+# "b" and "c" both score 1, thus they are indifferent.
+scores <- c(a = 100, b = 1, c = 1)
+doRanking(scores)
 
 # we can also tell doRanking to punish higher scores
-# doRanking(pr, scores, decreasing = FALSE)
+doRanking(scores, decreasing = FALSE)
 ```
 
-By default elements are assumed to be indifferent to one another if their scores are equal. Sometimes however other factors come into play that make it non-obvious how to compare two scores. In those cases a function comparing two scores can be passed that should return `TRUE` if the two scores are considered equal.
+When working with types that cannot be sorted (i.e., `lists`), a function can be passed to the `compare` parameter that allows comparisons between arbitrary elements.
+This function must take two parameters (i.e., `a` and `b`) and return a numeric value based on the comparison:
+
+* `compare(a,b) > 0`: `a` scores higher than `b`,
+* `compare(a,b) < 0`: `a` scores lower than `b`,
+* `compare(a,b) == 0`: `a` and `b` are equivalent.
 
 ```{r}
-scores <- c(0, 20, 21)
-# b and c are considered to be indifferent,
-# because their score difference is less than 2
-# doRanking(pr, scores, isIndifferent = function(a,b) abs(a-b) < 2)
-# TODO
+scores <- list(a = c(3, 3, 3), b = c(2, 3, 2), c = c(7, 0, 2))
+doRanking(scores, compare = function(a, b) sum(a) - sum(b))
+# a and c are considered to be indifferent, because their sums are the same
+
+doRanking(scores, compare = function(a,b) sum(a) - sum(b), decreasing = FALSE)
 ```
 
 
@@ -430,10 +419,7 @@ The implication is that for every coalition $i$ and $j$ can join, $i$ has at lea
 The function `dominates(pr, e1, e2)` only returns a logical value `TRUE` if `e1` dominates `e2`, else `FALSE`. Note that `e1` not dominating `e2` does *not* indicate that `e2` dominates `e1`, nor does it imply that `e1` is indifferent to `e2`.
 
 ```{r}
-pr <- newPowerRelationFromString(
-  "3 > 1 > 2 > 12 > 13 > 23",
-  asWhat = as.numeric
-)
+pr <- as.PowerRelation("3 > 1 > 2 > 12 > 13 > 23")
 
 # 1 clearly dominates 2
 dominates(pr, 1, 2)
@@ -455,7 +441,7 @@ For any $S \in 2^{N \setminus \{i,j\}}$, we can only compare $S \cup \{i\} \succ
 Additionally, for $S = \emptyset$, we also want to compare $\{i\} \succeq \{j\}$. In some situations however a comparison between singletons is not desired. For this reason the parameter `includeEmptySet` can be set to `FALSE` such that $\emptyset \cup \{i\} \succeq \emptyset \cup \{j\}$ is not considered in the CP-Majority comparison.
 
 ```{r}
-pr <- newPowerRelationFromString("ac > bc ~ b > a ~ abc > ab")
+pr <- as.PowerRelation("ac > bc ~ b > a ~ abc > ab")
 
 # FALSE because ac > bc, whereas b > a
 dominates(pr, "a", "b")
@@ -488,7 +474,7 @@ For a given power relation $\succeq \in \mathcal{T}(\mathcal{P})$ and its corres
 For a given `PowerRelation` object `pr` and two elements `e1` and `e2`, `cumulativeScores(pr)` returns the vectors described in definition `r refDef("def:cumuldomscore")` for each element, `cumulativelyDominates(pr, e1, e2)` returns `TRUE` or `FALSE` based on definition `r refDef("def:cumuldom")`.
 
 ```{r}
-pr <- newPowerRelationFromString("ab > (ac ~ bc) > (a ~ c) > {} > b")
+pr <- as.PowerRelation("ab > (ac ~ bc) > (a ~ c) > {} > b")
 cumulativeScores(pr)
 
 # for each index k, $a[k] >= $b[k]
@@ -522,7 +508,7 @@ where $d_{ij}(\succeq)$ represents the cardinality of the set $D_{ij}(\succeq)$,
 `cpMajorityComparisonScore(pr, e1, e2)` calculates the two scores $d_{ij}(\succeq)$ and $-d_{ji}(\succeq)$. Notice the minus sign - that way we can use the sum of both values to determine the relation between `e1` and `e2`.
 
 ```{r}
-pr <- newPowerRelationFromString("ab > (ac ~ bc) > (a ~ c) > {} > b")
+pr <- as.PowerRelation("ab > (ac ~ bc) > (a ~ c) > {} > b")
 cpMajorityComparisonScore(pr, "a", "b")
 
 cpMajorityComparisonScore(pr, "b", "a")
@@ -595,11 +581,8 @@ Note that if $S \cup \{i\} \notin \mathcal{P}$, $m_i^S(\succeq) = 0$.
 The function `ordinalBanzhafScores` returns two numbers for each element: the number of coalitions $S$ where a player's contribution has a positive impact, and the number of coalitions $S$ where a player's contribution has a negative impact. These two numbers are added and elements are ranked highest to lowest.
 
 ```{r}
-pr <- newPowerRelation(
-  c(1,2),
-  ">", c(1),
-  ">", c(2)
-)
+pr <- as.PowerRelation(list(c(1,2), c(1), c(2)))
+pr
 
 # both players 1 and 2 have an Ordinal Banzhaf Score of 1
 # therefore they are indifferent to one another
@@ -607,7 +590,7 @@ ordinalBanzhafScores(pr)
 
 ordinalBanzhafRanking(pr)
 
-pr <- newPowerRelationFromString("ab > a > {} > b")
+pr <- as.PowerRelation("ab > a > {} > b")
 
 # player b has a negative impact on the empty set
 # -> player b's score is 1 - 1 = 0
@@ -636,7 +619,7 @@ where $\score{Cop}(i) = |\{j \in N \setminus \{i\}: d_{ij}(\succeq) \geq d_{ji}(
 `copelandScores(pr)` returns two numerical values for each element, a positive number for the winning comparisons (shown in $\score{Cop}(i)$ on the left) and a negative number for the losing comparisons (in $\score{Cop}(i)$ on the right).
 
 ```{r}
-pr <- newPowerRelationFromString("(abc ~ ab ~ c ~ a) > (b ~ bc) > ac")
+pr <- as.PowerRelation("(abc ~ ab ~ c ~ a) > (b ~ bc) > ac")
 scores <- copelandScores(pr)
 
 # Based on CP-Majority, a>=b and a>=c (+2), but b>=a (-1)
@@ -665,7 +648,7 @@ where $\score{KS}(i) = \max_j d_{ji}(\succeq)$ for all $j \in N \setminus \{i\}$
 `kramerSimpsonScores(pr)` returns a single numerical value for each element, which sorted lowest to highest gives us the ranking solution.
 
 ```{r}
-pr <- newPowerRelationFromString("(abc ~ ab ~ c ~ a) > (b ~ bc) > ac")
+pr <- as.PowerRelation("(abc ~ ab ~ c ~ a) > (b ~ bc) > ac")
 unlist(kramerSimpsonScores(pr))
 
 kramerSimpsonRanking(pr)
@@ -679,9 +662,7 @@ This is slightly different from the definition found in [@2021Manipulability], w
 To still account for the original definition in [@2021Manipulability], the functions `kramerSimpsonScores` and `kramerSimpsonRanking` offer a `compIvsI` parameter that can be set to `TRUE` if one wishes for $d_{ii}(\succeq)$ to be included in the comparisons.
 
 ```{r}
-pr <- newPowerRelationFromString(
-  "b > (a ~ c) > ab > (ac ~ bc) > {} > abc"
-)
+pr <- as.PowerRelation("b > (a ~ c) > ab > (ac ~ bc) > {} > abc")
 kramerSimpsonRanking(pr)
 
 # notice how b's score is negative
@@ -712,10 +693,7 @@ for $k \in \{1, \dots, m\}$. Now, let $\score{Lex}(i)$ be the $m$-dimensional ve
 :::
 
 ```{r}
-pr <- newPowerRelationFromString(
-  "12 > (123 ~ 23 ~ 3) > (1 ~ 2) > 13",
-  asWhat = as.numeric
-)
+pr <- as.PowerRelation("12 > (123 ~ 23 ~ 3) > (1 ~ 2) > 13")
 
 # show the number of times an element appears in each equivalence class
 # e.g. 3 appears 3 times in [[2]] and 1 time in [[4]]
@@ -764,10 +742,7 @@ Take the values $i_k$ for $k \in \{1, \dots, m\}$ and the Lexcel score vector $\
 The S3 class `LexcelScores` does not account for Dual Lexcel comparisons. Instead `-rev(x)` is called on a Lexcel score vector `x` such that the resulting comparisons produces a Dual Lexcel ranking solution.
 
 ```{r}
-pr <- newPowerRelationFromString(
-  "12 > (123 ~ 23 ~ 3) > (1 ~ 2) > 13",
-  asWhat = as.numeric
-)
+pr <- as.PowerRelation("12 > (123 ~ 23 ~ 3) > (1 ~ 2) > 13")
 
 lexScores <- lexcelScores(pr)
 
@@ -801,7 +776,7 @@ A power relation can be viewed as an incidence matrix $(b_{ij}) = B \in \{0,1\}^
 With help of the `relations` package, the functions `relations::as.relation(pr)` and `powerRelationMatrix(pr)` turn a `PowerRelation` object into a `relation` object. `relations` then offers ways to display the `relation` object as an incidence matrix with `relation_incidence(rel)` and to test basic properties such `relation_is_linear_order(rel)`, `relation_is_acyclic(rel)` and `relation_is_antisymmetric(rel)` (see `relations` package for more [@relationsPackage]).
 
 ```{r}
-pr <- newPowerRelationFromString("ab > a > {} > b")
+pr <- as.PowerRelation("ab > a > {} > b")
 rel <- relations::as.relation(pr)
 
 relations::relation_incidence(rel)
@@ -820,7 +795,7 @@ Note that the columns and rows are sorted by their names in `relation_domain(rel
 
 ```{r}
 # a power relation where coalitions {1} and {2} are indifferent
-pr <- newPowerRelationFromString("12 > (1 ~ 2)", asWhat = as.numeric)
+pr <- as.PowerRelation("12 > (1 ~ 2)")
 rel <- relations::as.relation(pr)
 
 # we have both binary relations {1}R{2} as well as {2}R{1}
@@ -844,7 +819,7 @@ A cycle in a power relation exists, if there is one coalition $S \in 2^N$ that a
 Properly handling power relations and calculating social ranking solutions with cycles is somewhat ill-defined, hence a warning message is shown as soon as one is created.
 
 ```{r}
-newPowerRelation(c(1,2), ">", 2, ">", 1, "~", 2, ">", c(1,2))
+as.PowerRelation("12 > 2 > (1 ~ 2) > 12")
 ```
 
 Recall that a power relation is transitive, meaning for three coalitions $x, y, z \in 2^N$, if $xRy$ and $yRz$, then $xRz$. If we introduce cycles, we pretty much introduce symmetry. Assume we have the power relation $x \succ y \succ x$. Then, even though $xRy$ and $yRx$ are defined as the asymmetric part of the power relation $\succeq$, together they form the symmetric power relation $x \sim y$.
@@ -852,24 +827,21 @@ Recall that a power relation is transitive, meaning for three coalitions $x, y, 
 `transitiveClosure(pr)` is a function that turns a power relation with cycles into one without one. In the process of removing duplicate coalitions, it turns all asymmectric relations within a cycle into symmetric relations.
 
 ```{r}
-pr <- suppressWarnings(newPowerRelation(1, '>', 2, '>', 1))
+pr <- suppressWarnings(as.PowerRelation(list(1, 2, 1)))
 pr
 
 transitiveClosure(pr)
 
 # two cycles, (1>3>1) and (2>23>2)
 pr <- suppressWarnings(
-  newPowerRelationFromString(
-    "1 > 3 > 1 > 2 > 23 > 2",
-    asWhat = as.numeric
-  )
+  as.PowerRelation("1 > 3 > 1 > 2 > 23 > 2")
 )
 
 transitiveClosure(pr)
 
 # overlapping cycles
 pr <- suppressWarnings(
-  newPowerRelationFromString("c > ac > b > ac > (a ~ b) > abc")
+  as.PowerRelation("c > ac > b > ac > (a ~ b) > abc")
 )
 
 transitiveClosure(pr)
