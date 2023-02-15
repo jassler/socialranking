@@ -60,3 +60,11 @@ test_that("longer names", {
   list(c()),
 ))')
 })
+
+test_that("compact", {
+  result <- evaluate_promise(createPowerset(c("a", "b", "c"), includeEmptySet = FALSE, result = 'printCompact'), print = TRUE)
+  expect_equal(result$output, 'as.PowerRelation("abc > ab > ac > bc > a > b > c")')
+
+  result <- evaluate_promise(createPowerset(c('ab', 'cd'), result = 'printCompact'), print = TRUE)
+  expect_equal(result$output, 'PowerRelation(rlang::list2(list(c("ab", "cd")), list(c("ab")), list(c("cd")), list(c())))')
+})

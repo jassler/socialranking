@@ -8,6 +8,7 @@
 #' * `"return"`: return list object
 #' * `"print"`: create valid string to call [`PowerRelation()`] or [`as.PowerRelation()`] and print it
 #' * `"copy"`: create valid string to call [`PowerRelation()`] or [`as.PowerRelation()`] and copy it to clipboard
+#' * `"printCompact"` and `"copyCompact"`: same as `"print"` and `"copy"` but without newlines
 #'
 #' @return List of power set vectors.
 #' If the parameter `result` is set to `"print"` or `"copy"`, nothing is returned.
@@ -41,6 +42,9 @@
 #' #   < {}
 #' # ")
 #'
+#' createPowerset(letters[1:3], result = "printCompact")
+#' # as.PowerRelation("abc > ab > ac > bc > a > b > c > {}")
+#'
 #' # create the same string as before, but now copy it to the clipboard instead
 #' if(interactive()) {
 #'   createPowerset(1:3, result = "copy")
@@ -58,7 +62,7 @@
 #' # ))
 #'
 #' @export
-createPowerset <- function(elements, includeEmptySet = TRUE, result = c('return', 'print', 'copy')) {
+createPowerset <- function(elements, includeEmptySet = TRUE, result = c('return', 'print', 'printCompact', 'copy', 'copyCompact')) {
   # masks <- 2^(1:N-1)
   # lapply( 1:2^N-1, function(u) (1:N)[ bitwAnd(u, masks) != 0 ] )
   if(length(elements) == 0) {
@@ -76,21 +80,24 @@ createPowerset <- function(elements, includeEmptySet = TRUE, result = c('return'
   if(result[1] == 'return')
     return(sets)
 
-  s <- makeListCopyable(elements, sets, writeLines = writeLines, copyToClipboard = copyToClipboard)
-  if(result[1] == 'print')
+
+  s <- makeListCopyable(elements, sets, endsWith(result, 'Compact'))
+  if(result[1] == 'print' || result[1] == 'printCompact')
     writeLines(s)
-  else if(result[1] == 'copy')
+  else if(result[1] == 'copy' || result[1] == 'copyCompact')
     clipr::write_clip(s)
   else
-    stop('Invalid argument for result, should either be "return", "print" or "copy".')
+    stop('Invalid argument for result, should either be "return", "print", "printCompact", "copy" or "copyCompact".')
 }
 
-makeListCopyable <- function(elements, l, writeLines, copyToClipboard) {
+makeListCopyable <- function(elements, l, compact) {
   if(all(nchar(elements) == 1)) {
     formatted <- sapply(l, paste, collapse = '')
     for(i in which(sapply(l, is.null))) formatted[i] <- "{}"
     formatted <- paste(formatted, collapse = '\n  > ')
-    paste0('as.PowerRelation("\n  ', formatted, '\n")')
+    formatted <- paste0('as.PowerRelation("\n  ', formatted, '\n")')
+    if(compact) gsub('(>|~)', ' \\1', gsub('\n\\s*', '', formatted))
+    else formatted
   } else {
     if(class(elements) == 'character') {
       formatted <- sapply(l, paste, collapse = '", "')
@@ -102,7 +109,7 @@ makeListCopyable <- function(elements, l, writeLines, copyToClipboard) {
     }
 
     formatted <- paste0('list(c(', unlist(formatted), '))')
-    formatted <- paste0(formatted, collapse = ',\n  ')
-    paste0('PowerRelation(rlang::list2(\n  ', formatted, ',\n))')
+    formatted <- paste0(formatted, collapse = if(compact) ', ' else ',\n  ')
+    formatted <- paste0('PowerRelation(rlang::list2(', if(!compact) '\n  ', formatted, if(!compact) ',\n', '))')
   }
 }
