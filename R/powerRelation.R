@@ -1,22 +1,3 @@
-#' @export
-`==.PowerRelation` <- function(a, b) {
-  if(length(a$eqs) != length(b$eqs))
-    return(FALSE)
-
-  for(i in seq_along(a$eqs)) {
-    if(length(a$eqs[[i]]) != length(b$eqs[[i]]))
-      return(FALSE)
-
-    for(cl in a$eqs[[i]]) {
-      if(any(sapply(b$eqs[[i]], function(x) all(cl == x))))
-        next
-      return(FALSE)
-    }
-  }
-  return(TRUE)
-}
-
-
 #' PowerRelation object
 #'
 #' Create a `PowerRelation` object.
@@ -228,120 +209,35 @@ createLookupTables <- function(equivalenceClasses) {
   ))
 }
 
-#' Make Power Relation monotonic
-#'
-#' Given a `powerRelation` object, make its order monotonic.
-#'
-#' A power relation is monotonic if, for a coalition \eqn{S \subseteq N}{S subset of N},
-#'
-#' \deqn{T \subset S \Leftrightarrow S \succeq T.}{T subset of S <=> S >= T.}
-#'
-#' This also moves any super sets that are ranked below a subset into the same
-#' equivalence class of the subset.
-#'
-#' @template param/powerRelation
-#'
-#' @template return/PowerRelation
-#'
-#' @family helper functions transorming existing [`PowerRelation`] objects
-#'
-#' @examples
-#' pr <- newPowerRelationFromString('ab > ac > abc > b > a > {} > c < bc')
-#' makePowerRelationMonotonic(pr)
-#' # (abc ~ ab) > ac > (bc ~ b) > a > (c ~ {})
-#'
-#' # notice that missing coalitions are automatically added
-#' # (except for the empty set)
-#' pr <- newPowerRelationFromString('a > b > c')
-#' makePowerRelationMonotonic(pr)
-#' # (abc ~ ab ~ ac ~ a) > (bc ~ b) > c
-#'
-#' pr <- newPowerRelationFromString('a > {} > b > c')
-#' makePowerRelationMonotonic(pr)
-#' # (abc ~ ab ~ ac ~ a) > (bc ~ b ~ c ~ {})
-#'
+#' @rdname PowerRelation
 #' @export
-makePowerRelationMonotonic <- function(powerRelation) {
-  # --- checks (generated) --- #
-  stopifnot(is.PowerRelation(powerRelation))
-  # --- end checks --- #
+`==.PowerRelation` <- function(a, b) {
+  if(length(a$eqs) != length(b$eqs))
+    return(FALSE)
 
-  els <- powerRelation$elements
-  allCoals <- createPowerset(els)
-  newEqs <- list()
-  for(eq in powerRelation$equivalenceClasses) {
-    indeces <- sapply(allCoals, function(x) any(sets::set_is_subset(eq, sets::as.set(x))))
-    if(any(indeces)) {
-      newEqs[[length(newEqs) + 1]] <- allCoals[indeces]
-      allCoals <- allCoals[!indeces]
-    } else if(length(allCoals) == 0) {
-      break
+  for(i in seq_along(a$eqs)) {
+    if(length(a$eqs[[i]]) != length(b$eqs[[i]]))
+      return(FALSE)
+
+    for(cl in a$eqs[[i]]) {
+      if(any(sapply(b$eqs[[i]], function(x) all(cl == x))))
+        next
+      return(FALSE)
     }
   }
-
-  newPowerRelation(equivalenceClasses = newEqs)
+  return(TRUE)
 }
 
-#' Make Power Relation total
-#'
-#' Append an equivalence to a power relation with all its missing coalitions to make it total.
-#'
-#' A power relation is total if for every \eqn{S, T \subseteq N}{S, T subset or equal to N},
-#'
-#' \deqn{S \succeq T\text{ or }T \succeq S.}{S>=T or T>=S.}
-#'
-#' In other words, we can compare every coalition against every other coalition there is.
-#' The function simply adds the coalitions missing from the [`PowerRelation`] object to make it total behind the last equivalence class there is.
-#'
-#' @template param/powerRelation
-#' @param includeEmptySet If `TRUE`, include the empty set in the last equivalence class if it is missing from the power relation.
-#'
-#' @template return/PowerRelation
-#'
-#' @family helper functions transorming existing [`PowerRelation`] objects
-#'
-#' @examples
-#' pr <- newPowerRelation(c(1,2), '>', 3)
-#' # 12 > 3
-#'
-#' makePowerRelationTotal(pr)
-#' # 12 > 3 > (123 ~ 13 ~ 23 ~ 1 ~ 2 ~ {})
-#'
-#' makePowerRelationTotal(pr, includeEmptySet = FALSE)
-#' # 12 > 3 > (123 ~ 13 ~ 23 ~ 1 ~ 2)
-#'
+#' @rdname PowerRelation
 #' @export
-makePowerRelationTotal <- function(powerRelation, includeEmptySet = TRUE) {
-  # --- checks (generated) --- #
-  stopifnot(is.PowerRelation(powerRelation))
-  # --- end checks --- #
-  els <- powerRelation$elements
-  allCoals <- createPowerset(els, includeEmptySet = includeEmptySet)
-  missing <- setdiff(lapply(allCoals, sets::as.set), powerRelation$rankingCoalitions)
-  newPowerRelation(equivalenceClasses = append(powerRelation$equivalenceClasses, list(missing)))
+is.PowerRelation <- function(x, ...) {
+  'PowerRelation' %in% class(x)
 }
-
-
-generateEquivalenceClasses <- function(coalitions, rankingComparators) {
-  greaterThans <- c(0, which(rankingComparators == '>'), length(rankingComparators)+1)
-  lapply(
-    seq_along(greaterThans)[-1],
-    function(x) {
-      coalitions[seq(greaterThans[x-1]+1, greaterThans[x])]
-    }
-  )
-}
-
 
 #' Are coalitions indifferent
 #'
 #' Check if coalitions are indifferent from one another, or, if they appear in the same
 #' equivalence class.
-#'
-#' [`equivalenceClassIndex()`] is called to determine, which equivalence class `c1` and `c2`
-#' belong to. It returns `TRUE` if both are in the same equivalence class.
-#'
-#' If either coalition `c1` or `c2` is not part of the power relation, an error is thrown.
 #'
 #' @template param/powerRelation
 #' @param c1 Coalition [vector][base::c()] or [`sets::set()`]
@@ -354,27 +250,16 @@ generateEquivalenceClasses <- function(coalitions, rankingComparators) {
 #' @examples
 #' pr <- newPowerRelation(c(1,2), ">", c(1), "~", c(2))
 #'
-#' # FALSE
-#' coalitionsAreIndifferent(pr, c(1,2), c(1))
+#' stopIfNot(F == coalitionsAreIndifferent(pr, c(1,2), c(1)))
+#' stopIfNot(T == coalitionsAreIndifferent(pr, 2, 1))
 #'
-#' # TRUE
-#' coalitionsAreIndifferent(pr, 2, 1)
-#'
-#' # Error: The coalition {} does not appear in the power relation
-#' tryCatch(
-#'   equivalenceClassIndex(pr, c()),
-#'   error = function(e) { e }
-#' )
+#' # Note that it doesn't fail with non-existing power relations
+#' stopIfNot(F == coalitionsAreIndifferent(pr, 1, c()))
+#' stopIfNot(T == coalitionsAreIndifferent(pr, 3, c(1,2,3)))
 #'
 #' @export
 coalitionsAreIndifferent <- function(powerRelation, c1, c2) {
-  equivalenceClassIndex(powerRelation, c1) == equivalenceClassIndex(powerRelation, c2)
-}
-
-#' @rdname PowerRelation
-#' @export
-is.PowerRelation <- function(x, ...) {
-  'PowerRelation' %in% class(x)
+  powerRelation$coalitionLookup(c1) == powerRelation$coalitionLookup(c2)
 }
 
 #' @rdname PowerRelation

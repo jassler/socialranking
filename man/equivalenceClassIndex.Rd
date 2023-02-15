@@ -18,8 +18,10 @@ If \code{FALSE}, \code{-1} will be returned}
 Numeric value, equivalence class index where \code{coalition} appears in.
 }
 \description{
-Given a \code{coalition} \link[base:c]{vector} or \code{\link[sets:set]{sets::set()}},
-return a singular index number of the equivalence class it is located in.
+Deprecated. Try to use powerRelation$coalitionLookup() instead.
+}
+\details{
+Given a \code{coalition} \link[base:c]{vector} or \code{\link[sets:set]{sets::set()}}, return a singular index number of the equivalence class it is located in.
 }
 \examples{
 pr <- newPowerRelation(c(1,2), ">", c(1), "~", c(2))

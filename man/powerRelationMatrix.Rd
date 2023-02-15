@@ -19,7 +19,7 @@ powerRelationMatrix(
 \itemize{
 \item \code{pretty}: Coalitions such as c(1,2) are formatted as 12. To ensure that it's correctly sorted alphabetically, every name is preceded by a certain amount of the invisible Unicode character \\u200b
 \item \code{numericPrec}: Coalitions such as c(1,2) are formatted as 1\{12\}, the number in front of the curly brace marking its sorted spot. While less pretty, it won't use Unicode characters.
-\item \code{numeric}: Drop coalition names, only count from 1 upwards. Each number corresponds to the index in \code{powerRelation$rankingCoalitions}
+\item \code{numeric}: Drop coalition names, only count from 1 upwards. Each number corresponds to the index in TODO \code{powerRelation$rankingCoalitions}
 \item \verb{function(x)}: A custom function that is passed a number from \code{1} through \code{length(powerRelation$rankingCoalitions)}. Must return a \code{character} object.
 }}
 
@@ -37,7 +37,7 @@ For a given \code{\link{PowerRelation}} object create a \code{\link[relations:re
 Turn a \code{\link{PowerRelation}} object into a \code{\link[relations:relation]{relations::relation()}} object. The incidence matrix can be viewed with
 \code{\link[relations:incidence]{relations::relation_incidence()}}.
 
-The columns and rows of a \code{\link{PowerRelation}} object are ordered by \code{powerRelation$rankingCoalitions}.
+The columns and rows of a \code{\link{PowerRelation}} object are ordered by TODO \code{powerRelation$rankingCoalitions}.
 The \code{relations} package automatically sorts the columns and rows by their domain names, which is the reason the
 parameter \code{domainNames} is included. This way we ensure that the columns and rows are sorted by
 the order of the power relation.

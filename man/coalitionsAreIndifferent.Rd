@@ -20,26 +20,15 @@ Logical value \code{TRUE} if \code{c1} and \code{c2} are in the same equivalence
 Check if coalitions are indifferent from one another, or, if they appear in the same
 equivalence class.
 }
-\details{
-\code{\link[=equivalenceClassIndex]{equivalenceClassIndex()}} is called to determine, which equivalence class \code{c1} and \code{c2}
-belong to. It returns \code{TRUE} if both are in the same equivalence class.
-
-If either coalition \code{c1} or \code{c2} is not part of the power relation, an error is thrown.
-}
 \examples{
 pr <- newPowerRelation(c(1,2), ">", c(1), "~", c(2))
 
-# FALSE
-coalitionsAreIndifferent(pr, c(1,2), c(1))
+stopIfNot(F == coalitionsAreIndifferent(pr, c(1,2), c(1)))
+stopIfNot(T == coalitionsAreIndifferent(pr, 2, 1))
 
-# TRUE
-coalitionsAreIndifferent(pr, 2, 1)
-
-# Error: The coalition {} does not appear in the power relation
-tryCatch(
-  equivalenceClassIndex(pr, c()),
-  error = function(e) { e }
-)
+# Note that it doesn't fail with non-existing power relations
+stopIfNot(F == coalitionsAreIndifferent(pr, 1, c()))
+stopIfNot(T == coalitionsAreIndifferent(pr, 3, c(1,2,3)))
 
 }
 \seealso{

@@ -5,7 +5,7 @@
 \alias{ordinalBanzhafRanking}
 \title{Ordinal Banzhaf}
 \usage{
-ordinalBanzhafScores(powerRelation)
+ordinalBanzhafScores(powerRelation, elements = NULL)
 
 ordinalBanzhafRanking(powerRelation)
 }
@@ -20,8 +20,7 @@ Those two numbers summed together gives us the actual ordinal Banzhaf score.
 Ranking function returns corresponding \code{\link{SocialRankingSolution}} object.
 }
 \description{
-Calculate the Ordinal Banzhaf scores, the number of
-positive and negative marginal contributions.
+Calculate the Ordinal Banzhaf scores, the number of positive and negative marginal contributions.
 
 \code{\link[=ordinalBanzhafRanking]{ordinalBanzhafRanking()}} returns the corresponding ranking.
 }
