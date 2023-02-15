@@ -209,7 +209,6 @@ createLookupTables <- function(equivalenceClasses) {
   ))
 }
 
-#' @rdname PowerRelation
 #' @export
 `==.PowerRelation` <- function(a, b) {
   if(length(a$eqs) != length(b$eqs))
@@ -248,14 +247,14 @@ is.PowerRelation <- function(x, ...) {
 #' @family equivalence class lookup functions
 #'
 #' @examples
-#' pr <- as.PowerRelation(list(c(1,2), 1, 2))
+#' pr <- PowerRelation(list(list(c(1,2)), list(1, 2)))
 #'
-#' stopIfNot(F == coalitionsAreIndifferent(pr, c(1,2), c(1)))
-#' stopIfNot(T == coalitionsAreIndifferent(pr, 2, 1))
+#' stopifnot(coalitionsAreIndifferent(pr, c(1,2), c(1)) == FALSE)
+#' stopifnot(coalitionsAreIndifferent(pr, 2, 1) == TRUE)
 #'
 #' # Note that it doesn't fail with non-existing power relations
-#' stopIfNot(F == coalitionsAreIndifferent(pr, 1, c()))
-#' stopIfNot(T == coalitionsAreIndifferent(pr, 3, c(1,2,3)))
+#' stopifnot(coalitionsAreIndifferent(pr, 1, c()) == FALSE)
+#' stopifnot(coalitionsAreIndifferent(pr, 3, c(1,2,3)) == TRUE)
 #'
 #' @export
 coalitionsAreIndifferent <- function(powerRelation, c1, c2) {
@@ -291,61 +290,14 @@ print.PowerRelation <- function(x, ...) {
 
 #' Get index of equivalence class containing a coalition
 #'
-#' Deprecated. Try to use powerRelation$coalitionLookup() instead.
+#' Deprecated. Use powerRelation$coalitionLookup() instead.
 #'
-#' Given a `coalition` [vector][base::c()] or [sets::set()], return a singular index number of the equivalence class it is located in.
-#'
-#' @template param/powerRelation
-#' @param coalition a coalition vector or [`sets::set`] that is part of `powerRelation`
-#' @template param/stopIfNotExists
-#'
-#' @return Numeric value, equivalence class index where `coalition` appears in.
-#'
-#' @family equivalence class lookup functions
-#'
-#' @examples
-#' pr <- PowerRelation(list(
-#'   list(c(1,2)),
-#'   list(1,2)
-#' ))
-#'
-#' # 1
-#' equivalenceClassIndex(pr, c(1, 2))
-#'
-#' # 2
-#' equivalenceClassIndex(pr, c(1))
-#'
-#' # 2
-#' equivalenceClassIndex(pr, c(2))
-#'
-#' # Error: The coalition {} does not appear in the power relation
-#' tryCatch(
-#'   equivalenceClassIndex(pr, c()),
-#'   error = function(e) { e }
-#' )
-#'
-#' # Error: This time only return a -1
-#' stopifnot(-1 == equivalenceClassIndex(pr, c(), stopIfNotExists = FALSE))
+#' @param ... Any parameter
+#' @template return/noreturn
 #'
 #' @export
-equivalenceClassIndex <- function(powerRelation, coalition, stopIfNotExists = TRUE) {
-  # --- checks (generated) --- #
-  stopifnot(is.PowerRelation(powerRelation))
-  # --- end checks --- #
-
-  warning(paste0('Deprecated. Use powerRelation$coalitionLookup(c(', paste(coalition, collapse = ', '), ')) instead.'))
-
-  coalition <- sets::as.set(coalition)
-  i <- which(sapply(powerRelation$eqs, function(eq) {
-    any(coalition == eq)
-  }))
-  if(length(i) == 0) {
-    if(stopIfNotExists)
-      stop(paste0('The coalition {', paste(coalition, collapse = ', '), '} does not appear in the power relation'))
-    return(-1)
-  } else {
-    return(i)
-  }
+equivalenceClassIndex <- function(...) {
+  stop(paste0('Deprecated. Use powerRelation$coalitionLookup() instead.'))
 }
 
 #' New Power Relation

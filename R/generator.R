@@ -137,14 +137,17 @@ powerRelationGenerator <- function(coalitions, startWithLinearOrder = FALSE) {
     comps <- unlist(sapply(part, function(x) c(rep('~', x-1), '>')))
 
     # TODO change
-    structure(list(
-      elements = elements,
-      rankingCoalitions = coalitions[perms[,permsI]],
-      rankingComparators = comps[-length(comps)],
-      equivalenceClasses = lapply(seq.int(length(partCum)-1), function(x) {
-        coalitions[perms[(partCum[x]+1):partCum[x+1],permsI]]
-      })
-    ), class = classes)
+    PowerRelation(lapply(seq.int(length(partCum)-1), function(x) {
+      coalitions[perms[(partCum[x]+1):partCum[x+1],permsI]]
+    }))
+    # structure(list(
+    #   elements = elements,
+    #   rankingCoalitions = coalitions[perms[,permsI]],
+    #   rankingComparators = comps[-length(comps)],
+    #   equivalenceClasses = lapply(seq.int(length(partCum)-1), function(x) {
+    #     coalitions[perms[(partCum[x]+1):partCum[x+1],permsI]]
+    #   })
+    # ), class = classes)
   }
 }
 
@@ -185,6 +188,8 @@ powerRelationGenerator <- function(coalitions, startWithLinearOrder = FALSE) {
 #' if(interactive()) {
 #'   generateNextPartition(gen)
 #' }
+#'
+#' @export
 generateNextPartition <- function(gen) {
   environment(gen)$nextPartition()
   gen

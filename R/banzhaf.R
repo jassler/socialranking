@@ -26,6 +26,7 @@ is.na.OrdinalBanzhafScores <- function(x) FALSE
 #' had a negative impact (\eqn{S \succ S \cup \lbrace i \rbrace}{S > S u \{i\}})\insertCite{2019OrdinalBanzhaf}{socialranking}.
 #'
 #' @template param/powerRelation
+#' @template param/elements
 #'
 #' @family score vector functions
 #'

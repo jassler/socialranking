@@ -32,3 +32,49 @@ This string is either printed or copied to clipboard (see argument \code{result}
 \description{
 Given a vector of elements generate a power set.
 }
+\examples{
+#' # normal return type is a list of vectors
+createPowerset(c("Alice", "Bob"), includeEmptySet = FALSE)
+## [[1]]
+## [1] "Alice" "Bob"
+##
+## [[2]]
+## [1] "Alice"
+##
+## [[3]]
+## [1] "Bob"
+
+# instead of creating a list, print the power set such that it can be copy-pasted
+# and used to create a new PowerRelation object
+createPowerset(letters[1:4], result = "print")
+# prints
+# as.PowerRelation("
+#   abcd
+#   > abc
+#   > abd
+#   > acd
+#   > bcd
+#   > ab
+#   ...
+#   > {}
+# ")
+
+createPowerset(letters[1:3], result = "printCompact")
+
+# create the same string as before, but now copy it to the clipboard instead
+if(interactive()) {
+  createPowerset(1:3, result = "copy")
+}
+
+# Note that as.PowerRelation(character) only assumes single-char elements.
+# As such, the generated function call string if element names are longer
+# looks a little different.
+createPowerset(c("Alice", "Bob"), result = 'print')
+# PowerRelation(rlang::list2(
+#   list(c("Alice", "Bob")),
+#   list(c("Alice")),
+#   list(c("Bob")),
+#   list(c()),
+# ))
+
+}

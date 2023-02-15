@@ -33,6 +33,6 @@ makePowerRelationTotal <- function(powerRelation, includeEmptySet = TRUE) {
   # --- end checks --- #
   els <- powerRelation$elements
   allCoals <- createPowerset(els, includeEmptySet = includeEmptySet)
-  missing <- setdiff(lapply(allCoals, sets::as.set), powerRelation$rankingCoalitions)
-  PowerRelation(append(powerRelation$equivalenceClasses, list(missing)))
+  missing <- setdiff(allCoals, unlist(powerRelation$eqs, recursive = FALSE))
+  PowerRelation(append(powerRelation$eqs, list(missing)))
 }

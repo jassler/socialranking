@@ -11,6 +11,9 @@ ordinalBanzhafRanking(powerRelation)
 }
 \arguments{
 \item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
+
+\item{elements}{vector of elements of which to calculate their scores.
+If \code{elements == NULL}, create vectors for all elements in \code{pr$elements}}
 }
 \value{
 Score function returns list of class type \code{OrdinalBanzhafScores} and length of \code{powerRelation$elements}.

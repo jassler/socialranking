@@ -4,52 +4,14 @@
 \alias{equivalenceClassIndex}
 \title{Get index of equivalence class containing a coalition}
 \usage{
-equivalenceClassIndex(powerRelation, coalition, stopIfNotExists = TRUE)
+equivalenceClassIndex(...)
 }
 \arguments{
-\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
-
-\item{coalition}{a coalition vector or \code{\link[sets:set]{sets::set}} that is part of \code{powerRelation}}
-
-\item{stopIfNotExists}{\code{TRUE} if an error should be thrown when the coalition given is not in the \code{\link{PowerRelation}} object.
-If \code{FALSE}, \code{-1} will be returned}
+\item{...}{Any parameter}
 }
 \value{
-Numeric value, equivalence class index where \code{coalition} appears in.
+No return value.
 }
 \description{
-Deprecated. Try to use powerRelation$coalitionLookup() instead.
+Deprecated. Use powerRelation$coalitionLookup() instead.
 }
-\details{
-Given a \code{coalition} \link[base:c]{vector} or \code{\link[sets:set]{sets::set()}}, return a singular index number of the equivalence class it is located in.
-}
-\examples{
-pr <- PowerRelation(list(
-  list(c(1,2)),
-  list(1,2)
-))
-
-# 1
-equivalenceClassIndex(pr, c(1, 2))
-
-# 2
-equivalenceClassIndex(pr, c(1))
-
-# 2
-equivalenceClassIndex(pr, c(2))
-
-# Error: The coalition {} does not appear in the power relation
-tryCatch(
-  equivalenceClassIndex(pr, c()),
-  error = function(e) { e }
-)
-
-# Error: This time only return a -1
-stopifnot(-1 == equivalenceClassIndex(pr, c(), stopIfNotExists = FALSE))
-
-}
-\seealso{
-Other equivalence class lookup functions: 
-\code{\link{coalitionsAreIndifferent}()}
-}
-\concept{equivalence class lookup functions}

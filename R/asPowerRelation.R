@@ -1,12 +1,16 @@
+#' @param x An object
+#' @param ... Optional additional parameters
+#' @param comparators Vector of ">" or "~" characters
+#'
+#' @rdname PowerRelation
 #' @export
-as.PowerRelation <- function(x, ..., comparators = NULL) {
+as.PowerRelation <- function(x, ..., comparators = c('>')) {
   UseMethod('as.PowerRelation')
 }
 
 #' @rdname PowerRelation
-#'
 #' @export
-as.PowerRelation.character <- function(x) {
+as.PowerRelation.character <- function(x, ...) {
   x <- gsub('[^0-9a-zA-Z>~\u227B\u223C]', '', x)
 
   eqs <- list()
@@ -45,22 +49,17 @@ as.PowerRelation.character <- function(x) {
 
 #' @rdname PowerRelation
 #' @export
-as.PowerRelation.list <- function(x, comparators = NULL) {
-  eqs <- if(is.null(comparators)) {
-    list(x)
-  } else {
-    eqs <- list()
-    eq <- list()
-    comparators <- rep(comparators, length.out = length(x) - 1)
-    comparators <- c(comparators, '>')
-    for(i in seq_along(comparators)) {
-      eq <- append(eq, x[i])
-      if(comparators[i] == '>') {
-        eqs <- append(eqs, list(eq))
-        eq <- list()
-      }
+as.PowerRelation.list <- function(x, ..., comparators = c('>')) {
+  eqs <- list()
+  eq <- list()
+  comparators <- rep(comparators, length.out = length(x) - 1)
+  comparators <- c(comparators, '>')
+  for(i in seq_along(comparators)) {
+    eq <- append(eq, x[i])
+    if(comparators[i] == '>') {
+      eqs <- append(eqs, list(eq))
+      eq <- list()
     }
-    eqs
   }
 
   PowerRelation(eqs)

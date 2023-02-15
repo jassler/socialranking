@@ -43,6 +43,7 @@ gen()
 if(interactive()) {
   generateNextPartition(gen)
 }
+
 }
 \seealso{
 Other generator functions: 

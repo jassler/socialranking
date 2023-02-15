@@ -2,9 +2,9 @@
 % Please edit documentation in R/PowerRelation.R, R/asPowerRelation.R
 \name{PowerRelation}
 \alias{PowerRelation}
-\alias{==.PowerRelation}
 \alias{is.PowerRelation}
 \alias{print.PowerRelation}
+\alias{as.PowerRelation}
 \alias{as.PowerRelation.character}
 \alias{as.PowerRelation.list}
 \title{PowerRelation object}
@@ -16,15 +16,15 @@ PowerRelation(
   elementLookup = NULL
 )
 
-\method{==}{PowerRelation}(a, b)
-
 is.PowerRelation(x, ...)
 
 \method{print}{PowerRelation}(x, ...)
 
-\method{as.PowerRelation}{character}(x)
+as.PowerRelation(x, ..., comparators = c(">"))
 
-\method{as.PowerRelation}{list}(x, comparators = NULL)
+\method{as.PowerRelation}{character}(x, ...)
+
+\method{as.PowerRelation}{list}(x, ..., comparators = c(">"))
 }
 \arguments{
 \item{equivalenceClasses}{A nested list of lists, each containing coalitions or groups represented as vectors that are in the same equivalence class.}
@@ -34,6 +34,12 @@ is.PowerRelation(x, ...)
 \item{coalitionLookup}{A function taking a vector parameter and returning an index. See return value for more details. Only set this value if you know what you are doing.}
 
 \item{elementLookup}{A function taking an element and returning a list of 2-sized tuples. See return value for more details. Only set this value if you know what you are doing.}
+
+\item{x}{An object}
+
+\item{...}{Optional additional parameters}
+
+\item{comparators}{Vector of ">" or "~" characters}
 }
 \value{
 \code{\link{PowerRelation}} object containing the following values:

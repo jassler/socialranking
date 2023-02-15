@@ -33,17 +33,16 @@
 #' # prints
 #' # as.PowerRelation("
 #' #   abcd
-#' #   < abc
-#' #   < abd
-#' #   < acd
-#' #   < bcd
-#' #   < ab
+#' #   > abc
+#' #   > abd
+#' #   > acd
+#' #   > bcd
+#' #   > ab
 #' #   ...
-#' #   < {}
+#' #   > {}
 #' # ")
 #'
 #' createPowerset(letters[1:3], result = "printCompact")
-#' # as.PowerRelation("abc > ab > ac > bc > a > b > c > {}")
 #'
 #' # create the same string as before, but now copy it to the clipboard instead
 #' if(interactive()) {
@@ -99,7 +98,7 @@ makeListCopyable <- function(elements, l, compact) {
     if(compact) gsub('(>|~)', ' \\1', gsub('\n\\s*', '', formatted))
     else formatted
   } else {
-    if(class(elements) == 'character') {
+    if(inherits(elements, 'character')) {
       formatted <- sapply(l, paste, collapse = '", "')
       formatted <- sapply(formatted, function(x) paste0('"', x, '"'))
       for(i in which(sapply(l, is.null)))

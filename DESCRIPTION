@@ -26,8 +26,7 @@ Imports:
     sets (>= 1.0.21),
     rlang (>= 1.0.6),
     Rdpack (>= 2.4),
-    hash (>= 2.2.6),
-    stringr (>= 1.5.0)
+    hash (>= 2.2.6)
 Config/testthat/edition: 3
 VignetteBuilder: knitr
 URL: https://jassler.github.io/socialranking/

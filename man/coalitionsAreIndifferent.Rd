@@ -21,18 +21,14 @@ Check if coalitions are indifferent from one another, or, if they appear in the 
 equivalence class.
 }
 \examples{
-pr <- as.PowerRelation(list(c(1,2), 1, 2))
+pr <- PowerRelation(list(list(c(1,2)), list(1, 2)))
 
-stopIfNot(F == coalitionsAreIndifferent(pr, c(1,2), c(1)))
-stopIfNot(T == coalitionsAreIndifferent(pr, 2, 1))
+stopifnot(coalitionsAreIndifferent(pr, c(1,2), c(1)) == FALSE)
+stopifnot(coalitionsAreIndifferent(pr, 2, 1) == TRUE)
 
 # Note that it doesn't fail with non-existing power relations
-stopIfNot(F == coalitionsAreIndifferent(pr, 1, c()))
-stopIfNot(T == coalitionsAreIndifferent(pr, 3, c(1,2,3)))
+stopifnot(coalitionsAreIndifferent(pr, 1, c()) == FALSE)
+stopifnot(coalitionsAreIndifferent(pr, 3, c(1,2,3)) == TRUE)
 
-}
-\seealso{
-Other equivalence class lookup functions: 
-\code{\link{equivalenceClassIndex}()}
 }
 \concept{equivalence class lookup functions}
