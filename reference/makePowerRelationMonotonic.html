@@ -60,18 +60,19 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>powerRelation</dt>
-<dd><p>A <code><a href="PowerRelation.html">PowerRelation</a></code> object created by <code><a href="newPowerRelation.html">newPowerRelation()</a></code></p></dd>
+<dd><p>A <code><a href="PowerRelation.html">PowerRelation</a></code> object created by <code><a href="PowerRelation.html">PowerRelation()</a></code> or <code><a href="PowerRelation.html">as.PowerRelation()</a></code></p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p><code><a href="PowerRelation.html">PowerRelation</a></code> object containing vector of elements or players <code>$elements</code>, an ordered list of
-coalitions <code>$rankingCoalitions</code> and an ordered vector of comparators <code>$rankingComparators</code></p>
-
-
-<p>as well as an ordered list of equivalence classes <code>$equivalenceClasses</code> for convenience</p>
+<p><code><a href="PowerRelation.html">PowerRelation</a></code> object containing the following values:</p><ul><li><p><code>$elements</code>: vector of elements</p></li>
+<li><p><code>$eqs</code>: equivalence classes. Nested list of lists, each containing vectors representing groups of elements in the same equivalence class</p></li>
+<li><p><code>$coalitionLookup</code>: <code>function(v)</code> taking a coalition vector <code>v</code> as input and returning the equivalence class it belongs to (or a vector of equivalence classes if the coalition appears multiple times).</p></li>
+<li><p><code>$elementLookup</code>: <code>function(e)</code> taking an element <code>e</code> as input and returning a list of 2-sized tuples, each representing which equivalence class and which index inside that equivalence class that element appears in.</p></li>
+</ul><p>If <code>$elements</code>, <code>$coalitionLookup</code> and <code>$elementLookup</code> are known beforehand, they can be passed to the function to bypass its own possibly resource-intensive initialization process.
+Since these values are so tightly coupled to the <code>$eqs</code> list, however, this is only ever encouraged if the time gains are undoubtedly justified.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -88,23 +89,20 @@ equivalence class of the subset.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="newPowerRelationFromString.html">newPowerRelationFromString</a></span><span class="op">(</span><span class="st">'ab &gt; ac &gt; abc &gt; b &gt; a &gt; {} &gt; c &lt; bc'</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">'ab &gt; ac &gt; abc &gt; b &gt; a &gt; {} &gt; c &lt; bc'</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">makePowerRelationMonotonic</span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Elements: a b c</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (abc ~ ab) &gt; ac &gt; (bc ~ b) &gt; a &gt; (c ~ {})</span>
 <span class="r-in"><span><span class="co"># (abc ~ ab) &gt; ac &gt; (bc ~ b) &gt; a &gt; (c ~ {})</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># notice that missing coalitions are automatically added</span></span></span>
 <span class="r-in"><span><span class="co"># (except for the empty set)</span></span></span>
-<span class="r-in"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="newPowerRelationFromString.html">newPowerRelationFromString</a></span><span class="op">(</span><span class="st">'a &gt; b &gt; c'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">'a &gt; b &gt; c'</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">makePowerRelationMonotonic</span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Elements: a b c</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (abc ~ ab ~ ac ~ a) &gt; (bc ~ b) &gt; c</span>
 <span class="r-in"><span><span class="co"># (abc ~ ab ~ ac ~ a) &gt; (bc ~ b) &gt; c</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="newPowerRelationFromString.html">newPowerRelationFromString</a></span><span class="op">(</span><span class="st">'a &gt; {} &gt; b &gt; c'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">'a &gt; {} &gt; b &gt; c'</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">makePowerRelationMonotonic</span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Elements: a b c</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (abc ~ ab ~ ac ~ a) &gt; (bc ~ b ~ c ~ {})</span>
 <span class="r-in"><span><span class="co"># (abc ~ ab ~ ac ~ a) &gt; (bc ~ b ~ c ~ {})</span></span></span>
 <span class="r-in"><span></span></span>

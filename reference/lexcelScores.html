@@ -73,7 +73,7 @@ participation, it punishes mediocrity.</p>
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>powerRelation</dt>
-<dd><p>A <code><a href="PowerRelation.html">PowerRelation</a></code> object created by <code><a href="newPowerRelation.html">newPowerRelation()</a></code></p></dd>
+<dd><p>A <code><a href="PowerRelation.html">PowerRelation</a></code> object created by <code><a href="PowerRelation.html">PowerRelation()</a></code> or <code><a href="PowerRelation.html">as.PowerRelation()</a></code></p></dd>
 
 
 <dt>elements</dt>
@@ -99,7 +99,7 @@ times the given element appears in each equivalence class.</p>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>An equivalence class \(\sum_i\) holds all coalitions
 that are indifferent from one another. In a given power relation created with
-<code><a href="newPowerRelation.html">newPowerRelation()</a></code>, the equivalence classes are saved in <code>$equivalenceClasses</code>.</p>
+<code><a href="PowerRelation.html">PowerRelation()</a></code> or <code><a href="PowerRelation.html">as.PowerRelation()</a></code>, the equivalence classes are saved in <code>$eqs</code>.</p>
 <p>E.g. for a power relation defined as
 \(123 \succ (12 \sim 13 \sim 1 \sim \emptyset) \succ (23 \sim 1 \sim 2)\)
 we would get the following equivalence classes:</p>
@@ -165,10 +165,8 @@ because:</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># note that the coalition {1} appears twice</span></span></span>
 <span class="r-in"><span><span class="co"># 123 &gt; 12 ~ 13 ~ 1 ~ {} &gt; 23 ~ 1 ~ 2</span></span></span>
 <span class="r-in"><span><span class="co"># E = {123} &gt; {12, 13, 1, {}} &gt; {23, 1, 2}</span></span></span>
-<span class="r-in"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/warning.html" class="external-link">suppressWarnings</a></span><span class="op">(</span><span class="fu"><a href="newPowerRelation.html">newPowerRelation</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  <span class="st">"&gt;"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, <span class="st">"~"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span><span class="op">)</span>, <span class="st">"~"</span>, <span class="fl">1</span>, <span class="st">"~"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  <span class="st">"&gt;"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>, <span class="st">"~"</span>, <span class="fl">1</span>, <span class="st">"~"</span>, <span class="fl">2</span></span></span>
+<span class="r-in"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/warning.html" class="external-link">suppressWarnings</a></span><span class="op">(</span><span class="fu"><a href="PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="st">"123 &gt; (12 ~ 13 ~ 1 ~ {}) &gt; (23 ~ 1 ~ 2)"</span></span></span>
 <span class="r-in"><span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># lexcel scores for all elements</span></span></span>

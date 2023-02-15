@@ -66,13 +66,13 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>powerRelation</dt>
-<dd><p>A <code><a href="PowerRelation.html">PowerRelation</a></code> object created by <code><a href="newPowerRelation.html">newPowerRelation()</a></code></p></dd>
+<dd><p>A <code><a href="PowerRelation.html">PowerRelation</a></code> object created by <code><a href="PowerRelation.html">PowerRelation()</a></code> or <code><a href="PowerRelation.html">as.PowerRelation()</a></code></p></dd>
 
 
 <dt>domainNames</dt>
 <dd><p>How should the row and column names be formatted?</p><ul><li><p><code>pretty</code>: Coalitions such as c(1,2) are formatted as 12. To ensure that it's correctly sorted alphabetically, every name is preceded by a certain amount of the invisible Unicode character \u200b</p></li>
 <li><p><code>numericPrec</code>: Coalitions such as c(1,2) are formatted as 1{12}, the number in front of the curly brace marking its sorted spot. While less pretty, it won't use Unicode characters.</p></li>
-<li><p><code>numeric</code>: Drop coalition names, only count from 1 upwards. Each number corresponds to the index in <code>powerRelation$rankingCoalitions</code></p></li>
+<li><p><code>numeric</code>: Drop coalition names, only count from 1 upwards. Each number corresponds to the index in TODO <code>powerRelation$rankingCoalitions</code></p></li>
 <li><p><code>function(x)</code>: A custom function that is passed a number from <code>1</code> through <code>length(powerRelation$rankingCoalitions)</code>. Must return a <code>character</code> object.</p></li>
 </ul></dd>
 
@@ -95,7 +95,7 @@
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Turn a <code><a href="PowerRelation.html">PowerRelation</a></code> object into a <code><a href="https://rdrr.io/pkg/relations/man/relation.html" class="external-link">relations::relation()</a></code> object. The incidence matrix can be viewed with
 <code><a href="https://rdrr.io/pkg/relations/man/incidence.html" class="external-link">relations::relation_incidence()</a></code>.</p>
-<p>The columns and rows of a <code><a href="PowerRelation.html">PowerRelation</a></code> object are ordered by <code>powerRelation$rankingCoalitions</code>.
+<p>The columns and rows of a <code><a href="PowerRelation.html">PowerRelation</a></code> object are ordered by TODO <code>powerRelation$rankingCoalitions</code>.
 The <code>relations</code> package automatically sorts the columns and rows by their domain names, which is the reason the
 parameter <code>domainNames</code> is included. This way we ensure that the columns and rows are sorted by
 the order of the power relation.</p>
@@ -120,7 +120,7 @@ to check for cycles in the incidence matrix only.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="newPowerRelation.html">newPowerRelation</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, <span class="st">"&gt;"</span>, <span class="fl">1</span>, <span class="st">"&gt;"</span>, <span class="fl">2</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"12 &gt; 1 &gt; 2"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">relation</span> <span class="op">&lt;-</span> <span class="fu">powerRelationMatrix</span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># do relation stuff</span></span></span>
@@ -147,7 +147,7 @@ to check for cycles in the incidence matrix only.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># a power relation where coalitions {1} and {2} are indifferent</span></span></span>
-<span class="r-in"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="newPowerRelation.html">newPowerRelation</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, <span class="st">"&gt;"</span>, <span class="fl">1</span>, <span class="st">"~"</span>, <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"12 &gt; (1 ~ 2)"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">relation</span> <span class="op">&lt;-</span> <span class="fu">powerRelationMatrix</span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Incidence matrix</span></span></span>
@@ -176,9 +176,7 @@ to check for cycles in the incidence matrix only.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># a pr with cycles</span></span></span>
-<span class="r-in"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="newPowerRelation.html">newPowerRelation</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, <span class="st">"&gt;"</span>, <span class="fl">1</span>, <span class="st">"&gt;"</span>, <span class="fl">2</span>, <span class="st">"&gt;"</span>, <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Found the following duplicate. Did you mean to introduce cycles?</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   {1}</span>
+<span class="r-in"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/warning.html" class="external-link">suppressWarnings</a></span><span class="op">(</span><span class="fu"><a href="PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"12 &gt; 1 &gt; 2 &gt; 1"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">relation</span> <span class="op">&lt;-</span> <span class="fu">powerRelationMatrix</span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Incidence matrix</span></span></span>
@@ -208,11 +206,11 @@ to check for cycles in the incidence matrix only.</p>
 <span class="r-in"><span><span class="co"># d:1       0   1   1   1</span></span></span>
 <span class="r-in"><span><span class="fu">relations</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/relations/man/incidence.html" class="external-link">relation_incidence</a></span><span class="op">(</span><span class="va">relation</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Incidences:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       a:1|2 b:1 c:2 d:1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> a:1|2     1   1   1   1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> b:1       0   1   1   1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> c:2       0   1   1   1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> d:1       0   1   1   1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    a: b: c: d:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> a:  1  1  1  1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> b:  0  1  1  1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> c:  0  1  1  1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> d:  0  1  1  1</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
