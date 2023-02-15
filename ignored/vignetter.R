@@ -45,9 +45,9 @@ local({
   createTables(tbl, "functionTable")
 
   tbl <- data.frame(
-    c("`elements`", "`rankingCoalitions`", "`equivalenceClasses`"),
-    c("Sorted vector of elements", "Coalitions in power relation", "List containing lists, each<br>containing coalitions in the<br>same equivalence class"),
-    c("`c(1,2)`", "`list(set(1,2),set(2),set(),set(1))`", "`list(list(set(1,2)),`<br>`list(set(2), set()),`<br>`list(set(1)))`")
+    c("`elements`", "`eqs`", "`coalitionLookup`", "`elementLookup`"),
+    c("Sorted vector of elements", "List containing lists, each<br>containing coalitions in the<br>same equivalence class", "Function to determine a coalition's<br>equivalence class index", "Function to determine, which coalitions<br>an element takes part in"),
+    c("`c(1,2)`", "`list(list(c(1,2)),`<br>`list(c(2), c()),`<br>`list(c(1)))`", "`function(coalition, default=-1)`", "`function(element)`")
   )
   createTables(tbl, "prObject", col.names = c("Attribute", "Description", "Value in `pr`"))
 

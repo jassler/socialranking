@@ -6,6 +6,7 @@
 \alias{is.PowerRelation}
 \alias{print.PowerRelation}
 \alias{as.PowerRelation.character}
+\alias{as.PowerRelation.list}
 \title{PowerRelation object}
 \usage{
 PowerRelation(
@@ -22,6 +23,8 @@ is.PowerRelation(x, ...)
 \method{print}{PowerRelation}(x, ...)
 
 \method{as.PowerRelation}{character}(x)
+
+\method{as.PowerRelation}{list}(x, comparators = NULL)
 }
 \arguments{
 \item{equivalenceClasses}{A nested list of lists, each containing coalitions or groups represented as vectors that are in the same equivalence class.}

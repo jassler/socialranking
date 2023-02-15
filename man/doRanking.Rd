@@ -46,7 +46,7 @@ implemented supporting the indexing and comparison operators. See examples for m
 }
 \examples{
 # TODO work on examples
-pr <- newPowerRelationFromString("2 > 12 > 1", asWhat = as.numeric)
+pr <- as.PowerRelation("2 > 12 > 1")
 
 # we define our own social ranking solution.
 # a player's score is determined by the equivalence class index it first appears in.

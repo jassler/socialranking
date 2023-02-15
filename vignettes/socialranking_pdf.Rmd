@@ -128,15 +128,15 @@ The main objective of the package `socialranking` is to provide answers for  the
 
 ## Quick Start
 
-A *power relation* (i.e, a ranking over subsets of a finite set $N$; see the Section `r refId("sec:prelim", "on [PowerRelation objects](ID)")` for a formal definition) can be constructed using the `newPowerRelation()` or `newPowerRelationFromString()` functions.
+A *power relation* (i.e, a ranking over subsets of a finite set $N$; see the Section `r refId("sec:prelim", "on [PowerRelation objects](ID)")` for a formal definition) can be constructed using the functions `PowerRelation()` or `as.PowerRelation()`.
 
 ```{r}
 library(socialranking)
-newPowerRelation(c(1,2), ">", 1, "~", c(), ">", 2)
+PowerRelation(list(list(c(1,2)), list(1, c()), list(2)))
 
-newPowerRelationFromString("ab > a ~ {} > b")
+as.PowerRelation("12 > 1 ~ {} > 2")
 
-newPowerRelationFromString("12 > 1 ~ {} > 2", asWhat = as.numeric)
+as.PowerRelation("ab > a ~ {} > b")
 ```
 
 Functions used to analyze a given `PowerRelation` object can be grouped into three main categories:
@@ -157,7 +157,7 @@ xfun::file_string("tables/functionTable.tex")
 These functions may be called as follows.
 
 ```{r}
-pr <- newPowerRelationFromString("ab > ac ~ bc > a ~ c > {} > b")
+pr <- as.PowerRelation("ab > ac ~ bc > a ~ c > {} > b")
 
 # a dominates b -> TRUE
 dominates(pr, "a", "b")
@@ -224,37 +224,43 @@ A power relation in the `socialranking` package is defined to be reflexive, tran
 
 ```{r}
 library(socialranking)
-pr <- newPowerRelation(c(1,2), ">", 2, "~", c(), ">", 1)
+pr <- PowerRelation(list(
+  list(c(1,2)),
+  list(2, c()),
+  list(1)
+))
 pr
 
 class(pr)
 ```
 
-Notice how coalitions such as $\{1,2\}$ are written as `12` to improve readability. Similarly the function `newPowerRelationFromString` saves some typing on the user's end by interpreting each character of a coalition as a separate player. Note that spaces in that function are ignored.
+Notice how coalitions such as $\{1,2\}$ are written as `12` to improve readability. Similarly, passing a string to the function `as.PowerRelation()` saves some typing on the user's end by interpreting each character of a coalition as a separate element. Note that spaces in that function are ignored.
 
 ```{r}
-newPowerRelationFromString("12 > 2~{} > 1", asWhat = as.numeric)
+as.PowerRelation("12 > 2~{} > 1", asWhat = as.numeric)
 ```
 
-The compact notation is only done in `PowerRelation` objects where every player is one digit or one character long. If this is not the case, curly braces and commas are added where needed.
+The compact notation is only done in `PowerRelation` objects where every element is one digit or one character long. If this is not the case, curly braces and commas are added where needed.
 
 ```{r}
-prLong <- newPowerRelation(
-  c("Alice", "Bob"), ">", "Bob", "~", c(), ">", "Alice"
-)
+prLong <- PowerRelation(list(
+  list(c("Alice", "Bob")), 
+  list("Bob", c()),
+  list("Alice")
+))
 prLong
 
 class(prLong)
 ```
 
-Some may have spotted a `"SingleCharElements"` class missing in `class(prLong)` that has been there in `class(pr)`. `"SingleCharElements"` influences the way coalitions are printed. If it is removed from `class(pr)`, the output will include the same curly braces and commas displayed in `prLong`.
+Some may have spotted a `"SingleCharElements"` class missing in `class(prLong)` that has been there in `class(pr)`. `"SingleCharElements"` influences how coalitions are printed. If it is removed from `class(pr)`, the output will include the same curly braces and commas displayed in `prLong`.
 
 ```{r}
 class(pr) <- class(pr)[-which(class(pr) == "SingleCharElements")]
 pr
 ```
 
-Internally a `PowerRelation` is a list with four attributes (see table below). Notice that every coalition vector is turned into a `set` object from the `sets` package[@setsPackage].
+Internally a `PowerRelation` is a list with four attributes.
 
 
 ````{=latex}

@@ -42,3 +42,26 @@ as.PowerRelation.character <- function(x) {
 
   PowerRelation(eqs)
 }
+
+#' @rdname PowerRelation
+#' @export
+as.PowerRelation.list <- function(x, comparators = NULL) {
+  eqs <- if(is.null(comparators)) {
+    list(x)
+  } else {
+    eqs <- list()
+    eq <- list()
+    comparators <- rep(comparators, length.out = length(x) - 1)
+    comparators <- c(comparators, '>')
+    for(i in seq_along(comparators)) {
+      eq <- append(eq, x[i])
+      if(comparators[i] == '>') {
+        eqs <- append(eqs, list(eq))
+        eq <- list()
+      }
+    }
+    eqs
+  }
+
+  PowerRelation(eqs)
+}
