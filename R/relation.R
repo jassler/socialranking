@@ -34,7 +34,7 @@
 #' @return [`relations::relation()`] object to the corresponding power relation.
 #'
 #' @examples
-#' pr <- newPowerRelation(c(1,2), ">", 1, ">", 2)
+#' pr <- as.PowerRelation("12 > 1 > 2")
 #' relation <- powerRelationMatrix(pr)
 #'
 #' # do relation stuff
@@ -56,7 +56,7 @@
 #'
 #'
 #' # a power relation where coalitions {1} and {2} are indifferent
-#' pr <- newPowerRelation(c(1,2), ">", 1, "~", 2)
+#' pr <- as.PowerRelation("12 > (1 ~ 2)")
 #' relation <- powerRelationMatrix(pr)
 #'
 #' # Incidence matrix
@@ -80,7 +80,7 @@
 #'
 #'
 #' # a pr with cycles
-#' pr <- newPowerRelation(c(1,2), ">", 1, ">", 2, ">", 1)
+#' pr <- suppressWarnings(as.PowerRelation("12 > 1 > 2 > 1"))
 #' relation <- powerRelationMatrix(pr)
 #'
 #' # Incidence matrix

@@ -7,7 +7,7 @@
 coalitionsAreIndifferent(powerRelation, c1, c2)
 }
 \arguments{
-\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
+\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
 
 \item{c1}{Coalition \link[base:c]{vector} or \code{\link[sets:set]{sets::set()}}}
 
@@ -21,7 +21,7 @@ Check if coalitions are indifferent from one another, or, if they appear in the 
 equivalence class.
 }
 \examples{
-pr <- newPowerRelation(c(1,2), ">", c(1), "~", c(2))
+pr <- as.PowerRelation(list(c(1,2), 1, 2))
 
 stopIfNot(F == coalitionsAreIndifferent(pr, c(1,2), c(1)))
 stopIfNot(T == coalitionsAreIndifferent(pr, 2, 1))

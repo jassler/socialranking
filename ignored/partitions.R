@@ -22,8 +22,8 @@ prGenerator <- function(P) {
     #eqs <- rapply(parts[[1]], function(i) P[i], how = "replace")
     perm <- perms[1,]
     perms <<- perms[-1,,drop=FALSE]
-    newPowerRelation(equivalenceClasses = parts[[1]][perm])
-    # newPowerRelation(equivalenceClasses = eqs[perm])
+    PowerRelation(parts[[1]][perm])
+    # PowerRelation(eqs[perm])
   }
 }
 

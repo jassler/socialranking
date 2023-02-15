@@ -10,7 +10,7 @@ copelandScores(powerRelation, elements = NULL)
 copelandRanking(powerRelation)
 }
 \arguments{
-\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
+\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
 
 \item{elements}{vector of elements of which to calculate their scores.
 If \code{elements == NULL}, create vectors for all elements in \code{pr$elements}}
@@ -43,15 +43,11 @@ More formally, in a given \verb{PowerRelation pr} with element \eqn{i}{i}, count
 }
 \examples{
 # (123 ~ 12 ~ 3 ~ 1) > (2 ~ 23) > 13
-pr <- newPowerRelation(
-  c(1,2,3),
-  "~", c(1,2),
-  "~", c(3),
-  "~", c(1),
-  ">", c(2),
-  "~", c(2,3),
-  ">", c(1,3)
-)
+pr <- PowerRelation(list(
+  list(c(1,2,3), c(1,2), 3, 1),
+  list(c(2,3), 2),
+  list(c(1,3))
+))
 
 # `1` = 1
 # `2` = 0

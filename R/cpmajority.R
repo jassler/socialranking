@@ -57,7 +57,7 @@
 #' @return `cpMajorityComparison()` returns a list with elements described in the details.
 #'
 #' @examples
-#' pr <- newPowerRelationFromString("ac > (a ~ b) > (c ~ bc)")
+#' pr <- as.PowerRelation("ac > (a ~ b) > (c ~ bc)")
 #'
 #' # a > b
 #' # D_ab = {c, {}}

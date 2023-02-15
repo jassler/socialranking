@@ -91,7 +91,7 @@ powerRelationGenerator <- function(coalitions, startWithLinearOrder = FALSE) {
   classes <- c('PowerRelation', if(all(nchar(elements) == 1)) 'SingleCharElements')
 
   if(length(coalitions) == 1) {
-    pr <- newPowerRelation(coalitions[[1]])
+    pr <- PowerRelation(list(coalitions[[1]]))
     return(function() { p <- pr; pr <<- NULL; p })
   }
 
@@ -136,8 +136,7 @@ powerRelationGenerator <- function(coalitions, startWithLinearOrder = FALSE) {
     }
     comps <- unlist(sapply(part, function(x) c(rep('~', x-1), '>')))
 
-    # This is 15x (!) faster than calling newPowerRelation
-    # If structure of PowerRelation changes, it has to change here, too
+    # TODO change
     structure(list(
       elements = elements,
       rankingCoalitions = coalitions[perms[,permsI]],

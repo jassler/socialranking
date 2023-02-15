@@ -13,7 +13,7 @@ powerRelationMatrix(
 \method{as.relation}{PowerRelation}(x, ...)
 }
 \arguments{
-\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
+\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
 
 \item{domainNames}{How should the row and column names be formatted?
 \itemize{
@@ -57,7 +57,7 @@ Call \code{\link[=transitiveClosure]{transitiveClosure()}} to remove cycles in a
 }
 
 \examples{
-pr <- newPowerRelation(c(1,2), ">", 1, ">", 2)
+pr <- as.PowerRelation("12 > 1 > 2")
 relation <- powerRelationMatrix(pr)
 
 # do relation stuff
@@ -79,7 +79,7 @@ stopifnot(all(
 
 
 # a power relation where coalitions {1} and {2} are indifferent
-pr <- newPowerRelation(c(1,2), ">", 1, "~", 2)
+pr <- as.PowerRelation("12 > (1 ~ 2)")
 relation <- powerRelationMatrix(pr)
 
 # Incidence matrix
@@ -103,7 +103,7 @@ stopifnot(all(
 
 
 # a pr with cycles
-pr <- newPowerRelation(c(1,2), ">", 1, ">", 2, ">", 1)
+pr <- suppressWarnings(as.PowerRelation("12 > 1 > 2 > 1"))
 relation <- powerRelationMatrix(pr)
 
 # Incidence matrix

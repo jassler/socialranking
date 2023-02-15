@@ -16,17 +16,17 @@
 #' @family helper functions transorming existing [`PowerRelation`] objects
 #'
 #' @examples
-#' pr <- newPowerRelationFromString('ab > ac > abc > b > a > {} > c < bc')
+#' pr <- as.PowerRelation('ab > ac > abc > b > a > {} > c < bc')
 #' makePowerRelationMonotonic(pr)
 #' # (abc ~ ab) > ac > (bc ~ b) > a > (c ~ {})
 #'
 #' # notice that missing coalitions are automatically added
 #' # (except for the empty set)
-#' pr <- newPowerRelationFromString('a > b > c')
+#' pr <- as.PowerRelation('a > b > c')
 #' makePowerRelationMonotonic(pr)
 #' # (abc ~ ab ~ ac ~ a) > (bc ~ b) > c
 #'
-#' pr <- newPowerRelationFromString('a > {} > b > c')
+#' pr <- as.PowerRelation('a > {} > b > c')
 #' makePowerRelationMonotonic(pr)
 #' # (abc ~ ab ~ ac ~ a) > (bc ~ b ~ c ~ {})
 #'
@@ -49,5 +49,5 @@ makePowerRelationMonotonic <- function(powerRelation) {
     }
   }
 
-  newPowerRelation(equivalenceClasses = newEqs)
+  PowerRelation(equivalenceClasses = newEqs)
 }

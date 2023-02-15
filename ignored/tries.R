@@ -39,11 +39,7 @@ completePr <- function(pr) {
   if(length(ps) == 0)
     pr
   else
-    newPowerRelation(equivalenceClasses = append(pr$equivalenceClasses, list(ps)))
-}
-
-makeMonotonic <- function(pr) {
-  allCoalitions <- pr$
+    PowerRelation(append(pr$equivalenceClasses, list(ps)))
 }
 
 

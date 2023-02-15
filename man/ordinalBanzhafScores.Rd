@@ -10,7 +10,7 @@ ordinalBanzhafScores(powerRelation, elements = NULL)
 ordinalBanzhafRanking(powerRelation)
 }
 \arguments{
-\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
+\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
 }
 \value{
 Score function returns list of class type \code{OrdinalBanzhafScores} and length of \code{powerRelation$elements}.
@@ -34,7 +34,7 @@ had a negative impact (\eqn{S \succ S \cup \lbrace i \rbrace}{S > S u \{i\}})\in
 }
 \examples{
 # 12 > (2 ~ {}) > 1
-pr <- newPowerRelation(c(1,2), ">", 2, "~", c(), ">", 1)
+pr <- as.PowerRelation("12 > (2 ~ {}) > 1")
 
 # Player 1 contributes positively to {2}
 # Player 1 contributes negatively to {empty set}

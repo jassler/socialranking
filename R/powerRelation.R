@@ -248,7 +248,7 @@ is.PowerRelation <- function(x, ...) {
 #' @family equivalence class lookup functions
 #'
 #' @examples
-#' pr <- newPowerRelation(c(1,2), ">", c(1), "~", c(2))
+#' pr <- as.PowerRelation(list(c(1,2), 1, 2))
 #'
 #' stopIfNot(F == coalitionsAreIndifferent(pr, c(1,2), c(1)))
 #' stopIfNot(T == coalitionsAreIndifferent(pr, 2, 1))
@@ -304,7 +304,10 @@ print.PowerRelation <- function(x, ...) {
 #' @family equivalence class lookup functions
 #'
 #' @examples
-#' pr <- newPowerRelation(c(1,2), ">", c(1), "~", c(2))
+#' pr <- PowerRelation(list(
+#'   list(c(1,2)),
+#'   list(1,2)
+#' ))
 #'
 #' # 1
 #' equivalenceClassIndex(pr, c(1, 2))

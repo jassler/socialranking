@@ -40,7 +40,7 @@ is.na.OrdinalBanzhafScores <- function(x) FALSE
 #'
 #' @examples
 #' # 12 > (2 ~ {}) > 1
-#' pr <- newPowerRelation(c(1,2), ">", 2, "~", c(), ">", 1)
+#' pr <- as.PowerRelation("12 > (2 ~ {}) > 1")
 #'
 #' # Player 1 contributes positively to {2}
 #' # Player 1 contributes negatively to {empty set}

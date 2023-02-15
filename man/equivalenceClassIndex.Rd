@@ -7,7 +7,7 @@
 equivalenceClassIndex(powerRelation, coalition, stopIfNotExists = TRUE)
 }
 \arguments{
-\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
+\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
 
 \item{coalition}{a coalition vector or \code{\link[sets:set]{sets::set}} that is part of \code{powerRelation}}
 
@@ -24,7 +24,10 @@ Deprecated. Try to use powerRelation$coalitionLookup() instead.
 Given a \code{coalition} \link[base:c]{vector} or \code{\link[sets:set]{sets::set()}}, return a singular index number of the equivalence class it is located in.
 }
 \examples{
-pr <- newPowerRelation(c(1,2), ">", c(1), "~", c(2))
+pr <- PowerRelation(list(
+  list(c(1,2)),
+  list(1,2)
+))
 
 # 1
 equivalenceClassIndex(pr, c(1, 2))

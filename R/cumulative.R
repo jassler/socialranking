@@ -41,7 +41,7 @@ is.na.CumulativeScores <- function(x) FALSE
 #' times the given element appears in each equivalence class.
 #'
 #' @examples
-#' pr <- newPowerRelationFromString("12 > 1 > 2", asWhat = as.numeric)
+#' pr <- as.PowerRelation("12 > 1 > 2", asWhat = as.numeric)
 #'
 #' # `1`: c(1, 2, 2)
 #' # `2`: c(1, 1, 2)

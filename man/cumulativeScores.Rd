@@ -10,7 +10,7 @@ cumulativeScores(powerRelation, elements = NULL)
 cumulativelyDominates(powerRelation, e1, e2, strictly = FALSE)
 }
 \arguments{
-\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
+\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
 
 \item{elements}{vector of elements of which to calculate their scores.
 If \code{elements == NULL}, create vectors for all elements in \code{pr$elements}}
@@ -47,7 +47,7 @@ its score vector is [1, 1, 2, 2, 2, 3, 3, 3].
 }
 
 \examples{
-pr <- newPowerRelationFromString("12 > 1 > 2", asWhat = as.numeric)
+pr <- as.PowerRelation("12 > 1 > 2", asWhat = as.numeric)
 
 # `1`: c(1, 2, 2)
 # `2`: c(1, 1, 2)

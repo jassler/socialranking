@@ -67,16 +67,7 @@ is.na.KramerSimpsonScores <- function(x) FALSE
 #'
 #' @examples
 #' # 2 > (1 ~ 3) > 12 > (13 ~ 23) > {} > 123
-#' pr <- newPowerRelation(
-#'   2,
-#'   ">", 1,
-#'   "~", 3,
-#'   ">", c(1,2),
-#'   ">", c(1,3),
-#'   "~", c(2,3),
-#'   ">", c(),
-#'   ">", c(1,2,3)
-#' )
+#' pr <- as.PowerRelation("2 > (1~3) > 12 > (13~23) > {} > 123")
 #'
 #' # get scores for all elements
 #' # cpMajorityComparisonScore(pr, 2, 1) = 1

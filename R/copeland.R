@@ -46,15 +46,11 @@ is.na.CopelandScores <- function(x) FALSE
 #'
 #' @examples
 #' # (123 ~ 12 ~ 3 ~ 1) > (2 ~ 23) > 13
-#' pr <- newPowerRelation(
-#'   c(1,2,3),
-#'   "~", c(1,2),
-#'   "~", c(3),
-#'   "~", c(1),
-#'   ">", c(2),
-#'   "~", c(2,3),
-#'   ">", c(1,3)
-#' )
+#' pr <- PowerRelation(list(
+#'   list(c(1,2,3), c(1,2), 3, 1),
+#'   list(c(2,3), 2),
+#'   list(c(1,3))
+#' ))
 #'
 #' # `1` = 1
 #' # `2` = 0

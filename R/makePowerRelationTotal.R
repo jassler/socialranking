@@ -17,7 +17,7 @@
 #' @family helper functions transorming existing [`PowerRelation`] objects
 #'
 #' @examples
-#' pr <- newPowerRelation(c(1,2), '>', 3)
+#' pr <- as.PowerRelation(list(c(1,2), 3))
 #' # 12 > 3
 #'
 #' makePowerRelationTotal(pr)
@@ -34,5 +34,5 @@ makePowerRelationTotal <- function(powerRelation, includeEmptySet = TRUE) {
   els <- powerRelation$elements
   allCoals <- createPowerset(els, includeEmptySet = includeEmptySet)
   missing <- setdiff(lapply(allCoals, sets::as.set), powerRelation$rankingCoalitions)
-  newPowerRelation(equivalenceClasses = append(powerRelation$equivalenceClasses, list(missing)))
+  PowerRelation(append(powerRelation$equivalenceClasses, list(missing)))
 }

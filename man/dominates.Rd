@@ -7,7 +7,7 @@
 dominates(powerRelation, e1, e2, strictly = FALSE, includeEmptySet = TRUE)
 }
 \arguments{
-\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
+\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
 
 \item{e1, e2}{Elements in \code{powerRelation$elements}}
 
@@ -32,7 +32,7 @@ Test if one element dominates the other.
 \eqn{S \cup \lbrace i \rbrace \succ S \cup \lbrace j \rbrace}{Sn\{i\} > Sn\{j\}}.
 }
 \examples{
-pr <- newPowerRelationFromString("12 > 1 > 2", asWhat = as.numeric)
+pr <- as.PowerRelation("12 > 1 > 2")
 
 # TRUE
 d1 <- dominates(pr, 1, 2)

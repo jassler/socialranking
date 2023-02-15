@@ -7,7 +7,7 @@
 makePowerRelationTotal(powerRelation, includeEmptySet = TRUE)
 }
 \arguments{
-\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
+\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
 
 \item{includeEmptySet}{If \code{TRUE}, include the empty set in the last equivalence class if it is missing from the power relation.}
 }
@@ -35,7 +35,7 @@ In other words, we can compare every coalition against every other coalition the
 The function simply adds the coalitions missing from the \code{\link{PowerRelation}} object to make it total behind the last equivalence class there is.
 }
 \examples{
-pr <- newPowerRelation(c(1,2), '>', 3)
+pr <- as.PowerRelation(list(c(1,2), 3))
 # 12 > 3
 
 makePowerRelationTotal(pr)
