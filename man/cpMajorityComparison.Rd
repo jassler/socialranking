@@ -22,7 +22,7 @@ cpMajorityComparisonScore(
 )
 }
 \arguments{
-\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
+\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
 
 \item{e1, e2}{Elements in \code{powerRelation$elements}}
 
@@ -92,7 +92,7 @@ Unlike Lexcel, Ordinal Banzhaf, etc., this power relation can introduce cycles. 
 and not a ranking of all players. See the other CP-majority based functions that offer a way to rank all players.
 }
 \examples{
-pr <- newPowerRelationFromString("ac > (a ~ b) > (c ~ bc)")
+pr <- as.PowerRelation("ac > (a ~ b) > (c ~ bc)")
 
 # a > b
 # D_ab = {c, {}}

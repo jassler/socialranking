@@ -1,5 +1,5 @@
 test_that("dominates", {
-  pr <- newPowerRelation(c(1,2), ">", 1, ">", 2)
+  pr <- as.PowerRelation('12 > 1 > 2')
   expect_true(dominates(pr, 1, 2))
   expect_false(dominates(pr, 2, 1))
   expect_true(dominates(pr, 1, 2, includeEmptySet = FALSE))
@@ -9,7 +9,7 @@ test_that("dominates", {
   expect_true(pr %:% 1 %>=dom% 2)
   expect_false(pr %:% 2 %>=dom% 1)
 
-  pr <- newPowerRelation(1, ">", 2, ">", c(2,3))
+  pr <- as.PowerRelation('1 > 2 > 23')
   expect_true(dominates(pr, 1, 1))
   expect_false(dominates(pr, 1, 1, strictly = TRUE))
   expect_true(dominates(pr, 1, 2))
@@ -21,7 +21,7 @@ test_that("dominates", {
   expect_false(dominates(pr, 1, 2, includeEmptySet = FALSE, strictly = TRUE))
   expect_false(dominates(pr, 2, 1, includeEmptySet = FALSE, strictly = TRUE))
 
-  pr <- newPowerRelationFromString("123 > (12 ~ 13) > (1 ~ 23 ~ {}) > (2 ~ 3)", asWhat = as.numeric)
+  pr <- as.PowerRelation("123 > (12 ~ 13) > (1 ~ 23 ~ {}) > (2 ~ 3)")
   expect_true(dominates(pr, 2, 3))
   expect_true(dominates(pr, 3, 2))
   expect_true(pr %:% 1 %>=dom% 3)

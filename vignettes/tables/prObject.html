@@ -13,14 +13,19 @@
    <td style="text-align:left;"> <code>c(1,2)</code> </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> <code>rankingCoalitions</code> </td>
-   <td style="text-align:left;"> Coalitions in power relation </td>
-   <td style="text-align:left;"> <code>list(set(1,2),set(2),set(),set(1))</code> </td>
+   <td style="text-align:left;"> <code>eqs</code> </td>
+   <td style="text-align:left;"> List containing lists, each<br>containing coalitions in the<br>same equivalence class </td>
+   <td style="text-align:left;"> <code>list(list(c(1,2)),</code><br><code>list(c(2), c()),</code><br><code>list(c(1)))</code> </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> <code>equivalenceClasses</code> </td>
-   <td style="text-align:left;"> List containing lists, each<br>containing coalitions in the<br>same equivalence class </td>
-   <td style="text-align:left;"> <code>list(list(set(1,2)),</code><br><code>list(set(2), set()),</code><br><code>list(set(1)))</code> </td>
+   <td style="text-align:left;"> <code>coalitionLookup</code> </td>
+   <td style="text-align:left;"> Function to determine a coalition's<br>equivalence class index </td>
+   <td style="text-align:left;"> <code>function(coalition, default=-1)</code> </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> <code>elementLookup</code> </td>
+   <td style="text-align:left;"> Function to determine, which coalitions<br>an element takes part in </td>
+   <td style="text-align:left;"> <code>function(element)</code> </td>
   </tr>
 </tbody>
 </table>

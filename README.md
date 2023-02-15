@@ -43,9 +43,9 @@ elements or players.
 Once installed, call `library(socialranking)` to load the package into
 your current environment.
 
-`newPowerRelation()` and `newPowerRelationFromString()` creates a
-`PowerRelation` object. `createPowerset()` is a convenient function to
-generate a `newPowerRelation()` function call for all possible
+`PowerRelation()` and `as.PowerRelation()` creates a `PowerRelation`
+object. `createPowerset()` is a convenient function to generate a
+`PowerRelation()` or `as.PowerRelation()` function call for all possible
 coalitions.
 
 ``` r
@@ -55,36 +55,32 @@ if(interactive()) {
 }
 
 # pasted, rearranged, adjusted comparators
-pr <- newPowerRelation(
-  c(1,2,3),
-  ">", c(1,2),
-  "~", c(1,3),
-  ">", c(2),
-  "~", c(2,3),
-  ">", c(1),
-  ">", c(3)
+as.PowerRelation("
+  123
+  > 12
+  ~ 13
+  > 2
+  ~ 23
+  > 1
+  > 3
+")
+#> 123 > (12 ~ 13) > (2 ~ 23) > 1 > 3
+
+# equivalent
+pr <- as.PowerRelation(
+  list(c(1,2,3), c(1,2), c(1,3), c(2), c(2,3), c(1), c(3)),
+  comparators = c(">", "~", ">", "~", ">", ">")
 )
 
 # equivalent
-pr <- newPowerRelation(
-  rankingCoalitions = list(c(1,2,3), c(1,2), c(1,3), c(2), c(2,3), c(1), c(3)),
-  rankingComparators = c(">", "~", ">", "~", ">", ">")
-)
-
-# equivalent
-pr <- newPowerRelationFromString("123 > 12 ~ 13 > 2 ~ 23 > 1 > 3", asWhat = as.numeric)
+pr <- as.PowerRelation("123 > 12 ~ 13 > 2 ~ 23 > 1 > 3")
 pr
-#> Elements: 1 2 3
 #> 123 > (12 ~ 13) > (2 ~ 23) > 1 > 3
 
 pr$elements
 #> [1] 1 2 3
 pr$equivalenceClasses[[2]]
-#> [[1]]
-#> {1, 2}
-#> 
-#> [[2]]
-#> {1, 3}
+#> NULL
 ```
 
 The functions used to analyze power relations can be grouped into

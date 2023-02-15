@@ -7,9 +7,11 @@ Attribute & Description & Value in \texttt{pr}\\
 \midrule
 \texttt{elements} & Sorted vector of elements & \texttt{c(1,2)}\\
 \midrule
-\texttt{rankingCoalitions} & Coalitions in power relation & \texttt{list(set(1,2),set(2),set(),set(1))}\\
+\texttt{eqs} & \makecell[l]{List containing lists, each\\containing coalitions in the\\same equivalence class} & \makecell[l]{\texttt{list(list(c(1,2)),}\\\texttt{list(c(2), c()),}\\\texttt{list(c(1)))}}\\
 \midrule
-\texttt{equivalenceClasses} & \makecell[l]{List containing lists, each\\containing coalitions in the\\same equivalence class} & \makecell[l]{\texttt{list(list(set(1,2)),}\\\texttt{list(set(2), set()),}\\\texttt{list(set(1)))}}\\
+\texttt{coalitionLookup} & \makecell[l]{Function to determine a coalition's\\equivalence class index} & \texttt{function(coalition, default=-1)}\\
+\midrule
+\texttt{elementLookup} & \makecell[l]{Function to determine, which coalitions\\an element takes part in} & \texttt{function(element)}\\
 \bottomrule
 \end{tabular}}
 \end{table}

@@ -1,13 +1,5 @@
 test_that("manip paper example with empty set", {
-  pr <- newPowerRelation(
-    c(1,2,3),
-    "~", c(1,2),
-    "~", c(3),
-    "~", c(1),
-    ">", c(2),
-    "~", c(2,3),
-    ">", c(1,3)
-  )
+  pr <- as.PowerRelation('(123 ~ 12 ~ 3 ~ 1) > (2 ~ 23) > 13')
 
   result12 <- cpMajorityComparison(pr, 1, 2)
   result13 <- cpMajorityComparison(pr, 1, 3)
@@ -71,15 +63,7 @@ test_that("manip paper example with empty set", {
 
 
 test_that("manip paper example strictly", {
-  pr <- newPowerRelation(
-    c(1,2,3),
-    "~", c(1,2),
-    "~", c(3),
-    "~", c(1),
-    ">", c(2),
-    "~", c(2,3),
-    ">", c(1,3)
-  )
+  pr <- as.PowerRelation('(123 ~ 12 ~ 3 ~ 1) > (2 ~ 23) > 13')
 
   result12 <- cpMajorityComparison(pr, 1, 2, strictly = TRUE)
   result13 <- cpMajorityComparison(pr, 1, 3, strictly = TRUE)
@@ -129,15 +113,7 @@ test_that("manip paper example strictly", {
 })
 
 test_that("manip paper example without empty set", {
-  pr <- newPowerRelation(
-    c(1,2,3),
-    "~", c(1,2),
-    "~", c(3),
-    "~", c(1),
-    ">", c(2),
-    "~", c(2,3),
-    ">", c(1,3)
-  )
+  pr <- as.PowerRelation('123 ~ 12 ~ 3 ~ 1 > 2 ~ 23 > 13')
 
   result12 <- cpMajorityComparison(pr, 1, 2, includeEmptySet = FALSE)
   result13 <- cpMajorityComparison(pr, 1, 3, includeEmptySet = FALSE)

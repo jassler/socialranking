@@ -8,12 +8,12 @@
 #'
 #' A power relation with cycles is not transitive. A transitive closure over a power relation removes all cycles and turns it into a
 #' transitive relation placing all coalitions within a cycle in the same equivalence class.
-#' If \eqn{a \succ b \succ a}{a > b > a}, from the symmetric definition in [`newPowerRelation()`] we
+#' If \eqn{a \succ b \succ a}{a > b > a}, from the symmetric definition in [`PowerRelation()`] we
 #' therefore assume that \eqn{a \sim b}{a ~ b}. Similarly if
 #' \eqn{a \succ b_1 \succ b_2 \succ \dots \succ b_n \succ a}{a > b_1 > b_2 > ... > b_n > a}, the transitive closure turns it into
 #' \eqn{a \sim b_1 \sim b_2 \sim \dots \sim b_n}{a ~ b_1 ~ b_2 ~ ... ~ b_n}.
 #'
-#' `transitiveClosure()` transforms a [`PowerRelation`] object with cycles into a `Powerrelation` object without cycles.
+#' `transitiveClosure()` transforms a [`PowerRelation`] object with cycles into a `PowerRelation` object without cycles.
 #' As described in the previous paragraph, all coalitions within a cycle then are put into the same equivalence class
 #' and all duplicate coalitions are removed.
 #'
@@ -22,20 +22,20 @@
 #' @return [`PowerRelation`] object with no cycles.
 #'
 #' @examples
-#' pr <- newPowerRelation(1, ">", 2)
+#' pr <- as.PowerRelation("1 > 2")
 #'
 #' # nothing changes
 #' transitiveClosure(pr)
 #'
 #'
-#' pr <- suppressWarnings(newPowerRelation(1, ">", 2, ">", 1))
+#' pr <- suppressWarnings(as.PowerRelation("1 > 2 > 1"))
 #'
 #' # 1 ~ 2
 #' transitiveClosure(pr)
 #'
 #'
 #' pr <- suppressWarnings(
-#'   newPowerRelation(1, ">", 3, ">", 1, ">", 2, ">", c(2,3), ">", 2)
+#'   as.PowerRelation("1 > 3 > 1 > 2 > 23 > 2")
 #' )
 #'
 #' # 1 > 3 > 1 > 2 > 23 > 2 =>
@@ -48,26 +48,23 @@ transitiveClosure <- function(powerRelation) {
   stopifnot(is.PowerRelation(powerRelation))
   # --- end checks --- #
 
-  duplicateTrues <- duplicated(powerRelation$rankingCoalitions)
-  duplicates <- unique(powerRelation$rankingCoalitions[duplicateTrues])
+  rankingCoalitions <- unlist(powerRelation$eqs, recursive = FALSE)
+  duplicateTrues <- duplicated(rankingCoalitions)
+  duplicates <- unique(rankingCoalitions[duplicateTrues])
 
-  newCompares <- powerRelation$rankingComparators
+  newEqs <- powerRelation$eqs
+  for(duplicate in rev(duplicates)) {
+    indexes <- sort(unique(powerRelation$coalitionLookup(duplicate)))
+    if(length(indexes) == 1)
+      next
 
-  for(duplicate in duplicates) {
-    found <- which(powerRelation$rankingCoalitions == duplicate)
-    for(i in min(found):(max(found)-1)) {
-      newCompares[i] <- '~'
-    }
+    toAdd <- seq.int(indexes[1]+1, indexes[length(indexes)])
+
+    newEqs[[indexes[1]]] <- append(newEqs[[indexes[1]]], unlist(newEqs[toAdd], recursive = FALSE))
+    newEqs[toAdd] <- rep(list(NULL), length(toAdd))
   }
 
-  newCoalitions <- powerRelation$rankingCoalitions[!duplicateTrues]
-  if(any(duplicateTrues))
-    newCompares <- newCompares[-(which(duplicateTrues)-1)]
-
-  newList <- list(newCoalitions[[1]])
-  for(i in seq_along(newCompares)) {
-    newList <- append(newList, list(newCompares[i], newCoalitions[[i+1]]))
-  }
-
-  newPowerRelation(newList)
+  newEqs <- Filter(function(l) length(l) > 0, newEqs)
+  newEqs <- lapply(newEqs, function(eq) eq[!duplicated(eq)])
+  PowerRelation(newEqs)
 }

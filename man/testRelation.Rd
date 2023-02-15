@@ -58,7 +58,7 @@ pr_e1 \%>=duallex\% e2
 pr_e1 \%>duallex\% e2
 }
 \arguments{
-\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
+\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
 
 \item{e1, e2}{Elements in \code{powerRelation$elements}}
 
@@ -80,9 +80,7 @@ The function \code{testRelation} is somewhat only used to make the offered compa
 comparison operators listed in the usage section.
 }
 \examples{
-pr <- newPowerRelationFromString(
-  "123 > 12 ~ 13 > 3 > 1 ~ 2", asWhat = as.numeric
-)
+pr <- as.PowerRelation("123 > 12 ~ 13 > 3 > 1 ~ 2")
 
 # Dominance
 stopifnot(pr \%:\% 1 \%>=dom\% 2)

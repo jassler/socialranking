@@ -9,8 +9,8 @@ The package \code{socialranking} offers functions to represent ordinal
 information of coalitions and calculate the power relation between elements or players.
 }
 \details{
-\code{\link[=newPowerRelation]{newPowerRelation()}} creates a \code{\link{PowerRelation}} object. \code{\link[=createPowerset]{createPowerset()}}
-is a convenient function to generate a \code{\link[=newPowerRelation]{newPowerRelation()}} function call
+\code{\link[=PowerRelation]{PowerRelation()}} creates a \code{\link{PowerRelation}} object. \code{\link[=createPowerset]{createPowerset()}}
+is a convenient function to generate a \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}} function call
 for all possible coalitions.
 
 The functions used to analyze power relations can be grouped into comparison functions,

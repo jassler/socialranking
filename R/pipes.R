@@ -21,9 +21,7 @@
 #' Score Functions: [`ordinalBanzhafScores()`], [`copelandScores()`], [`kramerSimpsonScores()`], [`lexcelScores()`].
 #'
 #' @examples
-#' pr <- newPowerRelationFromString(
-#'   "123 > 12 ~ 13 > 3 > 1 ~ 2", asWhat = as.numeric
-#' )
+#' pr <- as.PowerRelation("123 > 12 ~ 13 > 3 > 1 ~ 2")
 #'
 #' @export
 testRelation <- function(powerRelation, e1) {

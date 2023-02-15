@@ -57,7 +57,7 @@
 #' @return `cpMajorityComparison()` returns a list with elements described in the details.
 #'
 #' @examples
-#' pr <- newPowerRelationFromString("ac > (a ~ b) > (c ~ bc)")
+#' pr <- as.PowerRelation("ac > (a ~ b) > (c ~ bc)")
 #'
 #' # a > b
 #' # D_ab = {c, {}}
@@ -111,7 +111,7 @@ cpMajorityComparison <- function(powerRelation, e1, e2, strictly = FALSE, includ
     winner = c(),
     loser = c()
   )
-  class(result) <- c('cpMajority', if('SingleCharElements' %in% class(powerRelation)) 'SingleCharElements')
+  class(result) <- c('cpMajority', class(powerRelation)[-1])
 
   # 2^(N-{i,j})
   coalitions <- createPowerset(setdiff(powerRelation$elements, c(e1,e2)), includeEmptySet = includeEmptySet)
@@ -127,8 +127,8 @@ cpMajorityComparison <- function(powerRelation, e1, e2, strictly = FALSE, includ
         e2 = -1
       )
 
-      eq1 <- equivalenceClassIndex(powerRelation, c(S,e1), stopIfNotExists = FALSE)
-      eq2 <- equivalenceClassIndex(powerRelation, c(S,e2), stopIfNotExists = FALSE)
+      eq1 <- powerRelation$coalitionLookup(c(S, e1))
+      eq2 <- powerRelation$coalitionLookup(c(S, e2))
       if(eq1 >= 1 && eq2 >= 1) {
         t$included <- TRUE
         t$e1 <- eq1
@@ -209,10 +209,10 @@ cpMajorityComparisonScore <- function(powerRelation, e1, e2, strictly = FALSE, i
   neg <- 0
 
   for(S in coalitions) {
-    c1 <- equivalenceClassIndex(powerRelation, c(S, e1), FALSE)
+    c1 <- powerRelation$coalitionLookup(c(S, e1))
     if(c1 == -1) next
 
-    c2 <- equivalenceClassIndex(powerRelation, c(S, e2), FALSE)
+    c2 <- powerRelation$coalitionLookup(c(S, e2))
     if(c2 == -1) next
 
     if(strictly) {

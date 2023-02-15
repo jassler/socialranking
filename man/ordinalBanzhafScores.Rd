@@ -5,12 +5,15 @@
 \alias{ordinalBanzhafRanking}
 \title{Ordinal Banzhaf}
 \usage{
-ordinalBanzhafScores(powerRelation)
+ordinalBanzhafScores(powerRelation, elements = NULL)
 
 ordinalBanzhafRanking(powerRelation)
 }
 \arguments{
-\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
+\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
+
+\item{elements}{vector of elements of which to calculate their scores.
+If \code{elements == NULL}, create vectors for all elements in \code{pr$elements}}
 }
 \value{
 Score function returns list of class type \code{OrdinalBanzhafScores} and length of \code{powerRelation$elements}.
@@ -20,8 +23,7 @@ Those two numbers summed together gives us the actual ordinal Banzhaf score.
 Ranking function returns corresponding \code{\link{SocialRankingSolution}} object.
 }
 \description{
-Calculate the Ordinal Banzhaf scores, the number of
-positive and negative marginal contributions.
+Calculate the Ordinal Banzhaf scores, the number of positive and negative marginal contributions.
 
 \code{\link[=ordinalBanzhafRanking]{ordinalBanzhafRanking()}} returns the corresponding ranking.
 }
@@ -35,7 +37,7 @@ had a negative impact (\eqn{S \succ S \cup \lbrace i \rbrace}{S > S u \{i\}})\in
 }
 \examples{
 # 12 > (2 ~ {}) > 1
-pr <- newPowerRelation(c(1,2), ">", 2, "~", c(), ">", 1)
+pr <- as.PowerRelation("12 > (2 ~ {}) > 1")
 
 # Player 1 contributes positively to {2}
 # Player 1 contributes negatively to {empty set}

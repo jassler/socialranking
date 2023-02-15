@@ -46,15 +46,11 @@ is.na.CopelandScores <- function(x) FALSE
 #'
 #' @examples
 #' # (123 ~ 12 ~ 3 ~ 1) > (2 ~ 23) > 13
-#' pr <- newPowerRelation(
-#'   c(1,2,3),
-#'   "~", c(1,2),
-#'   "~", c(3),
-#'   "~", c(1),
-#'   ">", c(2),
-#'   "~", c(2,3),
-#'   ">", c(1,3)
-#' )
+#' pr <- PowerRelation(list(
+#'   list(c(1,2,3), c(1,2), 3, 1),
+#'   list(c(2,3), 2),
+#'   list(c(1,3))
+#' ))
 #'
 #' # `1` = 1
 #' # `2` = 0
@@ -74,7 +70,6 @@ copelandScores <- function(powerRelation, elements = NULL) {
   # --- checks (generated) --- #
   stopifnot(is.PowerRelation(powerRelation))
   if(is.null(elements)) elements <- powerRelation$elements
-  else if(!is.null(err <- powerRelationHasElements(powerRelation, elements))) stop(err)
   # --- end checks --- #
 
   eSet <- sets::as.set(powerRelation$elements)

@@ -41,7 +41,7 @@ is.na.CumulativeScores <- function(x) FALSE
 #' times the given element appears in each equivalence class.
 #'
 #' @examples
-#' pr <- newPowerRelationFromString("12 > 1 > 2", asWhat = as.numeric)
+#' pr <- as.PowerRelation("12 > 1 > 2", asWhat = as.numeric)
 #'
 #' # `1`: c(1, 2, 2)
 #' # `2`: c(1, 1, 2)
@@ -55,14 +55,13 @@ cumulativeScores <- function(powerRelation, elements = NULL) {
   # --- checks (generated) --- #
   stopifnot(is.PowerRelation(powerRelation))
   if(is.null(elements)) elements <- powerRelation$elements
-  else if(!is.null(err <- powerRelationHasElements(powerRelation, elements))) stop(err)
   # --- end checks --- #
 
   result <- list()
   for(e in elements) {
 
     result[[paste(e)]] <- unlist(unlist(lapply(
-      powerRelation$equivalenceClasses,
+      powerRelation$eqs,
       function(coalitions) sum(e == unlist(coalitions))
     )))
 

@@ -3,8 +3,8 @@
 #' The package `socialranking` offers functions to represent ordinal
 #' information of coalitions and calculate the power relation between elements or players.
 #'
-#' [`newPowerRelation()`] creates a [`PowerRelation`] object. [`createPowerset()`]
-#' is a convenient function to generate a [`newPowerRelation()`] function call
+#' [`PowerRelation()`] creates a [`PowerRelation`] object. [`createPowerset()`]
+#' is a convenient function to generate a [`PowerRelation()`] or [`as.PowerRelation()`] function call
 #' for all possible coalitions.
 #'
 #' The functions used to analyze power relations can be grouped into comparison functions,

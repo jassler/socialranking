@@ -21,7 +21,7 @@ is.na.LexcelScores <- function(x) FALSE
 #'
 #' An equivalence class \eqn{\sum_i}{Sum_i} holds all coalitions
 #' that are indifferent from one another. In a given power relation created with
-#' [`newPowerRelation()`], the equivalence classes are saved in `$equivalenceClasses`.
+#' [`PowerRelation()`] or [`as.PowerRelation()`], the equivalence classes are saved in `$eqs`.
 #'
 #' E.g. for a power relation defined as
 #' \eqn{123 \succ (12 \sim 13 \sim 1 \sim \emptyset) \succ (23 \sim 1 \sim 2)}{123 > (12 ~ 13 ~ 1) > (23 ~ 1 ~ 2)}
@@ -58,10 +58,8 @@ is.na.LexcelScores <- function(x) FALSE
 #' # note that the coalition {1} appears twice
 #' # 123 > 12 ~ 13 ~ 1 ~ {} > 23 ~ 1 ~ 2
 #' # E = {123} > {12, 13, 1, {}} > {23, 1, 2}
-#' pr <- suppressWarnings(newPowerRelation(
-#'   c(1,2,3),
-#'   ">", c(1,2), "~", c(1,3), "~", 1, "~", c(),
-#'   ">", c(2,3), "~", 1, "~", 2
+#' pr <- suppressWarnings(as.PowerRelation(
+#'   "123 > (12 ~ 13 ~ 1 ~ {}) > (23 ~ 1 ~ 2)"
 #' ))
 #'
 #' # lexcel scores for all elements
@@ -79,13 +77,12 @@ lexcelScores <- function(powerRelation, elements = NULL) {
   # --- checks (generated) --- #
   stopifnot(is.PowerRelation(powerRelation))
   if(is.null(elements)) elements <- powerRelation$elements
-  else if(!is.null(err <- powerRelationHasElements(powerRelation, elements))) stop(err)
   # --- end checks --- #
 
   result <- list()
   for(e in elements) {
     result[[paste(e)]] <- unlist(lapply(
-      powerRelation$equivalenceClasses,
+      powerRelation$eqs,
       function(coalition) sum(e == unlist(coalition))
     ))
   }

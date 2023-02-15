@@ -1,5 +1,5 @@
 test_that("ranking", {
-  pr <- newPowerRelation(c(1,2), ">", 1, ">", 2)
+  pr <- as.PowerRelation('12 > 1 > 2')
   ranking <- evaluate_promise(lexcelRanking(pr), print = TRUE)
   expect_equal(ranking$output, "1 > 2")
   expect_true(pr %:% 1 %>=lex% 2)
@@ -9,7 +9,7 @@ test_that("ranking", {
 })
 
 test_that("score vectors", {
-  pr <- newPowerRelation(c(1,2), ">", 1, ">", 2)
+  pr <- as.PowerRelation('12 > 1 > 2')
   expect_equal(
     lexcelScores(pr),
     structure(list(
@@ -20,12 +20,7 @@ test_that("score vectors", {
 })
 
 test_that("manip paper works", {
-  pr <- newPowerRelation(
-    c(2,3),
-    ">", c(1,2,3),
-    "~", c(1,2),
-    ">", c(1,3),
-  )
+  pr <- as.PowerRelation('23 > 123 ~ 12 > 13')
 
   expect_equal(
     lexcelScores(pr),
@@ -38,11 +33,11 @@ test_that("manip paper works", {
 })
 
 test_that("dualLexcel", {
-  pr <- newPowerRelation(c(1,2), ">", 1, ">", 2)
+  pr <- as.PowerRelation('12 > 1 > 2')
   ranking <- evaluate_promise(dualLexcelRanking(pr), print = TRUE)
   expect_equal(ranking$output, "1 > 2")
 
-  pr <- newPowerRelation(c(1,2), "~", 1, ">", 2, ">", c(1,3))
+  pr <- as.PowerRelation('12 ~ 1 > 2 > 13')
   ranking <- evaluate_promise(dualLexcelRanking(pr), print = TRUE)
   expect_equal(ranking$output, "2 > 3 > 1")
 
@@ -79,7 +74,7 @@ test_that("dualLexcel", {
 })
 
 test_that('lexcel named', {
-  pr <- newPowerRelationFromString('abc > bc > ac > a > b > c > ab > {}')
+  pr <- as.PowerRelation('abc > bc > ac > a > b > c > ab > {}')
   ranking <- evaluate_promise(lexcelRanking(pr), print = TRUE)
   expect_equal(ranking$output, 'c > b > a')
 
@@ -87,15 +82,11 @@ test_that('lexcel named', {
   expect_equal(ranking$output, 'c > a > b')
 
   # abc~ab~a~c > b~bc > ac
-  pr <- newPowerRelation(
-    c("Apple","Banana","Citrus"),
-    "~", c("Apple","Banana"),
-    "~", c("Citrus"),
-    "~", c("Apple"),
-    ">", c("Banana"),
-    "~", c("Banana","Citrus"),
-    ">", c("Apple","Citrus")
-  )
+  pr <- PowerRelation(list(
+    list(c("Apple","Banana","Citrus"), c("Apple","Banana"), c("Citrus"), c("Apple")),
+    list(c("Banana"), c("Banana","Citrus")),
+    list(c("Apple","Citrus"))
+  ))
   ranking <- evaluate_promise(lexcelRanking(pr), print = TRUE)
   expect_equal(ranking$output, 'Apple > Banana > Citrus')
 

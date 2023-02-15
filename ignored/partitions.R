@@ -17,14 +17,13 @@ prGenerator <- function(P) {
         return(NULL)
       parts <<- parts[-1]
       perms <<- permutate(seq_along(parts[[1]]))
-      print(paste(total-length(parts), "/", total, ":", capture.output(parts[[1]])))
     }
 
     #eqs <- rapply(parts[[1]], function(i) P[i], how = "replace")
     perm <- perms[1,]
     perms <<- perms[-1,,drop=FALSE]
-    newPowerRelation(equivalenceClasses = parts[[1]][perm])
-    # newPowerRelation(equivalenceClasses = eqs[perm])
+    PowerRelation(parts[[1]][perm])
+    # PowerRelation(eqs[perm])
   }
 }
 

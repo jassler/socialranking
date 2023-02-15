@@ -10,7 +10,7 @@ kramerSimpsonScores(powerRelation, elements = NULL, compIvsI = FALSE)
 kramerSimpsonRanking(powerRelation, compIvsI = FALSE)
 }
 \arguments{
-\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=newPowerRelation]{newPowerRelation()}}}
+\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
 
 \item{elements}{vector of elements of which to calculate their scores.
 If \code{elements == NULL}, create vectors for all elements in \code{pr$elements}}
@@ -62,16 +62,7 @@ to be included in the comparisons. Put into mathematical terms, if:\tabular{ll}{
 
 \examples{
 # 2 > (1 ~ 3) > 12 > (13 ~ 23) > {} > 123
-pr <- newPowerRelation(
-  2,
-  ">", 1,
-  "~", 3,
-  ">", c(1,2),
-  ">", c(1,3),
-  "~", c(2,3),
-  ">", c(),
-  ">", c(1,2,3)
-)
+pr <- as.PowerRelation("2 > (1~3) > 12 > (13~23) > {} > 123")
 
 # get scores for all elements
 # cpMajorityComparisonScore(pr, 2, 1) = 1

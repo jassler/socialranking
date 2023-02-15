@@ -18,7 +18,7 @@
 #' @return Logical value `TRUE` if `e1` dominates `e2`, else `FALSE`.
 #'
 #' @examples
-#' pr <- newPowerRelationFromString("12 > 1 > 2", asWhat = as.numeric)
+#' pr <- as.PowerRelation("12 > 1 > 2")
 #'
 #' # TRUE
 #' d1 <- dominates(pr, 1, 2)

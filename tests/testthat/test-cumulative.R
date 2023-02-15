@@ -1,5 +1,5 @@
 test_that("cumulativeScores", {
-  pr <- newPowerRelation(c(1,2), ">", 1, ">", 2)
+  pr <- as.PowerRelation('12 > 1 > 2')
   expect_equal(cumulativeScores(pr, 1), structure(list(`1` = c(1, 2, 2)), class = "CumulativeScores"))
   expect_equal(cumulativeScores(pr, 2), structure(list(`2` = c(1, 1, 2)), class = "CumulativeScores"))
   expect_equal(cumulativeScores(pr), structure(
@@ -11,7 +11,7 @@ test_that("cumulativeScores", {
 })
 
 test_that("cumulativelyDominates", {
-  pr <- newPowerRelation(c(1,2), ">", 1, ">", 2)
+  pr <- as.PowerRelation('12 > 1 > 2')
   expect_true(cumulativelyDominates(pr, 1, 2))
   expect_false(cumulativelyDominates(pr, 2, 1))
   expect_true(cumulativelyDominates(pr, 1, 1))
@@ -28,7 +28,7 @@ test_that("cumulativelyDominates", {
   expect_false(pr %:% 1 %>cumuldom% 1)
   expect_false(pr %:% 2 %>cumuldom% 2)
 
-  pr <- newPowerRelationFromString("a > bc > b > ac > ab > c > abc")
+  pr <- as.PowerRelation("a > bc > b > ac > ab > c > abc")
   expect_true(cumulativelyDominates(pr, "a", "c"))
   expect_false(cumulativelyDominates(pr, "c", "a"))
   expect_false(cumulativelyDominates(pr, "a", "b"))
@@ -42,7 +42,7 @@ test_that("cumulativelyDominates", {
   expect_true(pr %:% "b" %>=cumuldom% "c")
   expect_false(pr %:% "c" %>=cumuldom% "b")
 
-  pr <- newPowerRelationFromString("ab ~ ac ~ bc > a ~ b > c")
+  pr <- as.PowerRelation("ab ~ ac ~ bc > a ~ b > c")
   expect_true(cumulativelyDominates(pr, "a", "c"))
   expect_true(cumulativelyDominates(pr, "a", "c", strictly = TRUE))
   expect_false(cumulativelyDominates(pr, "c", "a"))
