@@ -94,14 +94,14 @@ If the generator is already down to its last partition, it will throw an error.<
 <span class="r-in"><span><span class="co"># 2 coalitions and the second partition has 1 coalition</span></span></span>
 <span class="r-in"><span><span class="va">gen</span> <span class="op">&lt;-</span> <span class="fu">generateNextPartition</span><span class="op">(</span><span class="va">gen</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">gen</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> a &gt; (ab ~ b)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ab &gt; (a ~ b)</span>
 <span class="r-in"><span><span class="co"># ab &gt; (a ~ b)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># only remaining partition is one of size 3, wherein each</span></span></span>
 <span class="r-in"><span><span class="co"># equivalence class is of size 1</span></span></span>
 <span class="r-in"><span><span class="va">gen</span> <span class="op">&lt;-</span> <span class="fu">generateNextPartition</span><span class="op">(</span><span class="va">gen</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">gen</span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ab &gt; b &gt; a</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ab &gt; a &gt; b</span>
 <span class="r-in"><span><span class="co"># ab &gt; a &gt; b</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># calling it now throws a subscript out of bounds error</span></span></span>
