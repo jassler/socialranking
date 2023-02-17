@@ -105,6 +105,7 @@ Other CP-majority based functions:
 \code{\link{cpMajorityComparison}()}
 
 Other score vector functions: 
+\code{\link{L1Scores}()},
 \code{\link{copelandScores}()},
 \code{\link{cumulativeScores}()},
 \code{\link{lexcelScores}()},

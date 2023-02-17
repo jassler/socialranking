@@ -21,7 +21,7 @@ If \code{elements == NULL}, create vectors for all elements in \code{pr$elements
 \value{
 Score function returns a list of type \code{LexcelScores} and length of \code{powerRelation$elements}
 (unless parameter \code{elements} is specified).
-Each index contains a vector of length \code{powerRelation$equivalenceClasses}, the number of
+Each index contains a vector of length \code{powerRelation$eqs}, the number of
 times the given element appears in each equivalence class.
 
 Ranking function returns corresponding \code{\link{SocialRankingSolution}} object.
@@ -116,6 +116,7 @@ dualLexcelRanking(pr)
 }
 \seealso{
 Other score vector functions: 
+\code{\link{L1Scores}()},
 \code{\link{copelandScores}()},
 \code{\link{cumulativeScores}()},
 \code{\link{kramerSimpsonScores}()},

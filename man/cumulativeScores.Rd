@@ -22,7 +22,7 @@ If \code{elements == NULL}, create vectors for all elements in \code{pr$elements
 \value{
 Score function returns a list of type \code{CumulativeScores} and length of \code{powerRelation$elements}
 (unless parameter \code{elements} is specified).
-Each index contains a vector of length \code{powerRelation$equivalenceClasses}, cumulatively counting up the number of
+Each index contains a vector of length \code{powerRelation$eqs}, cumulatively counting up the number of
 times the given element appears in each equivalence class.
 
 \code{cumulativelyDominates()} returns \code{TRUE} if \code{e1} cumulatively dominates \code{e2}.
@@ -75,6 +75,7 @@ stopifnot(all(d1, d2, !d3))
 }
 \seealso{
 Other score vector functions: 
+\code{\link{L1Scores}()},
 \code{\link{copelandScores}()},
 \code{\link{kramerSimpsonScores}()},
 \code{\link{lexcelScores}()},

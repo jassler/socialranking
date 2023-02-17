@@ -25,7 +25,7 @@ gen()
 # (ab ~ a ~ b)
 
 gen()
-# (ab ~ a) > b
+# (ab ~ b) > a
 
 # skipping partition of size two, where the first partition has
 # 2 coalitions and the second partition has 1 coalition

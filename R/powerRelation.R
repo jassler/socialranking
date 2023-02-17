@@ -290,14 +290,42 @@ print.PowerRelation <- function(x, ...) {
 
 #' Get index of equivalence class containing a coalition
 #'
-#' Deprecated. Use powerRelation$coalitionLookup() instead.
+#' Given a `coalition` [vector][base::c()], return the equivalence class index it appears in.
 #'
-#' @param ... Any parameter
-#' @template return/noreturn
+#' This function basically just calls `powerRelation$coalitionLookup(coalition)`.
+#'
+#' @template param/powerRelation
+#' @param coalition a coalition [vector][base::c()] or that is part of `powerRelation`
+#' @template param/stopIfNotExists
+#'
+#' @return Numeric value, equivalence class index where `coalition` appears in.
+#' `-1` if the coalition does not exist.
+#' See `coalitionLookup()` in [`PowerRelation()`] for more information.
+#'
+#' @family equivalence class lookup functions
+#'
+#' @examples
+#' pr <- as.PowerRelation("12 > 2 ~ 1")
+#'
+#' equivalenceClassIndex(pr, c(1, 2))
+#' # 1
+#'
+#' equivalenceClassIndex(pr, c(1))
+#' # 2
+#'
+#' equivalenceClassIndex(pr, c(2))
+#' # 2
+#'
+#' equivalenceClassIndex(pr, c())
+#' # -1 <- empty set does not exist
 #'
 #' @export
-equivalenceClassIndex <- function(...) {
-  stop(paste0('Deprecated. Use powerRelation$coalitionLookup() instead.'))
+equivalenceClassIndex <- function(powerRelation, coalition) {
+  # --- checks (generated) --- #
+  stopifnot(is.PowerRelation(powerRelation))
+  # --- end checks --- #
+
+  powerRelation$coalitionLookup(coalition)
 }
 
 #' New Power Relation

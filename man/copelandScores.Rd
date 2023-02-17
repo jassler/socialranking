@@ -77,6 +77,7 @@ Other CP-majority based functions:
 \code{\link{kramerSimpsonScores}()}
 
 Other score vector functions: 
+\code{\link{L1Scores}()},
 \code{\link{cumulativeScores}()},
 \code{\link{kramerSimpsonScores}()},
 \code{\link{lexcelScores}()},

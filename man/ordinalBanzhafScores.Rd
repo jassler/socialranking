@@ -61,6 +61,7 @@ ordinalBanzhafRanking(pr)
 }
 \seealso{
 Other score vector functions: 
+\code{\link{L1Scores}()},
 \code{\link{copelandScores}()},
 \code{\link{cumulativeScores}()},
 \code{\link{kramerSimpsonScores}()},

@@ -37,7 +37,7 @@ is.na.CumulativeScores <- function(x) FALSE
 #'
 #' @return Score function returns a list of type `CumulativeScores` and length of `powerRelation$elements`
 #' (unless parameter `elements` is specified).
-#' Each index contains a vector of length `powerRelation$equivalenceClasses`, cumulatively counting up the number of
+#' Each index contains a vector of length `powerRelation$eqs`, cumulatively counting up the number of
 #' times the given element appears in each equivalence class.
 #'
 #' @examples
