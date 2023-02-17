@@ -122,7 +122,7 @@ powerRelationGenerator <- function(coalitions, startWithLinearOrder = FALSE) {
     perms <<- partitions::multinomial(part)
     partCum <<- c(0, cumsum(part))
 
-    permsI <<- 1
+    permsI <<- 0
   }
 
   function() {
@@ -131,12 +131,12 @@ powerRelationGenerator <- function(coalitions, startWithLinearOrder = FALSE) {
         return(NULL)
 
       nextPartition()
-    } else {
-      permsI <<- permsI + 1
     }
+
+    permsI <<- permsI + 1
     comps <- unlist(sapply(part, function(x) c(rep('~', x-1), '>')))
 
-    # TODO change
+    # TODO change?
     PowerRelation(lapply(seq.int(length(partCum)-1), function(x) {
       coalitions[perms[(partCum[x]+1):partCum[x+1],permsI]]
     }))
@@ -170,7 +170,7 @@ powerRelationGenerator <- function(coalitions, startWithLinearOrder = FALSE) {
 #' # (ab ~ a ~ b)
 #'
 #' gen()
-#' # (ab ~ a) > b
+#' # (ab ~ b) > a
 #'
 #' # skipping partition of size two, where the first partition has
 #' # 2 coalitions and the second partition has 1 coalition
