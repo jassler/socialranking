@@ -1,6 +1,4 @@
 test_that("doRanking works", {
-  pr <- as.PowerRelation("12 > 1 > 3 > 23 > 123 ~ 13")
-
   result <- evaluate_promise(doRanking(c(1, 2, 3)), print = TRUE)
   expect_equal(result$output, "3 > 2 > 1")
 
@@ -40,6 +38,18 @@ test_that("doRanking named", {
   expect_equal(result$output, "Egg ~ Salt > Bacon")
 })
 
+test_that("Equality", {
+  expect_true(
+    doRanking(c(a = 3, b = 1, c = 1)) ==
+    doRanking(c(b = 1, a = 3, c = 1))
+  )
+
+  expect_false(
+    doRanking(c(a = 3, b = 1, c = 1)) ==
+    doRanking(c(b = 3, a = 1, c = 1))
+  )
+})
+
 test_that("doRanking compare", {
   result <- evaluate_promise(doRanking(c(1,2,3), compare = function(a,b) a - b), print = TRUE)
   expect_equal(result$output, "3 > 2 > 1")
@@ -49,4 +59,15 @@ test_that("doRanking compare", {
 
   result <- evaluate_promise(doRanking(c(1,2,3), compare = function(a,b) a - a), print = TRUE)
   expect_equal(result$output, "1 ~ 2 ~ 3")
+
+  l <- list(a = c(3, 1), b = c(9, 4, 2), c = c(4))
+  result <- evaluate_promise(doRanking(l, compare = function(a, b) sum(a) - sum(b)), print = TRUE)
+  expect_equal(result$output, "b > a ~ c")
+
+  result <- evaluate_promise(doRanking(l, compare = function(a, b) sum(b) - sum(a)), print = TRUE)
+  expect_equal(result$output, "a ~ c > b")
+})
+
+test_that("SocialRankingSolution fails", {
+  expect_error(SocialRankingSolution(12))
 })

@@ -84,18 +84,16 @@
 powerRelationGenerator <- function(coalitions, startWithLinearOrder = FALSE) {
   rlang::check_installed('partitions')
 
-  if(length(coalitions) == 0) return(function() NULL)
+  if(length(coalitions) < 2) {
+    stop('At least two coalitions must be given.')
 
   # created once, used every time upon generating a new PowerRelation object
-  elements <- unique(sort(unlist(coalitions)))
-  classes <- c('PowerRelation', if(all(nchar(elements) == 1)) 'SingleCharElements')
+  #TODO still needed?
+  #elements <- unique(sort(unlist(coalitions)))
+  #classes <- c('PowerRelation', if(all(nchar(elements) == 1)) 'SingleCharElements')
 
-  if(length(coalitions) == 1) {
-    pr <- PowerRelation(list(coalitions[[1]]))
-    return(function() { p <- pr; pr <<- NULL; p })
-  }
 
-  if(length(coalitions) > 20) {
+  } else if(length(coalitions) > 20) {
     warning('More than 20 coalitions were given. partitions::compositions() is called to generate all partitions beforehand. This may dampen or exceed system resources.')
   }
 

@@ -49,11 +49,11 @@ testRelation <- function(powerRelation, e1) {
 #' @export
 `%>=dom%` <- function(pr_e1, e2) {
   # --- checks (generated) --- #
-  if(!is.list(pr_e1) || length(pr_e1) != 2) stop('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.')
+  stopifnot('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.' = (is.list(pr_e1) && length(pr_e1) == 2))
   powerRelation <- pr_e1[[1]]
   e1 <- pr_e1[[2]]
-  if(!is.PowerRelation(powerRelation)) stop('Left side must be an object of type PowerRelation.')
-  if(!(e1 %in% powerRelation$elements)) stop('First element does not exist in the given PowerRelation object.')
+  stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
+  stopifnot('First element does not exist in the given PowerRelation object.' = (e1 %in% powerRelation$elements))
   stopifnot(e2 %in% powerRelation$elements)
   stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #
@@ -68,11 +68,11 @@ testRelation <- function(powerRelation, e1) {
 #' @export
 `%>dom%` <- function(pr_e1, e2) {
   # --- checks (generated) --- #
-  if(!is.list(pr_e1) || length(pr_e1) != 2) stop('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.')
+  stopifnot('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.' = (is.list(pr_e1) && length(pr_e1) == 2))
   powerRelation <- pr_e1[[1]]
   e1 <- pr_e1[[2]]
-  if(!is.PowerRelation(powerRelation)) stop('Left side must be an object of type PowerRelation.')
-  if(!(e1 %in% powerRelation$elements)) stop('First element does not exist in the given PowerRelation object.')
+  stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
+  stopifnot('First element does not exist in the given PowerRelation object.' = (e1 %in% powerRelation$elements))
   stopifnot(e2 %in% powerRelation$elements)
   stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #
@@ -88,11 +88,11 @@ testRelation <- function(powerRelation, e1) {
 #' @export
 `%>=cumuldom%` <- function(pr_e1, e2) {
   # --- checks (generated) --- #
-  if(!is.list(pr_e1) || length(pr_e1) != 2) stop('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.')
+  stopifnot('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.' = (is.list(pr_e1) && length(pr_e1) == 2))
   powerRelation <- pr_e1[[1]]
   e1 <- pr_e1[[2]]
-  if(!is.PowerRelation(powerRelation)) stop('Left side must be an object of type PowerRelation.')
-  if(!(e1 %in% powerRelation$elements)) stop('First element does not exist in the given PowerRelation object.')
+  stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
+  stopifnot('First element does not exist in the given PowerRelation object.' = (e1 %in% powerRelation$elements))
   stopifnot(e2 %in% powerRelation$elements)
   stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #
@@ -108,11 +108,11 @@ testRelation <- function(powerRelation, e1) {
 #' @export
 `%>cumuldom%` <- function(pr_e1, e2) {
   # --- checks (generated) --- #
-  if(!is.list(pr_e1) || length(pr_e1) != 2) stop('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.')
+  stopifnot('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.' = (is.list(pr_e1) && length(pr_e1) == 2))
   powerRelation <- pr_e1[[1]]
   e1 <- pr_e1[[2]]
-  if(!is.PowerRelation(powerRelation)) stop('Left side must be an object of type PowerRelation.')
-  if(!(e1 %in% powerRelation$elements)) stop('First element does not exist in the given PowerRelation object.')
+  stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
+  stopifnot('First element does not exist in the given PowerRelation object.' = (e1 %in% powerRelation$elements))
   stopifnot(e2 %in% powerRelation$elements)
   stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #
@@ -128,11 +128,11 @@ testRelation <- function(powerRelation, e1) {
 #' @export
 `%>=cp%` <- function(pr_e1, e2) {
   # --- checks (generated) --- #
-  if(!is.list(pr_e1) || length(pr_e1) != 2) stop('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.')
+  stopifnot('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.' = (is.list(pr_e1) && length(pr_e1) == 2))
   powerRelation <- pr_e1[[1]]
   e1 <- pr_e1[[2]]
-  if(!is.PowerRelation(powerRelation)) stop('Left side must be an object of type PowerRelation.')
-  if(!(e1 %in% powerRelation$elements)) stop('First element does not exist in the given PowerRelation object.')
+  stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
+  stopifnot('First element does not exist in the given PowerRelation object.' = (e1 %in% powerRelation$elements))
   stopifnot(e2 %in% powerRelation$elements)
   stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #
@@ -148,11 +148,11 @@ testRelation <- function(powerRelation, e1) {
 #' @export
 `%>cp%` <- function(pr_e1, e2) {
   # --- checks (generated) --- #
-  if(!is.list(pr_e1) || length(pr_e1) != 2) stop('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.')
+  stopifnot('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.' = (is.list(pr_e1) && length(pr_e1) == 2))
   powerRelation <- pr_e1[[1]]
   e1 <- pr_e1[[2]]
-  if(!is.PowerRelation(powerRelation)) stop('Left side must be an object of type PowerRelation.')
-  if(!(e1 %in% powerRelation$elements)) stop('First element does not exist in the given PowerRelation object.')
+  stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
+  stopifnot('First element does not exist in the given PowerRelation object.' = (e1 %in% powerRelation$elements))
   stopifnot(e2 %in% powerRelation$elements)
   stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #
@@ -168,11 +168,11 @@ testRelation <- function(powerRelation, e1) {
 #' @export
 `%>=banz%` <- function(pr_e1, e2) {
   # --- checks (generated) --- #
-  if(!is.list(pr_e1) || length(pr_e1) != 2) stop('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.')
+  stopifnot('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.' = (is.list(pr_e1) && length(pr_e1) == 2))
   powerRelation <- pr_e1[[1]]
   e1 <- pr_e1[[2]]
-  if(!is.PowerRelation(powerRelation)) stop('Left side must be an object of type PowerRelation.')
-  if(!(e1 %in% powerRelation$elements)) stop('First element does not exist in the given PowerRelation object.')
+  stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
+  stopifnot('First element does not exist in the given PowerRelation object.' = (e1 %in% powerRelation$elements))
   stopifnot(e2 %in% powerRelation$elements)
   stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #
@@ -190,11 +190,11 @@ testRelation <- function(powerRelation, e1) {
 #' @export
 `%>banz%` <- function(pr_e1, e2) {
   # --- checks (generated) --- #
-  if(!is.list(pr_e1) || length(pr_e1) != 2) stop('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.')
+  stopifnot('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.' = (is.list(pr_e1) && length(pr_e1) == 2))
   powerRelation <- pr_e1[[1]]
   e1 <- pr_e1[[2]]
-  if(!is.PowerRelation(powerRelation)) stop('Left side must be an object of type PowerRelation.')
-  if(!(e1 %in% powerRelation$elements)) stop('First element does not exist in the given PowerRelation object.')
+  stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
+  stopifnot('First element does not exist in the given PowerRelation object.' = (e1 %in% powerRelation$elements))
   stopifnot(e2 %in% powerRelation$elements)
   stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #
@@ -212,11 +212,11 @@ testRelation <- function(powerRelation, e1) {
 #' @export
 `%>=cop%` <- function(pr_e1, e2) {
   # --- checks (generated) --- #
-  if(!is.list(pr_e1) || length(pr_e1) != 2) stop('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.')
+  stopifnot('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.' = (is.list(pr_e1) && length(pr_e1) == 2))
   powerRelation <- pr_e1[[1]]
   e1 <- pr_e1[[2]]
-  if(!is.PowerRelation(powerRelation)) stop('Left side must be an object of type PowerRelation.')
-  if(!(e1 %in% powerRelation$elements)) stop('First element does not exist in the given PowerRelation object.')
+  stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
+  stopifnot('First element does not exist in the given PowerRelation object.' = (e1 %in% powerRelation$elements))
   stopifnot(e2 %in% powerRelation$elements)
   stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #
@@ -237,11 +237,11 @@ testRelation <- function(powerRelation, e1) {
 #' @export
 `%>cop%` <- function(pr_e1, e2) {
   # --- checks (generated) --- #
-  if(!is.list(pr_e1) || length(pr_e1) != 2) stop('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.')
+  stopifnot('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.' = (is.list(pr_e1) && length(pr_e1) == 2))
   powerRelation <- pr_e1[[1]]
   e1 <- pr_e1[[2]]
-  if(!is.PowerRelation(powerRelation)) stop('Left side must be an object of type PowerRelation.')
-  if(!(e1 %in% powerRelation$elements)) stop('First element does not exist in the given PowerRelation object.')
+  stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
+  stopifnot('First element does not exist in the given PowerRelation object.' = (e1 %in% powerRelation$elements))
   stopifnot(e2 %in% powerRelation$elements)
   stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #
@@ -260,11 +260,11 @@ testRelation <- function(powerRelation, e1) {
 #' @export
 `%>=ks%` <- function(pr_e1, e2) {
   # --- checks (generated) --- #
-  if(!is.list(pr_e1) || length(pr_e1) != 2) stop('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.')
+  stopifnot('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.' = (is.list(pr_e1) && length(pr_e1) == 2))
   powerRelation <- pr_e1[[1]]
   e1 <- pr_e1[[2]]
-  if(!is.PowerRelation(powerRelation)) stop('Left side must be an object of type PowerRelation.')
-  if(!(e1 %in% powerRelation$elements)) stop('First element does not exist in the given PowerRelation object.')
+  stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
+  stopifnot('First element does not exist in the given PowerRelation object.' = (e1 %in% powerRelation$elements))
   stopifnot(e2 %in% powerRelation$elements)
   stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #
@@ -284,11 +284,11 @@ testRelation <- function(powerRelation, e1) {
 #' @export
 `%>ks%` <- function(pr_e1, e2) {
   # --- checks (generated) --- #
-  if(!is.list(pr_e1) || length(pr_e1) != 2) stop('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.')
+  stopifnot('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.' = (is.list(pr_e1) && length(pr_e1) == 2))
   powerRelation <- pr_e1[[1]]
   e1 <- pr_e1[[2]]
-  if(!is.PowerRelation(powerRelation)) stop('Left side must be an object of type PowerRelation.')
-  if(!(e1 %in% powerRelation$elements)) stop('First element does not exist in the given PowerRelation object.')
+  stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
+  stopifnot('First element does not exist in the given PowerRelation object.' = (e1 %in% powerRelation$elements))
   stopifnot(e2 %in% powerRelation$elements)
   stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #
@@ -312,11 +312,11 @@ testRelation <- function(powerRelation, e1) {
 #' @export
 `%>=lex%` <- function(pr_e1, e2) {
   # --- checks (generated) --- #
-  if(!is.list(pr_e1) || length(pr_e1) != 2) stop('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.')
+  stopifnot('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.' = (is.list(pr_e1) && length(pr_e1) == 2))
   powerRelation <- pr_e1[[1]]
   e1 <- pr_e1[[2]]
-  if(!is.PowerRelation(powerRelation)) stop('Left side must be an object of type PowerRelation.')
-  if(!(e1 %in% powerRelation$elements)) stop('First element does not exist in the given PowerRelation object.')
+  stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
+  stopifnot('First element does not exist in the given PowerRelation object.' = (e1 %in% powerRelation$elements))
   stopifnot(e2 %in% powerRelation$elements)
   stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #
@@ -330,11 +330,11 @@ testRelation <- function(powerRelation, e1) {
 #' @export
 `%>lex%` <- function(pr_e1, e2) {
   # --- checks (generated) --- #
-  if(!is.list(pr_e1) || length(pr_e1) != 2) stop('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.')
+  stopifnot('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.' = (is.list(pr_e1) && length(pr_e1) == 2))
   powerRelation <- pr_e1[[1]]
   e1 <- pr_e1[[2]]
-  if(!is.PowerRelation(powerRelation)) stop('Left side must be an object of type PowerRelation.')
-  if(!(e1 %in% powerRelation$elements)) stop('First element does not exist in the given PowerRelation object.')
+  stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
+  stopifnot('First element does not exist in the given PowerRelation object.' = (e1 %in% powerRelation$elements))
   stopifnot(e2 %in% powerRelation$elements)
   stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #
@@ -349,11 +349,11 @@ testRelation <- function(powerRelation, e1) {
 #' @export
 `%>=duallex%` <- function(pr_e1, e2) {
   # --- checks (generated) --- #
-  if(!is.list(pr_e1) || length(pr_e1) != 2) stop('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.')
+  stopifnot('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.' = (is.list(pr_e1) && length(pr_e1) == 2))
   powerRelation <- pr_e1[[1]]
   e1 <- pr_e1[[2]]
-  if(!is.PowerRelation(powerRelation)) stop('Left side must be an object of type PowerRelation.')
-  if(!(e1 %in% powerRelation$elements)) stop('First element does not exist in the given PowerRelation object.')
+  stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
+  stopifnot('First element does not exist in the given PowerRelation object.' = (e1 %in% powerRelation$elements))
   stopifnot(e2 %in% powerRelation$elements)
   stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #
@@ -371,11 +371,11 @@ testRelation <- function(powerRelation, e1) {
 #' @export
 `%>duallex%` <- function(pr_e1, e2) {
   # --- checks (generated) --- #
-  if(!is.list(pr_e1) || length(pr_e1) != 2) stop('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.')
+  stopifnot('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.' = (is.list(pr_e1) && length(pr_e1) == 2))
   powerRelation <- pr_e1[[1]]
   e1 <- pr_e1[[2]]
-  if(!is.PowerRelation(powerRelation)) stop('Left side must be an object of type PowerRelation.')
-  if(!(e1 %in% powerRelation$elements)) stop('First element does not exist in the given PowerRelation object.')
+  stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
+  stopifnot('First element does not exist in the given PowerRelation object.' = (e1 %in% powerRelation$elements))
   stopifnot(e2 %in% powerRelation$elements)
   stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #

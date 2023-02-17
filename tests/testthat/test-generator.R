@@ -30,6 +30,11 @@ test_that("Generator with empty set", {
   expect_null(gen())
 })
 
+test_that("Too few coalitions given", {
+  expect_error(powerRelationGenerator(list()))
+  expect_error(powerRelationGenerator(list("a")))
+})
+
 test_that("Skip partition", {
   gen <- powerRelationGenerator(createPowerset(c(1, 2)))
   gen <- generateNextPartition(gen)
