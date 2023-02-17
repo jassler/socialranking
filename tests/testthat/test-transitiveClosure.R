@@ -13,6 +13,10 @@ test_that('with cycles', {
   closured <- transitiveClosure(pr)
   expect_equal(closured, as.PowerRelation('1 ~ 2'))
 
+  pr <- suppressWarnings(as.PowerRelation('1 ~ 1 ~ 1 > 2 ~ 12 ~ 2'))
+  closured <- transitiveClosure(pr)
+  expect_equal(closured, as.PowerRelation('1 > 2 ~ 12'))
+
   pr <- suppressWarnings(as.PowerRelation('1 > 2 > 1 > 13 ~ 3'))
   closured <- transitiveClosure(pr)
   expect_equal(closured, as.PowerRelation('1 ~ 2 > 13 ~ 3'))

@@ -66,3 +66,17 @@ test_that("cumulativelyDominates", {
   expect_false(pr %:% "c" %>=cumuldom% "b")
 })
 
+test_that("comparisons", {
+  pr <- as.PowerRelation('12 > 1 > 2')
+  scores <- cumulativeScores(pr)
+  expect_true(scores[1] > scores[2])
+  expect_false(scores[2] > scores[1])
+  expect_false(scores[1] == scores[2])
+
+  pr <- as.PowerRelation('12 > 1 ~ 2')
+  scores <- cumulativeScores(pr)
+  expect_false(scores[1] > scores[2])
+  expect_false(scores[2] > scores[1])
+  expect_true(scores[1] == scores[2])
+})
+

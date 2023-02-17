@@ -270,5 +270,6 @@ print.cpMajority <- function(x, ...) {
   pCoalitions(x$e2$winningCoalitions)
   cat('}')
   cat('\nScore of', x$e1$name, '=', x$e1$score)
-  cat('\nScore of', x$e2$name, '=', x$e2$score, '\n')
+  cat('\nScore of', x$e2$name, '=', x$e2$score)
+  cat('\n')
 }

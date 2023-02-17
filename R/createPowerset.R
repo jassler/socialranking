@@ -104,7 +104,7 @@ makeListCopyable <- function(elements, l, compact) {
       for(i in which(sapply(l, is.null)))
         formatted[i] <- ""
     } else {
-      formatted <- lapply(l, paste, collapse = ',')
+      formatted <- lapply(l, paste, collapse = ', ')
     }
 
     formatted <- paste0('list(c(', unlist(formatted), '))')

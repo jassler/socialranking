@@ -159,3 +159,31 @@ test_that("manip paper example without empty set", {
   expect_equal(cpMajorityComparisonScore(pr, 2, 3, includeEmptySet = FALSE), c(result23$e1$score, -result23$e2$score))
   expect_equal(cpMajorityComparisonScore(pr, 3, 2, includeEmptySet = FALSE), c(result23$e2$score, -result23$e1$score))
 })
+
+test_that("output", {
+  pr <- as.PowerRelation('1 > {} > 2 > 3 > (123 ~ 12 ~ 13 ~ 23)')
+  result <- evaluate_promise(cpMajorityComparison(pr, 1, 2), print = TRUE)
+  expect_equal(result$output, '1 > 2
+D_12 = {3, {}}
+D_21 = {3}
+Score of 1 = 2
+Score of 2 = 1')
+
+  pr <- as.PowerRelation('1 > {} > 2 > 23 > 3 > 13 > 123 > 12')
+  result <- evaluate_promise(cpMajorityComparison(pr, 1, 2), print = TRUE)
+  expect_equal(result$output, '1 ~ 2
+D_12 = {{}}
+D_21 = {3}
+Score of 1 = 1
+Score of 2 = 1')
+
+  pr <- as.PowerRelation(
+    list("Apple", c("Apple", "Banana"), c("Apple", "Citrus"), c(), c("Apple", "Banana", "Citrus"), c("Citrus", "Banana"), "Citrus", "Banana")
+  )
+  result <- evaluate_promise(cpMajorityComparison(pr, "Apple", "Banana"), print = TRUE)
+  expect_equal(result$output, 'Apple > Banana
+D_Apple,Banana = {{Citrus}, {}}
+D_Banana,Apple = {}
+Score of Apple = 2
+Score of Banana = 0')
+})

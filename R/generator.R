@@ -84,18 +84,16 @@
 powerRelationGenerator <- function(coalitions, startWithLinearOrder = FALSE) {
   rlang::check_installed('partitions')
 
-  if(length(coalitions) == 0) return(function() NULL)
+  if(length(coalitions) < 2) {
+    stop('At least two coalitions must be given.')
 
   # created once, used every time upon generating a new PowerRelation object
-  elements <- unique(sort(unlist(coalitions)))
-  classes <- c('PowerRelation', if(all(nchar(elements) == 1)) 'SingleCharElements')
+  #TODO still needed?
+  #elements <- unique(sort(unlist(coalitions)))
+  #classes <- c('PowerRelation', if(all(nchar(elements) == 1)) 'SingleCharElements')
 
-  if(length(coalitions) == 1) {
-    pr <- PowerRelation(list(coalitions[[1]]))
-    return(function() { p <- pr; pr <<- NULL; p })
-  }
 
-  if(length(coalitions) > 20) {
+  } else if(length(coalitions) > 20) {
     warning('More than 20 coalitions were given. partitions::compositions() is called to generate all partitions beforehand. This may dampen or exceed system resources.')
   }
 
@@ -122,7 +120,7 @@ powerRelationGenerator <- function(coalitions, startWithLinearOrder = FALSE) {
     perms <<- partitions::multinomial(part)
     partCum <<- c(0, cumsum(part))
 
-    permsI <<- 1
+    permsI <<- 0
   }
 
   function() {
@@ -131,12 +129,12 @@ powerRelationGenerator <- function(coalitions, startWithLinearOrder = FALSE) {
         return(NULL)
 
       nextPartition()
-    } else {
-      permsI <<- permsI + 1
     }
+
+    permsI <<- permsI + 1
     comps <- unlist(sapply(part, function(x) c(rep('~', x-1), '>')))
 
-    # TODO change
+    # TODO change?
     PowerRelation(lapply(seq.int(length(partCum)-1), function(x) {
       coalitions[perms[(partCum[x]+1):partCum[x+1],permsI]]
     }))
@@ -170,7 +168,7 @@ powerRelationGenerator <- function(coalitions, startWithLinearOrder = FALSE) {
 #' # (ab ~ a ~ b)
 #'
 #' gen()
-#' # (ab ~ a) > b
+#' # (ab ~ b) > a
 #'
 #' # skipping partition of size two, where the first partition has
 #' # 2 coalitions and the second partition has 1 coalition

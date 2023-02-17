@@ -59,6 +59,15 @@ test_that("longer names", {
   list(c("cd")),
   list(c()),
 ))')
+
+  result <- evaluate_promise(createPowerset(c(12, 56), result = 'print'), print = TRUE)
+  expect_equal(result$output,
+               'PowerRelation(rlang::list2(
+  list(c(12, 56)),
+  list(c(12)),
+  list(c(56)),
+  list(c()),
+))')
 })
 
 test_that("compact", {
@@ -67,4 +76,8 @@ test_that("compact", {
 
   result <- evaluate_promise(createPowerset(c('ab', 'cd'), result = 'printCompact'), print = TRUE)
   expect_equal(result$output, 'PowerRelation(rlang::list2(list(c("ab", "cd")), list(c("ab")), list(c("cd")), list(c())))')
+})
+
+test_that("invalid option", {
+  expect_error(createPowerset(letters[1:3], result = "invalid"))
 })
