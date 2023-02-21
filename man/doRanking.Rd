@@ -17,7 +17,7 @@ these two elements. If set to \code{NULL}, the default \code{\link[=order]{order
 }
 \value{
 A list of type \code{SocialRankingSolution}.
-Each element of the list contains a \code{\link[sets:set]{sets::set()}} of elements in \code{powerRelation} that are indifferent to one another.
+Each element of the list contains a \link[base:c]{vector} of elements in \code{powerRelation} that are indifferent to one another.
 }
 \description{
 Map a power relation between coalitions to a power relation between elements, also known as a social ranking solution.

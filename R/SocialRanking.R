@@ -57,7 +57,7 @@ SocialRankingSolution.default <- function(x, ...) {
 #' @param decreasing If `TRUE` (default), elements with higher scores are ranked higher.
 #'
 #' @return A list of type `SocialRankingSolution`.
-#' Each element of the list contains a [`sets::set()`] of elements in `powerRelation` that are indifferent to one another.
+#' Each element of the list contains a [vector][base::c()] of elements in `powerRelation` that are indifferent to one another.
 #'
 #' @examples
 #' # TODO work on examples
@@ -92,18 +92,18 @@ doRanking <- function(scores, compare = NULL, decreasing = TRUE) {
     orderedIndexes <- rev(orderedIndexes)
   }
 
-  orderItem <- sets::set(orderedIndexes[1])
+  orderItem <- c(orderedIndexes[1])
   orderList <- list()
 
   for(o in orderedIndexes[-1]) {
     if(any(sapply(orderItem, function(x) isEquiv(scores[o], scores[x])))) {
-      orderItem <- orderItem | sets::set(o)
+      orderItem <- c(orderItem, o)
     } else {
-      orderList[[length(orderList)+1]] <- orderItem
-      orderItem <- sets::set(o)
+      orderList[[length(orderList)+1]] <- sort(orderItem)
+      orderItem <- c(o)
     }
   }
-  orderList[[length(orderList)+1]] <- orderItem
+  orderList[[length(orderList)+1]] <- sort(orderItem)
 
   orderList <- lapply(orderList, function(r) {
     sapply(r, function(x) elements[x])

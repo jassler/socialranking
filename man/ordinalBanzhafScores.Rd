@@ -5,7 +5,7 @@
 \alias{ordinalBanzhafRanking}
 \title{Ordinal Banzhaf}
 \usage{
-ordinalBanzhafScores(powerRelation, elements = NULL)
+ordinalBanzhafScores(powerRelation, elements = powerRelation$elements)
 
 ordinalBanzhafRanking(powerRelation)
 }

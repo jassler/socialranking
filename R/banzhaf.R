@@ -55,10 +55,9 @@ is.na.OrdinalBanzhafScores <- function(x) FALSE
 #' ordinalBanzhafScores(pr)
 #'
 #' @export
-ordinalBanzhafScores <- function(powerRelation, elements = NULL) {
+ordinalBanzhafScores <- function(powerRelation, elements = powerRelation$elements) {
   # --- checks (generated) --- #
   stopifnot(is.PowerRelation(powerRelation))
-  if(is.null(elements)) elements <- powerRelation$elements
   # --- end checks --- #
 
   result <- list()
@@ -67,7 +66,7 @@ ordinalBanzhafScores <- function(powerRelation, elements = NULL) {
     for(coalition in createPowerset(powerRelation$elements[-i])) {
       e1 <- powerRelation$coalitionLookup(coalition)
       e2 <- powerRelation$coalitionLookup(c(coalition, elements[i]))
-      if(e1 == -1 || e2 == -1) {
+      if(is.null(e1) || is.null(e2)) {
         score[3] <- score[3] + 1
       } else if(e1 < e2) {
         score[2] <- score[2] - 1

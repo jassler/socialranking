@@ -66,18 +66,19 @@ is.na.CopelandScores <- function(x) FALSE
 #' copelandScores(pr, 2)
 #'
 #' @export
-copelandScores <- function(powerRelation, elements = NULL) {
+copelandScores <- function(powerRelation, elements = powerRelation$elements) {
   # --- checks (generated) --- #
   stopifnot(is.PowerRelation(powerRelation))
-  if(is.null(elements)) elements <- powerRelation$elements
   # --- end checks --- #
 
-  eSet <- sets::as.set(powerRelation$elements)
   result <- list()
   for(e in elements) {
-    scores <- sapply(eSet - sets::set(e), function(p2) sum(cpMajorityComparisonScore(powerRelation, e, p2)))
+    scores <- setdiff(powerRelation$elements, e) |> sapply(function(p2) {
+      sum(cpMajorityComparisonScore(powerRelation, e, p2))
+    })
     result[[paste(e)]] <- c(sum(scores >= 0), -sum(scores <= 0))
   }
+
 
   structure(result, class = 'CopelandScores')
 }

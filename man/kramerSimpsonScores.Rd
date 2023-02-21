@@ -5,7 +5,11 @@
 \alias{kramerSimpsonRanking}
 \title{Kramer-Simpson-like method}
 \usage{
-kramerSimpsonScores(powerRelation, elements = NULL, compIvsI = FALSE)
+kramerSimpsonScores(
+  powerRelation,
+  elements = powerRelation$elements,
+  compIvsI = FALSE
+)
 
 kramerSimpsonRanking(powerRelation, compIvsI = FALSE)
 }

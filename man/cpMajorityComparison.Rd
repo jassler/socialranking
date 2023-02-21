@@ -65,19 +65,19 @@ Note that in this context the two elements \eqn{i}{i} and \eqn{j}{j} refer to el
 \itemize{
 \item \verb{$e1$name}: name of element 1
 \item \verb{$e1$score}: score \eqn{d_{ij}(\succeq)}{d_ij(>=)}. \eqn{d_{ij}(\succ)}{d_ij(>)} if \code{strictly == TRUE}
-\item \verb{$e1$winningCoalitions}: list of coalition \code{\link[sets:set]{sets::set}}s \eqn{S \in D_{ij}(\succeq)}{S in D_ij(>=)}. \eqn{S \in D_{ij}(\succ)}{S in D_ij(>)} if \code{strictly == TRUE}
+\item \verb{$e1$winningCoalitions}: list of coalition \code{\link[base:c]{vectors}} \eqn{S \in D_{ij}(\succeq)}{S in D_ij(>=)}. \eqn{S \in D_{ij}(\succ)}{S in D_ij(>)} if \code{strictly == TRUE}
 }
 \item \verb{$e2}: list of information about element 2
 \itemize{
 \item \verb{$e2$name}: name of element 2
 \item \verb{$e1$score}: score \eqn{d_{ji}(\succeq)}{d_ji(>=)}. \eqn{d_{ji}(\succ)}{d_ji(>)} if \code{strictly == TRUE}
-\item \verb{$e1$winningCoalitions}: list of coalition \code{\link[sets:set]{sets::set}}s \eqn{S \in D_{ji}(\succeq)}{S in D_ji(>=)}.  \eqn{S \in D_{ji}(\succ)}{S in D_ji(>)} if \code{strictly == TRUE}
+\item \verb{$e1$winningCoalitions}: list of coalition \code{\link[base:c]{vectors}} \eqn{S \in D_{ji}(\succeq)}{S in D_ji(>=)}.  \eqn{S \in D_{ji}(\succ)}{S in D_ji(>)} if \code{strictly == TRUE}
 }
 \item \verb{$winner}: name of higher scoring element. \code{NULL} if they are indifferent.
 \item \verb{$loser}: name of lower scoring element. \code{NULL} if they are indifferent.
 \item \verb{$tuples}: a list of coalitions \eqn{S \in 2^{N \setminus \lbrace i, j \rbrace }}{S in 2^(N - \{i,j\})} with:
 \itemize{
-\item \verb{$tuples[[x]]$coalition}: \code{\link[sets:set]{sets::set}}, the coalition \eqn{S}{S}
+\item \verb{$tuples[[x]]$coalition}: \code{\link[base:c]{vector}}, the coalition \eqn{S}{S}
 \item \verb{$tuples[[x]]$included}: logical, \code{TRUE} if \eqn{S \cup \lbrace i \rbrace}{Su\{i\}} and \eqn{S \cup \lbrace j \rbrace}{Su\{j\}} are in the power relation
 \item \verb{$tuples[[x]]$winner}: name of the winning element \eqn{i}{i} where \eqn{S \cup \lbrace i \rbrace \succ S \cup \lbrace j \rbrace}{S u \{i\} > S u \{j\}}. It is \code{NULL} if \eqn{S \cup \lbrace i \rbrace \sim S \cup \lbrace j \rbrace}{S u \{i\} ~ S u \{j\}}
 \item \verb{$tuples[[x]]$e1}: index \eqn{x_1}{x_1} at which \eqn{S \cup \lbrace i \rbrace \in \sum_{x_1}}{S u \{i\} in Sum_(x_1)}
@@ -108,8 +108,8 @@ stopifnot(scores$e1$score == length(scores$e1$winningCoalitions))
 stopifnot(scores$e2$score == length(scores$e2$winningCoalitions))
 
 # get tuples with coalitions S in 2^(N - \{i,j\})
-emptySetTuple <- Filter(function(x) x$coalition == sets::set(), scores$tuples)[[1]]
-playerCTuple  <- Filter(function(x) x$coalition == sets::set("c"), scores$tuples)[[1]]
+emptySetTuple <- Filter(function(x) identical(x$coalition, c()), scores$tuples)[[1]]
+playerCTuple  <- Filter(function(x) identical(x$coalition, "c"), scores$tuples)[[1]]
 
 # because {} u a ~ {} u b, there is no winner
 stopifnot(is.null(emptySetTuple$winner))

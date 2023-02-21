@@ -17,10 +17,10 @@ test_that("element types", {
   expect_equal(pr$eqs, list(list(c('2','a')), list(c('a'), c(2))))
 })
 
-test_that("too few coalitions error", {
-  expect_error(PowerRelation(list(list())), "Power relation must contain at least two coalitions and cannot have empty equivalence classes.")
-  expect_error(PowerRelation(list(list(1))), "Power relation must contain at least two coalitions.")
-  expect_error(PowerRelation(list(list(1), list(), list(2))), "Power relation must contain at least two coalitions and cannot have empty equivalence classes.")
+test_that("empty eqs exception", {
+  expect_error(PowerRelation(list()))
+  expect_error(PowerRelation(list(list())))
+  expect_error(PowerRelation(list(list(1), list(), list(2))))
 })
 
 test_that("from string", {
@@ -70,18 +70,23 @@ test_that("cycle warning", {
   result <- evaluate_promise(as.PowerRelation("1 > 1"))
   expect_length(result$warnings, 1)
   expect_equal(result$warnings[1], "Found 1 duplicate coalition, listed below. This violates transitivity and can cause issues with certain ranking solutions. You may want to take a look at socialranking::transitiveClosure().
-    - 1")
+    - {1}")
 
   result <- evaluate_promise(as.PowerRelation("1 > 1 ~ 2 > 2"))
   expect_length(result$warnings, 1)
   expect_equal(result$warnings[1], "Found 2 duplicate coalitions, listed below. This violates transitivity and can cause issues with certain ranking solutions. You may want to take a look at socialranking::transitiveClosure().
-    - 1
-    - 2")
+    - {1}
+    - {2}")
 
   result <- evaluate_promise(as.PowerRelation("12 > 12 ~ 123 > 12"))
   expect_length(result$warnings, 1)
   expect_equal(result$warnings[1], "Found 1 duplicate coalition, listed below. This violates transitivity and can cause issues with certain ranking solutions. You may want to take a look at socialranking::transitiveClosure().
-    - c(1, 2)")
+    - {1, 2}")
+
+  result <- evaluate_promise(PowerRelation(list(list(c("ab", "cd", "ef")), list(c("ab", "cd", "ef")))))
+  expect_length(result$warnings, 1)
+  expect_equal(result$warnings[1], "Found 1 duplicate coalition, listed below. This violates transitivity and can cause issues with certain ranking solutions. You may want to take a look at socialranking::transitiveClosure().
+    - {ab, cd, ef}")
 })
 
 test_that("equality", {
@@ -108,9 +113,37 @@ test_that("coalitionsAreIndifferent", {
   expect_false(coalitionsAreIndifferent(pr, 3, c(1,2,3)))
 })
 
+test_that("equivalenceClassIndex", {
+  pr <- as.PowerRelation("123 ~ 2 > 12 ~ 1 ~ 3 > {}")
+  expect_equal(equivalenceClassIndex(pr, c(1,2)), 2)
+  expect_equal(equivalenceClassIndex(pr, c(2,1)), 2)
+  expect_null(equivalenceClassIndex(pr, c(1,3)))
+  expect_equal(equivalenceClassIndex(pr, c()), 3)
+  expect_equal(equivalenceClassIndex, coalitionLookup)
+})
+
+test_that("elementLookup", {
+  pr <- as.PowerRelation("123 ~ 2 > 12 ~ 1 ~ 3 > {}")
+  expect_equal(elementLookup(pr, 1), list(c(1,1), c(2,1), c(2,2)))
+  expect_equal(elementLookup(pr, 2), list(c(1,1), c(1,2), c(2,1)))
+  expect_equal(elementLookup(pr, 3), list(c(1,1), c(2,3)))
+  expect_null(elementLookup(pr, 4))
+
+})
+
 test_that("deprecated", {
   pr <- as.PowerRelation("123 ~ 2 > 12 ~ 1 ~ 3 > {}")
-  expect_error(equivalenceClassIndex(pr, c(1,2)))
   expect_error(newPowerRelation(c(1,2), '>', 2))
   expect_error(newPowerRelationFromString("123 ~ 2 > 12 ~ 1 ~ 3 > {}"))
+})
+
+test_that("Inequality from differently sized lists", {
+  expect_false({
+    as.PowerRelation("12 > (13 ~ 1) >( 23 ~ 123 ~ 2 ~ 3)") ==
+    as.PowerRelation("12 > (13 ~ 1 ~ 23 ~ 123 ~ 2 ~ 3)")
+  })
+  expect_false({
+    as.PowerRelation("12 > (13 ~ 1) > (23 ~ 123 ~ 2 ~ 3)") ==
+    as.PowerRelation("(12 ~ 13) > 1 > (23 ~ 123 ~ 2 ~ 3)")
+  })
 })

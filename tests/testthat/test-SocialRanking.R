@@ -71,3 +71,14 @@ test_that("doRanking compare", {
 test_that("SocialRankingSolution fails", {
   expect_error(SocialRankingSolution(12))
 })
+
+test_that("Inequality from differently sized objects", {
+  expect_false(
+    doRanking(c(a = 3, b = 2, c = 1)) ==
+    doRanking(c(a = 3, b = 2))
+  )
+  expect_false(
+    doRanking(c(a = 2, b = 2, c = 1)) ==
+      doRanking(c(a = 2, b = 1, c = 1))
+  )
+})

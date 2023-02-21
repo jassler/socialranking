@@ -73,10 +73,9 @@ is.na.LexcelScores <- function(x) FALSE
 #' lexcelScores(pr, 2)
 #'
 #' @export
-lexcelScores <- function(powerRelation, elements = NULL) {
+lexcelScores <- function(powerRelation, elements = powerRelation$elements) {
   # --- checks (generated) --- #
   stopifnot(is.PowerRelation(powerRelation))
-  if(is.null(elements)) elements <- powerRelation$elements
   # --- end checks --- #
 
   result <- list()

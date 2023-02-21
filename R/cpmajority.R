@@ -19,15 +19,15 @@
 #' * `$e1`: list of information about element 1
 #'   * `$e1$name`: name of element 1
 #'   * `$e1$score`: score \eqn{d_{ij}(\succeq)}{d_ij(>=)}. \eqn{d_{ij}(\succ)}{d_ij(>)} if `strictly == TRUE`
-#'   * `$e1$winningCoalitions`: list of coalition [`sets::set`]s \eqn{S \in D_{ij}(\succeq)}{S in D_ij(>=)}. \eqn{S \in D_{ij}(\succ)}{S in D_ij(>)} if `strictly == TRUE`
+#'   * `$e1$winningCoalitions`: list of coalition [`vectors`][base::c()] \eqn{S \in D_{ij}(\succeq)}{S in D_ij(>=)}. \eqn{S \in D_{ij}(\succ)}{S in D_ij(>)} if `strictly == TRUE`
 #' * `$e2`: list of information about element 2
 #'   * `$e2$name`: name of element 2
 #'   * `$e1$score`: score \eqn{d_{ji}(\succeq)}{d_ji(>=)}. \eqn{d_{ji}(\succ)}{d_ji(>)} if `strictly == TRUE`
-#'   * `$e1$winningCoalitions`: list of coalition [`sets::set`]s \eqn{S \in D_{ji}(\succeq)}{S in D_ji(>=)}.  \eqn{S \in D_{ji}(\succ)}{S in D_ji(>)} if `strictly == TRUE`
+#'   * `$e1$winningCoalitions`: list of coalition [`vectors`][base::c()] \eqn{S \in D_{ji}(\succeq)}{S in D_ji(>=)}.  \eqn{S \in D_{ji}(\succ)}{S in D_ji(>)} if `strictly == TRUE`
 #' * `$winner`: name of higher scoring element. `NULL` if they are indifferent.
 #' * `$loser`: name of lower scoring element. `NULL` if they are indifferent.
 #' * `$tuples`: a list of coalitions \eqn{S \in 2^{N \setminus \lbrace i, j \rbrace }}{S in 2^(N - \{i,j\})} with:
-#'   * `$tuples[[x]]$coalition`: [`sets::set`], the coalition \eqn{S}{S}
+#'   * `$tuples[[x]]$coalition`: [`vector`][base::c()], the coalition \eqn{S}{S}
 #'   * `$tuples[[x]]$included`: logical, `TRUE` if \eqn{S \cup \lbrace i \rbrace}{Su\{i\}} and \eqn{S \cup \lbrace j \rbrace}{Su\{j\}} are in the power relation
 #'   * `$tuples[[x]]$winner`: name of the winning element \eqn{i}{i} where \eqn{S \cup \lbrace i \rbrace \succ S \cup \lbrace j \rbrace}{S u \{i\} > S u \{j\}}. It is `NULL` if \eqn{S \cup \lbrace i \rbrace \sim S \cup \lbrace j \rbrace}{S u \{i\} ~ S u \{j\}}
 #'   * `$tuples[[x]]$e1`: index \eqn{x_1}{x_1} at which \eqn{S \cup \lbrace i \rbrace \in \sum_{x_1}}{S u \{i\} in Sum_(x_1)}
@@ -73,8 +73,8 @@
 #' stopifnot(scores$e2$score == length(scores$e2$winningCoalitions))
 #'
 #' # get tuples with coalitions S in 2^(N - \{i,j\})
-#' emptySetTuple <- Filter(function(x) x$coalition == sets::set(), scores$tuples)[[1]]
-#' playerCTuple  <- Filter(function(x) x$coalition == sets::set("c"), scores$tuples)[[1]]
+#' emptySetTuple <- Filter(function(x) identical(x$coalition, c()), scores$tuples)[[1]]
+#' playerCTuple  <- Filter(function(x) identical(x$coalition, "c"), scores$tuples)[[1]]
 #'
 #' # because {} u a ~ {} u b, there is no winner
 #' stopifnot(is.null(emptySetTuple$winner))
@@ -119,8 +119,8 @@ cpMajorityComparison <- function(powerRelation, e1, e2, strictly = FALSE, includ
   result$tuples <- lapply(
     coalitions,
     function(S) {
-      t <- sets::tuple(
-        coalition = sets::as.set(S),
+      t <- list(
+        coalition = S,
         included = FALSE,
         winner = NULL,
         e1 = -1,
@@ -129,7 +129,7 @@ cpMajorityComparison <- function(powerRelation, e1, e2, strictly = FALSE, includ
 
       eq1 <- powerRelation$coalitionLookup(c(S, e1))
       eq2 <- powerRelation$coalitionLookup(c(S, e2))
-      if(eq1 >= 1 && eq2 >= 1) {
+      if(!is.null(eq1) && !is.null(eq2)) {
         t$included <- TRUE
         t$e1 <- eq1
         t$e2 <- eq2
@@ -210,10 +210,10 @@ cpMajorityComparisonScore <- function(powerRelation, e1, e2, strictly = FALSE, i
 
   for(S in coalitions) {
     c1 <- powerRelation$coalitionLookup(c(S, e1))
-    if(c1 == -1) next
+    if(is.null(c1)) next
 
     c2 <- powerRelation$coalitionLookup(c(S, e2))
-    if(c2 == -1) next
+    if(is.null(c2)) next
 
     if(strictly) {
       if(c1 < c2) pos <- pos + 1

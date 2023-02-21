@@ -40,7 +40,8 @@ makePowerRelationMonotonic <- function(powerRelation) {
   allCoals <- createPowerset(els)
   newEqs <- list()
   for(eq in powerRelation$eqs) {
-    indeces <- sapply(allCoals, function(x) any(sets::set_is_subset(eq, sets::as.set(x))))
+    # indeces <- sapply(allCoals, function(x) any(sets ::set_is_subset(eq, sets ::as.set(x))))
+    indeces <- sapply(allCoals, function(x) eq |> sapply(function(coalition) identical(x, union(x, coalition))))
     if(any(indeces)) {
       newEqs[[length(newEqs) + 1]] <- allCoals[indeces]
       allCoals <- allCoals[!indeces]

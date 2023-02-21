@@ -6,7 +6,7 @@
 \alias{dualLexcelRanking}
 \title{Lexicographical Excellence}
 \usage{
-lexcelScores(powerRelation, elements = NULL)
+lexcelScores(powerRelation, elements = powerRelation$elements)
 
 lexcelRanking(powerRelation)
 

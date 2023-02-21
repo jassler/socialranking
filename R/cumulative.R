@@ -51,10 +51,9 @@ is.na.CumulativeScores <- function(x) FALSE
 #' cumulativeScores(pr, c(2))
 #'
 #' @export
-cumulativeScores <- function(powerRelation, elements = NULL) {
+cumulativeScores <- function(powerRelation, elements = powerRelation$elements) {
   # --- checks (generated) --- #
   stopifnot(is.PowerRelation(powerRelation))
-  if(is.null(elements)) elements <- powerRelation$elements
   # --- end checks --- #
 
   result <- list()

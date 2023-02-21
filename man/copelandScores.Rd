@@ -5,7 +5,7 @@
 \alias{copelandRanking}
 \title{Copeland-like method}
 \usage{
-copelandScores(powerRelation, elements = NULL)
+copelandScores(powerRelation, elements = powerRelation$elements)
 
 copelandRanking(powerRelation)
 }

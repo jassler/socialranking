@@ -5,7 +5,7 @@
 \alias{cumulativelyDominates}
 \title{Cumulative scores}
 \usage{
-cumulativeScores(powerRelation, elements = NULL)
+cumulativeScores(powerRelation, elements = powerRelation$elements)
 
 cumulativelyDominates(powerRelation, e1, e2, strictly = FALSE)
 }

@@ -39,11 +39,11 @@ test_that("manip paper example with empty set", {
   expect_length(result23$e1$winningCoalitions, 1)
   expect_length(result23$e2$winningCoalitions, 1)
 
-  expect_equal(result12$e1$winningCoalitions[[1]], sets::set())
-  expect_equal(result12$e2$winningCoalitions[[1]], sets::set(3))
-  expect_equal(result13$e1$winningCoalitions[[1]], sets::set(2))
-  expect_equal(result23$e1$winningCoalitions[[1]], sets::set(1))
-  expect_equal(result23$e2$winningCoalitions[[1]], sets::set())
+  expect_equal(result12$e1$winningCoalitions[[1]], c())
+  expect_equal(result12$e2$winningCoalitions[[1]], c(3))
+  expect_equal(result13$e1$winningCoalitions[[1]], c(2))
+  expect_equal(result23$e1$winningCoalitions[[1]], c(1))
+  expect_equal(result23$e2$winningCoalitions[[1]], c())
 
   expect_equal(result12$e1$score, 1)
   expect_equal(result12$e2$score, 1)
@@ -90,11 +90,11 @@ test_that("manip paper example strictly", {
   expect_length(result23$e1$winningCoalitions, 1)
   expect_length(result23$e2$winningCoalitions, 1)
 
-  expect_equal(result12$e1$winningCoalitions[[1]], sets::set())
-  expect_equal(result12$e2$winningCoalitions[[1]], sets::set(3))
-  expect_equal(result13$e1$winningCoalitions[[1]], sets::set(2))
-  expect_equal(result23$e1$winningCoalitions[[1]], sets::set(1))
-  expect_equal(result23$e2$winningCoalitions[[1]], sets::set())
+  expect_equal(result12$e1$winningCoalitions[[1]], c())
+  expect_equal(result12$e2$winningCoalitions[[1]], c(3))
+  expect_equal(result13$e1$winningCoalitions[[1]], c(2))
+  expect_equal(result23$e1$winningCoalitions[[1]], c(1))
+  expect_equal(result23$e2$winningCoalitions[[1]], c())
 
   expect_equal(result12$e1$score, 1)
   expect_equal(result12$e2$score, 1)
@@ -113,7 +113,7 @@ test_that("manip paper example strictly", {
 })
 
 test_that("manip paper example without empty set", {
-  pr <- as.PowerRelation('123 ~ 12 ~ 3 ~ 1 > 2 ~ 23 > 13')
+  pr <- as.PowerRelation('231 ~ 21 ~ 3 ~ 1 > 2 ~ 23 > 13')
 
   result12 <- cpMajorityComparison(pr, 1, 2, includeEmptySet = FALSE)
   result13 <- cpMajorityComparison(pr, 1, 3, includeEmptySet = FALSE)
@@ -140,9 +140,9 @@ test_that("manip paper example without empty set", {
   expect_length(result23$e1$winningCoalitions, 1)
   expect_length(result23$e2$winningCoalitions, 0)
 
-  expect_equal(result12$e2$winningCoalitions[[1]], sets::set(3))
-  expect_equal(result13$e1$winningCoalitions[[1]], sets::set(2))
-  expect_equal(result23$e1$winningCoalitions[[1]], sets::set(1))
+  expect_equal(result12$e2$winningCoalitions[[1]], c(3))
+  expect_equal(result13$e1$winningCoalitions[[1]], c(2))
+  expect_equal(result23$e1$winningCoalitions[[1]], c(1))
 
   expect_equal(result12$e1$score, 0)
   expect_equal(result12$e2$score, 1)

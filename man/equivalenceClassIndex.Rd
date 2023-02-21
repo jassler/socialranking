@@ -2,17 +2,17 @@
 % Please edit documentation in R/powerRelation.R
 \name{equivalenceClassIndex}
 \alias{equivalenceClassIndex}
+\alias{coalitionLookup}
 \title{Get index of equivalence class containing a coalition}
 \usage{
 equivalenceClassIndex(powerRelation, coalition)
+
+coalitionLookup(powerRelation, coalition)
 }
 \arguments{
 \item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
 
 \item{coalition}{a coalition \link[base:c]{vector} or that is part of \code{powerRelation}}
-
-\item{stopIfNotExists}{\code{TRUE} if an error should be thrown when the coalition given is not in the \code{\link{PowerRelation}} object.
-If \code{FALSE}, \code{-1} will be returned}
 }
 \value{
 Numeric value, equivalence class index where \code{coalition} appears in.
@@ -24,6 +24,8 @@ Given a \code{coalition} \link[base:c]{vector}, return the equivalence class ind
 }
 \details{
 This function basically just calls \code{powerRelation$coalitionLookup(coalition)}.
+
+\code{equivalenceClassIndex()} serves as an alias to \code{coalitionLookup()}.
 }
 \examples{
 pr <- as.PowerRelation("12 > 2 ~ 1")
@@ -42,7 +44,8 @@ equivalenceClassIndex(pr, c())
 
 }
 \seealso{
-Other equivalence class lookup functions: 
-\code{\link{coalitionsAreIndifferent}()}
+Other lookup functions: 
+\code{\link{coalitionsAreIndifferent}()},
+\code{\link{elementLookup}()}
 }
-\concept{equivalence class lookup functions}
+\concept{lookup functions}

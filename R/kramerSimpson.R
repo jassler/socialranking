@@ -94,10 +94,9 @@ is.na.KramerSimpsonScores <- function(x) FALSE
 #' kramerSimpsonScores(pr, 2, compIvsI = TRUE)
 #'
 #' @export
-kramerSimpsonScores <- function(powerRelation, elements = NULL, compIvsI = FALSE) {
+kramerSimpsonScores <- function(powerRelation, elements = powerRelation$elements, compIvsI = FALSE) {
   # --- checks (generated) --- #
   stopifnot(is.PowerRelation(powerRelation))
-  if(is.null(elements)) elements <- powerRelation$elements
   # --- end checks --- #
 
   result <- list()

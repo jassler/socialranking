@@ -148,9 +148,24 @@ PowerRelation <- function(equivalenceClasses, elements = NULL, coalitionLookup =
   ), class = classes)
 }
 
-createLookupTables <- function(equivalenceClasses) {
-  elements <- unique(sort(unlist(equivalenceClasses)))
+toKey <- function(coalition) {
+  paste('\u200b', coalition |> sort() |> paste(collapse = '\u200b'), sep = '')
+}
 
+createLookupTables <- function(equivalenceClasses) {
+  if(length(equivalenceClasses) == 0) {
+    stop('Must supply at least one equivalence class.')
+  }
+
+  empties <- which(sapply(equivalenceClasses, function(eq) length(eq) == 0))
+  if(length(empties) > 0) {
+    stop(paste(
+      'Equivalence classes must not be empty. In the given list of equivalence classes, the following ',
+      if(length(empties) == 1) 'index was' else 'indexes were', ' empty: ', paste(empties, collapse = ', '))
+    )
+  }
+
+  elements <- equivalenceClasses |> unlist() |> sort() |> unique()
   # if(noDuplicates) {
   #   coalitionLookup <- hash::hash(
   #     keys = unlist(equivalenceClasses, recursive = FALSE),
@@ -163,48 +178,50 @@ createLookupTables <- function(equivalenceClasses) {
   #     keys = elements,
   #     values = rep(list(c()), length(elements))
   #   )
-  #   # todo
   # }
 
-  keyList <- tryCatch(
-    { lapply(equivalenceClasses, hash::make.keys) },
-    error = function(e) { stop('Power relation must contain at least two coalitions and cannot have empty equivalence classes.') }
-  )
-  keys <- unlist(keyList)
+  # keyList <- tryCatch(
+  #   { lapply(equivalenceClasses, hash::make.keys) },
+  #   error = function(e) { stop('Power relation must contain at least two coalitions and cannot have empty equivalence classes.') }
+  # )
+  # keys <- unlist(keyList)
 
-  if(length(keys) <= 1) {
-    stop('Power relation must contain at least two coalitions.')
-  }
+  #if(length(keys) <= 1) {
+  #  stop('Power relation must contain at least two coalitions.')
+  #}
 
-  coalitionLookup <- hash::hash(keys = keys    , values = rep(list(c()), length(keys)))
-  elementLookup   <- hash::hash(keys = elements, values = rep(list(c()), length(elements)))
+  stopifnot('The character "\\u200b" is specially reserved and must not be used in coalition names.' = (!is.character(elements) || length(grep('\u200b', elements)) == 0))
+  keyList <- lapply(equivalenceClasses, lapply, toKey)
 
-  duplicates <- sets::set()
+  uniqueKeys <- keyList |> unlist() |> unique()
+  #structure(as.list()) hash::hash(keys = keys    , values = NULL)
+  coalitionLookup <- vector(mode = 'list', length = length(uniqueKeys)) |> structure(names = uniqueKeys)
+  elementLookup   <- vector(mode = 'list', length = length(elements)) |> structure(names = elements)
+
+  duplicates <- list()
   for(i in seq_along(keyList)) {
     for(j in seq_along(keyList[[i]])) {
-      k <- keyList[[i]][j]
+      k <- keyList[[i]][[j]]
       v <- c(coalitionLookup[[k]], i)
       coalitionLookup[[k]] <- v
 
-      if(length(v) > 1)
-        duplicates <- sets::set_union(duplicates, k)
+      if(length(v) > 1) {
+        duplicates <- append(duplicates, paste0('{', paste(equivalenceClasses[[i]][[j]], collapse = ', '), '}'))
+      }
 
-      els <- equivalenceClasses[[i]][[j]]
-      if(length(els) == 0)
-        next
-
-      for(el in hash::make.keys(equivalenceClasses[[i]][[j]])) {
+      for(el in paste(equivalenceClasses[[i]][[j]])) {
         elementLookup[[el]] <- append(elementLookup[[el]], list(c(i,j)))
       }
     }
   }
   if(length(duplicates) > 0) {
+    duplicates <- unique(duplicates)
     warning(paste0('Found ', length(duplicates), ' duplicate coalition', if(length(duplicates) > 1) 's', ', listed below. This violates transitivity and can cause issues with certain ranking solutions. You may want to take a look at socialranking::transitiveClosure().\n    - ', paste(duplicates, collapse = '\n    - ')))
   }
 
   return(list(
     elements = elements,
-    coalitionLookup = function(v, default = -1) { r <- coalitionLookup[[hash::make.keys(list(sort(v)))]]; if(!is.null(r)) r else default},
+    coalitionLookup = function(v) coalitionLookup[[toKey(v)]],
     elementLookup = function(e) elementLookup[[paste(e)]]
   ))
 }
@@ -239,12 +256,12 @@ is.PowerRelation <- function(x, ...) {
 #' equivalence class.
 #'
 #' @template param/powerRelation
-#' @param c1 Coalition [vector][base::c()] or [`sets::set()`]
-#' @param c2 Coalition [vector][base::c()] or [`sets::set()`]
+#' @param c1 Coalition [vector][base::c()]
+#' @param c2 Coalition [vector][base::c()]
 #'
 #' @return Logical value `TRUE` if `c1` and `c2` are in the same equivalence class, else `FALSE`.
 #'
-#' @family equivalence class lookup functions
+#' @family lookup functions
 #'
 #' @examples
 #' pr <- PowerRelation(list(list(c(1,2)), list(1, 2)))
@@ -294,15 +311,16 @@ print.PowerRelation <- function(x, ...) {
 #'
 #' This function basically just calls `powerRelation$coalitionLookup(coalition)`.
 #'
+#' `equivalenceClassIndex()` serves as an alias to `coalitionLookup()`.
+#'
 #' @template param/powerRelation
 #' @param coalition a coalition [vector][base::c()] or that is part of `powerRelation`
-#' @template param/stopIfNotExists
 #'
 #' @return Numeric value, equivalence class index where `coalition` appears in.
 #' `-1` if the coalition does not exist.
 #' See `coalitionLookup()` in [`PowerRelation()`] for more information.
 #'
-#' @family equivalence class lookup functions
+#' @family lookup functions
 #'
 #' @examples
 #' pr <- as.PowerRelation("12 > 2 ~ 1")
@@ -326,6 +344,46 @@ equivalenceClassIndex <- function(powerRelation, coalition) {
   # --- end checks --- #
 
   powerRelation$coalitionLookup(coalition)
+}
+
+#' @rdname equivalenceClassIndex
+#' @export
+coalitionLookup <- equivalenceClassIndex
+
+#' Element lookup
+#'
+#' List coalitions that an element appears in.
+#'
+#' This function basically just calls `powerRelation$elementLookup(element)`.
+#'
+#' @template param/powerRelation
+#' @param element an element in `powerRelation$elements`
+#'
+#' @return List of 2-value tuples.
+#' First value of a tuple indicates the equivalence class index, the second value the index inside that equivalence class with the coalition containing the element.
+#' See `elementLookup()` in [`PowerRelation()`] for more information.
+#'
+#' @family lookup functions
+#'
+#' @examples
+#' pr <- as.PowerRelation("12 > 2 ~ 1")
+#'
+#' l <- elementLookup(pr, 1)
+#' l
+#' # (1,1), (2,2)
+#'
+#' l |> sapply(function(tuple) 1 %in% pr$eqs[[tuple[1]]][[tuple[2]]]) |> all() |> stopifnot()
+#'
+#' # if element does not exist, it returns NULL
+#' pr |> elementLookup(3) |> is.null() |> stopifnot()
+#'
+#' @export
+elementLookup <- function(powerRelation, element) {
+  # --- checks (generated) --- #
+  stopifnot(is.PowerRelation(powerRelation))
+  # --- end checks --- #
+
+  powerRelation$elementLookup(element)
 }
 
 #' New Power Relation

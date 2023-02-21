@@ -23,10 +23,8 @@ Suggests:
     partitions (>= 1.10.7)
 Imports:
     relations (>= 0.6.12),
-    sets (>= 1.0.21),
     rlang (>= 1.0.6),
-    Rdpack (>= 2.4),
-    hash (>= 2.2.6)
+    Rdpack (>= 2.4)
 Config/testthat/edition: 3
 VignetteBuilder: knitr
 URL: https://jassler.github.io/socialranking/
