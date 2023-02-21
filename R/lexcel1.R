@@ -92,7 +92,7 @@ is.na.L1Scores <- function(x) FALSE
 #' # [3,]    1    0    0
 #'
 #' L1Ranking(pr)
-#' #
+#' # 2 > 1 > 3
 #'
 #' @export
 L1Scores <- function(powerRelation, elements = powerRelation$elements) {
