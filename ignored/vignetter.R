@@ -38,16 +38,16 @@ local({
   print(">>> Generating Tables with kableExtra <<<")
 
   tbl <- data.frame(
-    "Comparison functions" = c("`dominates()`", "`cumulativelyDominates()`", "`cpMajorityComparison()`<br>`cpMajorityComparisonScore()`", "", ""),
-    "Score functions" = c("", "`cumulativeScores()`", "`copelandScores()`<br>`kramerSimpsonScores()`", "`lexcelScores()`", "`ordinalBanzhafScores()`"),
-    "Ranking functions" = c("", "", "`copelandRanking()`<br>`kramerSimpsonRanking()`", "`lexcelRanking()`<br>`dualLexcelRanking()`", "`ordinalBanzhafRanking()`")
+    "Comparison functions" = c("`dominates()`", "`cumulativelyDominates()`", "`cpMajorityComparison()`<br>`cpMajorityComparisonScore()`", "", "", ""),
+    "Score functions" = c("", "`cumulativeScores()`", "`copelandScores()`<br>`kramerSimpsonScores()`", "`lexcelScores()`", "`L1Scores()`", "`ordinalBanzhafScores()`"),
+    "Ranking functions" = c("", "", "`copelandRanking()`<br>`kramerSimpsonRanking()`", "`lexcelRanking()`<br>`dualLexcelRanking()`", "`L1Ranking()`", "`ordinalBanzhafRanking()`")
   )
   createTables(tbl, "functionTable")
 
   tbl <- data.frame(
     c("`elements`", "`eqs`", "`coalitionLookup`", "`elementLookup`"),
     c("Sorted vector of elements", "List containing lists, each<br>containing coalitions in the<br>same equivalence class", "Function to determine a coalition's<br>equivalence class index", "Function to determine, which coalitions<br>an element takes part in"),
-    c("`c(1,2)`", "`list(list(c(1,2)),`<br>`list(c(2), c()),`<br>`list(c(1)))`", "`function(coalition, default=-1)`", "`function(element)`")
+    c("`c(1,2)`", "`list(list(c(1,2)),`<br>`list(c(2), c()),`<br>`list(c(1)))`", "`function(coalition)`", "`function(element)`")
   )
   createTables(tbl, "prObject", col.names = c("Attribute", "Description", "Value in `pr`"))
 

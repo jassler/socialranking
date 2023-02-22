@@ -1,3 +1,9 @@
+#TOC {
+  white-space: nowrap;
+  overflow-x: hidden;
+  width: 30%;
+}
+
 .theorem {
   display: block;
   font-style: italic;

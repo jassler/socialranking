@@ -20,7 +20,7 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
 bibliography: references.bib
 csl: biomed-central.csl
-abstract: "This document gives a brief introduction to power relations and social ranking solutions aimed at ranking elements based on their contributions within coalitions. This document accompanies version 0.1.0 of the package `socialranking`.\n\n**Keywords**: power relation, social ranking solution, cooperative game theory, dominance, cp-majority, Copeland, Kramer-Simpson, ordinal Banzhaf, dominance, lexicographical excellence, relations."
+abstract: "This document gives a brief introduction to power relations and social ranking solutions aimed at ranking elements based on their contributions within coalitions. This document accompanies version 1.0.0 of the package `socialranking`.\n\n**Keywords**: power relation, social ranking solution, cooperative game theory, dominance, cp-majority, Copeland, Kramer-Simpson, ordinal Banzhaf, dominance, lexicographical excellence, relations."
 ---
 
 ```{r echo=FALSE}
@@ -122,7 +122,7 @@ refDef <- function(def) {
 
 # Introduction
 
-In the literature of cooperative games, the notion of *power index* [@shapley1954method; @1964Banzhaf; @holler2013power] has been widely studied to analyze the ``influence" of individuals   taking into account  their ability   to force a decision within groups or coalitions. In practical situations, however, the information concerning the strength of coalitions  is hardly quantifiable. So, any attempt to numerically represent  the influence of groups and individuals clashes with the complex and multi-attribute nature of the problem and it seems more realistic to represent collective decision-making mechanisms using an ordinal coalitional framework based on two main ingredients: a binary relation over groups or coalitions and a ranking over the individuals.
+In the literature of cooperative games, the notion of *power index* [@shapley1954method; @1964Banzhaf; @holler2013power] has been widely studied to analyze the "influence" of individuals   taking into account  their ability   to force a decision within groups or coalitions. In practical situations, however, the information concerning the strength of coalitions  is hardly quantifiable. So, any attempt to numerically represent  the influence of groups and individuals clashes with the complex and multi-attribute nature of the problem and it seems more realistic to represent collective decision-making mechanisms using an ordinal coalitional framework based on two main ingredients: a binary relation over groups or coalitions and a ranking over the individuals.
 
 The main objective of the package `socialranking` is to provide answers for  the general problem of how to compare the elements of a finite set $N$ given a ranking over the elements of its power-set (the set of all possible subsets of $N$). To do this, the package `socialranking` implements a portfolio of solutions from the recent literature on *social rankings* [@2017axiomaticAndAlgorithmicPerspectives; @2019OrdinalBanzhaf; @2018CPMajority; @2018CPMajoritySims; @2019PreferenceRelation; @2021Lexcel; @2021Manipulability].
 
@@ -161,13 +161,11 @@ xfun::file_string("tables/functionTable.tex")
 These functions may be called as follows.
 
 ```{r}
-pr <- as.PowerRelation("ab > ac ~ bc > a ~ c > {} > b")
+pr <- as.PowerRelation("ab > abc ~ ac ~ bc > a ~ c > {} > b")
 
-# a dominates b -> TRUE
-dominates(pr, "a", "b")
-
-# b does not dominate a -> FALSE
-dominates(pr, "b", "a")
+# a dominates b, but b does not dominate a
+c(dominates(pr, "a", "b"),
+  dominates(pr, "b", "a"))
 
 # calculate cumulative scores
 scores <- cumulativeScores(pr)
@@ -176,13 +174,14 @@ scores$a
 
 # performing a bunch of rankings
 lexcelRanking(pr)
+L1Ranking(pr)
 dualLexcelRanking(pr)
 copelandRanking(pr)
 kramerSimpsonRanking(pr)
 ordinalBanzhafRanking(pr)
 ```
 
-Finally an incidence matrix for all given coalitions can be constructed using `powerRelationMatrix(pr)` or `as.relation(pr)` from the `relations` package [@relationsPackage]. The incidence matrix may be displayed using `relations::relation_incidence()`.
+Lastly, an incidence matrix for all given coalitions can be constructed using `powerRelationMatrix(pr)` or `as.relation(pr)` from the `relations` package [@relationsPackage]. The incidence matrix may be displayed using `relations::relation_incidence()`.
 
 ```{r}
 rel <- relations::as.relation(pr)
@@ -194,19 +193,23 @@ relations::relation_incidence(rel)
 # `PowerRelation` Objects{#sec:prelim}
 
 We first introduce some basic definitions on binary relations. Let $X$ be a set. A set $R \subseteq X \times X$ is said a *binary relation* on $X$.
-For two elements $x, y \in X$, $xRy$ refers to their relation, more formally it means that $(x,y) \in R$. A binary relation $(x,y) \in R$ is said to be:
+For two elements $x, y \in X$, $xRy$ refers to their relation, more formally it means that $(x,y) \in R$. A binary relation $(x,y) \in R$ is said to be
 
-* *reflexive*, if for each $x \in X, xRx$
-* *transitive*, if for each $x, y, z \in X, xRy$ and $yRz \Rightarrow xRz$
-* *total*, if for each $x,y \in X, x \neq y \Rightarrow xRy$ or $yRx$
-* *symmetric*, if for each $x,y \in X,xRy \Leftrightarrow yRx$
-* *asymmetric*, if for each $x,y \in X,(x,y) \in R \Rightarrow (y,x) \notin R$
-* *antisymmetric*, if for each $x,y \in X,xRy \cap yRx \Rightarrow x=y$
+* *reflexive*, if for each $x \in X, xRx$,
+* *transitive*, if for each $x, y, z \in X, xRy$ and $yRz \Rightarrow xRz$,
+* *total*, if for each $x,y \in X, x \neq y \Rightarrow xRy$ or $yRx$,
+* *symmetric*, if for each $x,y \in X,xRy \Leftrightarrow yRx$,
+* *asymmetric*, if for each $x,y \in X,(x,y) \in R \Rightarrow (y,x) \notin R$, and
+* *antisymmetric*, if for each $x,y \in X,xRy \cap yRx \Rightarrow x=y$.
 
 
 A *preorder* is defined as a reflexive and transitive relation. If it is total, it is called a *total preorder*. Additionally if it is antisymmetric, it is called a *linear order*.
 
-Let $N = \{1, 2, \dots, n\}$ be a finite set of *elements*, sometimes also called *players*. For some $p \in \{1, \ldots, 2^n\}$, let $\mathcal{P} = \{S_1, S_2, \dots, S_{p}\}$ be a set of *coalitions* such that $S_i \subseteq N$ for all $i \in \{1, \ldots, p\}$.  Thus $\mathcal{P} \subseteq 2^N$, where $2^N$ denotes the power set of $N$ (i.e., the set of all subsets or coalitions of $N$).
+Let $N = \{1, 2, \dots, n\}$ be a finite set of *elements*, sometimes also called *players*. For some $p \in \{1, \ldots, 2^n\}$, let $\mathcal{P} = \{S_1, S_2, \dots, S_{p}\}$ be a set of *coalitions* such that $S_i \subseteq N$ for all $i \in \{1, \ldots, p\}$.  Thus $\mathcal{P} \subseteq 2^N$, where $2^N$ denotes the power set of $N$, the set of all subsets or coalitions of $N$,
+
+$$
+S \in 2^N \quad \Leftrightarrow \quad S \subseteq N.
+$$
 
 $\mathcal{T}(N)$ denotes the set of all total preorders on $N$, $\mathcal{T}(\mathcal{P})$ the set of all total preorders on $\mathcal{P}$. A single total preorder $\succeq \in \mathcal{T}(\mathcal{P})$ is said a *power relation*.
 
@@ -216,11 +219,21 @@ Lastly for a given power relation in the form of $S_1 \succeq S_2 \succeq \ldots
 
 :::{.example data-latex="" .theorem text="`r exampleCounter("ex:1")`" #ex:1}
 \label{ex:1}
-Let $N=\{1,2\}$ be two players with its corresponding power set $2^N = \{\{1,2\}, \{1\}, \{2\}, \emptyset\}$. The following power relation is given: $\succeq = \{(\{1,2\},\{2\}), (\{2\}, \emptyset), (\emptyset, \{2\}), (\emptyset, \{1\})\}$. This power relation can be rewritten in a consecutive order as: $\{1,2\} \succ \{2\} \sim \emptyset \succ \{1\}$. Its quotient order is formed by three equivalence classes $\sum_1 = \{\{1,2\}\}, \sum_2 = \{\{2\}, \emptyset\},$ and $\sum_3 = \{\{1\}\}$; so the quotient order of $\succeq$ is such that $\{\{1,2\}\} \succ \{\{2\}, \emptyset\} \succ \{\{1\}\}$.
+Let $N=\{1,2\}$ be two players with its corresponding power set $2^N = \{\{1,2\}, \{1\}, \{2\}, \emptyset\}$. The following power relation is given:
+
+$$
+\begin{array}{rrrr}
+\succeq \ =\ \{(\{1,2\},\{1,2\}), & (\{1,2\},\{2\}), & (\{1,2\},\emptyset), & (\{1,2\},\{1\}),\hphantom{\}}\\
+& (\{2\}, \{2\}), & (\{2\}, \emptyset), & \hphantom{1,}(\{2\}, \{1\}),\hphantom{\}}\\
+& (\emptyset, \emptyset), & (\emptyset, \{2\}), & (\emptyset, \{1\}),\hphantom{\}}\\
+& & & (\{1\}, \{1\})\hphantom{,}\}
+\end{array}
+$$
+
+This power relation can be rewritten in a consecutive order as: $\{1,2\} \succ \{2\} \sim \emptyset \succ \{1\}$. Its quotient order is formed by three equivalence classes $\sum_1 = \{\{1,2\}\}, \sum_2 = \{\{2\}, \emptyset\},$ and $\sum_3 = \{\{1\}\}$; so the quotient order of $\succeq$ is such that $\{\{1,2\}\} \succ \{\{2\}, \emptyset\} \succ \{\{1\}\}$.
 :::
 
-A *social ranking solution* (also called *social ranking* or, simply, *solution*) on $N$,
-is a function $R: \mathcal{T}(\mathcal{P}) \longrightarrow \mathcal{T}(N)$ associating to each power relation $\succeq \in \mathcal{T}(\mathcal{P})$ a total preorder $R(\succeq)$ (or $R^\succeq$) over the elements of $N$. By this definition, the notion $i R^\succeq j$ means that applying the social ranking solution to the power relation $\succeq$ gives the result that $i$ is ranked higher than or equal to $j$.
+Note that the way the set $\succeq$ is presented in the example is somewhat deliberate to better visualize occurring symmetries and asymmetries. This also lets us neatly represent a power relation in the form of an `r if(knitr::is_latex_output()) "incidence matrix in chapter"` `r refId("relations", "[incidence matrix](ID)")`.
 
 ## Creating `PowerRelation` Objects
 
@@ -294,7 +307,8 @@ prAtts$elementLookup(2)
 
 ## Manipulating `PowerRelation` Objects
 
-It is strongly discouraged to directly manipulate `PowerRelation` objects, since multiple attributes in the object are so tightly coupled, requiring updates in multiple places.
+It is strongly discouraged to directly manipulate `PowerRelation` objects, as its attributes are so tightly coupled.
+This would require updates in multiple places.
 Instead, it is advisable to simply create new `PowerRelation` objects.
 
 For permutating equivalence classes, it is possible to take the equivalence classes in `$eqs` and use a vector of indexes to move them around.
@@ -310,20 +324,62 @@ PowerRelation(rev(pr$eqs))
 For permutating individual coalitions, using `as.PowerRelation.list()` may be more convenient since it doesn't require nested list indexing.
 
 ```{r}
-pr
-
 coalitions <- unlist(pr$eqs, recursive = FALSE)
 compares <- c(">", "~", ">")
 as.PowerRelation(coalitions[c(2,1,3,4)], comparators = compares)
 
-# notice that the length of comparators does not need to match length(coalitions)-1
+# notice that the length of comparators does not need to match
+# length(coalitions)-1
 as.PowerRelation(rev(coalitions), comparators = c("~", ">"))
 
 # not setting the comparators parameter turns it into a linear order
 as.PowerRelation(coalitions)
 ```
 
-## Creating Power sets
+### `makePowerRelationTotal()`
+
+Let $\succeq \in \mathcal{T}(\mathcal{P})$. We may have not included all possible coalitions, such that $\mathcal{P} \subset 2^N, \mathcal{P} \neq 2^N$.
+
+`makePowerRelationTotal()` appends all the missing coalitions $2^N - \mathcal{P}$ as a single equivalence class to the end of the power relation.
+
+```{r}
+pr <- PowerRelation(list(
+  list(c("AT", "DE"), "FR"),
+  list("DE"),
+  list(c("AT", "FR"), "AT")
+))
+pr
+
+# since we have 3 elements, the super set 2^N should include 8 coalitions
+makePowerRelationTotal(pr)
+```
+
+### `makePowerRelationMonotonic()`
+
+A power relation $\succeq \in \mathcal{T}(\mathcal{P})$ is monotonic if
+
+$$
+S \succeq T \quad \Rightarrow \quad T \subset S
+$$
+
+for all $S, T \subseteq N$.
+In other terms, any coalition that is a subset of another coalition cannot be ranked higher.
+
+`makePowerRelationMonotonic()` turns a potentially non-monotonic power relation into a monotonic one by moving and (optionally) adding all coalitions to the corresponding equivalence classes.
+
+```{r}
+pr <- as.PowerRelation("a > b > c ~ ac > abc")
+makePowerRelationMonotonic(pr)
+
+makePowerRelationMonotonic(pr, addMissingCoalitions = FALSE)
+
+# notice that an empty coalition in some equivalence class causes
+# all remaining coalitions to be moved there
+makePowerRelationMonotonic(as.PowerRelation("ab > c > {} > abc > a > b"))
+```
+
+
+## Creating power sets
 
 As the number of elements $n$ increases, the number of possible coalitions increases to $|2^N| = 2^n$. `createPowerset` is a convenient function that not only creates a power set $2^N$ which can be used to call `PowerRelation` or `as.PowerRelation`, but also formats the function call in such a way that makes it easy to rearrange the ordering of the coalitions.
 RStudio offers shortcuts such as Alt+Up or Alt+Down (Option+Up or Option+Down on MacOS) to move one or multiple lines of code up or down (see fig. `r refId("fig:alt", "[below](ID)")`).
@@ -352,11 +408,108 @@ as.PowerRelation(createPowerset(letters[1:4]))
 ```
 
 
+
+## Generating `PowerRelation` objects
+
+Given a list of coalitions, it is possible to loop through all possible permutations of power relations using `powerRelationGenerator()`.
+Calling `gen()` in the example below always produces a unique `PowerRelation` object.
+If all permutations have been exhausted, `NULL` is returned.
+
+```{r}
+coalitions <- list(c(1,2), 1, 2)
+gen <- powerRelationGenerator(coalitions)
+while(!is.null(pr <- gen())) {
+  print(pr)
+}
+```
+
+Permutations over power relations can be split into two parts:
+
+1. generating partitions, or, generating differently sized equivalence classes, and
+2. moving coalitions between these partitions.
+
+In the code example above, we started with a single partition of size three, wherein all coalitions are considered equally preferable.
+By the end, we have reached the maximum number of partitions, where each coalition is put inside an equivalence class of size 1.
+
+The partition generation can be reversed, such that we first receive linear power relations.
+
+```{r}
+gen <- powerRelationGenerator(coalitions, startWithLinearOrder = TRUE)
+while(!is.null(pr <- gen())) {
+  print(pr)
+}
+```
+
+Notice that the "moving coalitions" part was not reversed, only the order the partitions come in.
+
+Similarly, we are also able to skip the current partition.
+
+```{r}
+gen <- powerRelationGenerator(coalitions)
+# partition 3
+
+gen <- generateNextPartition(gen)
+# partition 2+1
+
+gen <- generateNextPartition(gen)
+# partition 1+2
+gen()
+```
+
+Note: the number of possible power relations grows tremendously fast as the number of coalitions rises.
+To get to that number, first consider how many ways $n$ coalitions can be split into $k$ partitions, also known as the Stirling number of second kind,
+
+$$
+S(n,k) = \frac{1}{k!}\ \sum_{j=0}^k (-1)^j \binom{k}{j}(k-j)^n.
+$$
+
+The number of all possible partitions given $n$ coalitions is known as the Bell number (see also `numbers::bell()`),
+
+$$
+B_n = \sum_{j=0}^k S(n,k).
+$$
+
+Given a set of coalitions $\mathcal{P} \in 2^N$, the number of total preorders in $\mathcal{T}(\mathcal{P})$ is
+
+$$
+|\mathcal{T}(\mathcal{P})| = \sum_{k=0}^{|\mathcal{P}|} k!\ *\ S(|\mathcal{P}|, k)
+$$
+
+
+
+```{r echo=FALSE}
+stirlingSecond <- function(n, k) {
+  s <- sapply(0:k, function(j) (-1)^j * choose(k, j) * (k - j)^n)
+  sum(s) / factorial(k)
+}
+bellNum <- function(n) sapply(0:n, stirlingSecond, n = n) |> sum()
+preorderNum <- function(x) sapply(0:x, function(k) factorial(k) * stirlingSecond(x,k)) |> sum()
+# for(i in 1:10) writeLines(paste('|', i, '|', bellNum(i), '|', preorderNum(i), '|'))
+```
+
+| # of coalitions | # of partitions | # of total preorders |
+| ---------------:| ---------------:| --------------------:|
+| 1               | 1               | 1                    |
+| 2               | 2               | 3                    |
+| 3               | 5               | 13                   |
+| 4               | 15              | 75                   |
+| 5               | 52              | 541                  |
+| 6               | 203             | 4.683                |
+| 7               | 877             | 47.293               |
+| 8               | 4.140           | 545.835              |
+| 9               | 21.147          | 7.087.261            |
+| 10              | 115.975         | 102.247.563          |
+| 11              | 678.570         | 1.622.632.573        |
+| 12              | 4.213.597       | 28.091.567.595       |
+
 # `SocialRankingSolution` Objects
 
 The main goal of the `socialranking` package is to rank elements based on a given power ranking. More formally we try to map $R: \mathcal{T}(\mathcal{P}) \rightarrow \mathcal{T}(N)$, associating to each power relation $\succeq \in \mathcal{T}(\mathcal{P})$ a total preorder $R(\succeq)$ (or $R^\succeq$) over the elements of $N$.
 
 In this context $i R^\succeq j$ tells us that, given a power relation $\succeq$ and applying a social ranking solution $R(\succeq)$, $i$ is ranked higher than or equal to $j$. From here on out, `>` and `~` also denote the asymmetric and the symmetric part of a social ranking, respectively, $i$ `>` $j$ indicating that $i$ is strictly better than $j$, whereas in $i$ `~` $j$, $i$ is indifferent to $j$.
+
+In literature, $i I^\succeq j$ and $i P^\succeq j$ are often used to denote the symmetric and asymmetric part, respectively.
+$i I^\succeq j$ therefore means that $i R^\succeq j$ and $j R^\succeq i$, whereas $i P^\succeq j$ implies that $i R^\succeq j$ but not $j R^\succeq j$.
 
 In section `r refId("ch:srsobj", "[3.1](ID)")` we show how a general `SocialRankingSolution` object can be constructed using the `doRanking` function. In the following sections, we will introduce the notion of dominance[@2017axiomaticAndAlgorithmicPerspectives], cumulative dominance[@2015Cumulative] and CP-Majority comparison[@2018CPMajority] that lets us compare two elements before diving into the social ranking solutions of the Ordinal Banzhaf Index[@2019OrdinalBanzhaf], Copeland-like and Kramer-Simpson-like methods[@2021Manipulability], and lastly the Lexicographical Excellence Solution[@2021Lexcel] (Lexcel) and the Dual Lexicographical Excellence solution[@2021AntiLexcel] (Dual Lexcel).
 
@@ -767,7 +920,7 @@ dualLexcelRanking(pr)
 
 # Relations
 
-## Incidence Matrix
+## Incidence Matrix\label{ch:incidencematrix}
 
 In our vignette we focused more on the intuitive aspects of power relations and social ranking solutions. To reiterate, a power relation is a total preorder, or a reflexive and transitive relation $\succeq \in \mathcal{P} \times \mathcal{P}$, where $\sim$ denotes the symmetric part and $\succ$ its asymmetric part.
 
