@@ -16,7 +16,7 @@
 #' This string is either printed or copied to clipboard (see argument `result`).
 #'
 #' @examples
-#' #' # normal return type is a list of vectors
+#' # normal return type is a list of vectors
 #' createPowerset(c("Alice", "Bob"), includeEmptySet = FALSE)
 #' ## [[1]]
 #' ## [1] "Alice" "Bob"
@@ -42,17 +42,18 @@
 #' #   > {}
 #' # ")
 #'
-#' createPowerset(letters[1:3], result = "printCompact")
+#' createPowerset(letters[1:3], includeEmptySet = FALSE, result = "printCompact")
+#' # as.PowerRelation("abc > ab > ac > bc > a > b > c")
 #'
 #' # create the same string as before, but now copy it to the clipboard instead
 #' if(interactive()) {
-#'   createPowerset(1:3, result = "copy")
+#'   createPowerset(1:3, result = "copyCompact")
 #' }
 #'
 #' # Note that as.PowerRelation(character) only assumes single-char elements.
-#' # As such, the generated function call string if element names are longer
+#' # As such, the generated function call string with multi-character names
 #' # looks a little different.
-#' createPowerset(c("Alice", "Bob"), result = 'print')
+#' createPowerset(c("Alice", "Bob"), result = "print")
 #' # PowerRelation(rlang::list2(
 #' #   list(c("Alice", "Bob")),
 #' #   list(c("Alice")),
@@ -61,7 +62,7 @@
 #' # ))
 #'
 #' @export
-createPowerset <- function(elements, includeEmptySet = TRUE, result = c('return', 'print', 'printCompact', 'copy', 'copyCompact')) {
+createPowerset <- function(elements, includeEmptySet = TRUE, result = c('return', 'print', 'copy', 'printCompact', 'copyCompact')) {
   # masks <- 2^(1:N-1)
   # lapply( 1:2^N-1, function(u) (1:N)[ bitwAnd(u, masks) != 0 ] )
   if(length(elements) == 0) {

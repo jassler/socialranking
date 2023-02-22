@@ -21,7 +21,7 @@ is.na.KramerSimpsonScores <- function(x) FALSE
 #' Inspired by the Kramer-Simpson method of social choice theory \insertCite{1969Simpson}{socialranking} \insertCite{1975Kramer}{socialranking}, the _Kramer-Simpson-like_
 #' method compares each element against all other elements using the CP-Majority rule.
 #'
-#' For a given element \eqn{i}{i} calculate the [`cpMajorityComparisonScore`]
+#' For a given element \eqn{i}{i} calculate the [`cpMajorityComparisonScore()`]
 #' against all elements \eqn{j}{j}, \eqn{d_{ji}(\succeq)}{d_ji(>=)} (notice that \eqn{i}{i} and
 #' \eqn{j}{j} are in reverse order).
 #' \eqn{\max_{j \in N \setminus \lbrace i \rbrace}(d_{ji}(\succeq))}{max_{j in N \\ {i}}(d_ji(>=))} then
@@ -37,7 +37,7 @@ is.na.KramerSimpsonScores <- function(x) FALSE
 #' always holds, the Kramer-Simpson scores in those cases will never be negative, possibly discarding valuable
 #' information.
 #'
-#' For this reason `kramerSimpsonScores` and `kramerSimpsonRanking` includes a
+#' For this reason `kramerSimpsonScores()` and `kramerSimpsonRanking()` includes a
 #' `compIvsI` parameter that can be set to `TRUE` if one wishes for \eqn{d_{ii}(\succeq) = 0}{d_ii(>=) = 0}
 #' to be included in the comparisons. Put into mathematical terms, if:
 #'
@@ -94,10 +94,9 @@ is.na.KramerSimpsonScores <- function(x) FALSE
 #' kramerSimpsonScores(pr, 2, compIvsI = TRUE)
 #'
 #' @export
-kramerSimpsonScores <- function(powerRelation, elements = NULL, compIvsI = FALSE) {
+kramerSimpsonScores <- function(powerRelation, elements = powerRelation$elements, compIvsI = FALSE) {
   # --- checks (generated) --- #
   stopifnot(is.PowerRelation(powerRelation))
-  if(is.null(elements)) elements <- powerRelation$elements
   # --- end checks --- #
 
   result <- list()
@@ -119,7 +118,7 @@ kramerSimpsonScores <- function(powerRelation, elements = NULL, compIvsI = FALSE
 
 #' Kramer-Simpson-like ranking
 #'
-#' [`kramerSimpsonRanking`] returns the corresponding ranking.
+#' `kramerSimpsonRanking()` returns the corresponding ranking.
 #'
 #' @template param/powerRelation
 #'

@@ -26,50 +26,112 @@ SocialRankingSolution.default <- function(x, ...) {
   stop('Use doRanking() to create a PowerRelation object.')
 }
 
-#' Create `SocialRankingSolution`
+#' Create a `SocialRankingSolution` object
 #'
-#' Map a power relation between coalitions to a power relation between elements, also known as a social ranking solution.
+#' Rank elements based on their scores.
 #'
-#' A normal sort function is used to get the order of `scores` and determine the ranking from highest to lowest scoring element
-#' (or lowest to highest scoring if `decreasing` is set to `FALSE`). This works in instances where the score vector contains simple
-#' numerical values that are easily sortable.
+#' A social ranking solution, or ranking solution, or solution, maps each power relation between coalitions to a power relation between its elements.
+#' I.e., from the power relation \eqn{\succeq: \{1,2\} \succ \{2\} \succ \{1\}}{\{1,2\} > \{2\} > \{1\}}, we may expect the result of a ranking solution \eqn{R^\succeq}{R^(>=)}
+#' to rank element 2 over 1. Therefore \eqn{2 R^\succeq 1}{2 R^(>=) 1} will be present, but not \eqn{1 R^\succeq 2}{1 R^(>=) 2}.
 #'
-#' In more complex scenarios it may be necessary to introduce a custom comparison function to determine the relation between elements.
-#' In the case of `LexcelScore`, a custom S3 class is introduced that implements the `[`, `==` and `>` operator (see examples).
+#' Formally, a ranking solution \eqn{R: \mathcal{T}(\mathcal{P}) \rightarrow \mathcal{T}(N)} is a function that,
+#' given a power relation \eqn{\succeq \in \mathcal{T}(\mathcal{P})}{>= in T(P)}, always produces a power relation
+#' \eqn{R(\succeq)}{R(>=)} (or \eqn{R^\succeq}{R^(>=), or just R here for better readability}) over its set of elements.
+#' For two elements \eqn{i, j \in N}{i,j in N}, \eqn{i R^\succeq j}{iRj} means that applying the solution \eqn{R}{R} on the ranking \eqn{\succeq}{>=}
+#' makes \eqn{i}{i} at least as preferable as \eqn{j}{j}.
+#' Often times \eqn{iI^\succeq j}{iIj} and \eqn{iP^\succeq j}{iPj} are used to indicate its symmetric and asymmetric part, respectively.
+#' As in, \eqn{iI^\succeq j}{iIj} implies that \eqn{iR^\succeq j}{iRj} and \eqn{jR^\succeq i}{jRi},
+#' whereas \eqn{iP^\succeq j}{iIj} implies that \eqn{iR^\succeq j}{iRj} but not \eqn{jR^\succeq i}{jRi}.
 #'
-#' To circumvent the introduction of S3 classes, a function can be assigned to the `compare` parameter. It must take two parameters
-#' (i.e. `function(a, b)`) and returns one of the following:
+#' Since all ranking solutions in the package are tied to the scores or score vectors of the elements,
+#' `doRanking()` does not take a [`PowerRelation`] object, but only a (named) vector or list of scores for each element.
+#' For example, `doRanking(c(a=1,b=2))` produces `b > a` (\eqn{b P^\succeq a}{bPa}), because `b` with a score of `2` should be placed higher than `a` with a score of `1`.
 #'
-#' * `> 0` (positive value) if score `a` is ranked higher than score `b`
-#' * `< 0` (negative value) if score `a` is ranked lower than score `b`
+#' Ranking solutions in the package include [`lexcelRanking()`], [`ordinalBanzhafRanking()`] and [`L1Ranking()`], among others.
+#' These functions take a power relation, calculate the scores of each element and returns a `SocialRankingSolution` object.
+#'
+#' R natively supports sorting for [vectors][base::c()], but not for [lists][base::list()].
+#' If the use of lists is necessary, or if the native sort method in vectors does not produce the desired results, there are two possible ways to solve this:
+#'
+#' 1. by the introduction of custom S3 classes, or
+#' 2. by setting the `compare` parameter in `doRanking()`.
+#'
+#' For S3 classes, the class for the score object has to be set and the `==` and `>` (and `[` for lists) operators overloaded.
+#' I.e., [`lexcelScores()`] returns a list with the custom class `LexcelScores` that implements `==.LexcelScores`, `>.LexcelScores`, `[.LexcelScores` and `is.na.LexcelScores`.
+#'
+#' In cases where we only want to experiment, introducing new S3 classes can be cumbersome.
+#' As an alternative, the `compare` parameter can be assigned a function.
+#' This function must take two parameters, i.e., `function(a, b)`, where `a` and `b` are the scores of two arbitrary elements.
+#' The function then must return one of the following:
+#'
+#' * `> 0` (positive value) if score `a` is ranked higher than score `b`,
+#' * `< 0` (negative value) if score `a` is ranked lower than score `b`, or
 #' * `= 0` if both scores `a` and `b` are considered equal.
 #'
-#' This means for instance that `doRanking(c(a=3,b=2,c=2), compare = function(a,b) a - b)` ranks elements with higher scores higher
-#' (here `a > b ~ c`), whereas `doRanking(c(a=3,b=2,c=2), compare = function(a,b) b - a)` favors elements with lower scores (`b ~ c > a`).
+#' In `doRanking(c(a=3,b=2,c=2), compare = function(a,b) a - b)`, the compare function returns a positive value of the first parameter is larger than the second.
+#' `a` has the highest value and will there for be ranked highest, `a > b ~ c`.
 #'
-#' If the `compare` is set to `NULL`, the default [`order()`] function is called. This means that for lists an S3 class has to be
-#' implemented supporting the indexing and comparison operators. See examples for more.
+#' Conversely, `doRanking(c(a=3,b=2,c=2), compare = function(a,b) b - a)` favors elements with lower scores, resulting in the element ranking `b ~ c > a`.
 #'
-#' @param scores A sortable vector or list of element scores. If `names(scores)` is not `NULL`, those will be used as element names.
+#' @param scores A vector or list representing each element's score. If `names(scores)` is not `NULL`, those will be used as element names.
 #' Else a number sequence corresponding to the elements is generated.
 #' @param compare Optional comparison function taking in two elements and returning a numerical value based on the relation between
 #' these two elements. If set to `NULL`, the default [`order()`] function is called. See details for more information.
 #' @param decreasing If `TRUE` (default), elements with higher scores are ranked higher.
 #'
 #' @return A list of type `SocialRankingSolution`.
-#' Each element of the list contains a [`sets::set()`] of elements in `powerRelation` that are indifferent to one another.
+#' Each element of the list contains a [vector][base::c()] of elements in `powerRelation$elements` that are indifferent to one another.
 #'
 #' @examples
-#' # TODO work on examples
-#' pr <- as.PowerRelation("2 > 12 > 1")
+#' doRanking(c(a=1,b=2))
+#' # b > a
 #'
-#' # we define our own social ranking solution.
-#' # a player's score is determined by the equivalence class index it first appears in.
-#' # lower is better
-#' scores <- c(`1` = 2, `2` = 1)
+#' doRanking(c(a=2,b=2))
+#' # a ~ b
 #'
-#' # 2 > 1
-#' doRanking(scores)
+#' # a custom ranking function. Here, we implement the following ranking solution:
+#' # disregard any big coalitions and only rank elements based on their individual performances
+#' # iRj if and only if {i} >= {j}
+#' singletonRanking <- function(pr) {
+#'   scores <- sapply(pr$elements, equivalenceClassIndex, powerRelation = pr)
+#'   # note that coalitions in higher indexed equivalence classes are less preferable
+#'   # hence, scores should be sorted in an increasing order
+#'   doRanking(scores, decreasing = FALSE)
+#' }
+#'
+#' pr <- as.PowerRelation("abc > ab > ac > b ~ c ~ bc > a")
+#' singletonRanking(pr)
+#' # b ~ c > a
+#'
+#' # a reverse lexcel ranking, where vectors are compared right to left
+#' # here, we introduce a compare function. It returns:
+#' # * 0, if a and b are identical
+#' # * a positive value, if a[i] > b[i] and every value after that is equal
+#' # * a negative value, if a[i] < b[i] and every value after that is equal
+#' reverseLexcelCompare <- function(a, b) {
+#'   i <- which(a != b) |> rev()
+#'   if(length(i) == 0) 0
+#'   else a[i[1]] - b[i[1]]
+#' }
+#'
+#' scores <- unclass(cumulativeScores(pr))
+#'
+#' # R cannot natively sort a class. Instead:
+#' # Method 1 - utilize the compare parameter
+#' doRanking(scores, compare = reverseLexcelCompare)
+#'
+#'
+#' # Method 2 - introduce S3 class
+#' `[.RevLex` <- function(x, i, ...) structure(unclass(x)[i], class = "RevLex")
+#' `==.RevLex` <- function(a, b) reverseLexcelCompare(a[[1]],b[[1]]) == 0
+#' `>.RevLex` <- function(a, b) reverseLexcelCompare(a[[1]],b[[1]]) > 0
+#' is.na.RevLex <- function(x) FALSE
+#' doRanking(structure(scores, class = "RevLex"))
+#'
+#' stopifnot(
+#'   doRanking(scores, compare = reverseLexcelCompare) ==
+#'   doRanking(structure(scores, class = "RevLex"))
+#' )
 #'
 #' @export
 doRanking <- function(scores, compare = NULL, decreasing = TRUE) {
@@ -92,18 +154,18 @@ doRanking <- function(scores, compare = NULL, decreasing = TRUE) {
     orderedIndexes <- rev(orderedIndexes)
   }
 
-  orderItem <- sets::set(orderedIndexes[1])
+  orderItem <- c(orderedIndexes[1])
   orderList <- list()
 
   for(o in orderedIndexes[-1]) {
     if(any(sapply(orderItem, function(x) isEquiv(scores[o], scores[x])))) {
-      orderItem <- orderItem | sets::set(o)
+      orderItem <- c(orderItem, o)
     } else {
-      orderList[[length(orderList)+1]] <- orderItem
-      orderItem <- sets::set(o)
+      orderList[[length(orderList)+1]] <- sort(orderItem)
+      orderItem <- c(o)
     }
   }
-  orderList[[length(orderList)+1]] <- orderItem
+  orderList[[length(orderList)+1]] <- sort(orderItem)
 
   orderList <- lapply(orderList, function(r) {
     sapply(r, function(x) elements[x])
@@ -117,13 +179,9 @@ customOrder <- function(scores, compare) {
   indices <- seq_along(scores)
   comps <- expand.grid(x = indices, y = indices)
   comps$diff <- apply(comps, 1, function(x) {
-    if(is.list(scores)) {
-      compare(scores[[x[1]]], scores[[x[2]]]) <= 0
-    } else {
-      compare(scores[x[1]], scores[x[2]]) <= 0
-    }
+    compare(scores[[x[1]]], scores[[x[2]]]) <= 0
   })
-  as.numeric(names(sort(table(comps$x, comps$diff)[,1])))
+  table(comps$x, comps$diff)[,1] |> sort() |> names() |> as.numeric()
 }
 
 #' @export

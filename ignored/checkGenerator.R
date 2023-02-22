@@ -30,8 +30,8 @@ local({
     "e2" = c(
       "stopifnot(e2 %in% powerRelation$elements)",
       "stopifnot(class(e2) == class(powerRelation$elements))"
-    ),
-    "elements" = "if(is.null(elements)) elements <- powerRelation$elements"
+    )
+    #, "elements" = "if(is.null(elements)) elements <- powerRelation$elements"
   )
 
   for(f in files) {

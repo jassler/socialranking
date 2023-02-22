@@ -9,16 +9,15 @@ coalitionsAreIndifferent(powerRelation, c1, c2)
 \arguments{
 \item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
 
-\item{c1}{Coalition \link[base:c]{vector} or \code{\link[sets:set]{sets::set()}}}
+\item{c1}{Coalition \link[base:c]{vector}}
 
-\item{c2}{Coalition \link[base:c]{vector} or \code{\link[sets:set]{sets::set()}}}
+\item{c2}{Coalition \link[base:c]{vector}}
 }
 \value{
 Logical value \code{TRUE} if \code{c1} and \code{c2} are in the same equivalence class, else \code{FALSE}.
 }
 \description{
-Check if coalitions are indifferent from one another, or, if they appear in the same
-equivalence class.
+Check if coalitions are indifferent to one another, or, in other words, if they appear in the same equivalence class.
 }
 \examples{
 pr <- PowerRelation(list(list(c(1,2)), list(1, 2)))
@@ -31,4 +30,9 @@ stopifnot(coalitionsAreIndifferent(pr, 1, c()) == FALSE)
 stopifnot(coalitionsAreIndifferent(pr, 3, c(1,2,3)) == TRUE)
 
 }
-\concept{equivalence class lookup functions}
+\seealso{
+Other lookup functions: 
+\code{\link{elementLookup}()},
+\code{\link{equivalenceClassIndex}()}
+}
+\concept{lookup functions}

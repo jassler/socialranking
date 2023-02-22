@@ -80,3 +80,10 @@ test_that("comparisons", {
   expect_true(scores[1] == scores[2])
 })
 
+test_that("sorting", {
+  pr <- as.PowerRelation('12 > 1 > 2')
+  scores <- cumulativeScores(pr)
+  expect_equal(sort(scores), scores[c(2,1)])
+  expect_equal(sort(scores, decreasing = TRUE), scores[c(1,2)])
+})
+

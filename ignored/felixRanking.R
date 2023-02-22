@@ -32,13 +32,13 @@ rankL1 <- function(powerRelation) {
 }
 
 
-
+library(sets)
 makePrFelixMinimal <- function(powerRelation) {
   eqs <- list()
   current <- list()
   for(eq in powerRelation$equivalenceClasses) {
     current <- append(current, eq)
-    current <- Filter(function(x) !sets::set_is_proper_subset(current, x), current)
+    current <- Filter(function(x) !set_is_proper_subset(current, x), current)
     eqs <- append(eqs, list(current))
   }
 

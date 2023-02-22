@@ -7,7 +7,7 @@
 createPowerset(
   elements,
   includeEmptySet = TRUE,
-  result = c("return", "print", "printCompact", "copy", "copyCompact")
+  result = c("return", "print", "copy", "printCompact", "copyCompact")
 )
 }
 \arguments{
@@ -33,7 +33,7 @@ This string is either printed or copied to clipboard (see argument \code{result}
 Given a vector of elements generate a power set.
 }
 \examples{
-#' # normal return type is a list of vectors
+# normal return type is a list of vectors
 createPowerset(c("Alice", "Bob"), includeEmptySet = FALSE)
 ## [[1]]
 ## [1] "Alice" "Bob"
@@ -59,17 +59,18 @@ createPowerset(letters[1:4], result = "print")
 #   > {}
 # ")
 
-createPowerset(letters[1:3], result = "printCompact")
+createPowerset(letters[1:3], includeEmptySet = FALSE, result = "printCompact")
+# as.PowerRelation("abc > ab > ac > bc > a > b > c")
 
 # create the same string as before, but now copy it to the clipboard instead
 if(interactive()) {
-  createPowerset(1:3, result = "copy")
+  createPowerset(1:3, result = "copyCompact")
 }
 
 # Note that as.PowerRelation(character) only assumes single-char elements.
-# As such, the generated function call string if element names are longer
+# As such, the generated function call string with multi-character names
 # looks a little different.
-createPowerset(c("Alice", "Bob"), result = 'print')
+createPowerset(c("Alice", "Bob"), result = "print")
 # PowerRelation(rlang::list2(
 #   list(c("Alice", "Bob")),
 #   list(c("Alice")),

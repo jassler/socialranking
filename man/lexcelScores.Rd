@@ -6,7 +6,7 @@
 \alias{dualLexcelRanking}
 \title{Lexicographical Excellence}
 \usage{
-lexcelScores(powerRelation, elements = NULL)
+lexcelScores(powerRelation, elements = powerRelation$elements)
 
 lexcelRanking(powerRelation)
 
@@ -15,13 +15,13 @@ dualLexcelRanking(powerRelation)
 \arguments{
 \item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
 
-\item{elements}{vector of elements of which to calculate their scores.
-If \code{elements == NULL}, create vectors for all elements in \code{pr$elements}}
+\item{elements}{Vector of elements of which to calculate their scores.
+By default, the scores of all elements in \code{powerRelation$elements} are considered.}
 }
 \value{
 Score function returns a list of type \code{LexcelScores} and length of \code{powerRelation$elements}
 (unless parameter \code{elements} is specified).
-Each index contains a vector of length \code{powerRelation$equivalenceClasses}, the number of
+Each index contains a vector of length \code{powerRelation$eqs}, the number of
 times the given element appears in each equivalence class.
 
 Ranking function returns corresponding \code{\link{SocialRankingSolution}} object.
@@ -29,31 +29,28 @@ Ranking function returns corresponding \code{\link{SocialRankingSolution}} objec
 \description{
 Calculate the Lexicographical Excellence (or Lexcel) score.
 
-\code{\link{lexcelRanking}} returns the corresponding ranking.
+\code{lexcelRanking()} returns the corresponding ranking.
 
-\code{\link{dualLexcelRanking}} uses the same score vectors but instead of rewarding
+\code{dualLexcelRanking()} uses the same score vectors but instead of rewarding
 participation, it punishes mediocrity.
 }
 \details{
-An equivalence class \eqn{\sum_i}{Sum_i} holds all coalitions
-that are indifferent from one another. In a given power relation created with
-\code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}, the equivalence classes are saved in \verb{$eqs}.
+An equivalence class \eqn{\sum_i}{Sigma_i} contains coalitions that are indifferent to one another.
+In a given power relation created with \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}, the equivalence classes are saved in \verb{$eqs}.
 
-E.g. for a power relation defined as
-\eqn{123 \succ (12 \sim 13 \sim 1 \sim \emptyset) \succ (23 \sim 1 \sim 2)}{123 > (12 ~ 13 ~ 1) > (23 ~ 1 ~ 2)}
-we would get the following equivalence classes:
+As an example, consider the power relation
+\eqn{\succeq: 123 \succ (12 \sim 13 \sim 1 \sim \emptyset) \succ (23 \sim 1 \sim 2)}{>=: 123 > (12 ~ 13 ~ 1) > (23 ~ 1 ~ 2)}.
+The corresponding equivalence classes are:
 
-\eqn{\sum_1 = \lbrace 123 \rbrace}{Sum_1 = \{123\}},
-\eqn{\sum_2 = \lbrace 12, 13, 1, \emptyset \rbrace}{Sum_2 = \{12, 13, 1, empty set\}},
-\eqn{\sum_3 = \lbrace 23, 1, 2 \rbrace}{Sum_3 = \{23, 1, 2\}}.
+\deqn{
+\sum_1 = \lbrace 123 \rbrace, \sum_2 = \lbrace 12, 13, 1, \emptyset \rbrace, \sum_3 = \lbrace 23, 1, 2 \rbrace.
+}{
+Sigma_1 = \{123\}, Sigma_2 = \{12, 13, 1, empty set\}, Sigma_3 = \{23, 1, 2\}.}
 
-A Lexcel score for an element is a vector where
-each index counts the number of times it appears in the
-equivalence class. Here we would get:
+The lexcel score of an element is a vector wherein each index indicates the number of times that element appears in the equivalence class.
+From our example, we would get
 
-\eqn{\textrm{lexcel}(1) = [ 1, 3, 1 ]}{lexcel(1) = [1,3,1]},
-\eqn{\textrm{lexcel}(2) = [ 1, 1, 2 ]}{lexcel(2) = [1,1,2]},
-\eqn{\textrm{lexcel}(3) = [ 1, 1, 1 ]}{lexcel(3) = [1,1,1]}.
+\deqn{\textrm{lexcel}(1) = [ 1, 3, 1 ], \textrm{lexcel}(2) = [ 1, 1, 2 ], \textrm{lexcel}(3) = [ 1, 1, 1 ].}{lexcel(1) = [1,3,1], \textrm{lexcel}(2) = [ 1, 1, 2 ], lexcel(3) = [1,1,1].}
 }
 \section{Lexcel Ranking}{
 
@@ -116,6 +113,7 @@ dualLexcelRanking(pr)
 }
 \seealso{
 Other score vector functions: 
+\code{\link{L1Scores}()},
 \code{\link{copelandScores}()},
 \code{\link{cumulativeScores}()},
 \code{\link{kramerSimpsonScores}()},

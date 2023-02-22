@@ -87,15 +87,19 @@ powerRelationGenerator <- function(coalitions, startWithLinearOrder = FALSE) {
   if(length(coalitions) < 2) {
     stop('At least two coalitions must be given.')
 
-  # created once, used every time upon generating a new PowerRelation object
-  #TODO still needed?
-  #elements <- unique(sort(unlist(coalitions)))
-  #classes <- c('PowerRelation', if(all(nchar(elements) == 1)) 'SingleCharElements')
-
-
   } else if(length(coalitions) > 20) {
     warning('More than 20 coalitions were given. partitions::compositions() is called to generate all partitions beforehand. This may dampen or exceed system resources.')
   }
+
+  # created once, used every time upon generating a new PowerRelation object
+  elements <- unique(sort(unlist(coalitions)))
+
+  if(is.vector(coalitions)) {
+    coalitions <- lapply(coalitions, identity)
+  }
+  coalitions <- lapply(coalitions, sort)
+  # create warning about duplicate coalitions
+  PowerRelation(list(coalitions))
 
   compositions <- partitions::compositions(length(coalitions))
   compositions <- compositions[,apply(compositions, 2, function(x) {
@@ -132,12 +136,34 @@ powerRelationGenerator <- function(coalitions, startWithLinearOrder = FALSE) {
     }
 
     permsI <<- permsI + 1
-    comps <- unlist(sapply(part, function(x) c(rep('~', x-1), '>')))
 
-    # TODO change?
-    PowerRelation(lapply(seq.int(length(partCum)-1), function(x) {
+    eqs <- lapply(seq.int(length(partCum)-1), function(x) {
       coalitions[perms[(partCum[x]+1):partCum[x+1],permsI]]
-    }))
+    })
+
+    # Calling PowerRelation like this is 5x slower
+    #PowerRelation(eqs)
+
+    coalitionLookup <- eqs |> seq_along() |> lapply(function(i)
+      rep(i, length(eqs[[i]]))
+    ) |> unlist() |> as.list() |> structure(names = sapply(unlist(eqs, recursive = FALSE), toKey))
+
+    elementLookup <- structure(vector('list', length(elements)), names = paste(elements))
+    for(i in seq_along(eqs)) {
+      for(j in seq_along(eqs[[i]])) {
+        for(el in paste(eqs[[i]][[j]])) {
+          elementLookup[[el]] <- append(elementLookup[[el]], list(c(i,j)))
+        }
+      }
+    }
+
+    PowerRelation(
+      eqs,
+      elements = elements,
+      coalitionLookup = function(v) coalitionLookup[[toKey(v)]],
+      elementLookup = function(e) elementLookup[[paste(e)]]
+    )
+
     # structure(list(
     #   elements = elements,
     #   rankingCoalitions = coalitions[perms[,permsI]],
@@ -151,9 +177,9 @@ powerRelationGenerator <- function(coalitions, startWithLinearOrder = FALSE) {
 
 #' Next partition
 #'
-#' Skip to next partition of the generator.
+#' Skip to the next partition of the generator.
 #'
-#' @param gen A generator.
+#' @param gen A generator object.
 #' @return A generator function.
 #' If the generator is already down to its last partition, it will throw an error.
 #'

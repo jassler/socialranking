@@ -2,12 +2,15 @@
 #'
 #' Append an equivalence to a power relation with all its missing coalitions to make it total.
 #'
-#' A power relation is total if for every \eqn{S, T \subseteq N}{S, T subset or equal to N},
+#' A power relation is total if
 #'
-#' \deqn{S \succeq T\text{ or }T \succeq S.}{S>=T or T>=S.}
+#' \deqn{S \succeq T\text{ or }T \succeq S}{S>=T or T>=S}
+#'
+#' for every \eqn{S, T \subseteq N}{S, T subset or equal to N}.
 #'
 #' In other words, we can compare every coalition against every other coalition there is.
-#' The function simply adds the coalitions missing from the [`PowerRelation`] object to make it total behind the last equivalence class there is.
+#' Given the equivalence classes of a [`PowerRelation`] object,
+#' the function attaches a new equivalence class containing all the missing coalitions that make the given power relation total.
 #'
 #' @template param/powerRelation
 #' @param includeEmptySet If `TRUE`, include the empty set in the last equivalence class if it is missing from the power relation.

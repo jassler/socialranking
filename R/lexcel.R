@@ -19,25 +19,22 @@ is.na.LexcelScores <- function(x) FALSE
 #'
 #' Calculate the Lexicographical Excellence (or Lexcel) score.
 #'
-#' An equivalence class \eqn{\sum_i}{Sum_i} holds all coalitions
-#' that are indifferent from one another. In a given power relation created with
-#' [`PowerRelation()`] or [`as.PowerRelation()`], the equivalence classes are saved in `$eqs`.
+#' An equivalence class \eqn{\sum_i}{Sigma_i} contains coalitions that are indifferent to one another.
+#' In a given power relation created with [`PowerRelation()`] or [`as.PowerRelation()`], the equivalence classes are saved in `$eqs`.
 #'
-#' E.g. for a power relation defined as
-#' \eqn{123 \succ (12 \sim 13 \sim 1 \sim \emptyset) \succ (23 \sim 1 \sim 2)}{123 > (12 ~ 13 ~ 1) > (23 ~ 1 ~ 2)}
-#' we would get the following equivalence classes:
+#' As an example, consider the power relation
+#' \eqn{\succeq: 123 \succ (12 \sim 13 \sim 1 \sim \emptyset) \succ (23 \sim 1 \sim 2)}{>=: 123 > (12 ~ 13 ~ 1) > (23 ~ 1 ~ 2)}.
+#' The corresponding equivalence classes are:
 #'
-#' \eqn{\sum_1 = \lbrace 123 \rbrace}{Sum_1 = \{123\}},
-#' \eqn{\sum_2 = \lbrace 12, 13, 1, \emptyset \rbrace}{Sum_2 = \{12, 13, 1, empty set\}},
-#' \eqn{\sum_3 = \lbrace 23, 1, 2 \rbrace}{Sum_3 = \{23, 1, 2\}}.
+#' \deqn{
+#' \sum_1 = \lbrace 123 \rbrace, \sum_2 = \lbrace 12, 13, 1, \emptyset \rbrace, \sum_3 = \lbrace 23, 1, 2 \rbrace.
+#' }{
+#' Sigma_1 = \{123\}, Sigma_2 = \{12, 13, 1, empty set\}, Sigma_3 = \{23, 1, 2\}.}
 #'
-#' A Lexcel score for an element is a vector where
-#' each index counts the number of times it appears in the
-#' equivalence class. Here we would get:
+#' The lexcel score of an element is a vector wherein each index indicates the number of times that element appears in the equivalence class.
+#' From our example, we would get
 #'
-#' \eqn{\textrm{lexcel}(1) = [ 1, 3, 1 ]}{lexcel(1) = [1,3,1]},
-#' \eqn{\textrm{lexcel}(2) = [ 1, 1, 2 ]}{lexcel(2) = [1,1,2]},
-#' \eqn{\textrm{lexcel}(3) = [ 1, 1, 1 ]}{lexcel(3) = [1,1,1]}.
+#' \deqn{\textrm{lexcel}(1) = [ 1, 3, 1 ], \textrm{lexcel}(2) = [ 1, 1, 2 ], \textrm{lexcel}(3) = [ 1, 1, 1 ].}{lexcel(1) = [1,3,1], \textrm{lexcel}(2) = [ 1, 1, 2 ], lexcel(3) = [1,1,1].}
 #'
 #' @template param/powerRelation
 #' @template param/elements
@@ -51,7 +48,7 @@ is.na.LexcelScores <- function(x) FALSE
 #'
 #' @return Score function returns a list of type `LexcelScores` and length of `powerRelation$elements`
 #' (unless parameter `elements` is specified).
-#' Each index contains a vector of length `powerRelation$equivalenceClasses`, the number of
+#' Each index contains a vector of length `powerRelation$eqs`, the number of
 #' times the given element appears in each equivalence class.
 #'
 #' @examples
@@ -73,10 +70,9 @@ is.na.LexcelScores <- function(x) FALSE
 #' lexcelScores(pr, 2)
 #'
 #' @export
-lexcelScores <- function(powerRelation, elements = NULL) {
+lexcelScores <- function(powerRelation, elements = powerRelation$elements) {
   # --- checks (generated) --- #
   stopifnot(is.PowerRelation(powerRelation))
-  if(is.null(elements)) elements <- powerRelation$elements
   # --- end checks --- #
 
   result <- list()
@@ -92,7 +88,7 @@ lexcelScores <- function(powerRelation, elements = NULL) {
 
 #' Lexcel Ranking
 #'
-#' [`lexcelRanking`] returns the corresponding ranking.
+#' `lexcelRanking()` returns the corresponding ranking.
 #'
 #' @section Lexcel Ranking:
 #'
@@ -124,7 +120,7 @@ lexcelRanking <- function(powerRelation) {
 
 #' Dual Lexcel Ranking
 #'
-#' [`dualLexcelRanking`] uses the same score vectors but instead of rewarding
+#' `dualLexcelRanking()` uses the same score vectors but instead of rewarding
 #' participation, it punishes mediocrity.
 #'
 #' @section Dual Lexcel Ranking:

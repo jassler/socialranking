@@ -2,16 +2,52 @@
 % Please edit documentation in R/PowerRelation.R
 \name{equivalenceClassIndex}
 \alias{equivalenceClassIndex}
+\alias{coalitionLookup}
 \title{Get index of equivalence class containing a coalition}
 \usage{
-equivalenceClassIndex(...)
+equivalenceClassIndex(powerRelation, coalition)
+
+coalitionLookup(powerRelation, coalition)
 }
 \arguments{
-\item{...}{Any parameter}
+\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
+
+\item{coalition}{a coalition \link[base:c]{vector} or that is part of \code{powerRelation}}
 }
 \value{
-No return value.
+Numeric value, equivalence class index containing \code{coalition}.
+\code{NULL} if the coalition does not exist.
+If the \code{powerRelation} contains cycles, it is possible that multiple values are returned.
 }
 \description{
-Deprecated. Use powerRelation$coalitionLookup() instead.
+Given a \code{coalition} \link[base:c]{vector}, return the equivalence class index it appears in.
 }
+\details{
+This function calls \code{powerRelation$coalitionLookup(coalition)}.
+
+\code{equivalenceClassIndex()} serves as an alias to \code{coalitionLookup()}.
+}
+\examples{
+pr <- as.PowerRelation("12 > 2 ~ 1")
+
+(e1 <- equivalenceClassIndex(pr, c(1, 2)))
+# 1
+
+(e2 <- equivalenceClassIndex(pr, c(1)))
+# 2
+
+(e3 <- equivalenceClassIndex(pr, c(2)))
+# 2
+
+(e4 <- equivalenceClassIndex(pr, c()))
+# NULL <- empty set does not exist
+
+stopifnot(all(c(e1,e2,e3,e4) == c(1,2,2)))
+
+}
+\seealso{
+Other lookup functions: 
+\code{\link{coalitionsAreIndifferent}()},
+\code{\link{elementLookup}()}
+}
+\concept{lookup functions}

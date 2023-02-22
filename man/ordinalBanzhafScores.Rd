@@ -5,15 +5,15 @@
 \alias{ordinalBanzhafRanking}
 \title{Ordinal Banzhaf}
 \usage{
-ordinalBanzhafScores(powerRelation, elements = NULL)
+ordinalBanzhafScores(powerRelation, elements = powerRelation$elements)
 
 ordinalBanzhafRanking(powerRelation)
 }
 \arguments{
 \item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
 
-\item{elements}{vector of elements of which to calculate their scores.
-If \code{elements == NULL}, create vectors for all elements in \code{pr$elements}}
+\item{elements}{Vector of elements of which to calculate their scores.
+By default, the scores of all elements in \code{powerRelation$elements} are considered.}
 }
 \value{
 Score function returns list of class type \code{OrdinalBanzhafScores} and length of \code{powerRelation$elements}.
@@ -25,7 +25,7 @@ Ranking function returns corresponding \code{\link{SocialRankingSolution}} objec
 \description{
 Calculate the Ordinal Banzhaf scores, the number of positive and negative marginal contributions.
 
-\code{\link[=ordinalBanzhafRanking]{ordinalBanzhafRanking()}} returns the corresponding ranking.
+\code{ordinalBanzhafRanking()} returns the corresponding ranking.
 }
 \details{
 Inspired by the Banzhaf index \insertCite{1964Banzhaf}{socialranking}, the Ordinal Banzhaf
@@ -34,9 +34,14 @@ determines the score of element \eqn{i}{i} by adding the amount of coalitions
 its contribution impacts positively (\eqn{S \cup \lbrace i \rbrace \succ S}{S u \{i\} > S })
 and subtracting the amount of coalitions where its contribution
 had a negative impact (\eqn{S \succ S \cup \lbrace i \rbrace}{S > S u \{i\}})\insertCite{2019OrdinalBanzhaf}{socialranking}.
+
+The original definition only takes total power relations into account, where either \eqn{S \succeq T}{S >= T} or \eqn{T \succeq S}{T >= S}
+for every \eqn{S,T \subseteq N}{S,T subseteq N}.
+If coalitions are missing from the power relation, we may not be able to perform certain comparisons.
+To indicate these missing comparisons, the ordinal Banzhaf score of an element \eqn{i}{i} also includes that number in the back.
+In the traditional ranking method, this number is not taken into account however.
 }
 \examples{
-# 12 > (2 ~ {}) > 1
 pr <- as.PowerRelation("12 > (2 ~ {}) > 1")
 
 # Player 1 contributes positively to {2}
@@ -46,12 +51,12 @@ pr <- as.PowerRelation("12 > (2 ~ {}) > 1")
 # Player 2 contributes positively to {1}
 # Player 2 does NOT have an impact on {empty set}
 # Therefore player 2 has a score of 1 - 0 = 0
-# `1` = c(1, -1)
-# `2` = c(1, 0)
 ordinalBanzhafScores(pr)
+# `1` = c(1, -1, 0)
+# `2` = c(1, 0, 0)
 
-# 1 > 2
 ordinalBanzhafRanking(pr)
+# 1 > 2
 
 }
 \references{
@@ -61,6 +66,7 @@ ordinalBanzhafRanking(pr)
 }
 \seealso{
 Other score vector functions: 
+\code{\link{L1Scores}()},
 \code{\link{copelandScores}()},
 \code{\link{cumulativeScores}()},
 \code{\link{kramerSimpsonScores}()},

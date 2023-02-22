@@ -38,6 +38,19 @@ test_that("doRanking named", {
   expect_equal(result$output, "Egg ~ Salt > Bacon")
 })
 
+test_that("Rank lists", {
+  result <- evaluate_promise(doRanking(list(
+    a = c(1, 2, 3),
+    b = c(1, 3, 3),
+    c = c(2, 2, 3)
+  ), compare = function(a, b) {
+    i <- rev(which(a != b))
+    if(length(i) == 0) 0
+    else a[i[1]] - b[i[1]]
+  }), print = TRUE)
+  expect_equal(result$output, "b > c > a")
+})
+
 test_that("Equality", {
   expect_true(
     doRanking(c(a = 3, b = 1, c = 1)) ==
@@ -66,6 +79,17 @@ test_that("doRanking compare", {
 
   result <- evaluate_promise(doRanking(l, compare = function(a, b) sum(b) - sum(a)), print = TRUE)
   expect_equal(result$output, "a ~ c > b")
+})
+
+test_that("Inequality from differently sized objects", {
+  expect_false(
+    doRanking(c(a = 3, b = 2, c = 1)) ==
+    doRanking(c(a = 3, b = 2))
+  )
+  expect_false(
+    doRanking(c(a = 2, b = 2, c = 1)) ==
+      doRanking(c(a = 2, b = 1, c = 1))
+  )
 })
 
 test_that("SocialRankingSolution fails", {
