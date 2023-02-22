@@ -98,7 +98,6 @@ is.na.L1Scores <- function(x) FALSE
 L1Scores <- function(powerRelation, elements = powerRelation$elements) {
   # --- checks (generated) --- #
   stopifnot(is.PowerRelation(powerRelation))
-  if(is.null(elements)) elements <- powerRelation$elements
   # --- end checks --- #
 
   l <- list()
