@@ -2,7 +2,7 @@
 % Please edit documentation in R/powerRelation.R
 \name{newPowerRelationFromString}
 \alias{newPowerRelationFromString}
-\title{Create \code{\link{PowerRelation}} object from string}
+\title{New \code{\link{PowerRelation}} object}
 \usage{
 newPowerRelationFromString(...)
 }

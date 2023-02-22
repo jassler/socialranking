@@ -423,7 +423,7 @@ newPowerRelation <- function(...) {
   stop("This function has been deprecated. Use PowerRelation() instead.")
 }
 
-#' Create [`PowerRelation`] object from string
+#' New [`PowerRelation`] object
 #'
 #' Deprecated. Use [`as.PowerRelation()`] instead.
 #'
