@@ -54,7 +54,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cumulativeScores</span><span class="op">(</span><span class="va">powerRelation</span>, elements <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">cumulativeScores</span><span class="op">(</span><span class="va">powerRelation</span>, elements <span class="op">=</span> <span class="va">powerRelation</span><span class="op">$</span><span class="va">elements</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">cumulativelyDominates</span><span class="op">(</span><span class="va">powerRelation</span>, <span class="va">e1</span>, <span class="va">e2</span>, strictly <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -62,12 +62,12 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>powerRelation</dt>
-<dd><p>A <code><a href="PowerRelation.html">PowerRelation</a></code> object created by <code><a href="PowerRelation.html">PowerRelation()</a></code> or <code><a href="PowerRelation.html">as.PowerRelation()</a></code></p></dd>
+<dd><p>A <code><a href="PowerRelation.html">PowerRelation</a></code> object created by <code><a href="PowerRelation.html">PowerRelation()</a></code> or <code><a href="as.PowerRelation.html">as.PowerRelation()</a></code></p></dd>
 
 
 <dt>elements</dt>
-<dd><p>vector of elements of which to calculate their scores.
-If <code>elements == NULL</code>, create vectors for all elements in <code>pr$elements</code></p></dd>
+<dd><p>Vector of elements of which to calculate their scores.
+By default, the scores of all elements in <code>powerRelation$elements</code> are considered.</p></dd>
 
 
 <dt>e1, e2</dt>
@@ -75,7 +75,7 @@ If <code>elements == NULL</code>, create vectors for all elements in <code>pr$el
 
 
 <dt>strictly</dt>
-<dd><p>If TRUE, check if <code>p1</code> <em>strictly</em> dominates <code>p2</code></p></dd>
+<dd><p>If <code>TRUE</code>, check if <code>p1</code> <em>strictly</em> dominates <code>p2</code></p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -86,17 +86,17 @@ If <code>elements == NULL</code>, create vectors for all elements in <code>pr$el
 
 
 <p>(unless parameter <code>elements</code> is specified).
-Each index contains a vector of length <code>powerRelation$equivalenceClasses</code>, cumulatively counting up the number of
+Each index contains a vector of length <code>powerRelation$eqs</code>, cumulatively counting up the number of
 times the given element appears in each equivalence class.</p>
 
 
-<p><code>cumulativelyDominates()</code> returns <code>TRUE</code> if <code>e1</code> cumulatively dominates <code>e2</code>.</p>
+<p><code>cumulativelyDominates()</code> returns <code>TRUE</code> if <code>e1</code> cumulatively dominates <code>e2</code>, else <code>FALSE</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>An element's cumulative score vector is calculated by cumulatively adding up the
-amount of times it appears in each equivalence class in the <code>powerRelation</code>. E.g. in a linear power relation with
-eight coalitions, if element 1 appears in coalitions placed at 1, 3, and 6,
+amount of times it appears in each equivalence class in the <code>powerRelation</code>.
+I.e., in a linear power relation with eight coalitions, if element 1 appears in coalitions placed at 1, 3, and 6,
 its score vector is [1, 1, 2, 2, 2, 3, 3, 3].</p>
     </div>
     <div class="section level2">
@@ -104,10 +104,10 @@ its score vector is [1, 1, 2, 2, 2, 3, 3, 3].</p>
     
 
 
-<p>\(i\) dominates \(j\) if for each index
+<p>\(i\) dominates \(j\) if, for each index
 \(x, \textrm{Score}(i)_x \geq \textrm{Score}(j)_x\).</p>
-<p>\(i\) <em>strictly</em> dominates \(j\), if additionally
-\(\textrm{Score}(i) \neq \textrm{Score}(j)\).</p>
+<p>\(i\) <em>strictly</em> dominates \(j\) if there exists an \(x\) such that
+\(\textrm{Score}(i)_x &gt; \textrm{Score}(j)_x\).</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -122,6 +122,7 @@ Springer.</p>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other score vector functions: 
+<code><a href="L1Scores.html">L1Scores</a>()</code>,
 <code><a href="copelandScores.html">copelandScores</a>()</code>,
 <code><a href="kramerSimpsonScores.html">kramerSimpsonScores</a>()</code>,
 <code><a href="lexcelScores.html">lexcelScores</a>()</code>,
@@ -130,7 +131,7 @@ Springer.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"12 &gt; 1 &gt; 2"</span>, asWhat <span class="op">=</span> <span class="va">as.numeric</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"12 &gt; 1 &gt; 2"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># `1`: c(1, 2, 2)</span></span></span>
 <span class="r-in"><span><span class="co"># `2`: c(1, 1, 2)</span></span></span>

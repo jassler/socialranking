@@ -57,7 +57,7 @@ ordinalBanzhafRanking() returns the corresponding ranking."><!-- mathjax --><scr
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ordinalBanzhafScores</span><span class="op">(</span><span class="va">powerRelation</span>, elements <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ordinalBanzhafScores</span><span class="op">(</span><span class="va">powerRelation</span>, elements <span class="op">=</span> <span class="va">powerRelation</span><span class="op">$</span><span class="va">elements</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">ordinalBanzhafRanking</span><span class="op">(</span><span class="va">powerRelation</span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -65,12 +65,12 @@ ordinalBanzhafRanking() returns the corresponding ranking."><!-- mathjax --><scr
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>powerRelation</dt>
-<dd><p>A <code><a href="PowerRelation.html">PowerRelation</a></code> object created by <code><a href="PowerRelation.html">PowerRelation()</a></code> or <code><a href="PowerRelation.html">as.PowerRelation()</a></code></p></dd>
+<dd><p>A <code><a href="PowerRelation.html">PowerRelation</a></code> object created by <code><a href="PowerRelation.html">PowerRelation()</a></code> or <code><a href="as.PowerRelation.html">as.PowerRelation()</a></code></p></dd>
 
 
 <dt>elements</dt>
-<dd><p>vector of elements of which to calculate their scores.
-If <code>elements == NULL</code>, create vectors for all elements in <code>pr$elements</code></p></dd>
+<dd><p>Vector of elements of which to calculate their scores.
+By default, the scores of all elements in <code>powerRelation$elements</code> are considered.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -94,6 +94,11 @@ its contribution impacts positively (\(S \cup \lbrace i \rbrace \succ S\))
 and subtracting the amount of coalitions where its contribution
 had a negative impact (\(S \succ S \cup \lbrace i \rbrace\))(Khani et al. 2019)
 .</p>
+<p>The original definition only takes total power relations into account, where either \(S \succeq T\) or \(T \succeq S\)
+for every \(S,T \subseteq N\).
+If coalitions are missing from the power relation, we may not be able to perform certain comparisons.
+To indicate these missing comparisons, the ordinal Banzhaf score of an element \(i\) also includes that number in the back.
+In the traditional ranking method, this number is not taken into account however.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -107,6 +112,7 @@ In <em>28th International Joint Conference on Artificial Intelligence (IJCAI 201
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other score vector functions: 
+<code><a href="L1Scores.html">L1Scores</a>()</code>,
 <code><a href="copelandScores.html">copelandScores</a>()</code>,
 <code><a href="cumulativeScores.html">cumulativeScores</a>()</code>,
 <code><a href="kramerSimpsonScores.html">kramerSimpsonScores</a>()</code>,
@@ -115,8 +121,7 @@ In <em>28th International Joint Conference on Artificial Intelligence (IJCAI 201
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># 12 &gt; (2 ~ {}) &gt; 1</span></span></span>
-<span class="r-in"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"12 &gt; (2 ~ {}) &gt; 1"</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"12 &gt; (2 ~ {}) &gt; 1"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Player 1 contributes positively to {2}</span></span></span>
 <span class="r-in"><span><span class="co"># Player 1 contributes negatively to {empty set}</span></span></span>
@@ -125,8 +130,6 @@ In <em>28th International Joint Conference on Artificial Intelligence (IJCAI 201
 <span class="r-in"><span><span class="co"># Player 2 contributes positively to {1}</span></span></span>
 <span class="r-in"><span><span class="co"># Player 2 does NOT have an impact on {empty set}</span></span></span>
 <span class="r-in"><span><span class="co"># Therefore player 2 has a score of 1 - 0 = 0</span></span></span>
-<span class="r-in"><span><span class="co"># `1` = c(1, -1)</span></span></span>
-<span class="r-in"><span><span class="co"># `2` = c(1, 0)</span></span></span>
 <span class="r-in"><span><span class="fu">ordinalBanzhafScores</span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`1`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1]  1 -1  0</span>
@@ -136,10 +139,12 @@ In <em>28th International Joint Conference on Artificial Intelligence (IJCAI 201
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "OrdinalBanzhafScores"</span>
+<span class="r-in"><span><span class="co"># `1` = c(1, -1, 0)</span></span></span>
+<span class="r-in"><span><span class="co"># `2` = c(1, 0, 0)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># 1 &gt; 2</span></span></span>
 <span class="r-in"><span><span class="fu">ordinalBanzhafRanking</span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 &gt; 1</span>
+<span class="r-in"><span><span class="co"># 1 &gt; 2</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

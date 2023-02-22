@@ -57,7 +57,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">createPowerset</span><span class="op">(</span></span>
 <span>  <span class="va">elements</span>,</span>
 <span>  includeEmptySet <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  result <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"return"</span>, <span class="st">"print"</span>, <span class="st">"printCompact"</span>, <span class="st">"copy"</span>, <span class="st">"copyCompact"</span><span class="op">)</span></span>
+<span>  result <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"return"</span>, <span class="st">"print"</span>, <span class="st">"copy"</span>, <span class="st">"printCompact"</span>, <span class="st">"copyCompact"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -73,8 +73,8 @@
 
 <dt>result</dt>
 <dd><p>What to do with the result. Can be either:</p><ul><li><p><code>"return"</code>: return list object</p></li>
-<li><p><code>"print"</code>: create valid string to call <code><a href="PowerRelation.html">PowerRelation()</a></code> or <code><a href="PowerRelation.html">as.PowerRelation()</a></code> and print it</p></li>
-<li><p><code>"copy"</code>: create valid string to call <code><a href="PowerRelation.html">PowerRelation()</a></code> or <code><a href="PowerRelation.html">as.PowerRelation()</a></code> and copy it to clipboard</p></li>
+<li><p><code>"print"</code>: create valid string to call <code><a href="PowerRelation.html">PowerRelation()</a></code> or <code><a href="as.PowerRelation.html">as.PowerRelation()</a></code> and print it</p></li>
+<li><p><code>"copy"</code>: create valid string to call <code><a href="PowerRelation.html">PowerRelation()</a></code> or <code><a href="as.PowerRelation.html">as.PowerRelation()</a></code> and copy it to clipboard</p></li>
 <li><p><code>"printCompact"</code> and <code>"copyCompact"</code>: same as <code>"print"</code> and <code>"copy"</code> but without newlines</p></li>
 </ul></dd>
 
@@ -91,7 +91,7 @@ This string is either printed or copied to clipboard (see argument <code>result<
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">#' # normal return type is a list of vectors</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># normal return type is a list of vectors</span></span></span>
 <span class="r-in"><span><span class="fu">createPowerset</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Alice"</span>, <span class="st">"Bob"</span><span class="op">)</span>, includeEmptySet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Alice" "Bob"  </span>
@@ -144,18 +144,19 @@ This string is either printed or copied to clipboard (see argument <code>result<
 <span class="r-in"><span><span class="co">#   &gt; {}</span></span></span>
 <span class="r-in"><span><span class="co"># ")</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">createPowerset</span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, result <span class="op">=</span> <span class="st">"printCompact"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> as.PowerRelation("abc &gt; ab &gt; ac &gt; bc &gt; a &gt; b &gt; c &gt; {}")</span>
+<span class="r-in"><span><span class="fu">createPowerset</span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">]</span>, includeEmptySet <span class="op">=</span> <span class="cn">FALSE</span>, result <span class="op">=</span> <span class="st">"printCompact"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> as.PowerRelation("abc &gt; ab &gt; ac &gt; bc &gt; a &gt; b &gt; c")</span>
+<span class="r-in"><span><span class="co"># as.PowerRelation("abc &gt; ab &gt; ac &gt; bc &gt; a &gt; b &gt; c")</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># create the same string as before, but now copy it to the clipboard instead</span></span></span>
 <span class="r-in"><span><span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="fu">createPowerset</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, result <span class="op">=</span> <span class="st">"copy"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">createPowerset</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, result <span class="op">=</span> <span class="st">"copyCompact"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Note that as.PowerRelation(character) only assumes single-char elements.</span></span></span>
-<span class="r-in"><span><span class="co"># As such, the generated function call string if element names are longer</span></span></span>
+<span class="r-in"><span><span class="co"># As such, the generated function call string with multi-character names</span></span></span>
 <span class="r-in"><span><span class="co"># looks a little different.</span></span></span>
-<span class="r-in"><span><span class="fu">createPowerset</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Alice"</span>, <span class="st">"Bob"</span><span class="op">)</span>, result <span class="op">=</span> <span class="st">'print'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">createPowerset</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Alice"</span>, <span class="st">"Bob"</span><span class="op">)</span>, result <span class="op">=</span> <span class="st">"print"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> PowerRelation(rlang::list2(</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   list(c("Alice", "Bob")),</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   list(c("Alice")),</span>

@@ -60,7 +60,7 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>powerRelation</dt>
-<dd><p>A <code><a href="PowerRelation.html">PowerRelation</a></code> object created by <code><a href="PowerRelation.html">PowerRelation()</a></code> or <code><a href="PowerRelation.html">as.PowerRelation()</a></code></p></dd>
+<dd><p>A <code><a href="PowerRelation.html">PowerRelation</a></code> object created by <code><a href="PowerRelation.html">PowerRelation()</a></code> or <code><a href="as.PowerRelation.html">as.PowerRelation()</a></code></p></dd>
 
 
 <dt>includeEmptySet</dt>
@@ -73,17 +73,17 @@
 
 <p><code><a href="PowerRelation.html">PowerRelation</a></code> object containing the following values:</p><ul><li><p><code>$elements</code>: vector of elements</p></li>
 <li><p><code>$eqs</code>: equivalence classes. Nested list of lists, each containing vectors representing groups of elements in the same equivalence class</p></li>
-<li><p><code>$coalitionLookup</code>: <code>function(v)</code> taking a coalition vector <code>v</code> as input and returning the equivalence class it belongs to (or a vector of equivalence classes if the coalition appears multiple times).</p></li>
-<li><p><code>$elementLookup</code>: <code>function(e)</code> taking an element <code>e</code> as input and returning a list of 2-sized tuples, each representing which equivalence class and which index inside that equivalence class that element appears in.</p></li>
-</ul><p>If <code>$elements</code>, <code>$coalitionLookup</code> and <code>$elementLookup</code> are known beforehand, they can be passed to the function to bypass its own possibly resource-intensive initialization process.
-Since these values are so tightly coupled to the <code>$eqs</code> list, however, this is only ever encouraged if the time gains are undoubtedly justified.</p>
-    </div>
+<li><p><code>$coalitionLookup</code>: <code>function(v)</code> taking a coalition vector <code>v</code> and returning the equivalence class it belongs to. See <code><a href="equivalenceClassIndex.html">coalitionLookup()</a></code> for more.</p></li>
+<li><p><code>$elementLookup</code>: <code>function(e)</code> taking an element <code>e</code> and returning a list of 2-sized tuples. See <code><a href="elementLookup.html">elementLookup()</a></code> for more.</p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>A power relation is total if for every \(S, T \subseteq N\),</p>
-<p>$$S \succeq T\text{ or }T \succeq S.$$</p>
+    <p>A power relation is total if</p>
+<p>$$S \succeq T\text{ or }T \succeq S$$</p>
+<p>for every \(S, T \subseteq N\).</p>
 <p>In other words, we can compare every coalition against every other coalition there is.
-The function simply adds the coalitions missing from the <code><a href="PowerRelation.html">PowerRelation</a></code> object to make it total behind the last equivalence class there is.</p>
+Given the equivalence classes of a <code><a href="PowerRelation.html">PowerRelation</a></code> object,
+the function attaches a new equivalence class containing all the missing coalitions that make the given power relation total.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -93,7 +93,7 @@ The function simply adds the coalitions missing from the <code><a href="PowerRel
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># 12 &gt; 3</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">makePowerRelationTotal</span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></span>

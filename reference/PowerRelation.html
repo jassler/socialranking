@@ -64,15 +64,7 @@
 <span><span class="fu">is.PowerRelation</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for PowerRelation</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">as.PowerRelation</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, comparators <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"&gt;"</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># S3 method for character</span></span>
-<span><span class="fu">as.PowerRelation</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># S3 method for list</span></span>
-<span><span class="fu">as.PowerRelation</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, comparators <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"&gt;"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -94,15 +86,11 @@
 
 
 <dt>x</dt>
-<dd><p>An object</p></dd>
+<dd><p>An <span style="R">R</span> object.</p></dd>
 
 
 <dt>...</dt>
-<dd><p>Optional additional parameters</p></dd>
-
-
-<dt>comparators</dt>
-<dd><p>Vector of "&gt;" or "~" characters</p></dd>
+<dd><p>Additional arguments to be passed to or from methods.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -111,19 +99,21 @@
 
 <p><code>PowerRelation</code> object containing the following values:</p><ul><li><p><code>$elements</code>: vector of elements</p></li>
 <li><p><code>$eqs</code>: equivalence classes. Nested list of lists, each containing vectors representing groups of elements in the same equivalence class</p></li>
-<li><p><code>$coalitionLookup</code>: <code>function(v)</code> taking a coalition vector <code>v</code> as input and returning the equivalence class it belongs to (or a vector of equivalence classes if the coalition appears multiple times).</p></li>
-<li><p><code>$elementLookup</code>: <code>function(e)</code> taking an element <code>e</code> as input and returning a list of 2-sized tuples, each representing which equivalence class and which index inside that equivalence class that element appears in.</p></li>
-</ul><p>If <code>$elements</code>, <code>$coalitionLookup</code> and <code>$elementLookup</code> are known beforehand, they can be passed to the function to bypass its own possibly resource-intensive initialization process.
-Since these values are so tightly coupled to the <code>$eqs</code> list, however, this is only ever encouraged if the time gains are undoubtedly justified.</p>
-    </div>
+<li><p><code>$coalitionLookup</code>: <code>function(v)</code> taking a coalition vector <code>v</code> and returning the equivalence class it belongs to. See <code><a href="equivalenceClassIndex.html">coalitionLookup()</a></code> for more.</p></li>
+<li><p><code>$elementLookup</code>: <code>function(e)</code> taking an element <code>e</code> and returning a list of 2-sized tuples. See <code><a href="elementLookup.html">elementLookup()</a></code> for more.</p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>A power relation describes the ordinal information between elements.
-Here specifically, we are interested in the power relation of coalitions, or groups of elements.
+Here specifically, we are interested in the power relation between coalitions, or groups of elements.
 Each coalition is assumed to be a <a href="https://rdrr.io/r/base/c.html" class="external-link">vector</a> containing zero (empty coalition), one (singleton) or more elements.</p>
-<p><code><a href="createPowerset.html">createPowerset()</a></code> offers a convenient way of creating a power set over a set of elements that can be used to call <code>PowerRelation()</code> or <code>as.PowerRelation()</code>.</p>
+<p><code><a href="createPowerset.html">createPowerset()</a></code> offers a convenient way of creating a power set over a set of elements that can be used to call <code>PowerRelation()</code> or <code><a href="as.PowerRelation.html">as.PowerRelation()</a></code>.</p>
 <p>Trying to figure out what equivalence class certain coalitions or elements belong to is quite common.
-For these sets of problems, the functions <code>$coalitionLookup(v)</code> and <code>$elementLookup(e)</code> should be utilized.</p>
+For these sets of problems, the functions <code>$coalitionLookup(v)</code> and <code>$elementLookup(e)</code> should be utilized.
+We use some redundancy to speed up the lookup methods.
+As such, it is highly discouraged to edit a <code>PowerRelation</code> object directly, as the different power relation representations will fall out of sync.
+For more information, see the vignette: <code>vignette(package = 'socialranking')</code></p>
+<p>The <code>PowerRelation()</code> function expects a nested list of coalitions as input. For alternatives, see <code><a href="as.PowerRelation.html">as.PowerRelation()</a></code>.</p>
     </div>
     <div class="section level2">
     <h2 id="mathematical-background">Mathematical background<a class="anchor" aria-label="anchor" href="#mathematical-background"></a></h2>
@@ -137,15 +127,17 @@ The power set \(2^N\) denotes the set of all subsets over \(N\).</p>
 <p>Let \(\mathcal{P} \subseteq 2^N\) be a collection of coalitions.
 A <em>power relation</em> on \(\mathcal{P}\) is a total preorder \(\succeq \subseteq \mathcal{P} \times \mathcal{P}\).
 That is, for any two coalitions \(S, T \in \mathcal{P}\), either \((S,T) \in \succeq\), or \((T,S) \in \succeq\), or both.
-In other words, we can compare any two groups of elements in \(\mathcal{P}\) and determine, if one group is better, worse, or equivalent to the other.</p>
-<p>More commonly, the relation \((S,T) \in \succeq\) is notated directly as \(S \succeq T\).</p>
+In other words, we can compare any two groups of elements in \(\mathcal{P}\) and determine, if one group is better than, worse than, or equivalent to the other.</p>
+<p>More commonly, the relation \((S,T) \in \succeq\) is notated as \(S \succeq T\).</p>
 <p>\(\mathcal{T}(\mathcal{P})\) denotes the family of all power relations on every collection \(\mathcal{P} \subseteq 2^N\).
 Given a power relation \(\succeq \in \mathcal{T}(\mathcal{P})\), \(\sim\) denotes its symmetric part whereas \(\succ\) its asymmetric part.
 Let \(S, T \in \mathcal{P}\).
 Then,</p>
-<p>$$S \sim T \textrm{ if } S \succeq T \textrm{ and } T \succeq S,$$</p>
-<p>$$S \succ T \textrm{ if } S \succeq T \textrm{ and not } T \succeq S.$$</p>
-<p>Coalitions who are deemed equivalent (\(S \sim T\)) can be collected into an equivalence class \(\Sigma_i\).
+<p>$$
+S \sim T \textrm{ if } S \succeq T \textrm{ and } T \succeq S,\\
+S \succ T \textrm{ if } S \succeq T \textrm{ and not } T \succeq S.
+$$</p>
+<p>Coalitions which are deemed equivalent (\(S \sim T\)) can be collected into an equivalence class \(\Sigma_i\).
 The list of equivalence classes forms a linear order, \(\Sigma_1 \succ \Sigma_2 \succ \dots \succ \Sigma_m\).</p>
     </div>
     <div class="section level2">
@@ -166,6 +158,8 @@ If we consider all possibilities, we will have to compare the sets</p>
 \Sigma_4 = \{\{\}\}\\
 \Sigma_5 = \{\{a,b,c\},\{a,b\},\{a,c\}\}
 $$</p>
+<p>The power relation \(\succeq\) can be copy-pasted as a character string to the <code><a href="as.PowerRelation.html">as.PowerRelation()</a></code> function (it should accept the special characters \(\succeq\) and \(\sim\)).</p>
+<p><code>as.PowerRelation("{b,c} &gt; ({a} ~ {c}) &gt; {b} &gt; {} &gt; ({a,b,c} ~ {a,b} ~ {a,c})")</code></p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -179,6 +173,10 @@ Springer.</p>
 <p>Algaba E, Moretti S, Rémila E, Solal P (2021).
 “Lexicographic solutions for coalitional rankings.”
 <em>Social Choice and Welfare</em>, <b>57</b>(4), 1--33.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>Other ways to create a <code>PowerRelation()</code> object using <code><a href="as.PowerRelation.html">as.PowerRelation()</a></code>.</p></div>
     </div>
 
     <div class="section level2">
@@ -211,7 +209,7 @@ Springer.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># pasted, rearranged using alt+up / alt+down in RStudio</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># note that the function call looks different if elements are only one character long</span></span></span>
+<span class="r-in"><span><span class="co"># note that the function call looks different if elements are multiple characters long</span></span></span>
 <span class="r-in"><span><span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="createPowerset.html">createPowerset</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"apple"</span>, <span class="st">"banana"</span>, <span class="st">"chocolate"</span><span class="op">)</span>, result <span class="op">=</span> <span class="st">"copy"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>

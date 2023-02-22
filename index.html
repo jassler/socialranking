@@ -85,7 +85,7 @@
 </h2>
 <p>The package <code>socialranking</code> offers functions to represent ordinal information of coalitions and calculate the power relation between elements or players.</p>
 <p>Once installed, call <code><a href="https://jassler.github.io/socialranking/">library(socialranking)</a></code> to load the package into your current environment.</p>
-<p><code><a href="reference/PowerRelation.html">PowerRelation()</a></code> and <code><a href="reference/PowerRelation.html">as.PowerRelation()</a></code> creates a <code>PowerRelation</code> object. <code><a href="reference/createPowerset.html">createPowerset()</a></code> is a convenient function to generate a <code><a href="reference/PowerRelation.html">PowerRelation()</a></code> or <code><a href="reference/PowerRelation.html">as.PowerRelation()</a></code> function call for all possible coalitions.</p>
+<p><code><a href="reference/PowerRelation.html">PowerRelation()</a></code> and <code><a href="reference/as.PowerRelation.html">as.PowerRelation()</a></code> creates a <code>PowerRelation</code> object. <code><a href="reference/createPowerset.html">createPowerset()</a></code> is a convenient function to generate a <code><a href="reference/PowerRelation.html">PowerRelation()</a></code> or <code><a href="reference/as.PowerRelation.html">as.PowerRelation()</a></code> function call for all possible coalitions.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://jassler.github.io/socialranking/">socialranking</a></span><span class="op">)</span></span>
 <span><span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
@@ -93,7 +93,7 @@
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="co"># pasted, rearranged, adjusted comparators</span></span>
-<span><span class="fu"><a href="reference/PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"</span></span>
+<span><span class="fu"><a href="reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"</span></span>
 <span><span class="st">  123</span></span>
 <span><span class="st">  &gt; 12</span></span>
 <span><span class="st">  ~ 13</span></span>
@@ -105,13 +105,13 @@
 <span><span class="co">#&gt; 123 &gt; (12 ~ 13) &gt; (2 ~ 23) &gt; 1 &gt; 3</span></span>
 <span></span>
 <span><span class="co"># equivalent</span></span>
-<span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span></span>
+<span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  comparators <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"&gt;"</span>, <span class="st">"~"</span>, <span class="st">"&gt;"</span>, <span class="st">"~"</span>, <span class="st">"&gt;"</span>, <span class="st">"&gt;"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># equivalent</span></span>
-<span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"123 &gt; 12 ~ 13 &gt; 2 ~ 23 &gt; 1 &gt; 3"</span><span class="op">)</span></span>
+<span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"123 &gt; 12 ~ 13 &gt; 2 ~ 23 &gt; 1 &gt; 3"</span><span class="op">)</span></span>
 <span><span class="va">pr</span></span>
 <span><span class="co">#&gt; 123 &gt; (12 ~ 13) &gt; (2 ~ 23) &gt; 1 &gt; 3</span></span>
 <span></span>

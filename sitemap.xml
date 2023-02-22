@@ -28,6 +28,9 @@
     <loc>https://jassler.github.io/socialranking/news/index.html</loc>
   </url>
   <url>
+    <loc>https://jassler.github.io/socialranking/reference/L1Scores.html</loc>
+  </url>
+  <url>
     <loc>https://jassler.github.io/socialranking/reference/PowerRelation.html</loc>
   </url>
   <url>
@@ -35,6 +38,9 @@
   </url>
   <url>
     <loc>https://jassler.github.io/socialranking/reference/SocialRankingSolution.html</loc>
+  </url>
+  <url>
+    <loc>https://jassler.github.io/socialranking/reference/as.PowerRelation.html</loc>
   </url>
   <url>
     <loc>https://jassler.github.io/socialranking/reference/coalitionsAreIndifferent.html</loc>
@@ -56,6 +62,9 @@
   </url>
   <url>
     <loc>https://jassler.github.io/socialranking/reference/dominates.html</loc>
+  </url>
+  <url>
+    <loc>https://jassler.github.io/socialranking/reference/elementLookup.html</loc>
   </url>
   <url>
     <loc>https://jassler.github.io/socialranking/reference/equivalenceClassIndex.html</loc>
