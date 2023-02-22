@@ -21,14 +21,14 @@ For coalitions \eqn{a, b, c \in 2^N}{a, b, c in 2^N}, this means that if \eqn{a 
 \eqn{b \succ c}{b > c}, then \eqn{a \succ c}{a > c}.
 
 A power relation with cycles is not transitive. A transitive closure over a power relation removes all cycles and turns it into a
-transitive relation placing all coalitions within a cycle in the same equivalence class.
+transitive relation, placing all coalitions within a cycle in the same equivalence class.
 If \eqn{a \succ b \succ a}{a > b > a}, from the symmetric definition in \code{\link[=PowerRelation]{PowerRelation()}} we
-therefore assume that \eqn{a \sim b}{a ~ b}. Similarly if
+therefore assume that \eqn{a \sim b}{a ~ b}. Similarly, if
 \eqn{a \succ b_1 \succ b_2 \succ \dots \succ b_n \succ a}{a > b_1 > b_2 > ... > b_n > a}, the transitive closure turns it into
 \eqn{a \sim b_1 \sim b_2 \sim \dots \sim b_n}{a ~ b_1 ~ b_2 ~ ... ~ b_n}.
 
 \code{transitiveClosure()} transforms a \code{\link{PowerRelation}} object with cycles into a \code{PowerRelation} object without cycles.
-As described in the previous paragraph, all coalitions within a cycle then are put into the same equivalence class
+As described above, all coalitions within a cycle then are put into the same equivalence class
 and all duplicate coalitions are removed.
 }
 \examples{

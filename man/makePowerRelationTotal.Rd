@@ -16,23 +16,23 @@ makePowerRelationTotal(powerRelation, includeEmptySet = TRUE)
 \itemize{
 \item \verb{$elements}: vector of elements
 \item \verb{$eqs}: equivalence classes. Nested list of lists, each containing vectors representing groups of elements in the same equivalence class
-\item \verb{$coalitionLookup}: \verb{function(v)} taking a coalition vector \code{v} as input and returning the equivalence class it belongs to (or a vector of equivalence classes if the coalition appears multiple times).
-\item \verb{$elementLookup}: \verb{function(e)} taking an element \code{e} as input and returning a list of 2-sized tuples, each representing which equivalence class and which index inside that equivalence class that element appears in.
+\item \verb{$coalitionLookup}: \verb{function(v)} taking a coalition vector \code{v} and returning the equivalence class it belongs to. See \code{\link[=coalitionLookup]{coalitionLookup()}} for more.
+\item \verb{$elementLookup}: \verb{function(e)} taking an element \code{e} and returning a list of 2-sized tuples. See \code{\link[=elementLookup]{elementLookup()}} for more.
 }
-
-If \verb{$elements}, \verb{$coalitionLookup} and \verb{$elementLookup} are known beforehand, they can be passed to the function to bypass its own possibly resource-intensive initialization process.
-Since these values are so tightly coupled to the \verb{$eqs} list, however, this is only ever encouraged if the time gains are undoubtedly justified.
 }
 \description{
 Append an equivalence to a power relation with all its missing coalitions to make it total.
 }
 \details{
-A power relation is total if for every \eqn{S, T \subseteq N}{S, T subset or equal to N},
+A power relation is total if
 
-\deqn{S \succeq T\text{ or }T \succeq S.}{S>=T or T>=S.}
+\deqn{S \succeq T\text{ or }T \succeq S}{S>=T or T>=S}
+
+for every \eqn{S, T \subseteq N}{S, T subset or equal to N}.
 
 In other words, we can compare every coalition against every other coalition there is.
-The function simply adds the coalitions missing from the \code{\link{PowerRelation}} object to make it total behind the last equivalence class there is.
+Given the equivalence classes of a \code{\link{PowerRelation}} object,
+the function attaches a new equivalence class containing all the missing coalitions that make the given power relation total.
 }
 \examples{
 pr <- as.PowerRelation(list(c(1,2), 3))

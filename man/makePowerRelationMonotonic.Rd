@@ -14,36 +14,35 @@ makePowerRelationMonotonic(powerRelation)
 \itemize{
 \item \verb{$elements}: vector of elements
 \item \verb{$eqs}: equivalence classes. Nested list of lists, each containing vectors representing groups of elements in the same equivalence class
-\item \verb{$coalitionLookup}: \verb{function(v)} taking a coalition vector \code{v} as input and returning the equivalence class it belongs to (or a vector of equivalence classes if the coalition appears multiple times).
-\item \verb{$elementLookup}: \verb{function(e)} taking an element \code{e} as input and returning a list of 2-sized tuples, each representing which equivalence class and which index inside that equivalence class that element appears in.
+\item \verb{$coalitionLookup}: \verb{function(v)} taking a coalition vector \code{v} and returning the equivalence class it belongs to. See \code{\link[=coalitionLookup]{coalitionLookup()}} for more.
+\item \verb{$elementLookup}: \verb{function(e)} taking an element \code{e} and returning a list of 2-sized tuples. See \code{\link[=elementLookup]{elementLookup()}} for more.
 }
-
-If \verb{$elements}, \verb{$coalitionLookup} and \verb{$elementLookup} are known beforehand, they can be passed to the function to bypass its own possibly resource-intensive initialization process.
-Since these values are so tightly coupled to the \verb{$eqs} list, however, this is only ever encouraged if the time gains are undoubtedly justified.
 }
 \description{
 Given a \code{powerRelation} object, make its order monotonic.
 }
 \details{
-A power relation is monotonic if, for a coalition \eqn{S \subseteq N}{S subset of N},
+A power relation is monotonic if
 
 \deqn{T \subset S \Leftrightarrow S \succeq T.}{T subset of S <=> S >= T.}
 
-This also moves any super sets that are ranked below a subset into the same
-equivalence class of the subset.
+for every coalition \eqn{S \subseteq N}{S subset of N}.
+
+Calling \code{makePowerRelationMonotonic()} on some \code{\link{PowerRelation}} object moves or adds coalitions to certain equivalence classes
+so that the power relation becomes monotonic.
 }
 \examples{
-pr <- as.PowerRelation('ab > ac > abc > b > a > {} > c < bc')
+pr <- as.PowerRelation("ab > ac > abc > b > a > {} > c < bc")
 makePowerRelationMonotonic(pr)
 # (abc ~ ab) > ac > (bc ~ b) > a > (c ~ {})
 
 # notice that missing coalitions are automatically added
 # (except for the empty set)
-pr <- as.PowerRelation('a > b > c')
+pr <- as.PowerRelation("a > b > c")
 makePowerRelationMonotonic(pr)
 # (abc ~ ab ~ ac ~ a) > (bc ~ b) > c
 
-pr <- as.PowerRelation('a > {} > b > c')
+pr <- as.PowerRelation("a > {} > b > c")
 makePowerRelationMonotonic(pr)
 # (abc ~ ab ~ ac ~ a) > (bc ~ b ~ c ~ {})
 

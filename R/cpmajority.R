@@ -59,12 +59,14 @@
 #' @examples
 #' pr <- as.PowerRelation("ac > (a ~ b) > (c ~ bc)")
 #'
+#' scores <- cpMajorityComparison(pr, "a", "b")
+#' scores
 #' # a > b
 #' # D_ab = {c, {}}
 #' # D_ba = {{}}
 #' # Score of a = 2
 #' # Score of b = 1
-#' scores <- cpMajorityComparison(pr, "a", "b")
+#'
 #' stopifnot(scores$e1$name == "a")
 #' stopifnot(scores$e2$name == "b")
 #' stopifnot(scores$e1$score == 2)
@@ -76,11 +78,11 @@
 #' emptySetTuple <- Filter(function(x) identical(x$coalition, c()), scores$tuples)[[1]]
 #' playerCTuple  <- Filter(function(x) identical(x$coalition, "c"), scores$tuples)[[1]]
 #'
-#' # because {} u a ~ {} u b, there is no winner
+#' # because {}u{a} ~ {}u{b}, there is no winner
 #' stopifnot(is.null(emptySetTuple$winner))
 #' stopifnot(emptySetTuple$e1 == emptySetTuple$e2)
 #'
-#' # because c u a > c u b, player "a" gets the score
+#' # because {c}u{a} > {c}u{b}, player "a" gets the score
 #' stopifnot(playerCTuple$winner == "a")
 #' stopifnot(playerCTuple$e1 < playerCTuple$e2)
 #' stopifnot(playerCTuple$e1 == 1L)

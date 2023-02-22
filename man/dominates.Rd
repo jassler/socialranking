@@ -2,7 +2,7 @@
 % Please edit documentation in R/dominance.R
 \name{dominates}
 \alias{dominates}
-\title{Domination}
+\title{Dominance}
 \usage{
 dominates(powerRelation, e1, e2, strictly = FALSE, includeEmptySet = TRUE)
 }
@@ -11,7 +11,7 @@ dominates(powerRelation, e1, e2, strictly = FALSE, includeEmptySet = TRUE)
 
 \item{e1, e2}{Elements in \code{powerRelation$elements}}
 
-\item{strictly}{If TRUE, check if \code{p1} \emph{strictly} dominates \code{p2}}
+\item{strictly}{If \code{TRUE}, check if \code{p1} \emph{strictly} dominates \code{p2}}
 
 \item{includeEmptySet}{If \code{TRUE}, check \eqn{\lbrace i \rbrace \succeq \lbrace j \rbrace}{\{i\} >= \{j\}} even if
 empty set is not part of the power relation.}
@@ -20,14 +20,14 @@ empty set is not part of the power relation.}
 Logical value \code{TRUE} if \code{e1} dominates \code{e2}, else \code{FALSE}.
 }
 \description{
-Test if one element dominates the other.
+Check if one element dominates the other.
 }
 \details{
-\eqn{i}{i} is said to dominate \eqn{j}{j}, if
+\eqn{i}{i} is said to dominate \eqn{j}{j} if
 \eqn{S \cup \lbrace i \rbrace \succeq S \cup \lbrace j \rbrace}{Sn\{i\} >= Sn\{j\}} for all
 \eqn{S \in 2^{N \setminus \lbrace i,j \rbrace}}{S in 2^(N-\{i,j\})}.
 
-\eqn{i}{i} \emph{strictly} dominates \eqn{j}{j}, if there exists one
+\eqn{i}{i} \emph{strictly} dominates \eqn{j}{j} if there also exists an
 \eqn{S \in 2^{N \setminus \lbrace i,j \rbrace}}{S in 2^(N-\{i,j\})} such that
 \eqn{S \cup \lbrace i \rbrace \succ S \cup \lbrace j \rbrace}{Sn\{i\} > Sn\{j\}}.
 }

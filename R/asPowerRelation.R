@@ -1,14 +1,21 @@
+#' Create PowerRelation object
+#'
+#' Alternative ways of creating [`PowerRelation`] objects.
+#'
 #' @param x An object
 #' @param ... Optional additional parameters
 #' @param comparators Vector of ">" or "~" characters
 #'
-#' @rdname PowerRelation
 #' @export
-as.PowerRelation <- function(x, ..., comparators = c('>')) {
+as.PowerRelation <- function(x, ...) {
   UseMethod('as.PowerRelation')
 }
 
-#' @rdname PowerRelation
+#' @section Using a character string:
+#'
+#' The same way a power relation \eqn{\succeq}{>= }
+#'
+#' @rdname as.PowerRelation
 #' @export
 as.PowerRelation.character <- function(x, ...) {
   x <- gsub('[^0-9a-zA-Z>~\u227B\u223C]', '', x)
@@ -47,7 +54,11 @@ as.PowerRelation.character <- function(x, ...) {
   PowerRelation(eqs)
 }
 
-#' @rdname PowerRelation
+#' @section Using a list:
+#'
+#' Man man man.
+#'
+#' @rdname as.PowerRelation
 #' @export
 as.PowerRelation.list <- function(x, ..., comparators = c('>')) {
   eqs <- list()

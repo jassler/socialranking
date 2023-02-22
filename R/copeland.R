@@ -52,18 +52,19 @@ is.na.CopelandScores <- function(x) FALSE
 #'   list(c(1,3))
 #' ))
 #'
-#' # `1` = 1
-#' # `2` = 0
-#' # `3` = -1
 #' copelandScores(pr)
+#' # `1` = c(2, -1)
+#' # `2` = c(2, -2)
+#' # `3` = c(1, -2)
 #'
 #' # only calculate results for two elements
-#' # `1` = 1
-#' # `3` = -1
 #' copelandScores(pr, c(1,3))
+#' # `1` = c(2, -1)
+#' # `3` = c(1, -2)
 #'
 #' # or just one element
 #' copelandScores(pr, 2)
+#' # `2` = c(2, -2)
 #'
 #' @export
 copelandScores <- function(powerRelation, elements = powerRelation$elements) {
@@ -85,7 +86,7 @@ copelandScores <- function(powerRelation, elements = powerRelation$elements) {
 
 #' Copeland ranking
 #'
-#' `copelandRanking` returns the corresponding ranking.
+#' `copelandRanking()` returns the corresponding ranking.
 #'
 #' @template param/powerRelation
 #'

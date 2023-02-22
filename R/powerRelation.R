@@ -3,13 +3,18 @@
 #' Create a `PowerRelation` object.
 #'
 #' A power relation describes the ordinal information between elements.
-#' Here specifically, we are interested in the power relation of coalitions, or groups of elements.
+#' Here specifically, we are interested in the power relation between coalitions, or groups of elements.
 #' Each coalition is assumed to be a [vector][base::c()] containing zero (empty coalition), one (singleton) or more elements.
 #'
 #' [`createPowerset()`] offers a convenient way of creating a power set over a set of elements that can be used to call `PowerRelation()` or [`as.PowerRelation()`].
 #'
 #' Trying to figure out what equivalence class certain coalitions or elements belong to is quite common.
 #' For these sets of problems, the functions `$coalitionLookup(v)` and `$elementLookup(e)` should be utilized.
+#' We use some redundancy to speed up the lookup methods.
+#' As such, it is highly discouraged to edit a `PowerRelation` object directly, as the different power relation representations will fall out of sync.
+#' For more information, see the vignette: `vignette(package = 'socialranking')`
+#'
+#' The `PowerRelation()` function expects a nested list of coalitions as input. For alternatives, see [`as.PowerRelation()`].
 #'
 #' @section Mathematical background:
 #'
@@ -21,20 +26,24 @@
 #' Let \eqn{\mathcal{P} \subseteq 2^N}{P \\subseteq 2^N} be a collection of coalitions.
 #' A *power relation* on \eqn{\mathcal{P}}{P} is a total preorder \eqn{\succeq \subseteq \mathcal{P} \times \mathcal{P}}{>= \\subseteq P x P}.
 #' That is, for any two coalitions \eqn{S, T \in \mathcal{P}}{S, T in P}, either \eqn{(S,T) \in \succeq}{(S,T) in >=}, or \eqn{(T,S) \in \succeq}{(T,S) in >=}, or both.
-#' In other words, we can compare any two groups of elements in \eqn{\mathcal{P}}{P} and determine, if one group is better, worse, or equivalent to the other.
+#' In other words, we can compare any two groups of elements in \eqn{\mathcal{P}}{P} and determine, if one group is better than, worse than, or equivalent to the other.
 #'
-#' More commonly, the relation \eqn{(S,T) \in \succeq}{(S,T) in >=} is notated directly as \eqn{S \succeq T}{S >= T}.
+#' More commonly, the relation \eqn{(S,T) \in \succeq}{(S,T) in >=} is notated as \eqn{S \succeq T}{S >= T}.
 #'
 #' \eqn{\mathcal{T}(\mathcal{P})}{T(P)} denotes the family of all power relations on every collection \eqn{\mathcal{P} \subseteq 2^N}{P \\subseteq 2^N}.
 #' Given a power relation \eqn{\succeq \in \mathcal{T}(\mathcal{P})}{>= in T(P)}, \eqn{\sim}{~} denotes its symmetric part whereas \eqn{\succ}{>} its asymmetric part.
 #' Let \eqn{S, T \in \mathcal{P}}{S, T in P}.
 #' Then,
 #'
-#' \deqn{S \sim T \textrm{ if } S \succeq T \textrm{ and } T \succeq S,}{S ~ T if S >= T and T >= S,}
+#' \deqn{
+#' S \sim T \textrm{ if } S \succeq T \textrm{ and } T \succeq S,\\
+#' S \succ T \textrm{ if } S \succeq T \textrm{ and not } T \succeq S.
+#' }{
+#' S ~ T if S >= T and T >= S,\\
+#' S > T if S >= T and not T >= S.
+#' }
 #'
-#' \deqn{S \succ T \textrm{ if } S \succeq T \textrm{ and not } T \succeq S.}{S > T if S >= T and not T >= S.}
-#'
-#' Coalitions who are deemed equivalent (\eqn{S \sim T}{S ~ T}) can be collected into an equivalence class \eqn{\Sigma_i}{E_i}.
+#' Coalitions which are deemed equivalent (\eqn{S \sim T}{S ~ T}) can be collected into an equivalence class \eqn{\Sigma_i}{E_i}.
 #' The list of equivalence classes forms a linear order, \eqn{\Sigma_1 \succ \Sigma_2 \succ \dots \succ \Sigma_m}{E_1 > E_2 > ... > E_m}.
 #'
 #' @section Mathematical example:
@@ -58,6 +67,10 @@
 #' \Sigma_5 = \{\{a,b,c\},\{a,b\},\{a,c\}\}
 #' }{}
 #'
+#' The power relation \eqn{\succeq}{>=} can be copy-pasted as a character string to the [`as.PowerRelation()`] function (it should accept the special characters \eqn{\succeq}{>=} and \eqn{\sim}{~}).
+#'
+#' `as.PowerRelation("{b,c} > ({a} ~ {c}) > {b} > {} > ({a,b,c} ~ {a,b} ~ {a,c})")`
+#'
 #' @references
 #' \insertRef{2017axiomaticAndAlgorithmicPerspectives}{socialranking}
 #'
@@ -69,8 +82,12 @@
 #' @param elements Vector of elements in power relation. Only set this value if you know what you are doing. See Details for more.
 #' @param coalitionLookup A function taking a vector parameter and returning an index. See return value for more details. Only set this value if you know what you are doing.
 #' @param elementLookup A function taking an element and returning a list of 2-sized tuples. See return value for more details. Only set this value if you know what you are doing.
+#' @param x An \R object.
+#' @param ... Additional arguments to be passed to or from methods.
 #'
 #' @template return/PowerRelation
+#'
+#' @seealso Other ways to create a `PowerRelation()` object using [`as.PowerRelation()`].
 #'
 #' @examples
 #' pr <- PowerRelation(list(
@@ -110,7 +127,7 @@
 #    < c
 #  ")
 #'
-#' # note that the function call looks different if elements are only one character long
+#' # note that the function call looks different if elements are multiple characters long
 #' if(interactive())
 #'   createPowerset(c("apple", "banana", "chocolate"), result = "copy")
 #'
@@ -252,8 +269,7 @@ is.PowerRelation <- function(x, ...) {
 
 #' Are coalitions indifferent
 #'
-#' Check if coalitions are indifferent from one another, or, if they appear in the same
-#' equivalence class.
+#' Check if coalitions are indifferent to one another, or, in other words, if they appear in the same equivalence class.
 #'
 #' @template param/powerRelation
 #' @param c1 Coalition [vector][base::c()]
@@ -309,33 +325,35 @@ print.PowerRelation <- function(x, ...) {
 #'
 #' Given a `coalition` [vector][base::c()], return the equivalence class index it appears in.
 #'
-#' This function basically just calls `powerRelation$coalitionLookup(coalition)`.
+#' This function calls `powerRelation$coalitionLookup(coalition)`.
 #'
 #' `equivalenceClassIndex()` serves as an alias to `coalitionLookup()`.
 #'
 #' @template param/powerRelation
 #' @param coalition a coalition [vector][base::c()] or that is part of `powerRelation`
 #'
-#' @return Numeric value, equivalence class index where `coalition` appears in.
-#' `-1` if the coalition does not exist.
-#' See `coalitionLookup()` in [`PowerRelation()`] for more information.
+#' @return Numeric value, equivalence class index containing `coalition`.
+#' `NULL` if the coalition does not exist.
+#' If the `powerRelation` contains cycles, it is possible that multiple values are returned.
 #'
 #' @family lookup functions
 #'
 #' @examples
 #' pr <- as.PowerRelation("12 > 2 ~ 1")
 #'
-#' equivalenceClassIndex(pr, c(1, 2))
+#' (e1 <- equivalenceClassIndex(pr, c(1, 2)))
 #' # 1
 #'
-#' equivalenceClassIndex(pr, c(1))
+#' (e2 <- equivalenceClassIndex(pr, c(1)))
 #' # 2
 #'
-#' equivalenceClassIndex(pr, c(2))
+#' (e3 <- equivalenceClassIndex(pr, c(2)))
 #' # 2
 #'
-#' equivalenceClassIndex(pr, c())
-#' # -1 <- empty set does not exist
+#' (e4 <- equivalenceClassIndex(pr, c()))
+#' # NULL <- empty set does not exist
+#'
+#' stopifnot(all(c(e1,e2,e3,e4) == c(1,2,2)))
 #'
 #' @export
 equivalenceClassIndex <- function(powerRelation, coalition) {
@@ -354,14 +372,21 @@ coalitionLookup <- equivalenceClassIndex
 #'
 #' List coalitions that an element appears in.
 #'
-#' This function basically just calls `powerRelation$elementLookup(element)`.
+#' This function calls `powerRelation$elementLookup(element)`.
+#' The returned list contains tuples containing the index to find the corresponding coalitions in `powerRelation$eqs`.
+#'
+#' If  `elementLookup(powerRelation, 2)` returns `list(c(1,1), c(1,2), c(3,1))`, we can determine that the element `2`
+#' appears twice in equivalence class `1` and once in equivalence class `3`.
+#' The specific coalition then can be accessed with `powerRelation$eqs[[i]][[j]]`, where `i` is the equivalence class index
+#' and `j` is the coalition in that equivalence class containing the element.
 #'
 #' @template param/powerRelation
 #' @param element an element in `powerRelation$elements`
 #'
-#' @return List of 2-value tuples.
-#' First value of a tuple indicates the equivalence class index, the second value the index inside that equivalence class with the coalition containing the element.
-#' See `elementLookup()` in [`PowerRelation()`] for more information.
+#' @return List of tuples, each of size 2.
+#' First value of a tuple indicates the equivalence class index,
+#' the second value the index inside that equivalence class with the coalition containing the element.
+#' Returns `NULL` if the element does not exist.
 #'
 #' @family lookup functions
 #'
@@ -372,10 +397,10 @@ coalitionLookup <- equivalenceClassIndex
 #' l
 #' # (1,1), (2,2)
 #'
-#' l |> sapply(function(tuple) 1 %in% pr$eqs[[tuple[1]]][[tuple[2]]]) |> all() |> stopifnot()
+#' sapply(l, function(tuple) 1 %in% pr$eqs[[tuple[1]]][[tuple[2]]]) |> all() |> stopifnot()
 #'
 #' # if element does not exist, it returns NULL
-#' pr |> elementLookup(3) |> is.null() |> stopifnot()
+#' elementLookup(pr, 3) |> is.null() |> stopifnot()
 #'
 #' @export
 elementLookup <- function(powerRelation, element) {

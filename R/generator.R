@@ -177,9 +177,9 @@ powerRelationGenerator <- function(coalitions, startWithLinearOrder = FALSE) {
 
 #' Next partition
 #'
-#' Skip to next partition of the generator.
+#' Skip to the next partition of the generator.
 #'
-#' @param gen A generator.
+#' @param gen A generator object.
 #' @return A generator function.
 #' If the generator is already down to its last partition, it will throw an error.
 #'

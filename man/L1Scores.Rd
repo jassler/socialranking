@@ -18,8 +18,8 @@ lexcel1Ranking(powerRelation)
 \arguments{
 \item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
 
-\item{elements}{vector of elements of which to calculate their scores.
-If \code{elements == NULL}, create vectors for all elements in \code{pr$elements}}
+\item{elements}{Vector of elements of which to calculate their scores.
+By default, the scores of all elements in \code{powerRelation$elements} are considered.}
 }
 \value{
 Score function returns a list of type \code{Lexcel1Scores} and length of \code{powerRelation$elements}
@@ -34,7 +34,7 @@ Calculate the \eqn{L^{(1)}}{L^(1)} scores.
 }
 \details{
 Similar to \code{\link[=lexcelRanking]{lexcelRanking()}}, the number of times an element appears in each equivalence class is counted.
-Additionally, we also consider the size of the coalitions.
+In addition, we now also consider the size of the coalitions.
 
 Let \eqn{N}{N} be a set of elements, \eqn{\succeq \in \mathcal{T}(\mathcal{P})}{>= in T(P)} be a power relation,
 and \eqn{\Sigma_1 \succ \Sigma_2 \succ \dots \succ \Sigma_m}{E_1 > E_2 > ... > E_m} its corresponding quotient order.
@@ -44,7 +44,7 @@ Whereas each column represents an equivalence class, each row corresponds to the
 
 \deqn{(M^\succeq_i)_{pq} = |\{S \in \Sigma_q: |S| = p\}|}{(M^(>=)_i)_(pq) = |\{S in E_q: |S| = p\}}
 
-Take as example \eqn{\succeq: (123 \sim 13 \sim 2) \succ (12 \sim 1 \sim 3) \succ (23 \sim \{\})}{>=: (123 ~ 13 ~ 2) > (12 ~ 1 ~ 3) > (23 ~ \{\})}.
+Take as an example \eqn{\succeq: (123 \sim 13 \sim 2) \succ (12 \sim 1 \sim 3) \succ (23 \sim \{\})}{>=: (123 ~ 13 ~ 2) > (12 ~ 1 ~ 3) > (23 ~ \{\})}.
 From this, we get the following three matrices:
 
 \deqn{
@@ -90,13 +90,13 @@ For better discoverability, \code{lexcel1Scores()} and \code{lexcel1Ranking()} s
 pr <- as.PowerRelation("(123 ~ 13 ~ 2) > (12 ~ 1 ~ 3) > (23 ~ {})")
 scores <- L1Scores(pr)
 scores$`1`
-# [,1] [,2] [,3]
+#      [,1] [,2] [,3]
 # [1,]    0    1    0
 # [2,]    1    1    0
 # [3,]    1    0    0
 
 L1Ranking(pr)
-#
+# 2 > 1 > 3
 
 }
 \references{

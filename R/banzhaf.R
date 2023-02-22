@@ -25,6 +25,12 @@ is.na.OrdinalBanzhafScores <- function(x) FALSE
 #' and subtracting the amount of coalitions where its contribution
 #' had a negative impact (\eqn{S \succ S \cup \lbrace i \rbrace}{S > S u \{i\}})\insertCite{2019OrdinalBanzhaf}{socialranking}.
 #'
+#' The original definition only takes total power relations into account, where either \eqn{S \succeq T}{S >= T} or \eqn{T \succeq S}{T >= S}
+#' for every \eqn{S,T \subseteq N}{S,T subseteq N}.
+#' If coalitions are missing from the power relation, we may not be able to perform certain comparisons.
+#' To indicate these missing comparisons, the ordinal Banzhaf score of an element \eqn{i}{i} also includes that number in the back.
+#' In the traditional ranking method, this number is not taken into account however.
+#'
 #' @template param/powerRelation
 #' @template param/elements
 #'
@@ -40,7 +46,6 @@ is.na.OrdinalBanzhafScores <- function(x) FALSE
 #' Those two numbers summed together gives us the actual ordinal Banzhaf score.
 #'
 #' @examples
-#' # 12 > (2 ~ {}) > 1
 #' pr <- as.PowerRelation("12 > (2 ~ {}) > 1")
 #'
 #' # Player 1 contributes positively to {2}
@@ -50,9 +55,9 @@ is.na.OrdinalBanzhafScores <- function(x) FALSE
 #' # Player 2 contributes positively to {1}
 #' # Player 2 does NOT have an impact on {empty set}
 #' # Therefore player 2 has a score of 1 - 0 = 0
-#' # `1` = c(1, -1)
-#' # `2` = c(1, 0)
 #' ordinalBanzhafScores(pr)
+#' # `1` = c(1, -1, 0)
+#' # `2` = c(1, 0, 0)
 #'
 #' @export
 ordinalBanzhafScores <- function(powerRelation, elements = powerRelation$elements) {
@@ -83,7 +88,7 @@ ordinalBanzhafScores <- function(powerRelation, elements = powerRelation$element
 
 #' Ordinal Banzhaf Ranking
 #'
-#' [`ordinalBanzhafRanking()`] returns the corresponding ranking.
+#' `ordinalBanzhafRanking()` returns the corresponding ranking.
 #'
 #' @template param/powerRelation
 #'
@@ -92,8 +97,8 @@ ordinalBanzhafScores <- function(powerRelation, elements = powerRelation$element
 #' @template return/ranking
 #'
 #' @examples
-#' # 1 > 2
 #' ordinalBanzhafRanking(pr)
+#' # 1 > 2
 #'
 #' @export
 ordinalBanzhafRanking <- function(powerRelation) {

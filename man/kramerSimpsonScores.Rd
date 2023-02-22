@@ -16,8 +16,8 @@ kramerSimpsonRanking(powerRelation, compIvsI = FALSE)
 \arguments{
 \item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
 
-\item{elements}{vector of elements of which to calculate their scores.
-If \code{elements == NULL}, create vectors for all elements in \code{pr$elements}}
+\item{elements}{Vector of elements of which to calculate their scores.
+By default, the scores of all elements in \code{powerRelation$elements} are considered.}
 
 \item{compIvsI}{If \code{TRUE}, include CP-Majority comparison \eqn{d_{ii}(\succeq)}{d_ii(>=)}, or, the CP-Majority
 comparison score of an element against itself, which is always 0.}
@@ -32,13 +32,13 @@ Ranking function returns corresponding \code{\link{SocialRankingSolution}} objec
 Calculate the Kramer-Simpson-like scores.
 Lower scores are better.
 
-\code{\link{kramerSimpsonRanking}} returns the corresponding ranking.
+\code{kramerSimpsonRanking()} returns the corresponding ranking.
 }
 \details{
 Inspired by the Kramer-Simpson method of social choice theory \insertCite{1969Simpson}{socialranking} \insertCite{1975Kramer}{socialranking}, the \emph{Kramer-Simpson-like}
 method compares each element against all other elements using the CP-Majority rule.
 
-For a given element \eqn{i}{i} calculate the \code{\link{cpMajorityComparisonScore}}
+For a given element \eqn{i}{i} calculate the \code{\link[=cpMajorityComparisonScore]{cpMajorityComparisonScore()}}
 against all elements \eqn{j}{j}, \eqn{d_{ji}(\succeq)}{d_ji(>=)} (notice that \eqn{i}{i} and
 \eqn{j}{j} are in reverse order).
 \eqn{\max_{j \in N \setminus \lbrace i \rbrace}(d_{ji}(\succeq))}{max_{j in N \\ {i}}(d_ji(>=))} then
@@ -55,7 +55,7 @@ This is slightly different from definitions found in
 always holds, the Kramer-Simpson scores in those cases will never be negative, possibly discarding valuable
 information.
 
-For this reason \code{kramerSimpsonScores} and \code{kramerSimpsonRanking} includes a
+For this reason \code{kramerSimpsonScores()} and \code{kramerSimpsonRanking()} includes a
 \code{compIvsI} parameter that can be set to \code{TRUE} if one wishes for \eqn{d_{ii}(\succeq) = 0}{d_ii(>=) = 0}
 to be included in the comparisons. Put into mathematical terms, if:\tabular{ll}{
    \code{compIvsI} \tab Score definition \cr

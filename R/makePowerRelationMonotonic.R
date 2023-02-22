@@ -2,12 +2,14 @@
 #'
 #' Given a `powerRelation` object, make its order monotonic.
 #'
-#' A power relation is monotonic if, for a coalition \eqn{S \subseteq N}{S subset of N},
+#' A power relation is monotonic if
 #'
 #' \deqn{T \subset S \Leftrightarrow S \succeq T.}{T subset of S <=> S >= T.}
 #'
-#' This also moves any super sets that are ranked below a subset into the same
-#' equivalence class of the subset.
+#' for every coalition \eqn{S \subseteq N}{S subset of N}.
+#'
+#' Calling `makePowerRelationMonotonic()` on some [`PowerRelation`] object moves or adds coalitions to certain equivalence classes
+#' so that the power relation becomes monotonic.
 #'
 #' @template param/powerRelation
 #'
@@ -16,17 +18,17 @@
 #' @family helper functions transorming existing [`PowerRelation`] objects
 #'
 #' @examples
-#' pr <- as.PowerRelation('ab > ac > abc > b > a > {} > c < bc')
+#' pr <- as.PowerRelation("ab > ac > abc > b > a > {} > c < bc")
 #' makePowerRelationMonotonic(pr)
 #' # (abc ~ ab) > ac > (bc ~ b) > a > (c ~ {})
 #'
 #' # notice that missing coalitions are automatically added
 #' # (except for the empty set)
-#' pr <- as.PowerRelation('a > b > c')
+#' pr <- as.PowerRelation("a > b > c")
 #' makePowerRelationMonotonic(pr)
 #' # (abc ~ ab ~ ac ~ a) > (bc ~ b) > c
 #'
-#' pr <- as.PowerRelation('a > {} > b > c')
+#' pr <- as.PowerRelation("a > {} > b > c")
 #' makePowerRelationMonotonic(pr)
 #' # (abc ~ ab ~ ac ~ a) > (bc ~ b ~ c ~ {})
 #'

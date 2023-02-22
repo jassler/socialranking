@@ -7,14 +7,14 @@
 generateNextPartition(gen)
 }
 \arguments{
-\item{gen}{A generator.}
+\item{gen}{A generator object.}
 }
 \value{
 A generator function.
 If the generator is already down to its last partition, it will throw an error.
 }
 \description{
-Skip to next partition of the generator.
+Skip to the next partition of the generator.
 }
 \examples{
 coalitions <- createPowerset(c('a','b'), includeEmptySet = FALSE)
