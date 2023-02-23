@@ -126,7 +126,7 @@ In the literature of cooperative games, the notion of *power index* [@shapley195
 
 The main objective of the package `socialranking` is to provide answers for  the general problem of how to compare the elements of a finite set $N$ given a ranking over the elements of its power-set (the set of all possible subsets of $N$). To do this, the package `socialranking` implements a portfolio of solutions from the recent literature on *social rankings* [@2017axiomaticAndAlgorithmicPerspectives; @2019OrdinalBanzhaf; @2018CPMajority; @2018CPMajoritySims; @2019PreferenceRelation; @2021Lexcel; @2021Manipulability].
 
-## Quick Start
+## Quick start
 
 A *power relation* (i.e, a ranking over subsets of a finite set $N$; see the Section `r refId("sec:prelim", "on [PowerRelation objects](ID)")` for a formal definition) can be constructed using the functions `PowerRelation()` or `as.PowerRelation()`.
 
@@ -190,7 +190,7 @@ rel
 relations::relation_incidence(rel)
 ```
 
-# `PowerRelation` Objects{#sec:prelim}
+# `PowerRelation` objects{#sec:prelim}
 
 We first introduce some basic definitions on binary relations. Let $X$ be a set. A set $R \subseteq X \times X$ is said a *binary relation* on $X$.
 For two elements $x, y \in X$, $xRy$ refers to their relation, more formally it means that $(x,y) \in R$. A binary relation $(x,y) \in R$ is said to be
@@ -235,7 +235,7 @@ This power relation can be rewritten in a consecutive order as: $\{1,2\} \succ \
 
 Note that the way the set $\succeq$ is presented in the example is somewhat deliberate to better visualize occurring symmetries and asymmetries. This also lets us neatly represent a power relation in the form of an `r if(knitr::is_latex_output()) "incidence matrix in chapter"` `r refId("relations", "[incidence matrix](ID)")`.
 
-## Creating `PowerRelation` Objects
+## Creating `PowerRelation` objects
 
 A power relation in the `socialranking` package is defined to be reflexive, transitive and total. In designing the package it was deemed logical to have the coalitions specified in a consecutive order, as seen in Example `r refId("ex:1", paste0("[", examples[["ex:1"]], "](ID)"))`. Each coalition in that order is split either by a `">"` (left side strictly better) or a `"~"` (two coalitions indifferent to one another). The following code chunk shows the power relation from Example `r refId("ex:1", paste0("[", examples[["ex:1"]], "](ID)"))` and how a correlating `PowerRelation` object can be constructed.
 
@@ -305,17 +305,16 @@ prAtts$coalitionLookup(c(2,1,2,1,2))
 prAtts$elementLookup(2)
 ```
 
-## Manipulating `PowerRelation` Objects
+## Manipulating `PowerRelation` objects
 
 It is strongly discouraged to directly manipulate `PowerRelation` objects, as its attributes are so tightly coupled.
 This would require updates in multiple places.
 Instead, it is advisable to simply create new `PowerRelation` objects.
 
-For permutating equivalence classes, it is possible to take the equivalence classes in `$eqs` and use a vector of indexes to move them around.
+To permutate the order of equivalence classes, it is possible to take the equivalence classes in `$eqs` and use a vector of indexes to move them around.
 
 ```{r}
-pr
-
+pr <- as.PowerRelation("12 > (1 ~ {}) > 2")
 PowerRelation(pr$eqs[c(2, 3, 1)])
 
 PowerRelation(rev(pr$eqs))
@@ -363,9 +362,9 @@ S \succeq T \quad \Rightarrow \quad T \subset S
 $$
 
 for all $S, T \subseteq N$.
-In other terms, any coalition that is a subset of another coalition cannot be ranked higher.
+In other terms, given a monotonic power relation, for any coalition, all its subsets cannot be ranked higher.
 
-`makePowerRelationMonotonic()` turns a potentially non-monotonic power relation into a monotonic one by moving and (optionally) adding all coalitions to the corresponding equivalence classes.
+`makePowerRelationMonotonic()` turns a potentially non-monotonic power relation into a monotonic one by moving and (optionally) adding all missing coalitions in $2^N - \mathcal{P}$ to the corresponding equivalence classes.
 
 ```{r}
 pr <- as.PowerRelation("a > b > c ~ ac > abc")
@@ -373,8 +372,8 @@ makePowerRelationMonotonic(pr)
 
 makePowerRelationMonotonic(pr, addMissingCoalitions = FALSE)
 
-# notice that an empty coalition in some equivalence class causes
-# all remaining coalitions to be moved there
+# notice how an empty coalition in some equivalence class
+# causes all remaining coalitions to be moved there
 makePowerRelationMonotonic(as.PowerRelation("ab > c > {} > abc > a > b"))
 ```
 
@@ -729,9 +728,16 @@ The Ordinal Banzhaf Score is a vector defined by the principle of marginal contr
 where $\score{Banz}(i) = \sum_{S} m^S_i(\succeq)$ for all $S \in N\setminus\{i\}$.
 :::
 
-Note that if $S \cup \{i\} \notin \mathcal{P}$, $m_i^S(\succeq) = 0$.
+Note that if $S \notin \mathcal{P}$ or $S \cup \{i\} \notin \mathcal{P}$, $m_i^S(\succeq) = 0$.
 
-The function `ordinalBanzhafScores` returns two numbers for each element: the number of coalitions $S$ where a player's contribution has a positive impact, and the number of coalitions $S$ where a player's contribution has a negative impact. These two numbers are added and elements are ranked highest to lowest.
+The function `ordinalBanzhafScores()` returns three numbers for each element,
+
+1. the number of coalitions $S$ where a player's contribution has a positive impact,
+2. the number of coalitions $S$ where a player's contribution has a negative impact, and
+3. the number of coalitions $S$ for which no information can be gathered, because $S \notin \mathcal{P}$ or $S \cup \{i\} \notin \mathcal{P}$.
+
+The sum of the first two numbers determines the score of a player.
+Players with higher scores rank higher.
 
 ```{r}
 pr <- as.PowerRelation(list(c(1,2), c(1), c(2)))
@@ -739,6 +745,7 @@ pr
 
 # both players 1 and 2 have an Ordinal Banzhaf Score of 1
 # therefore they are indifferent to one another
+# note that the empty set is missing, as such we cannot compare {}u{i} with {}
 ordinalBanzhafScores(pr)
 
 ordinalBanzhafRanking(pr)
@@ -748,7 +755,7 @@ pr <- as.PowerRelation("ab > a > {} > b")
 # player b has a negative impact on the empty set
 # -> player b's score is 1 - 1 = 0
 # -> player a's score is 2 - 0 = 2
-sapply(ordinalBanzhafScores(pr), function(score) sum(score))
+sapply(ordinalBanzhafScores(pr), function(score) sum(score[c(1,2)]))
 
 ordinalBanzhafRanking(pr)
 ```
