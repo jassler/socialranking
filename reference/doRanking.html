@@ -82,19 +82,8 @@ Each element of the list contains a <a href="https://rdrr.io/r/base/c.html" clas
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>A social ranking solution, or ranking solution, or solution, maps each power relation between coalitions to a power relation between its elements.
-I.e., from the power relation \(\succeq: \{1,2\} \succ \{2\} \succ \{1\}\), we may expect the result of a ranking solution \(R^\succeq\)
-to rank element 2 over 1. Therefore \(2 R^\succeq 1\) will be present, but not \(1 R^\succeq 2\).</p>
-<p>Formally, a ranking solution \(R: \mathcal{T}(\mathcal{P}) \rightarrow \mathcal{T}(N)\) is a function that,
-given a power relation \(\succeq \in \mathcal{T}(\mathcal{P})\), always produces a power relation
-\(R(\succeq)\) (or \(R^\succeq\)) over its set of elements.
-For two elements \(i, j \in N\), \(i R^\succeq j\) means that applying the solution \(R\) on the ranking \(\succeq\)
-makes \(i\) at least as preferable as \(j\).
-Often times \(iI^\succeq j\) and \(iP^\succeq j\) are used to indicate its symmetric and asymmetric part, respectively.
-As in, \(iI^\succeq j\) implies that \(iR^\succeq j\) and \(jR^\succeq i\),
-whereas \(iP^\succeq j\) implies that \(iR^\succeq j\) but not \(jR^\succeq i\).</p>
-<p>Since all ranking solutions in the package are tied to the scores or score vectors of the elements,
-<code>doRanking()</code> does not take a <code><a href="PowerRelation.html">PowerRelation</a></code> object, but only a (named) vector or list of scores for each element.
+    <p>All ranking solutions in the package are tied to the scores or score vectors of the elements.
+For these kinds of solutions, <code>doRanking()</code> offers a simple way that turns a (named) vector or list of scores for each element into a <code>SocialRankingSolution</code> object.
 For example, <code>doRanking(c(a=1,b=2))</code> produces <code>b &gt; a</code> (\(b P^\succeq a\)), because <code>b</code> with a score of <code>2</code> should be placed higher than <code>a</code> with a score of <code>1</code>.</p>
 <p>Ranking solutions in the package include <code><a href="lexcelScores.html">lexcelRanking()</a></code>, <code><a href="ordinalBanzhafScores.html">ordinalBanzhafRanking()</a></code> and <code><a href="L1Scores.html">L1Ranking()</a></code>, among others.
 These functions take a power relation, calculate the scores of each element and returns a <code>SocialRankingSolution</code> object.</p>
@@ -112,6 +101,10 @@ The function then must return one of the following:</p><ul><li><p><code>&gt; 0</
 </ul><p>In <code>doRanking(c(a=3,b=2,c=2), compare = function(a,b) a - b)</code>, the compare function returns a positive value of the first parameter is larger than the second.
 <code>a</code> has the highest value and will there for be ranked highest, <code>a &gt; b ~ c</code>.</p>
 <p>Conversely, <code>doRanking(c(a=3,b=2,c=2), compare = function(a,b) b - a)</code> favors elements with lower scores, resulting in the element ranking <code>b ~ c &gt; a</code>.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p><code><a href="SocialRankingSolution.html">SocialRankingSolution()</a></code></p></div>
     </div>
 
     <div class="section level2">

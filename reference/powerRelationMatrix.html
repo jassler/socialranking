@@ -198,12 +198,6 @@ to check for cycles in the incidence matrix only.</p>
 <span class="r-in"><span>  <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="va">x</span><span class="op">]</span>, <span class="st">":"</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">pr</span><span class="op">$</span><span class="va">rankingCoalitions</span><span class="op">[[</span><span class="va">x</span><span class="op">]</span><span class="op">]</span>, collapse <span class="op">=</span> <span class="st">"|"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Incidences:</span></span></span>
-<span class="r-in"><span><span class="co">#       a:1|2 b:1 c:2 d:1</span></span></span>
-<span class="r-in"><span><span class="co"># a:1|2     1   1   1   1</span></span></span>
-<span class="r-in"><span><span class="co"># b:1       0   1   1   1</span></span></span>
-<span class="r-in"><span><span class="co"># c:2       0   1   1   1</span></span></span>
-<span class="r-in"><span><span class="co"># d:1       0   1   1   1</span></span></span>
 <span class="r-in"><span><span class="fu">relations</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/relations/man/incidence.html" class="external-link">relation_incidence</a></span><span class="op">(</span><span class="va">relation</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Incidences:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    a: b: c: d:</span>
@@ -211,6 +205,12 @@ to check for cycles in the incidence matrix only.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> b:  0  1  1  1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> c:  0  1  1  1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> d:  0  1  1  1</span>
+<span class="r-in"><span><span class="co"># Incidences:</span></span></span>
+<span class="r-in"><span><span class="co">#       a:1|2 b:1 c:2 d:1</span></span></span>
+<span class="r-in"><span><span class="co"># a:1|2     1   1   1   1</span></span></span>
+<span class="r-in"><span><span class="co"># b:1       0   1   1   1</span></span></span>
+<span class="r-in"><span><span class="co"># c:2       0   1   1   1</span></span></span>
+<span class="r-in"><span><span class="co"># d:1       0   1   1   1</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

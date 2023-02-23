@@ -73,7 +73,7 @@
 Contact: <a href="mailto:jochen.staudacher@hs-kempten.de" class="email">jochen.staudacher@hs-kempten.de</a>
 </div></h4>
             
-            <h4 data-toc-skip class="date">2023-02-22</h4>
+            <h4 data-toc-skip class="date">2023-02-23</h4>
       
       
       <div class="d-none name"><code>socialranking.Rmd</code></div>
@@ -85,7 +85,7 @@ Contact: <a href="mailto:jochen.staudacher@hs-kempten.de" class="email">jochen.s
       This document gives a brief introduction to power relations and
       social ranking solutions aimed at ranking elements based on their
       contributions within coalitions. This document accompanies version
-      0.1.0 of the package <code>socialranking</code>. ¶
+      1.0.0 of the package <code>socialranking</code>. ¶
       <strong>Keywords</strong>: power relation, social ranking
       solution, cooperative game theory, dominance, cp-majority,
       Copeland, Kramer-Simpson, ordinal Banzhaf, dominance,
@@ -106,7 +106,7 @@ Contact: <a href="mailto:jochen.staudacher@hs-kempten.de" class="email">jochen.s
 </h2>
 <p>In the literature of cooperative games, the notion of <em>power
 index</em> <span class="citation">[1–3]</span> has been widely studied
-to analyze the ``influence” of individuals taking into account their
+to analyze the “influence” of individuals taking into account their
 ability to force a decision within groups or coalitions. In practical
 situations, however, the information concerning the strength of
 coalitions is hardly quantifiable. So, any attempt to numerically
@@ -124,7 +124,7 @@ over the elements of its power-set (the set of all possible subsets of
 <code>socialranking</code> implements a portfolio of solutions from the
 recent literature on <em>social rankings</em> <span class="citation">[4–10]</span>.</p>
 <div class="section level3">
-<h3 id="quick-start">Quick Start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
+<h3 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h3>
 <p>A <em>power relation</em> (i.e, a ranking over subsets of a finite
 set <span class="math inline">\(N\)</span>; see the Section on <a href="#sec:prelim">PowerRelation objects</a> for a formal definition)
@@ -192,6 +192,11 @@ papers.</p>
   </tr>
 <tr>
 <td style="text-align:left;">  </td>
+   <td style="text-align:left;"> <code><a href="../reference/L1Scores.html">L1Scores()</a></code> </td>
+   <td style="text-align:left;"> <code><a href="../reference/L1Scores.html">L1Ranking()</a></code> </td>
+  </tr>
+<tr>
+<td style="text-align:left;">  </td>
    <td style="text-align:left;"> <code><a href="../reference/ordinalBanzhafScores.html">ordinalBanzhafScores()</a></code> </td>
    <td style="text-align:left;"> <code><a href="../reference/ordinalBanzhafScores.html">ordinalBanzhafRanking()</a></code> </td>
   </tr>
@@ -199,24 +204,24 @@ papers.</p>
 </table>
 <p>These functions may be called as follows.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"ab &gt; ac ~ bc &gt; a ~ c &gt; {} &gt; b"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"ab &gt; abc ~ ac ~ bc &gt; a ~ c &gt; {} &gt; b"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># a dominates b -&gt; TRUE</span></span>
-<span><span class="fu"><a href="../reference/dominates.html">dominates</a></span><span class="op">(</span><span class="va">pr</span>, <span class="st">"a"</span>, <span class="st">"b"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] TRUE</span></span></code></pre>
+<span><span class="co"># a dominates b, but b does not dominate a</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="../reference/dominates.html">dominates</a></span><span class="op">(</span><span class="va">pr</span>, <span class="st">"a"</span>, <span class="st">"b"</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="../reference/dominates.html">dominates</a></span><span class="op">(</span><span class="va">pr</span>, <span class="st">"b"</span>, <span class="st">"a"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1]  TRUE FALSE</span></span></code></pre>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># b does not dominate a -&gt; FALSE</span></span>
-<span><span class="fu"><a href="../reference/dominates.html">dominates</a></span><span class="op">(</span><span class="va">pr</span>, <span class="st">"b"</span>, <span class="st">"a"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] FALSE</span></span></code></pre>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># calculate cumulative scores</span></span>
 <span><span class="va">scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cumulativeScores.html">cumulativeScores</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span>
 <span><span class="co"># show score of element a</span></span>
 <span><span class="va">scores</span><span class="op">$</span><span class="va">a</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 1 2 3 3 3</span></span></code></pre>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<pre><code><span><span class="co">## [1] 1 3 4 4 4</span></span></code></pre>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># performing a bunch of rankings</span></span>
 <span><span class="fu"><a href="../reference/lexcelScores.html">lexcelRanking</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## a &gt; b &gt; c</span></span></code></pre>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/L1Scores.html">L1Ranking</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## a &gt; b &gt; c</span></span></code></pre>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/lexcelScores.html">dualLexcelRanking</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
@@ -229,8 +234,8 @@ papers.</p>
 <pre><code><span><span class="co">## a &gt; b ~ c</span></span></code></pre>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/ordinalBanzhafScores.html">ordinalBanzhafRanking</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## a ~ c &gt; b</span></span></code></pre>
-<p>Finally an incidence matrix for all given coalitions can be
+<pre><code><span><span class="co">## a &gt; c &gt; b</span></span></code></pre>
+<p>Lastly, an incidence matrix for all given coalitions can be
 constructed using <code>powerRelationMatrix(pr)</code> or
 <code>as.relation(pr)</code> from the <code>relations</code> package
 <span class="citation">[11]</span>. The incidence matrix may be
@@ -238,23 +243,24 @@ displayed using <code><a href="https://rdrr.io/pkg/relations/man/incidence.html"
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rel</span> <span class="op">&lt;-</span> <span class="fu">relations</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/relations/man/relation.html" class="external-link">as.relation</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span>
 <span><span class="va">rel</span></span></code></pre></div>
-<pre><code><span><span class="co">## A binary relation of size 7 x 7.</span></span></code></pre>
+<pre><code><span><span class="co">## A binary relation of size 8 x 8.</span></span></code></pre>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">relations</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/relations/man/incidence.html" class="external-link">relation_incidence</a></span><span class="op">(</span><span class="va">rel</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Incidences:</span></span>
-<span><span class="co">##    ab ​ac ​​bc ​​​a ​​​​c ​​​​​{} ​​​​​​b</span></span>
-<span><span class="co">## ab  1  1  1 1 1  1 1</span></span>
-<span><span class="co">## ​ac  0  1  1 1 1  1 1</span></span>
-<span><span class="co">## ​​bc  0  1  1 1 1  1 1</span></span>
-<span><span class="co">## ​​​a   0  0  0 1 1  1 1</span></span>
-<span><span class="co">## ​​​​c   0  0  0 1 1  1 1</span></span>
-<span><span class="co">## ​​​​​{}  0  0  0 0 0  1 1</span></span>
-<span><span class="co">## ​​​​​​b   0  0  0 0 0  0 1</span></span></code></pre>
+<span><span class="co">##     ab ​abc ​​ac ​​​bc ​​​​a ​​​​​c ​​​​​​{} ​​​​​​​b</span></span>
+<span><span class="co">## ab   1   1  1  1 1 1  1 1</span></span>
+<span><span class="co">## ​abc  0   1  1  1 1 1  1 1</span></span>
+<span><span class="co">## ​​ac   0   1  1  1 1 1  1 1</span></span>
+<span><span class="co">## ​​​bc   0   1  1  1 1 1  1 1</span></span>
+<span><span class="co">## ​​​​a    0   0  0  0 1 1  1 1</span></span>
+<span><span class="co">## ​​​​​c    0   0  0  0 1 1  1 1</span></span>
+<span><span class="co">## ​​​​​​{}   0   0  0  0 0 0  1 1</span></span>
+<span><span class="co">## ​​​​​​​b    0   0  0  0 0 0  0 1</span></span></code></pre>
 </div>
 </div>
 <div class="section level2">
 <h2 id="sec:prelim">
-<code>PowerRelation</code> Objects<a class="anchor" aria-label="anchor" href="#sec:prelim"></a>
+<code>PowerRelation</code> objects<a class="anchor" aria-label="anchor" href="#sec:prelim"></a>
 </h2>
 <p>We first introduce some basic definitions on binary relations. Let
 <span class="math inline">\(X\)</span> be a set. A set <span class="math inline">\(R \subseteq X \times X\)</span> is said a
@@ -262,33 +268,27 @@ displayed using <code><a href="https://rdrr.io/pkg/relations/man/incidence.html"
 two elements <span class="math inline">\(x, y \in X\)</span>, <span class="math inline">\(xRy\)</span> refers to their relation, more
 formally it means that <span class="math inline">\((x,y) \in R\)</span>.
 A binary relation <span class="math inline">\((x,y) \in R\)</span> is
-said to be:</p>
+said to be</p>
 <ul>
 <li>
 <em>reflexive</em>, if for each <span class="math inline">\(x \in X,
-xRx\)</span>
-</li>
+xRx\)</span>,</li>
 <li>
 <em>transitive</em>, if for each <span class="math inline">\(x, y, z
 \in X, xRy\)</span> and <span class="math inline">\(yRz \Rightarrow
-xRz\)</span>
-</li>
+xRz\)</span>,</li>
 <li>
 <em>total</em>, if for each <span class="math inline">\(x,y \in X, x
-\neq y \Rightarrow xRy\)</span> or <span class="math inline">\(yRx\)</span>
-</li>
+\neq y \Rightarrow xRy\)</span> or <span class="math inline">\(yRx\)</span>,</li>
 <li>
 <em>symmetric</em>, if for each <span class="math inline">\(x,y \in
-X,xRy \Leftrightarrow yRx\)</span>
-</li>
+X,xRy \Leftrightarrow yRx\)</span>,</li>
 <li>
 <em>asymmetric</em>, if for each <span class="math inline">\(x,y \in
-X,(x,y) \in R \Rightarrow (y,x) \notin R\)</span>
-</li>
+X,(x,y) \in R \Rightarrow (y,x) \notin R\)</span>, and</li>
 <li>
 <em>antisymmetric</em>, if for each <span class="math inline">\(x,y
-\in X,xRy \cap yRx \Rightarrow x=y\)</span>
-</li>
+\in X,xRy \cap yRx \Rightarrow x=y\)</span>.</li>
 </ul>
 <p>A <em>preorder</em> is defined as a reflexive and transitive
 relation. If it is total, it is called a <em>total preorder</em>.
@@ -298,8 +298,11 @@ order</em>.</p>
 finite set of <em>elements</em>, sometimes also called <em>players</em>.
 For some <span class="math inline">\(p \in \{1, \ldots, 2^n\}\)</span>,
 let <span class="math inline">\(\mathcal{P} = \{S_1, S_2, \dots,
-S_{p}\}\)</span> be a set of <em>coalitions</em> such that <span class="math inline">\(S_i \subseteq N\)</span> for all <span class="math inline">\(i \in \{1, \ldots, p\}\)</span>. Thus <span class="math inline">\(\mathcal{P} \subseteq 2^N\)</span>, where <span class="math inline">\(2^N\)</span> denotes the power set of <span class="math inline">\(N\)</span> (i.e., the set of all subsets or
-coalitions of <span class="math inline">\(N\)</span>).</p>
+S_{p}\}\)</span> be a set of <em>coalitions</em> such that <span class="math inline">\(S_i \subseteq N\)</span> for all <span class="math inline">\(i \in \{1, \ldots, p\}\)</span>. Thus <span class="math inline">\(\mathcal{P} \subseteq 2^N\)</span>, where <span class="math inline">\(2^N\)</span> denotes the power set of <span class="math inline">\(N\)</span>, the set of all subsets or coalitions
+of <span class="math inline">\(N\)</span>,</p>
+<p><span class="math display">\[
+S \in 2^N \quad \Leftrightarrow \quad S \subseteq N.
+\]</span></p>
 <p><span class="math inline">\(\mathcal{T}(N)\)</span> denotes the set
 of all total preorders on <span class="math inline">\(N\)</span>, <span class="math inline">\(\mathcal{T}(\mathcal{P})\)</span> the set of all
 total preorders on <span class="math inline">\(\mathcal{P}\)</span>. A
@@ -319,23 +322,31 @@ order</em> <span class="math inline">\(\sum_1 \succ \sum_2 \succ \ldots
 <p> Let <span class="math inline">\(N=\{1,2\}\)</span> be two players
 with its corresponding power set <span class="math inline">\(2^N =
 \{\{1,2\}, \{1\}, \{2\}, \emptyset\}\)</span>. The following power
-relation is given: <span class="math inline">\(\succeq =
-\{(\{1,2\},\{2\}), (\{2\}, \emptyset), (\emptyset, \{2\}), (\emptyset,
-\{1\})\}\)</span>. This power relation can be rewritten in a consecutive
-order as: <span class="math inline">\(\{1,2\} \succ \{2\} \sim \emptyset
-\succ \{1\}\)</span>. Its quotient order is formed by three equivalence
+relation is given:</p>
+<p><span class="math display">\[
+\begin{array}{rrrr}
+\succeq \ =\ \{(\{1,2\},\{1,2\}), &amp; (\{1,2\},\{2\}), &amp;
+(\{1,2\},\emptyset), &amp; (\{1,2\},\{1\}),\hphantom{\}}\\
+&amp; (\{2\}, \{2\}), &amp; (\{2\}, \emptyset), &amp;
+\hphantom{1,}(\{2\}, \{1\}),\hphantom{\}}\\
+&amp; (\emptyset, \emptyset), &amp; (\emptyset, \{2\}), &amp;
+(\emptyset, \{1\}),\hphantom{\}}\\
+&amp; &amp; &amp; (\{1\}, \{1\})\hphantom{,}\}
+\end{array}
+\]</span></p>
+<p>This power relation can be rewritten in a consecutive order as: <span class="math inline">\(\{1,2\} \succ \{2\} \sim \emptyset \succ
+\{1\}\)</span>. Its quotient order is formed by three equivalence
 classes <span class="math inline">\(\sum_1 = \{\{1,2\}\}, \sum_2 =
 \{\{2\}, \emptyset\},\)</span> and <span class="math inline">\(\sum_3 =
 \{\{1\}\}\)</span>; so the quotient order of <span class="math inline">\(\succeq\)</span> is such that <span class="math inline">\(\{\{1,2\}\} \succ \{\{2\}, \emptyset\} \succ
 \{\{1\}\}\)</span>.</p>
 </div>
-<p>A <em>social ranking solution</em> (also called <em>social
-ranking</em> or, simply, <em>solution</em>) on <span class="math inline">\(N\)</span>, is a function <span class="math inline">\(R: \mathcal{T}(\mathcal{P}) \longrightarrow
-\mathcal{T}(N)\)</span> associating to each power relation <span class="math inline">\(\succeq \in \mathcal{T}(\mathcal{P})\)</span> a
-total preorder <span class="math inline">\(R(\succeq)\)</span> (or <span class="math inline">\(R^\succeq\)</span>) over the elements of <span class="math inline">\(N\)</span>. By this definition, the notion <span class="math inline">\(i R^\succeq j\)</span> means that applying the
-social ranking solution to the power relation <span class="math inline">\(\succeq\)</span> gives the result that <span class="math inline">\(i\)</span> is ranked higher than or equal to <span class="math inline">\(j\)</span>.</p>
+<p>Note that the way the set <span class="math inline">\(\succeq\)</span> is presented in the example is
+somewhat deliberate to better visualize occurring symmetries and
+asymmetries. This also lets us neatly represent a power relation in the
+form of an <a href="#relations">incidence matrix</a>.</p>
 <div class="section level3">
-<h3 id="creating-powerrelation-objects">Creating <code>PowerRelation</code> Objects<a class="anchor" aria-label="anchor" href="#creating-powerrelation-objects"></a>
+<h3 id="creating-powerrelation-objects">Creating <code>PowerRelation</code> objects<a class="anchor" aria-label="anchor" href="#creating-powerrelation-objects"></a>
 </h3>
 <p>A power relation in the <code>socialranking</code> package is defined
 to be reflexive, transitive and total. In designing the package it was
@@ -411,7 +422,7 @@ attributes.</p>
 <tr>
 <td style="text-align:left;"> <code>coalitionLookup</code> </td>
    <td style="text-align:left;"> Function to determine a coalition's<br>equivalence class index </td>
-   <td style="text-align:left;"> <code>function(coalition, default=-1)</code> </td>
+   <td style="text-align:left;"> <code>function(coalition)</code> </td>
   </tr>
 <tr>
 <td style="text-align:left;"> <code>elementLookup</code> </td>
@@ -458,47 +469,95 @@ but duplicate elements will not be removed.</p>
 <span><span class="co">## [1] 2 1</span></span></code></pre>
 </div>
 <div class="section level3">
-<h3 id="manipulating-powerrelation-objects">Manipulating <code>PowerRelation</code> Objects<a class="anchor" aria-label="anchor" href="#manipulating-powerrelation-objects"></a>
+<h3 id="manipulating-powerrelation-objects">Manipulating <code>PowerRelation</code> objects<a class="anchor" aria-label="anchor" href="#manipulating-powerrelation-objects"></a>
 </h3>
 <p>It is strongly discouraged to directly manipulate
-<code>PowerRelation</code> objects, since multiple attributes in the
-object are so tightly coupled, requiring updates in multiple places.
-Instead, it is advisable to simply create new <code>PowerRelation</code>
-objects.</p>
-<p>For permutating equivalence classes, it is possible to take the
-equivalence classes in <code>$eqs</code> and use a vector of indexes to
-move them around.</p>
+<code>PowerRelation</code> objects, as its attributes are so tightly
+coupled. This would require updates in multiple places. Instead, it is
+advisable to simply create new <code>PowerRelation</code> objects.</p>
+<p>To permutate the order of equivalence classes, it is possible to take
+the equivalence classes in <code>$eqs</code> and use a vector of indexes
+to move them around.</p>
 <div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pr</span></span></code></pre></div>
-<pre><code><span><span class="co">## {1, 2} &gt; ({2} ~ {}) &gt; {1}</span></span></code></pre>
+<code class="sourceCode R"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"12 &gt; (1 ~ {}) &gt; 2"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/PowerRelation.html">PowerRelation</a></span><span class="op">(</span><span class="va">pr</span><span class="op">$</span><span class="va">eqs</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## (1 ~ {}) &gt; 2 &gt; 12</span></span></code></pre>
 <div class="sourceCode" id="cb57"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/PowerRelation.html">PowerRelation</a></span><span class="op">(</span><span class="va">pr</span><span class="op">$</span><span class="va">eqs</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## (2 ~ {}) &gt; 1 &gt; 12</span></span></code></pre>
-<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/PowerRelation.html">PowerRelation</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rev.html" class="external-link">rev</a></span><span class="op">(</span><span class="va">pr</span><span class="op">$</span><span class="va">eqs</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## 1 &gt; (2 ~ {}) &gt; 12</span></span></code></pre>
+<pre><code><span><span class="co">## 2 &gt; (1 ~ {}) &gt; 12</span></span></code></pre>
 <p>For permutating individual coalitions, using
 <code><a href="../reference/as.PowerRelation.html">as.PowerRelation.list()</a></code> may be more convenient since it
 doesn’t require nested list indexing.</p>
-<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pr</span></span></code></pre></div>
-<pre><code><span><span class="co">## {1, 2} &gt; ({2} ~ {}) &gt; {1}</span></span></code></pre>
-<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">coalitions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">pr</span><span class="op">$</span><span class="va">eqs</span>, recursive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">compares</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"&gt;"</span>, <span class="st">"~"</span>, <span class="st">"&gt;"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="va">coalitions</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">3</span>,<span class="fl">4</span><span class="op">)</span><span class="op">]</span>, comparators <span class="op">=</span> <span class="va">compares</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## 2 &gt; (12 ~ {}) &gt; 1</span></span></code></pre>
-<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># notice that the length of comparators does not need to match length(coalitions)-1</span></span>
+<pre><code><span><span class="co">## 1 &gt; (12 ~ {}) &gt; 2</span></span></code></pre>
+<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># notice that the length of comparators does not need to match</span></span>
+<span><span class="co"># length(coalitions)-1</span></span>
 <span><span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rev.html" class="external-link">rev</a></span><span class="op">(</span><span class="va">coalitions</span><span class="op">)</span>, comparators <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"~"</span>, <span class="st">"&gt;"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## (1 ~ {}) &gt; (2 ~ 12)</span></span></code></pre>
-<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
+<pre><code><span><span class="co">## (2 ~ {}) &gt; (1 ~ 12)</span></span></code></pre>
+<div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># not setting the comparators parameter turns it into a linear order</span></span>
 <span><span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="va">coalitions</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## 12 &gt; 2 &gt; {} &gt; 1</span></span></code></pre>
+<pre><code><span><span class="co">## 12 &gt; 1 &gt; {} &gt; 2</span></span></code></pre>
+<div class="section level4">
+<h4 id="makepowerrelationtotal">
+<code>makePowerRelationTotal()</code><a class="anchor" aria-label="anchor" href="#makepowerrelationtotal"></a>
+</h4>
+<p>Let <span class="math inline">\(\succeq \in
+\mathcal{T}(\mathcal{P})\)</span>. We may have not included all possible
+coalitions, such that <span class="math inline">\(\mathcal{P} \subset
+2^N, \mathcal{P} \neq 2^N\)</span>.</p>
+<p><code><a href="../reference/makePowerRelationTotal.html">makePowerRelationTotal()</a></code> appends all the missing
+coalitions <span class="math inline">\(2^N - \mathcal{P}\)</span> as a
+single equivalence class to the end of the power relation.</p>
+<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/PowerRelation.html">PowerRelation</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AT"</span>, <span class="st">"DE"</span><span class="op">)</span>, <span class="st">"FR"</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"DE"</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"AT"</span>, <span class="st">"FR"</span><span class="op">)</span>, <span class="st">"AT"</span><span class="op">)</span></span>
+<span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">pr</span></span></code></pre></div>
+<pre><code><span><span class="co">## ({AT, DE} ~ {FR}) &gt; {DE} &gt; ({AT, FR} ~ {AT})</span></span></code></pre>
+<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># since we have 3 elements, the super set 2^N should include 8 coalitions</span></span>
+<span><span class="fu"><a href="../reference/makePowerRelationTotal.html">makePowerRelationTotal</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## ({AT, DE} ~ {FR}) &gt; {DE} &gt; ({AT, FR} ~ {AT}) &gt; ({AT, DE, FR} ~ {DE, FR} ~ {})</span></span></code></pre>
+</div>
+<div class="section level4">
+<h4 id="makepowerrelationmonotonic">
+<code>makePowerRelationMonotonic()</code><a class="anchor" aria-label="anchor" href="#makepowerrelationmonotonic"></a>
+</h4>
+<p>A power relation <span class="math inline">\(\succeq \in
+\mathcal{T}(\mathcal{P})\)</span> is monotonic if</p>
+<p><span class="math display">\[
+S \succeq T \quad \Rightarrow \quad T \subset S
+\]</span></p>
+<p>for all <span class="math inline">\(S, T \subseteq N\)</span>. In
+other terms, given a monotonic power relation, for any coalition, all
+its subsets cannot be ranked higher.</p>
+<p><code><a href="../reference/makePowerRelationMonotonic.html">makePowerRelationMonotonic()</a></code> turns a potentially
+non-monotonic power relation into a monotonic one by moving and
+(optionally) adding all missing coalitions in <span class="math inline">\(2^N - \mathcal{P}\)</span> to the corresponding
+equivalence classes.</p>
+<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"a &gt; b &gt; c ~ ac &gt; abc"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/makePowerRelationMonotonic.html">makePowerRelationMonotonic</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## (abc ~ ab ~ ac ~ a) &gt; (bc ~ b) &gt; c</span></span></code></pre>
+<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/makePowerRelationMonotonic.html">makePowerRelationMonotonic</a></span><span class="op">(</span><span class="va">pr</span>, addMissingCoalitions <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## (abc ~ ac ~ a) &gt; b &gt; c</span></span></code></pre>
+<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># notice how an empty coalition in some equivalence class</span></span>
+<span><span class="co"># causes all remaining coalitions to be moved there</span></span>
+<span><span class="fu"><a href="../reference/makePowerRelationMonotonic.html">makePowerRelationMonotonic</a></span><span class="op">(</span><span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"ab &gt; c &gt; {} &gt; abc &gt; a &gt; b"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## (abc ~ ab) &gt; (ac ~ bc ~ c) &gt; (a ~ b ~ {})</span></span></code></pre>
+</div>
 </div>
 <div class="section level3">
-<h3 id="creating-power-sets">Creating Power sets<a class="anchor" aria-label="anchor" href="#creating-power-sets"></a>
+<h3 id="creating-power-sets">Creating power sets<a class="anchor" aria-label="anchor" href="#creating-power-sets"></a>
 </h3>
 <p>As the number of elements <span class="math inline">\(n\)</span>
 increases, the number of possible coalitions increases to <span class="math inline">\(|2^N| = 2^n\)</span>. <code>createPowerset</code>
@@ -508,7 +567,7 @@ formats the function call in such a way that makes it easy to rearrange
 the ordering of the coalitions. RStudio offers shortcuts such as Alt+Up
 or Alt+Down (Option+Up or Option+Down on MacOS) to move one or multiple
 lines of code up or down (see fig. <a href="#fig:alt">below</a>).</p>
-<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/createPowerset.html">createPowerset</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span><span class="op">)</span>,</span>
 <span>  result <span class="op">=</span> <span class="st">"print"</span></span>
@@ -530,7 +589,7 @@ code</p>
 <p>By default, <code><a href="../reference/createPowerset.html">createPowerset()</a></code> returns the power set in
 the form of a list. This list can be passed directly to
 <code><a href="../reference/as.PowerRelation.html">as.PowerRelation()</a></code> to create a linear order.</p>
-<div class="sourceCode" id="cb71"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/createPowerset.html">createPowerset</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, includeEmptySet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">ps</span></span></code></pre></div>
 <pre><code><span><span class="co">## [[1]]</span></span>
@@ -541,16 +600,177 @@ the form of a list. This list can be passed directly to
 <span><span class="co">## </span></span>
 <span><span class="co">## [[3]]</span></span>
 <span><span class="co">## [1] 2</span></span></code></pre>
-<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## 12 &gt; 1 &gt; 2</span></span></code></pre>
-<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># equivalent</span></span>
 <span><span class="fu"><a href="../reference/PowerRelation.html">PowerRelation</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">ps</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## (12 ~ 1 ~ 2)</span></span></code></pre>
-<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="fu"><a href="../reference/createPowerset.html">createPowerset</a></span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## abcd &gt; abc &gt; abd &gt; acd &gt; bcd &gt; ab &gt; ac &gt; ad &gt; bc &gt; bd &gt; cd &gt; a &gt; b &gt; c &gt; d &gt; {}</span></span></code></pre>
+</div>
+<div class="section level3">
+<h3 id="generating-powerrelation-objects">Generating <code>PowerRelation</code> objects<a class="anchor" aria-label="anchor" href="#generating-powerrelation-objects"></a>
+</h3>
+<p>Given a list of coalitions, it is possible to loop through all
+possible permutations of power relations using
+<code><a href="../reference/powerRelationGenerator.html">powerRelationGenerator()</a></code>. Calling <code>gen()</code> in the
+example below always produces a unique <code>PowerRelation</code>
+object. If all permutations have been exhausted, <code>NULL</code> is
+returned.</p>
+<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">coalitions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">gen</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/powerRelationGenerator.html">powerRelationGenerator</a></span><span class="op">(</span><span class="va">coalitions</span><span class="op">)</span></span>
+<span><span class="kw">while</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu">gen</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<pre><code><span><span class="co">## (12 ~ 1 ~ 2)</span></span>
+<span><span class="co">## (12 ~ 1) &gt; 2</span></span>
+<span><span class="co">## (12 ~ 2) &gt; 1</span></span>
+<span><span class="co">## (1 ~ 2) &gt; 12</span></span>
+<span><span class="co">## 12 &gt; (1 ~ 2)</span></span>
+<span><span class="co">## 1 &gt; (12 ~ 2)</span></span>
+<span><span class="co">## 2 &gt; (12 ~ 1)</span></span>
+<span><span class="co">## 12 &gt; 1 &gt; 2</span></span>
+<span><span class="co">## 12 &gt; 2 &gt; 1</span></span>
+<span><span class="co">## 1 &gt; 12 &gt; 2</span></span>
+<span><span class="co">## 2 &gt; 12 &gt; 1</span></span>
+<span><span class="co">## 1 &gt; 2 &gt; 12</span></span>
+<span><span class="co">## 2 &gt; 1 &gt; 12</span></span></code></pre>
+<p>Permutations over power relations can be split into two parts:</p>
+<ol style="list-style-type: decimal">
+<li>generating partitions, or, generating differently sized equivalence
+classes, and</li>
+<li>moving coalitions between these partitions.</li>
+</ol>
+<p>In the code example above, we started with a single partition of size
+three, wherein all coalitions are considered equally preferable. By the
+end, we have reached the maximum number of partitions, where each
+coalition is put inside an equivalence class of size 1.</p>
+<p>The partition generation can be reversed, such that we first receive
+linear power relations.</p>
+<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">gen</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/powerRelationGenerator.html">powerRelationGenerator</a></span><span class="op">(</span><span class="va">coalitions</span>, startWithLinearOrder <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="kw">while</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html" class="external-link">is.null</a></span><span class="op">(</span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu">gen</span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div>
+<pre><code><span><span class="co">## 12 &gt; 1 &gt; 2</span></span>
+<span><span class="co">## 12 &gt; 2 &gt; 1</span></span>
+<span><span class="co">## 1 &gt; 12 &gt; 2</span></span>
+<span><span class="co">## 2 &gt; 12 &gt; 1</span></span>
+<span><span class="co">## 1 &gt; 2 &gt; 12</span></span>
+<span><span class="co">## 2 &gt; 1 &gt; 12</span></span>
+<span><span class="co">## 12 &gt; (1 ~ 2)</span></span>
+<span><span class="co">## 1 &gt; (12 ~ 2)</span></span>
+<span><span class="co">## 2 &gt; (12 ~ 1)</span></span>
+<span><span class="co">## (12 ~ 1) &gt; 2</span></span>
+<span><span class="co">## (12 ~ 2) &gt; 1</span></span>
+<span><span class="co">## (1 ~ 2) &gt; 12</span></span>
+<span><span class="co">## (12 ~ 1 ~ 2)</span></span></code></pre>
+<p>Notice that the “moving coalitions” part was not reversed, only the
+order the partitions come in.</p>
+<p>Similarly, we are also able to skip the current partition.</p>
+<div class="sourceCode" id="cb89"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">gen</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/powerRelationGenerator.html">powerRelationGenerator</a></span><span class="op">(</span><span class="va">coalitions</span><span class="op">)</span></span>
+<span><span class="co"># partition 3</span></span>
+<span></span>
+<span><span class="va">gen</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/generateNextPartition.html">generateNextPartition</a></span><span class="op">(</span><span class="va">gen</span><span class="op">)</span></span>
+<span><span class="co"># partition 2+1</span></span>
+<span></span>
+<span><span class="va">gen</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/generateNextPartition.html">generateNextPartition</a></span><span class="op">(</span><span class="va">gen</span><span class="op">)</span></span>
+<span><span class="co"># partition 1+2</span></span>
+<span><span class="fu">gen</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## 12 &gt; (1 ~ 2)</span></span></code></pre>
+<p>Note: the number of possible power relations grows tremendously fast
+as the number of coalitions rises. To get to that number, first consider
+how many ways <span class="math inline">\(n\)</span> coalitions can be
+split into <span class="math inline">\(k\)</span> partitions, also known
+as the Stirling number of second kind,</p>
+<p><span class="math display">\[
+S(n,k) = \frac{1}{k!}\ \sum_{j=0}^k (-1)^j \binom{k}{j}(k-j)^n.
+\]</span></p>
+<p>The number of all possible partitions given <span class="math inline">\(n\)</span> coalitions is known as the Bell number
+(see also <code>numbers::bell()</code>),</p>
+<p><span class="math display">\[
+B_n = \sum_{j=0}^k S(n,k).
+\]</span></p>
+<p>Given a set of coalitions <span class="math inline">\(\mathcal{P} \in
+2^N\)</span>, the number of total preorders in <span class="math inline">\(\mathcal{T}(\mathcal{P})\)</span> is</p>
+<p><span class="math display">\[
+|\mathcal{T}(\mathcal{P})| = \sum_{k=0}^{|\mathcal{P}|} k!\ *\
+S(|\mathcal{P}|, k)
+\]</span></p>
+<table class="table">
+<thead><tr class="header">
+<th align="right"># of coalitions</th>
+<th align="right"># of partitions</th>
+<th align="right"># of total preorders</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="right">2</td>
+<td align="right">2</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="right">3</td>
+<td align="right">5</td>
+<td align="right">13</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">15</td>
+<td align="right">75</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">52</td>
+<td align="right">541</td>
+</tr>
+<tr class="even">
+<td align="right">6</td>
+<td align="right">203</td>
+<td align="right">4.683</td>
+</tr>
+<tr class="odd">
+<td align="right">7</td>
+<td align="right">877</td>
+<td align="right">47.293</td>
+</tr>
+<tr class="even">
+<td align="right">8</td>
+<td align="right">4.140</td>
+<td align="right">545.835</td>
+</tr>
+<tr class="odd">
+<td align="right">9</td>
+<td align="right">21.147</td>
+<td align="right">7.087.261</td>
+</tr>
+<tr class="even">
+<td align="right">10</td>
+<td align="right">115.975</td>
+<td align="right">102.247.563</td>
+</tr>
+<tr class="odd">
+<td align="right">11</td>
+<td align="right">678.570</td>
+<td align="right">1.622.632.573</td>
+</tr>
+<tr class="even">
+<td align="right">12</td>
+<td align="right">4.213.597</td>
+<td align="right">28.091.567.595</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="section level2">
@@ -570,6 +790,9 @@ a social ranking, respectively, <span class="math inline">\(i\)</span>
 <code>&gt;</code> <span class="math inline">\(j\)</span> indicating that
 <span class="math inline">\(i\)</span> is strictly better than <span class="math inline">\(j\)</span>, whereas in <span class="math inline">\(i\)</span> <code>~</code> <span class="math inline">\(j\)</span>, <span class="math inline">\(i\)</span>
 is indifferent to <span class="math inline">\(j\)</span>.</p>
+<p>In literature, <span class="math inline">\(i I^\succeq j\)</span> and
+<span class="math inline">\(i P^\succeq j\)</span> are often used to
+denote the symmetric and asymmetric part, respectively. <span class="math inline">\(i I^\succeq j\)</span> therefore means that <span class="math inline">\(i R^\succeq j\)</span> and <span class="math inline">\(j R^\succeq i\)</span>, whereas <span class="math inline">\(i P^\succeq j\)</span> implies that <span class="math inline">\(i R^\succeq j\)</span> but not <span class="math inline">\(j R^\succeq j\)</span>.</p>
 <p>In section <a href="#ch:srsobj">3.1</a> we show how a general
 <code>SocialRankingSolution</code> object can be constructed using the
 <code>doRanking</code> function. In the following sections, we will
@@ -619,13 +842,13 @@ where the names of the elements are determined from the
 <code><a href="https://rdrr.io/r/base/names.html" class="external-link">names()</a></code> attribute of <code>scores</code>. Hence, a
 <code>PowerRelation</code> object is not necessary to create a
 <code>SocialRankingSolution</code> object.</p>
-<div class="sourceCode" id="cb79"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># we define some arbitrary score vector where "a" scores highest.</span></span>
 <span><span class="co"># "b" and "c" both score 1, thus they are indifferent.</span></span>
 <span><span class="va">scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fl">100</span>, b <span class="op">=</span> <span class="fl">1</span>, c <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/doRanking.html">doRanking</a></span><span class="op">(</span><span class="va">scores</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## a &gt; b ~ c</span></span></code></pre>
-<div class="sourceCode" id="cb81"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb93"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># we can also tell doRanking to punish higher scores</span></span>
 <span><span class="fu"><a href="../reference/doRanking.html">doRanking</a></span><span class="op">(</span><span class="va">scores</span>, decreasing <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## b ~ c &gt; a</span></span></code></pre>
@@ -646,11 +869,11 @@ comparison:</p>
 <code>compare(a,b) == 0</code>: <code>a</code> and <code>b</code>
 are equivalent.</li>
 </ul>
-<div class="sourceCode" id="cb83"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb95"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>a <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span>, b <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span>, c <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">7</span>, <span class="fl">0</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/doRanking.html">doRanking</a></span><span class="op">(</span><span class="va">scores</span>, compare <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">a</span>, <span class="va">b</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">b</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## a ~ c &gt; b</span></span></code></pre>
-<div class="sourceCode" id="cb85"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># a and c are considered to be indifferent, because their sums are the same</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/doRanking.html">doRanking</a></span><span class="op">(</span><span class="va">scores</span>, compare <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">a</span>,<span class="va">b</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">a</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">b</span><span class="op">)</span>, decreasing <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
@@ -682,29 +905,29 @@ logical value <code>TRUE</code> if <code>e1</code> dominates
 dominating <code>e2</code> does <em>not</em> indicate that
 <code>e2</code> dominates <code>e1</code>, nor does it imply that
 <code>e1</code> is indifferent to <code>e2</code>.</p>
-<div class="sourceCode" id="cb87"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb99"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"3 &gt; 1 &gt; 2 &gt; 12 &gt; 13 &gt; 23"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># 1 clearly dominates 2</span></span>
 <span><span class="fu"><a href="../reference/dominates.html">dominates</a></span><span class="op">(</span><span class="va">pr</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] TRUE</span></span></code></pre>
-<div class="sourceCode" id="cb89"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb101"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/dominates.html">dominates</a></span><span class="op">(</span><span class="va">pr</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] FALSE</span></span></code></pre>
-<div class="sourceCode" id="cb91"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb103"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># 3 does not dominate 1, nor does 1 dominate 3, because</span></span>
 <span><span class="co"># {}u3 &gt; {}u1, but 2u1 &gt; 2u3</span></span>
 <span><span class="fu"><a href="../reference/dominates.html">dominates</a></span><span class="op">(</span><span class="va">pr</span>, <span class="fl">1</span>, <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] FALSE</span></span></code></pre>
-<div class="sourceCode" id="cb93"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb105"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/dominates.html">dominates</a></span><span class="op">(</span><span class="va">pr</span>, <span class="fl">3</span>, <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] FALSE</span></span></code></pre>
-<div class="sourceCode" id="cb95"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb107"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># an element i dominates itself, but it does not strictly dominate itself</span></span>
 <span><span class="co"># because there is no Sui &gt; Sui</span></span>
 <span><span class="fu"><a href="../reference/dominates.html">dominates</a></span><span class="op">(</span><span class="va">pr</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] TRUE</span></span></code></pre>
-<div class="sourceCode" id="cb97"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb109"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/dominates.html">dominates</a></span><span class="op">(</span><span class="va">pr</span>, <span class="fl">1</span>, <span class="fl">1</span>, strictly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] FALSE</span></span></code></pre>
 <p>For any <span class="math inline">\(S \in 2^{N \setminus
@@ -718,13 +941,13 @@ singletons is not desired. For this reason the parameter
 <code>includeEmptySet</code> can be set to <code>FALSE</code> such that
 <span class="math inline">\(\emptyset \cup \{i\} \succeq \emptyset \cup
 \{j\}\)</span> is not considered in the CP-Majority comparison.</p>
-<div class="sourceCode" id="cb99"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb111"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"ac &gt; bc ~ b &gt; a ~ abc &gt; ab"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># FALSE because ac &gt; bc, whereas b &gt; a</span></span>
 <span><span class="fu"><a href="../reference/dominates.html">dominates</a></span><span class="op">(</span><span class="va">pr</span>, <span class="st">"a"</span>, <span class="st">"b"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] FALSE</span></span></code></pre>
-<div class="sourceCode" id="cb101"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb113"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># TRUE because ac &gt; bc, ignoring b &gt; a comparison</span></span>
 <span><span class="fu"><a href="../reference/dominates.html">dominates</a></span><span class="op">(</span><span class="va">pr</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, includeEmptySet <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] TRUE</span></span></code></pre>
@@ -766,7 +989,7 @@ elements <code>e1</code> and <code>e2</code>,
 definition <a href="#def:cumuldomscore">2</a> for each element,
 <code>cumulativelyDominates(pr, e1, e2)</code> returns <code>TRUE</code>
 or <code>FALSE</code> based on definition <a href="#def:cumuldom">3</a>.</p>
-<div class="sourceCode" id="cb103"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb115"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"ab &gt; (ac ~ bc) &gt; (a ~ c) &gt; {} &gt; b"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/cumulativeScores.html">cumulativeScores</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## $a</span></span>
@@ -780,20 +1003,20 @@ or <code>FALSE</code> based on definition <a href="#def:cumuldom">3</a>.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## attr(,"class")</span></span>
 <span><span class="co">## [1] "CumulativeScores"</span></span></code></pre>
-<div class="sourceCode" id="cb105"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb117"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># for each index k, $a[k] &gt;= $b[k]</span></span>
 <span><span class="fu"><a href="../reference/cumulativeScores.html">cumulativelyDominates</a></span><span class="op">(</span><span class="va">pr</span>, <span class="st">"a"</span>, <span class="st">"b"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] TRUE</span></span></code></pre>
-<div class="sourceCode" id="cb107"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb119"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># $a[3] &gt; $b[3], therefore a also strictly dominates b</span></span>
 <span><span class="fu"><a href="../reference/cumulativeScores.html">cumulativelyDominates</a></span><span class="op">(</span><span class="va">pr</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, strictly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] TRUE</span></span></code></pre>
-<div class="sourceCode" id="cb109"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb121"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># $b[1] &gt; $c[1], but $c[3] &gt; $b[3]</span></span>
 <span><span class="co"># therefore neither b nor c dominate each other</span></span>
 <span><span class="fu"><a href="../reference/cumulativeScores.html">cumulativelyDominates</a></span><span class="op">(</span><span class="va">pr</span>, <span class="st">"b"</span>, <span class="st">"c"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] FALSE</span></span></code></pre>
-<div class="sourceCode" id="cb111"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb123"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/cumulativeScores.html">cumulativelyDominates</a></span><span class="op">(</span><span class="va">pr</span>, <span class="st">"c"</span>, <span class="st">"b"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] FALSE</span></span></code></pre>
 <p>Similar to the dominance property from our previous section, two
@@ -828,14 +1051,14 @@ coalitions <span class="math inline">\(S \in 2^{N \setminus
 scores <span class="math inline">\(d_{ij}(\succeq)\)</span> and <span class="math inline">\(-d_{ji}(\succeq)\)</span>. Notice the minus sign -
 that way we can use the sum of both values to determine the relation
 between <code>e1</code> and <code>e2</code>.</p>
-<div class="sourceCode" id="cb113"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb125"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"ab &gt; (ac ~ bc) &gt; (a ~ c) &gt; {} &gt; b"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/cpMajorityComparison.html">cpMajorityComparisonScore</a></span><span class="op">(</span><span class="va">pr</span>, <span class="st">"a"</span>, <span class="st">"b"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1]  2 -1</span></span></code></pre>
-<div class="sourceCode" id="cb115"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb127"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/cpMajorityComparison.html">cpMajorityComparisonScore</a></span><span class="op">(</span><span class="va">pr</span>, <span class="st">"b"</span>, <span class="st">"a"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1]  1 -2</span></span></code></pre>
-<div class="sourceCode" id="cb117"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb129"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="../reference/cpMajorityComparison.html">cpMajorityComparisonScore</a></span><span class="op">(</span><span class="va">pr</span>, <span class="st">"a"</span>, <span class="st">"b"</span><span class="op">)</span><span class="op">)</span> <span class="op">&gt;=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="st">"a &gt;= b"</span><span class="op">)</span></span>
 <span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
@@ -846,11 +1069,11 @@ between <code>e1</code> and <code>e2</code>.</p>
 calculates <span class="math inline">\(d_{ij}(\succ)\)</span> and <span class="math inline">\(-d_{ji}(\succ)\)</span>, the number of coalitions
 <span class="math inline">\(S \in 2^{N\setminus \{i,j\}}\)</span> where
 <span class="math inline">\(S\cup\{i\}\succ S\cup\{j\}\)</span>.</p>
-<div class="sourceCode" id="cb119"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb131"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Now (ac ~ bc) is not counted</span></span>
 <span><span class="fu"><a href="../reference/cpMajorityComparison.html">cpMajorityComparisonScore</a></span><span class="op">(</span><span class="va">pr</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, strictly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 1 0</span></span></code></pre>
-<div class="sourceCode" id="cb121"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb133"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Notice that the sum is still the same</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="../reference/cpMajorityComparison.html">cpMajorityComparisonScore</a></span><span class="op">(</span><span class="va">pr</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, strictly <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="fu"><a href="../reference/cpMajorityComparison.html">cpMajorityComparisonScore</a></span><span class="op">(</span><span class="va">pr</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, strictly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -865,7 +1088,7 @@ calculations, but in the process retains more information about all the
 comparisons that might be interesting to a user, i.e., the set <span class="math inline">\(D_{ij}(\succeq)\)</span> and <span class="math inline">\(D_{ji}(\succeq)\)</span> as well as the relation
 <span class="math inline">\(iR^\succeq_\textrm{CP}j\)</span>. See the
 documentation for a full list of available data.</p>
-<div class="sourceCode" id="cb123"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb135"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># extract more information in cpMajorityComparison</span></span>
 <span><span class="fu"><a href="../reference/cpMajorityComparison.html">cpMajorityComparison</a></span><span class="op">(</span><span class="va">pr</span>, <span class="st">"a"</span>, <span class="st">"b"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## a &gt; b</span></span>
@@ -873,7 +1096,7 @@ documentation for a full list of available data.</p>
 <span><span class="co">## D_ba = {c}</span></span>
 <span><span class="co">## Score of a = 2</span></span>
 <span><span class="co">## Score of b = 1</span></span></code></pre>
-<div class="sourceCode" id="cb125"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb137"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># with strictly set to TRUE, coalition c does</span></span>
 <span><span class="co"># neither appear in D_ab nor in D_ba</span></span>
 <span><span class="fu"><a href="../reference/cpMajorityComparison.html">cpMajorityComparison</a></span><span class="op">(</span><span class="va">pr</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, strictly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
@@ -929,21 +1152,30 @@ N\)</span>:</p>
 \sum_{S} m^S_i(\succeq)\)</span> for all <span class="math inline">\(S
 \in N\setminus\{i\}\)</span>.</p>
 </div>
-<p>Note that if <span class="math inline">\(S \cup \{i\} \notin
+<p>Note that if <span class="math inline">\(S \notin
+\mathcal{P}\)</span> or <span class="math inline">\(S \cup \{i\} \notin
 \mathcal{P}\)</span>, <span class="math inline">\(m_i^S(\succeq) =
 0\)</span>.</p>
-<p>The function <code>ordinalBanzhafScores</code> returns two numbers
-for each element: the number of coalitions <span class="math inline">\(S\)</span> where a player’s contribution has a
-positive impact, and the number of coalitions <span class="math inline">\(S\)</span> where a player’s contribution has a
-negative impact. These two numbers are added and elements are ranked
-highest to lowest.</p>
-<div class="sourceCode" id="cb127"><pre class="downlit sourceCode r">
+<p>The function <code><a href="../reference/ordinalBanzhafScores.html">ordinalBanzhafScores()</a></code> returns three
+numbers for each element,</p>
+<ol style="list-style-type: decimal">
+<li>the number of coalitions <span class="math inline">\(S\)</span>
+where a player’s contribution has a positive impact,</li>
+<li>the number of coalitions <span class="math inline">\(S\)</span>
+where a player’s contribution has a negative impact, and</li>
+<li>the number of coalitions <span class="math inline">\(S\)</span> for
+which no information can be gathered, because <span class="math inline">\(S \notin \mathcal{P}\)</span> or <span class="math inline">\(S \cup \{i\} \notin \mathcal{P}\)</span>.</li>
+</ol>
+<p>The sum of the first two numbers determines the score of a player.
+Players with higher scores rank higher.</p>
+<div class="sourceCode" id="cb139"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">pr</span></span></code></pre></div>
 <pre><code><span><span class="co">## 12 &gt; 1 &gt; 2</span></span></code></pre>
-<div class="sourceCode" id="cb129"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb141"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># both players 1 and 2 have an Ordinal Banzhaf Score of 1</span></span>
 <span><span class="co"># therefore they are indifferent to one another</span></span>
+<span><span class="co"># note that the empty set is missing, as such we cannot compare {}u{i} with {}</span></span>
 <span><span class="fu"><a href="../reference/ordinalBanzhafScores.html">ordinalBanzhafScores</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## $`1`</span></span>
 <span><span class="co">## [1] 1 0 1</span></span>
@@ -953,19 +1185,19 @@ highest to lowest.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## attr(,"class")</span></span>
 <span><span class="co">## [1] "OrdinalBanzhafScores"</span></span></code></pre>
-<div class="sourceCode" id="cb131"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb143"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/ordinalBanzhafScores.html">ordinalBanzhafRanking</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## 1 ~ 2</span></span></code></pre>
-<div class="sourceCode" id="cb133"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb145"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"ab &gt; a &gt; {} &gt; b"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># player b has a negative impact on the empty set</span></span>
 <span><span class="co"># -&gt; player b's score is 1 - 1 = 0</span></span>
 <span><span class="co"># -&gt; player a's score is 2 - 0 = 2</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="fu"><a href="../reference/ordinalBanzhafScores.html">ordinalBanzhafScores</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">score</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">score</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="fu"><a href="../reference/ordinalBanzhafScores.html">ordinalBanzhafScores</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">score</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">score</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## a b </span></span>
 <span><span class="co">## 2 0</span></span></code></pre>
-<div class="sourceCode" id="cb135"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb147"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/ordinalBanzhafScores.html">ordinalBanzhafRanking</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## a &gt; b</span></span></code></pre>
 </div>
@@ -996,18 +1228,18 @@ d_{ji}(\succeq)\}|\)</span></p>
 element, a positive number for the winning comparisons (shown in <span class="math inline">\(\text{Score}_\text{Cop}(i)\)</span> on the left)
 and a negative number for the losing comparisons (in <span class="math inline">\(\text{Score}_\text{Cop}(i)\)</span> on the
 right).</p>
-<div class="sourceCode" id="cb137"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb149"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"(abc ~ ab ~ c ~ a) &gt; (b ~ bc) &gt; ac"</span><span class="op">)</span></span>
 <span><span class="va">scores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/copelandScores.html">copelandScores</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Based on CP-Majority, a&gt;=b and a&gt;=c (+2), but b&gt;=a (-1)</span></span>
 <span><span class="va">scores</span><span class="op">$</span><span class="va">a</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1]  2 -1</span></span></code></pre>
-<div class="sourceCode" id="cb139"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb151"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="fu"><a href="../reference/copelandScores.html">copelandScores</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span>, <span class="va">sum</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##  a  b  c </span></span>
 <span><span class="co">##  1  0 -1</span></span></code></pre>
-<div class="sourceCode" id="cb141"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb153"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/copelandScores.html">copelandRanking</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## a &gt; b &gt; c</span></span></code></pre>
 </div>
@@ -1036,12 +1268,12 @@ d_{ji}(\succeq)\)</span> for all <span class="math inline">\(j \in N
 <p><code>kramerSimpsonScores(pr)</code> returns a single numerical value
 for each element, which sorted lowest to highest gives us the ranking
 solution.</p>
-<div class="sourceCode" id="cb143"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb155"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"(abc ~ ab ~ c ~ a) &gt; (b ~ bc) &gt; ac"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="fu"><a href="../reference/kramerSimpsonScores.html">kramerSimpsonScores</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## a b c </span></span>
 <span><span class="co">## 0 0 1</span></span></code></pre>
-<div class="sourceCode" id="cb145"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb157"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/kramerSimpsonScores.html">kramerSimpsonRanking</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## a ~ b &gt; c</span></span></code></pre>
 <p>There is a small caveat to Definition <a href="#def:ks">8</a>. By
@@ -1057,16 +1289,16 @@ possibly discarding valuable information.</p>
 offer a <code>compIvsI</code> parameter that can be set to
 <code>TRUE</code> if one wishes for <span class="math inline">\(d_{ii}(\succeq)\)</span> to be included in the
 comparisons.</p>
-<div class="sourceCode" id="cb147"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb159"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"b &gt; (a ~ c) &gt; ab &gt; (ac ~ bc) &gt; {} &gt; abc"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/kramerSimpsonScores.html">kramerSimpsonRanking</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## b &gt; a &gt; c</span></span></code></pre>
-<div class="sourceCode" id="cb149"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb161"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># notice how b's score is negative</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="fu"><a href="../reference/kramerSimpsonScores.html">kramerSimpsonScores</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##  a  b  c </span></span>
 <span><span class="co">##  1 -1  2</span></span></code></pre>
-<div class="sourceCode" id="cb151"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb163"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/kramerSimpsonScores.html">kramerSimpsonScores</a></span><span class="op">(</span><span class="va">pr</span>, elements <span class="op">=</span> <span class="st">"b"</span>, compIvsI <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## $b</span></span>
 <span><span class="co">## [1] 0</span></span>
@@ -1110,14 +1342,14 @@ N\)</span>:</p>
 \geq_{\textrm{Lex}} \text{Score}_\text{Lex}(j)
 \end{equation}\]</span></p>
 </div>
-<div class="sourceCode" id="cb153"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb165"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"12 &gt; (123 ~ 23 ~ 3) &gt; (1 ~ 2) &gt; 13"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># show the number of times an element appears in each equivalence class</span></span>
 <span><span class="co"># e.g. 3 appears 3 times in [[2]] and 1 time in [[4]]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">pr</span><span class="op">$</span><span class="va">equivalenceClasses</span>, <span class="va">unlist</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## list()</span></span></code></pre>
-<div class="sourceCode" id="cb155"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb167"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lexScores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lexcelScores.html">lexcelScores</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span>
 <span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">lexScores</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Lexcel score of element "</span>, <span class="va">i</span>, <span class="st">": "</span>, <span class="va">lexScores</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
@@ -1125,11 +1357,11 @@ N\)</span>:</p>
 <span><span class="co"># at index 1, element 2 ranks higher than 3</span></span>
 <span><span class="va">lexScores</span><span class="op">[</span><span class="st">'2'</span><span class="op">]</span> <span class="op">&gt;</span> <span class="va">lexScores</span><span class="op">[</span><span class="st">'3'</span><span class="op">]</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] TRUE</span></span></code></pre>
-<div class="sourceCode" id="cb157"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb169"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># at index 2, element 2 ranks higher than 1</span></span>
 <span><span class="va">lexScores</span><span class="op">[</span><span class="st">'2'</span><span class="op">]</span> <span class="op">&gt;</span> <span class="va">lexScores</span><span class="op">[</span><span class="st">'1'</span><span class="op">]</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] TRUE</span></span></code></pre>
-<div class="sourceCode" id="cb159"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb171"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/lexcelScores.html">lexcelRanking</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## 2 &gt; 1 &gt; 3</span></span></code></pre>
 <p>For some generalizations of the Lexcel solution see also <span class="citation">[9]</span>.</p>
@@ -1138,13 +1370,13 @@ N\)</span>:</p>
 the number of times an element appears in a given equivalence class is
 of interest. In fact, applying the base function <code>cumsum</code> on
 an element’s lexcel score gives us its cumulative score.</p>
-<div class="sourceCode" id="cb161"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb173"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lexcelCumulated</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">lexScores</span>, <span class="va">cumsum</span><span class="op">)</span></span>
 <span><span class="va">cumulScores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cumulativeScores.html">cumulativeScores</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">lexcelCumulated</span><span class="op">)</span>, <span class="st">": "</span>, <span class="va">lexcelCumulated</span>, collapse <span class="op">=</span> <span class="st">', '</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "1: 1:4, 2: c(1, 3, 4, 4), 3: c(0, 3, 3, 4)"</span></span></code></pre>
-<div class="sourceCode" id="cb163"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb175"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">cumulScores</span><span class="op">)</span>, <span class="st">": "</span>, <span class="va">cumulScores</span>, collapse <span class="op">=</span> <span class="st">', '</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "1: 1:4, 2: c(1, 3, 4, 4), 3: c(0, 3, 3, 4)"</span></span></code></pre>
 </div>
@@ -1180,7 +1412,7 @@ N\)</span>:</p>
 Lexcel comparisons. Instead <code>-rev(x)</code> is called on a Lexcel
 score vector <code>x</code> such that the resulting comparisons produces
 a Dual Lexcel ranking solution.</p>
-<div class="sourceCode" id="cb165"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb177"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"12 &gt; (123 ~ 23 ~ 3) &gt; (1 ~ 2) &gt; 13"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">lexScores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lexcelScores.html">lexcelScores</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span>
@@ -1188,7 +1420,7 @@ a Dual Lexcel ranking solution.</p>
 <span><span class="co"># in regular Lexcel, 1 scores higher than 3</span></span>
 <span><span class="va">lexScores</span><span class="op">[</span><span class="st">'1'</span><span class="op">]</span> <span class="op">&gt;</span> <span class="va">lexScores</span><span class="op">[</span><span class="st">'3'</span><span class="op">]</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] TRUE</span></span></code></pre>
-<div class="sourceCode" id="cb167"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb179"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># turn Lexcel score into Dual Lexcel score</span></span>
 <span><span class="va">dualLexScores</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/structure.html" class="external-link">structure</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="../reference/lexcelScores.html">lexcelScores</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">r</span><span class="op">)</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/rev.html" class="external-link">rev</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -1198,11 +1430,11 @@ a Dual Lexcel ranking solution.</p>
 <span><span class="co"># now 1 scores lower than 3</span></span>
 <span><span class="va">dualLexScores</span><span class="op">[</span><span class="st">'1'</span><span class="op">]</span> <span class="op">&gt;</span> <span class="va">dualLexScores</span><span class="op">[</span><span class="st">'3'</span><span class="op">]</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] FALSE</span></span></code></pre>
-<div class="sourceCode" id="cb169"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb181"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># element 2 comes out at the top in both Lexcel and Dual Lexcel</span></span>
 <span><span class="fu"><a href="../reference/lexcelScores.html">lexcelRanking</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## 2 &gt; 1 &gt; 3</span></span></code></pre>
-<div class="sourceCode" id="cb171"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb183"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/lexcelScores.html">dualLexcelRanking</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## 2 &gt; 3 &gt; 1</span></span></code></pre>
 </div>
@@ -1231,7 +1463,7 @@ properties such <code>relation_is_linear_order(rel)</code>,
 <code>relation_is_acyclic(rel)</code> and
 <code>relation_is_antisymmetric(rel)</code> (see <code>relations</code>
 package for more <span class="citation">[11]</span>).</p>
-<div class="sourceCode" id="cb173"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb185"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"ab &gt; a &gt; {} &gt; b"</span><span class="op">)</span></span>
 <span><span class="va">rel</span> <span class="op">&lt;-</span> <span class="fu">relations</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/relations/man/relation.html" class="external-link">as.relation</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span>
 <span></span>
@@ -1242,7 +1474,7 @@ package for more <span class="citation">[11]</span>).</p>
 <span><span class="co">## ​a   0 1  1 1</span></span>
 <span><span class="co">## ​​{}  0 0  1 1</span></span>
 <span><span class="co">## ​​​b   0 0  0 1</span></span></code></pre>
-<div class="sourceCode" id="cb175"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb187"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>  <span class="fu">relations</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/relations/man/predicates.html" class="external-link">relation_is_acyclic</a></span><span class="op">(</span><span class="va">rel</span><span class="op">)</span>,</span>
 <span>  <span class="fu">relations</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/relations/man/predicates.html" class="external-link">relation_is_antisymmetric</a></span><span class="op">(</span><span class="va">rel</span><span class="op">)</span>,</span>
@@ -1255,7 +1487,7 @@ package for more <span class="citation">[11]</span>).</p>
 <p>Note that the columns and rows are sorted by their names in
 <code>relation_domain(rel)</code>, hence why each name is preceded by
 the ordering number.</p>
-<div class="sourceCode" id="cb177"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb189"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># a power relation where coalitions {1} and {2} are indifferent</span></span>
 <span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"12 &gt; (1 ~ 2)"</span><span class="op">)</span></span>
 <span><span class="va">rel</span> <span class="op">&lt;-</span> <span class="fu">relations</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/relations/man/relation.html" class="external-link">as.relation</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span>
@@ -1267,7 +1499,7 @@ the ordering number.</p>
 <span><span class="co">## 12  1 1 1</span></span>
 <span><span class="co">## ​1   0 1 1</span></span>
 <span><span class="co">## ​​2   0 1 1</span></span></code></pre>
-<div class="sourceCode" id="cb179"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb191"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># FALSE</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>  <span class="fu">relations</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/relations/man/predicates.html" class="external-link">relation_is_acyclic</a></span><span class="op">(</span><span class="va">rel</span><span class="op">)</span>,</span>
@@ -1289,7 +1521,7 @@ the end of the power relation.</p>
 <p>Properly handling power relations and calculating social ranking
 solutions with cycles is somewhat ill-defined, hence a warning message
 is shown as soon as one is created.</p>
-<div class="sourceCode" id="cb181"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb193"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"12 &gt; 2 &gt; (1 ~ 2) &gt; 12"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Warning in createLookupTables(equivalenceClasses): Found 2 duplicate coalitions, listed below. This violates transitivity and can cause issues with certain ranking solutions. You may want to take a look at socialranking::transitiveClosure().</span></span>
 <span><span class="co">##     - {2}</span></span>
@@ -1306,14 +1538,14 @@ together they form the symmetric power relation <span class="math inline">\(x \s
 relation with cycles into one without one. In the process of removing
 duplicate coalitions, it turns all asymmectric relations within a cycle
 into symmetric relations.</p>
-<div class="sourceCode" id="cb184"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb196"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/warning.html" class="external-link">suppressWarnings</a></span><span class="op">(</span><span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">pr</span></span></code></pre></div>
 <pre><code><span><span class="co">## 1 &gt; 2 &gt; 1</span></span></code></pre>
-<div class="sourceCode" id="cb186"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb198"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/transitiveClosure.html">transitiveClosure</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## (1 ~ 2)</span></span></code></pre>
-<div class="sourceCode" id="cb188"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb200"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># two cycles, (1&gt;3&gt;1) and (2&gt;23&gt;2)</span></span>
 <span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/warning.html" class="external-link">suppressWarnings</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"1 &gt; 3 &gt; 1 &gt; 2 &gt; 23 &gt; 2"</span><span class="op">)</span></span>
@@ -1321,7 +1553,7 @@ into symmetric relations.</p>
 <span></span>
 <span><span class="fu"><a href="../reference/transitiveClosure.html">transitiveClosure</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## (1 ~ 3) &gt; (2 ~ 23)</span></span></code></pre>
-<div class="sourceCode" id="cb190"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb202"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># overlapping cycles</span></span>
 <span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/warning.html" class="external-link">suppressWarnings</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"c &gt; ac &gt; b &gt; ac &gt; (a ~ b) &gt; abc"</span><span class="op">)</span></span>

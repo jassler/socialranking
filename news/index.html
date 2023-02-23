@@ -48,8 +48,39 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="development version" id="socialranking-development-version">socialranking (development version)<a class="anchor" aria-label="anchor" href="#socialranking-development-version"></a></h2>
-</div>
+<h2 class="pkg-version" data-toc-text="1.0.0" id="socialranking-100">socialranking 1.0.0<a class="anchor" aria-label="anchor" href="#socialranking-100"></a></h2>
+<p>This major update brings a lot of breaking changes that are hopefully justified.</p>
+<ul><li>The structure of <code>PowerRelation</code> objects has been changed to improve usability and speed.
+<ul><li>
+<code>$elements</code> is, as in the previous version, a vector of sorted, unique elements</li>
+<li>
+<code>$equivalenceClasses</code> has been renamed to <code>$eqs</code>
+</li>
+<li>
+<code>$rankingCoalitions</code> and <code>$rankingComparators</code> has been removed, they served no particular purpose</li>
+<li>Added <code>$coalitionLookup()</code> to make it easy (and fast) to find equivalence class indexes that a coalition appears in</li>
+<li>Added <code>$elementLookup()</code> to make it easy (and fast) to find coalitions that an element appears in</li>
+<li>Changed coalitions to no longer be <code><a href="https://rdrr.io/pkg/sets/man/set.html" class="external-link">sets::set</a></code> objects, but just normal vectors. This allows for one element to appear multiple times in the same coalition, which is more consistent with the ability to have a coalition appear multiple times in a <code>PowerRealtion</code> object.</li>
+</ul></li>
+<li>Added <code><a href="../reference/PowerRelation.html">PowerRelation()</a></code> and <code><a href="../reference/as.PowerRelation.html">as.PowerRelation()</a></code>
+</li>
+<li>Added <code><a href="../reference/SocialRankingSolution.html">SocialRankingSolution()</a></code>
+</li>
+<li>Added <code><a href="../reference/equivalenceClassIndex.html">coalitionLookup()</a></code> and <code><a href="../reference/elementLookup.html">elementLookup()</a></code>
+</li>
+<li>Added <code><a href="../reference/L1Scores.html">L1Scores()</a></code> and <code><a href="../reference/L1Scores.html">L1Ranking()</a></code>, along with its aliases <code>lexcel1...()</code>
+</li>
+<li>Added <code><a href="../reference/makePowerRelationMonotonic.html">makePowerRelationMonotonic()</a></code> and <code><a href="../reference/makePowerRelationTotal.html">makePowerRelationTotal()</a></code>
+</li>
+<li>Added <code><a href="../reference/powerRelationGenerator.html">powerRelationGenerator()</a></code> and <code><a href="../reference/generateNextPartition.html">generateNextPartition()</a></code>
+</li>
+<li>Changed <code><a href="../reference/createPowerset.html">createPowerset()</a></code>, replaced parameters logicals <code>copyToClipboard</code> and <code>writeLines</code> with character <code>result</code>
+</li>
+<li>Changed <code><a href="../reference/ordinalBanzhafScores.html">ordinalBanzhafScores()</a></code> such that it returns a third value indicating how many comparisons were not made</li>
+<li>Deprecated <code><a href="../reference/newPowerRelation.html">newPowerRelation()</a></code> and <code><a href="../reference/newPowerRelationFromString.html">newPowerRelationFromString()</a></code>
+</li>
+<li>Removed <code>mathjaxr</code> and <code>sets</code> from dependencies</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.2" id="socialranking-012-2022-10-11">socialranking 0.1.2 (2022-10-11)<a class="anchor" aria-label="anchor" href="#socialranking-012-2022-10-11"></a></h2><p class="text-muted">CRAN release: 2022-10-27</p>
 <ul><li>Changed maintainer’s email address</li>
@@ -58,10 +89,6 @@
 <h2 class="pkg-version" data-toc-text="0.1.1" id="socialranking-011-2022-04-25">socialranking 0.1.1 (2022-04-25)<a class="anchor" aria-label="anchor" href="#socialranking-011-2022-04-25"></a></h2><p class="text-muted">CRAN release: 2022-04-25</p>
 <ul><li>Added parameter <code>equivalenceClasses</code> to <code><a href="../reference/newPowerRelation.html">newPowerRelation()</a></code>
 </li>
-</ul></div>
-    <div class="section level2">
-<h2 class="pkg-version" data-toc-text="0.2.0" id="socialranking-020">socialranking 0.2.0<a class="anchor" aria-label="anchor" href="#socialranking-020"></a></h2>
-<ul><li>Removed mathjaxr from dependencies</li>
 </ul></div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>
