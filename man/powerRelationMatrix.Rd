@@ -119,13 +119,13 @@ relation <- powerRelationMatrix(
   function(x) paste0(letters[x], ":", paste(pr$rankingCoalitions[[x]], collapse = "|"))
 )
 
+relations::relation_incidence(relation)
 # Incidences:
 #       a:1|2 b:1 c:2 d:1
 # a:1|2     1   1   1   1
 # b:1       0   1   1   1
 # c:2       0   1   1   1
 # d:1       0   1   1   1
-relations::relation_incidence(relation)
 
 }
 \seealso{

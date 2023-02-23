@@ -253,7 +253,7 @@ createLookupTables <- function(equivalenceClasses) {
       return(FALSE)
 
     for(cl in a$eqs[[i]]) {
-      if(any(sapply(b$eqs[[i]], function(x) all(cl == x))))
+      if(any(sapply(b$eqs[[i]], function(x) identical(cl, x))))
         next
       return(FALSE)
     }
@@ -423,7 +423,7 @@ newPowerRelation <- function(...) {
   stop("This function has been deprecated. Use PowerRelation() instead.")
 }
 
-#' Create [`PowerRelation`] object from string
+#' New [`PowerRelation`] object
 #'
 #' Deprecated. Use [`as.PowerRelation()`] instead.
 #'

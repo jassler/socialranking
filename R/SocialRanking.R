@@ -1,34 +1,11 @@
 #' `SocialRankingSolution` object
 #'
-#' Use [`doRanking()`] to create a `SocialRankingSolution` object.
+#' Create a `SocialRankingSolution` object.
 #'
-#' @param x An object
-#' @param ... Arguments passed to or from other methods
+#' Similar to [`PowerRelation()`], `SocialRankingSolution` expects expects a list to represent a power relation.
+#' Unlike [`PowerRelation()`] however, this list should not be nested and should only contain vectors, each vector containing elements that are deemed equally preferable.
 #'
-#' @template return/noreturn
-#'
-#' @export
-SocialRankingSolution <- function(x, ...) {
-  UseMethod('SocialRankingSolution', x)
-}
-
-#' `SocialRankingSolution` object
-#'
-#' Use [`doRanking()`] to create a `SocialRankingSolution` object.
-#'
-#' @param x An object
-#' @param ... Arguments passed to or from other methods
-#'
-#' @template return/noreturn
-#'
-#' @export
-SocialRankingSolution.default <- function(x, ...) {
-  stop('Use doRanking() to create a PowerRelation object.')
-}
-
-#' Create a `SocialRankingSolution` object
-#'
-#' Rank elements based on their scores.
+#' Use [`doRanking()`] to rank elements based on arbitrary score objects.
 #'
 #' A social ranking solution, or ranking solution, or solution, maps each power relation between coalitions to a power relation between its elements.
 #' I.e., from the power relation \eqn{\succeq: \{1,2\} \succ \{2\} \succ \{1\}}{\{1,2\} > \{2\} > \{1\}}, we may expect the result of a ranking solution \eqn{R^\succeq}{R^(>=)}
@@ -43,8 +20,27 @@ SocialRankingSolution.default <- function(x, ...) {
 #' As in, \eqn{iI^\succeq j}{iIj} implies that \eqn{iR^\succeq j}{iRj} and \eqn{jR^\succeq i}{jRi},
 #' whereas \eqn{iP^\succeq j}{iIj} implies that \eqn{iR^\succeq j}{iRj} but not \eqn{jR^\succeq i}{jRi}.
 #'
-#' Since all ranking solutions in the package are tied to the scores or score vectors of the elements,
-#' `doRanking()` does not take a [`PowerRelation`] object, but only a (named) vector or list of scores for each element.
+#' @param l A list of vectors
+#'
+#' @template return/SocialRankingSolution
+#'
+#' @seealso Function that ranks elements based on their scores, [`doRanking()`]
+#'
+#' @examples
+#' SocialRankingSolution(list(c("a", "b"), "f", c("c", "d")))
+#' # a ~ b > f > c ~ d
+#'
+#' @export
+SocialRankingSolution <- function(l) {
+  structure(l, class = 'SocialRankingSolution')
+}
+
+#' Create a `SocialRankingSolution` object
+#'
+#' Rank elements based on their scores.
+#'
+#' All ranking solutions in the package are tied to the scores or score vectors of the elements.
+#' For these kinds of solutions, `doRanking()` offers a simple way that turns a (named) vector or list of scores for each element into a `SocialRankingSolution` object.
 #' For example, `doRanking(c(a=1,b=2))` produces `b > a` (\eqn{b P^\succeq a}{bPa}), because `b` with a score of `2` should be placed higher than `a` with a score of `1`.
 #'
 #' Ranking solutions in the package include [`lexcelRanking()`], [`ordinalBanzhafRanking()`] and [`L1Ranking()`], among others.
@@ -79,8 +75,9 @@ SocialRankingSolution.default <- function(x, ...) {
 #' these two elements. If set to `NULL`, the default [`order()`] function is called. See details for more information.
 #' @param decreasing If `TRUE` (default), elements with higher scores are ranked higher.
 #'
-#' @return A list of type `SocialRankingSolution`.
-#' Each element of the list contains a [vector][base::c()] of elements in `powerRelation$elements` that are indifferent to one another.
+#' @template return/SocialRankingSolution
+#'
+#' @seealso [`SocialRankingSolution()`]
 #'
 #' @examples
 #' doRanking(c(a=1,b=2))
@@ -171,8 +168,7 @@ doRanking <- function(scores, compare = NULL, decreasing = TRUE) {
     sapply(r, function(x) elements[x])
   })
 
-  class(orderList) <- 'SocialRankingSolution'
-  return(orderList)
+  SocialRankingSolution(orderList)
 }
 
 customOrder <- function(scores, compare) {

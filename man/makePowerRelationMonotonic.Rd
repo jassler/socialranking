@@ -4,10 +4,12 @@
 \alias{makePowerRelationMonotonic}
 \title{Make Power Relation monotonic}
 \usage{
-makePowerRelationMonotonic(powerRelation)
+makePowerRelationMonotonic(powerRelation, addMissingCoalitions = TRUE)
 }
 \arguments{
 \item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
+
+\item{addMissingCoalitions}{If \code{TRUE}, also include all coalitions in the power set of \code{powerRelation$elements} that are not present in the current power relation.}
 }
 \value{
 \code{\link{PowerRelation}} object containing the following values:
@@ -32,16 +34,23 @@ Calling \code{makePowerRelationMonotonic()} on some \code{\link{PowerRelation}} 
 so that the power relation becomes monotonic.
 }
 \examples{
-pr <- as.PowerRelation("ab > ac > abc > b > a > {} > c < bc")
+pr <- as.PowerRelation("ab > ac > abc > b > a > {} > c > bc")
 makePowerRelationMonotonic(pr)
 # (abc ~ ab) > ac > (bc ~ b) > a > (c ~ {})
 
-# notice that missing coalitions are automatically added
-# (except for the empty set)
+# notice that missing coalitions are automatically added,
+# except for the empty set
 pr <- as.PowerRelation("a > b > c")
 makePowerRelationMonotonic(pr)
 # (abc ~ ab ~ ac ~ a) > (bc ~ b) > c
 
+# setting addMissingCoalitions to FALSE changes this behavior
+pr <- as.PowerRelation("a > ab > c ~ {} > b")
+makePowerRelationMonotonic(pr, addMissingCoalitions = FALSE)
+# (ab ~ a) > (b ~ c ~ {})
+
+# notice that an equivalence class containing an empty coalition
+# automatically moves all remaining coalitions to that equivalence class.
 pr <- as.PowerRelation("a > {} > b > c")
 makePowerRelationMonotonic(pr)
 # (abc ~ ab ~ ac ~ a) > (bc ~ b ~ c ~ {})
