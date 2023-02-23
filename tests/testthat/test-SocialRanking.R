@@ -92,6 +92,10 @@ test_that("Inequality from differently sized objects", {
   )
 })
 
-test_that("SocialRankingSolution fails", {
-  expect_error(SocialRankingSolution(12))
+test_that("SocialRankingSolution()", {
+  result <- evaluate_promise(SocialRankingSolution(list(c("a", "b"), "e", c("c", "d"))), print = TRUE)
+  expect_equal(result$output, "a ~ b > e > c ~ d")
+
+  result <- evaluate_promise(SocialRankingSolution(list(12, 34)), print = TRUE)
+  expect_equal(result$output, "12 > 34")
 })

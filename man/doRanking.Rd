@@ -23,21 +23,8 @@ Each element of the list contains a \link[base:c]{vector} of elements in \code{p
 Rank elements based on their scores.
 }
 \details{
-A social ranking solution, or ranking solution, or solution, maps each power relation between coalitions to a power relation between its elements.
-I.e., from the power relation \eqn{\succeq: \{1,2\} \succ \{2\} \succ \{1\}}{\{1,2\} > \{2\} > \{1\}}, we may expect the result of a ranking solution \eqn{R^\succeq}{R^(>=)}
-to rank element 2 over 1. Therefore \eqn{2 R^\succeq 1}{2 R^(>=) 1} will be present, but not \eqn{1 R^\succeq 2}{1 R^(>=) 2}.
-
-Formally, a ranking solution \eqn{R: \mathcal{T}(\mathcal{P}) \rightarrow \mathcal{T}(N)} is a function that,
-given a power relation \eqn{\succeq \in \mathcal{T}(\mathcal{P})}{>= in T(P)}, always produces a power relation
-\eqn{R(\succeq)}{R(>=)} (or \eqn{R^\succeq}{R^(>=), or just R here for better readability}) over its set of elements.
-For two elements \eqn{i, j \in N}{i,j in N}, \eqn{i R^\succeq j}{iRj} means that applying the solution \eqn{R}{R} on the ranking \eqn{\succeq}{>=}
-makes \eqn{i}{i} at least as preferable as \eqn{j}{j}.
-Often times \eqn{iI^\succeq j}{iIj} and \eqn{iP^\succeq j}{iPj} are used to indicate its symmetric and asymmetric part, respectively.
-As in, \eqn{iI^\succeq j}{iIj} implies that \eqn{iR^\succeq j}{iRj} and \eqn{jR^\succeq i}{jRi},
-whereas \eqn{iP^\succeq j}{iIj} implies that \eqn{iR^\succeq j}{iRj} but not \eqn{jR^\succeq i}{jRi}.
-
-Since all ranking solutions in the package are tied to the scores or score vectors of the elements,
-\code{doRanking()} does not take a \code{\link{PowerRelation}} object, but only a (named) vector or list of scores for each element.
+All ranking solutions in the package are tied to the scores or score vectors of the elements.
+For these kinds of solutions, \code{doRanking()} offers a simple way that turns a (named) vector or list of scores for each element into a \code{SocialRankingSolution} object.
 For example, \code{doRanking(c(a=1,b=2))} produces \code{b > a} (\eqn{b P^\succeq a}{bPa}), because \code{b} with a score of \code{2} should be placed higher than \code{a} with a score of \code{1}.
 
 Ranking solutions in the package include \code{\link[=lexcelRanking]{lexcelRanking()}}, \code{\link[=ordinalBanzhafRanking]{ordinalBanzhafRanking()}} and \code{\link[=L1Ranking]{L1Ranking()}}, among others.
@@ -119,4 +106,7 @@ stopifnot(
   doRanking(structure(scores, class = "RevLex"))
 )
 
+}
+\seealso{
+\code{\link[=SocialRankingSolution]{SocialRankingSolution()}}
 }
