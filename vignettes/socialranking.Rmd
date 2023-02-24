@@ -2,7 +2,7 @@
 author: | 
   | Jochen Staudacher, Stefano Moretti, Felix Fritz
   | (Hochschule Kempten, Université Paris Dauphine)
-  | Contact: jochen.staudacher@hs-kempten.de
+  | Contact: felix.fritz@dauphine.eu
 title: "`socialranking`: A package for evaluating ordinal power relations in cooperative game theory"
 date: "`r Sys.Date()`"
 output:
