@@ -163,15 +163,6 @@ powerRelationGenerator <- function(coalitions, startWithLinearOrder = FALSE) {
       coalitionLookup = function(v) coalitionLookup[[toKey(v)]],
       elementLookup = function(e) elementLookup[[paste(e)]]
     )
-
-    # structure(list(
-    #   elements = elements,
-    #   rankingCoalitions = coalitions[perms[,permsI]],
-    #   rankingComparators = comps[-length(comps)],
-    #   equivalenceClasses = lapply(seq.int(length(partCum)-1), function(x) {
-    #     coalitions[perms[(partCum[x]+1):partCum[x+1],permsI]]
-    #   })
-    # ), class = classes)
   }
 }
 

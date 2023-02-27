@@ -216,14 +216,21 @@ createLookupTables <- function(equivalenceClasses) {
   elementLookup   <- vector(mode = 'list', length = length(elements)) |> structure(names = elements)
 
   duplicates <- list()
+  duplicateEls <- list()
   for(i in seq_along(keyList)) {
     for(j in seq_along(keyList[[i]])) {
       k <- keyList[[i]][[j]]
       v <- c(coalitionLookup[[k]], i)
       coalitionLookup[[k]] <- v
 
+      coal <- equivalenceClasses[[i]][[j]]
       if(length(v) > 1) {
-        duplicates <- append(duplicates, paste0('{', paste(equivalenceClasses[[i]][[j]], collapse = ', '), '}'))
+        duplicates <- append(duplicates, paste0('{', paste(coal, collapse = ', '), '}'))
+      }
+
+      if(any((dups <- duplicated(coal)))) {
+        els <- coal[dups] |> sort() |> unique()
+        duplicateEls <- append(duplicateEls, paste0(paste(els, collapse = ', '), ' in the coalition {', paste0(coal, collapse = ', '), '}'))
       }
 
       for(el in paste(equivalenceClasses[[i]][[j]])) {
@@ -234,6 +241,9 @@ createLookupTables <- function(equivalenceClasses) {
   if(length(duplicates) > 0) {
     duplicates <- unique(duplicates)
     warning(paste0('Found ', length(duplicates), ' duplicate coalition', if(length(duplicates) > 1) 's', ', listed below. This violates transitivity and can cause issues with certain ranking solutions. You may want to take a look at socialranking::transitiveClosure().\n    - ', paste(duplicates, collapse = '\n    - ')))
+  }
+  if(length(duplicateEls) > 0) {
+    warning(paste0('Found ', length(duplicateEls), ' coalition', if(length(duplicateEls) > 1) 's', ' that contain elements more than once.\n    - ', paste0(duplicateEls, collapse = '\n    - ')))
   }
 
   return(list(

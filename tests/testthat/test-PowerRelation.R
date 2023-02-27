@@ -89,6 +89,19 @@ test_that("cycle warning", {
     - {ab, cd, ef}")
 })
 
+test_that("duplicate elements", {
+  result <- evaluate_promise(as.PowerRelation("11 > 12"))
+  expect_length(result$warnings, 1)
+  expect_equal(result$warnings[1], "Found 1 coalition that contain elements more than once.\n    - 1 in the coalition {1, 1}")
+
+  result <- evaluate_promise(as.PowerRelation("11 > 121 > 313133"))
+  expect_length(result$warnings, 1)
+  expect_equal(result$warnings[1], "Found 3 coalitions that contain elements more than once.\n    - 1 in the coalition {1, 1}\n    - 1 in the coalition {1, 1, 2}\n    - 1, 3 in the coalition {1, 1, 3, 3, 3, 3}")
+
+  result <- evaluate_promise(as.PowerRelation("121 > 123 > 121"))
+  expect_length(result$warnings, 2)
+})
+
 test_that("equality", {
   expect_true(
     as.PowerRelation("1 ~ 12 ~ 3") ==
