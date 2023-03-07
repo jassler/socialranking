@@ -1,0 +1,322 @@
+---
+title: "My maths"
+bibliography: refs.bib
+output:
+  pdf_document:
+    pandoc_args: !expr rmarkdown::pandoc_lua_filter_args("extract_commands.lua")
+    includes:
+      in_header: "commands.tex"
+  html_document:
+    theme: cosmo
+    pandoc_args: !expr rmarkdown::pandoc_lua_filter_args("extract_commands.lua")
+---
+
+<style>
+.table {
+  width: initial;
+}
+.MathJax_Display {
+  margin: 0 !important;
+  padding: 1em 0;
+}
+h1, h2 {
+  background: rgb(158,153,255);
+  background: linear-gradient(90deg, rgba(158,153,255,1) 0%, rgba(201,221,255,1) 35%, rgba(217,249,255,1) 100%);
+}
+</style>
+
+::: {.hidden}
+$$
+\newcommand{\elements}{W}
+\newcommand{\element}{w}
+\newcommand{\elementsDef}[1][\elements]{#1 = \{1, \dots, n\}}
+\newcommand{\cA}{A}
+\newcommand{\cB}{B}
+\newcommand{\coalitionDef}[1][\coalitionA]{#1 \subseteq \elements}
+\newcommand{\cardinality}[1]{\##1}
+\newcommand{\ps}[1][\elements]{\mathcal{P}(#1)}
+\newcommand{\winningCoalitions}{\mathfrak{G}}
+\newcommand{\winningCoalitionsDef}[1][\winningCoalitions]{#1 \subseteq \ps}
+\newcommand{\sg}{\mathfrak{W}}
+\newcommand{\sgDef}[1][\sg]{#1 := (\elements, \winningCoalitions)}
+\newcommand{\mwc}{\mathfrak{M}}
+\newcommand{\mwcg}{\mwc(\winningCoalitions)}
+\newcommand{\mwcgDef}[1][\mwcg]{#1 := \{\cA \in \winningCoalitions: \cB \notin \winningCoalitions, \forall \cB \subset \cA\}}
+\newcommand{\BanzhafScore}[1][\element]{\text{BS}_{#1}}
+\newcommand{\BanzhafScoreDef}[1][\element]{\BanzhafScore[#1] := \cardinality{\{\cA \in \winningCoalitions: #1 \in \cA, (\cA \setminus \{#1\}) \notin \winningCoalitions\}}}
+\newcommand{\PenroseBanzhafPower}[1][\element]{\text{PBP}_{#1}}
+\newcommand{\PenroseBanzhafPowerDef}[1][\element]{\PenroseBanzhafPower[#1] := \frac{\BanzhafScore[#1]}{2^{n-1}}}
+\newcommand{\PenroseBanzhafIndex}[1][\element]{\text{PBI}_{#1}}
+\newcommand{\PenroseBanzhafIndexDef}[1][\element]{\PenroseBanzhafIndex[#1] := \frac{\BanzhafScore[#1]}{\sum_{i=1}^n \BanzhafScore[i]}}
+\newcommand{\ShapleyShubikIndex}[1][\element]{\text{SSI}_{#1}}
+\newcommand{\ShapleyShubikIndexDef}[1][\element]{\ShapleyShubikIndex[#1] := \sum_{\substack{\cA \in \winningCoalitions \\ \text{where } #1 \text{ is decisive for } \cA}} \frac{(n - \cardinality{\cA})!(\cardinality{\cA}-1)!}{n!}}
+$$
+:::
+
+# Preamble
+
+We define the following:
+
+| Variable         | Definition                    | Description                      |
+| ----------------:|:--------------------------    |:-------------------------------- |
+| $\elements$              | $\elementsDef[]$           | set of voters                    |
+| $\cA$              | $\coalitionDef[]$                 | a coalition, <br>$\varnothing$ is an empty coalition, <br>$N$ is a grand coalition |
+| $\cardinality{\cA}$            | $\in \mathbb{N}$              | cardinality of a set             |
+| $\ps$ | $= \{\cA \subseteq \elements\}$         | power set, set of all coalitions, <br>$\cardinality{\ps} = 2^n$ |
+| $\winningCoalitions$   | $\winningCoalitionsDef[]$    | set of winning coalitions, <br>$\cA \notin \winningCoalitions$ is a losing coalition |
+| $\mwcg$ | $\mwcgDef[]$ | minimal winning coalitions |
+| $\sg$   | $\sgDef[]$        | a simple game where $\elements \in \winningCoalitions$ and $\varnothing \notin \winningCoalitions$. <br>If $\cA \in \winningCoalitions$, then $\cB \in \winningCoalitions, \forall \cB \supset \cA$ (monotonicity) |
+| $g$              | $: \elements \rightarrow [0, \infty)$ | function returning the voting weight of a coalition |
+| $q$              | $\in [0, \infty)$             | quota that has to be reached     |
+| $g$ and $q$ exists s.t. | $\sum_{\element \in \cA} g(\element) \geq q, \forall \cA \in \winningCoalitions$, <br>$\sum_{\element \in \cB} g(\element) < q, \forall \cB \in (\ps \setminus \winningCoalitions)$ | a weighted simple game |
+
+## Minimal Winning Coalitions
+
+$\winningCoalitions$ can also be defined in correlation to its minimal winning coalitions,
+
+$$
+\winningCoalitions = \{\cA \in \ps: \exists \cB \in \mwcg: \cB \subseteq \cA\}.
+$$
+
+This is because minimal winning coalitions are just the minimal elements in $\winningCoalitions$ with respect to the partial order $\subseteq$. $\winningCoalitions$ always meets the _upset_ or _filter_ condition [@anderson1987; @engel1997]. This MWC-set is called a _basis_ as well.
+
+MWCs are _antichains_ in $\ps$, also known as _Sperner families_. An antichain $\tilde{\mwc}$ is a non-empty set of subsets of $\elements$ such that $\cA \nsubseteq \cB$ and $\cB \nsubseteq \cA$ for all $\cA, \cB \in \tilde{\mwc}$.
+
+The cardinality of $\mwcg$ is known to satisfy $1 \leq \cardinality{\mwcg} \leq \binom{n}{\lfloor n/2 \rfloor}$. The number of voting systems based on the number of voters is equal to the Dedekind number - 2.
+
+# Power Indices
+
+## Penrose-Banzhaf Index
+
+$$
+\begin{aligned}
+\text{Banzhaf score} \qquad & \qquad \BanzhafScoreDef\\[10pt]
+\text{Penrose-Banzhaf power} \qquad & \qquad \PenroseBanzhafPowerDef\\[10pt]
+\text{Penrose-Banzhaf index} \qquad & \qquad \PenroseBanzhafIndexDef
+\end{aligned}
+$$
+
+```{r echo=FALSE}
+library(sets)
+wcs <- function(mwc, elements = mwc |> unlist() |> sort() |> unique()) {
+  mwc <- lapply(mwc, as.set)
+  ps <- socialranking::createPowerset(elements) |> lapply(sets::as.set)
+  wcs <- mwc |> lapply(sets::set_is_subset, ps) |> Reduce(f = "|")
+  ps[wcs]
+}
+isWinning <- function(coalition, mwc) {
+  any(set_is_subset(mwc, coalition))
+}
+isLosing <- function(coalition, mwc) {
+  !isWinning(coalition, mwc)
+}
+decisives <- function(i, mwc, elements) {
+  wcs(mwc, elements) |> Filter(f = function(S)
+    i %in% S &&
+      isWinning(S, mwc) &&
+      isLosing(S - set(i), mwc)
+  )
+}
+
+BS <- function(i, mwc, elements = mwc |> unlist() |> sort() |> unique()) {
+  length(decisives(i, mwc, elements))
+}
+PBP <- function(i, mwc, elements = mwc |> unlist() |> sort() |> unique()) {
+  BS(i, mwc, elements) / 2^(length(elements) - 1)
+}
+PBI <- function(i, mwc, elements = mwc |> unlist() |> sort() |> unique()) {
+  divBy <- elements |> sapply(BS, mwc, elements) |> sum()
+  BS(i, mwc, elements) / divBy
+}
+printCoal <- function(coal) {
+  paste0("\\{", paste(coal, collapse = ", "), "\\}")
+}
+printMwc <- function(mwc) {
+  if(length(mwc) == 0) return("\\{\\}")
+  coals <- sapply(mwc, printCoal) |> paste(collapse = ", ")
+  paste0("\\{", coals, "\\}")
+}
+```
+
+Note how $0 \leq \PenroseBanzhafIndex \leq 1$ and $\sum_{i=1}^n \PenroseBanzhafIndex[i] = 1$.
+
+```{r echo=FALSE}
+exMwc <- list(c(1,2), c(1,3))
+exEls <- c(1,2,3,4)
+```
+
+As an example, take $\elements = `r printCoal(exEls)`$ and $\mwcg = `r printMwc(exMwc)`$. We have the following:
+
+$$
+\winningCoalitions = `r printMwc(wcs(exMwc, exEls))`
+$$
+
+$$
+\begin{aligned}
+`r paste0("\\BanzhafScore[",exEls,"] &= ",sapply(exEls,BS,exMwc,exEls),"\\quad &",collapse="")`\\
+`r paste0("\\PenroseBanzhafIndex[",exEls,"] &= ",sapply(exEls,PBI,exMwc,exEls),"\\quad &",collapse="")`
+\end{aligned}
+$$
+
+<!--\BanzhafScore[1] &= `r BS(1, exMwc, exEls)` \quad & \BanzhafScore[2] &= `r BS(2, exMwc, exEls)` \quad & \BanzhafScore[3] &= `r BS(3, exMwc)`\\
+\PenroseBanzhafIndex[1] &= `r PBI(1, exMwc, exEls)` \quad & \PenroseBanzhafIndex[2] &= `r PBI(2, exMwc, exEls)` \quad & \PenroseBanzhafIndex[3] &= `r PBI(3, exMwc, exEls)`
+-->
+
+## Shapley-Shubik Index
+
+$$
+\ShapleyShubikIndexDef
+$$
+
+```{r echo=FALSE}
+SSI <- function(i, mwc, elements = mwc |> unlist() |> sort() |> unique()) {
+  decisiveCoals <- decisives(i, mwc, elements)
+  numEls <- length(elements)
+  res <- decisiveCoals |> sapply(function(x) factorial(numEls - length(x)) * factorial(length(x) - 1)) |> sum()
+  paste(res, "/", factorial(numEls))
+}
+```
+
+From the example before we can determine that
+
+$$
+\ShapleyShubikIndex[1] = `r SSI(1, exMwc, exEls)` \quad \ShapleyShubikIndex[2] = `r SSI(2, exMwc, exEls)` \quad \ShapleyShubikIndex[3] = `r SSI(3, exMwc, exEls)`
+$$
+
+Note again that $0 \leq \ShapleyShubikIndex \leq 1$ and $\sum_{i=1}^n \ShapleyShubikIndex[i] = 1$. Both Banzhaf and Shapley measure the influence of voters in different ways. The choice of the index depends on the behavior of the voters.
+
+* Voters are completely independent from each other: Penrose-Banzhaf Index
+* A common belief has influence on the choice of all voters: Shapley-Shubik Index
+
+Note that the solutions are dependent on the *decisiveness* of voters, not necessarily the MWCs alone. For those, the Deegan-Packel index and the Holler-Packel index can be taken a look at.
+
+We are also interested in *power profiles* concerning the power index under consideration. What are the sets and values of of potential power profiles of voters?
+
+Not every constellation of voting power is possible. For two voters, two power distributions are possible: either one has all and the other none of the power, or both have half of the power.
+
+How do we calculate the $\PenroseBanzhafIndex$ and $\ShapleyShubikIndex$ only using the MWC-set?
+
+# Calculations
+
+## New Banzhaf score formula
+
+Given a voting system $\sg$ with $\mwcg = \{V_1, \dots, V_m\}$ minimal winning coalitions and $\cardinality{\mwcg} = m$ we define
+
+$$
+\BanzhafScore = \sum_{r=1}^m (-1)^{r-1} \sum_{1 \leq i_1 < \dots < i_r \leq m} t_{i_1, \dots, i_r}(\element)
+$$
+
+$$
+\text{with } t_{i_1, \dots, i_r}(\element) := \begin{cases}
+2^{n-\cardinality{\bigcup_{j=1}^r V_{i_j}}}, & \text{for } \element \in \bigcup_{j=1}^r V_{i_j},\\
+0, & \text{for } \element \notin \bigcup_{j=1}^r V_{i_j}.
+\end{cases}
+$$
+
+Recall the example with $\elements = `r printCoal(exEls)`$ and $\mwcg = `r printMwc(exMwc)`$. So, $m = `r length(exMwc)`$. This gives us:
+
+```{r echo=FALSE}
+m <- length(exMwc)
+factors <- (-1)^(seq(m)-1) |> sapply(function(i) if(i == 1) "+" else "-")
+factors[1] <- if(factors[1] == "+") "" else "-"
+
+unrollBSComp <- function(r, m, el) {
+  paste(
+    if(r %% 2 == 0) "-" else if(r == 1) "" else "+",
+    "\\sum_{1 \\leq",
+    paste("i_{", seq(r), "}", collapse = " < "),
+    "\\leq", m, "} t_{",
+    paste("i_{", seq(r), "}", collapse = ", "),
+    "} (", el, ")"
+  )
+}
+
+generateISequenceMatrix <- function(amount, max) {
+  partitions::allbinom(max, amount)
+}
+
+generateISequence <- function(amount, max) {
+  s <- generateISequenceMatrix(amount, max) |>
+    apply(2, function(i) paste0("t_{", paste(i, collapse=","), "}(\\element)")) |>
+    paste(collapse = " + ")
+  if(amount %% 2 == 0)
+    paste0("- (", s, ")")
+  else if(amount ==1)
+    paste0("(", s, ")")
+  else
+    paste0("+ (", s, ")")
+}
+```
+
+$$
+\begin{aligned}
+\BanzhafScore[\element] &= \sum_{r=1}^{`r m`} (-1)^{r-1} \sum_{1 \leq i_1 < \dots < i_r \leq `r m`} t_{i_1, \dots, i_r}(\element)\\[10pt]
+&= `r paste(sapply(seq(m), unrollBSComp, m, "\\element"), collapse = " ")`\\[10pt]
+&= `r seq(m) |> sapply(generateISequence, m) |> paste(collapse = "")`
+\end{aligned}
+$$
+
+<!-- &= `r paste(factors, " \\sum_{1 \\leq i_1 < \\dots < i_",seq(m),"\\leq",m,"} t_{i_1, \\dots, i_", seq(m), "}(1)", collapse = " ")` -->
+
+The $V_i$s are defined as follows:
+
+$$
+\begin{aligned}
+`r paste0("V_{", seq_along(exMwc), "} &= ", sapply(exMwc, printCoal), collapse = "\\\\")`
+\end{aligned}
+$$
+
+Considering each player, we get the following.
+
+```{r echo=FALSE,results='asis'}
+exSets <- lapply(exMwc, sets::as.set)
+for(w in seq(exEls)) {
+  cat("**Player ", w, "**\n\n", sep = "")
+  cat("$$\n\\begin{aligned}\n")
+  cat("\\BanzhafScore[", w, "] &= ", sep = "")
+  
+  for(r in seq(m)) {
+    mat <- generateISequenceMatrix(r, m)
+    mat <- apply(mat, 2, function(arr) {
+      exSetsUnion <- sets::as.set(unlist(exSets[arr]))
+      if(w %in% exSetsUnion) {
+        paste("2^{", length(exEls), " - \\cardinality{", printCoal(exSetsUnion), "}}")
+      } else {
+        "0"
+      }
+    })
+    if(r %% 2 == 0) cat("- (")
+    else if(r == 1) cat("(")
+    else cat("+ (")
+    
+    cat(mat, sep = " + ")
+    cat(")")
+  }
+  cat("\\\\\n &= ")
+  
+  res <- c()
+  for(r in seq(m)) {
+    mat <- generateISequenceMatrix(r, m)
+    mat <- apply(mat, 2, function(arr) {
+      exSetsUnion <- sets::as.set(unlist(exSets[arr]))
+      if(w %in% exSetsUnion) {
+        2^(length(exEls) - length(exSetsUnion))
+      } else {
+        0
+      }
+    })
+    if(r %% 2 == 0) cat("- (")
+    else if(r == 1) cat("(")
+    else cat("+ (")
+    
+    cat(mat, sep = " + ")
+    res <- c(res, if(r %% 2 == 0) -sum(mat) else sum(mat))
+    
+    cat(")")
+  }
+  
+  
+  cat(" =", sum(res), "\n\\end{aligned}\n$$\n\n")
+}
+```
+

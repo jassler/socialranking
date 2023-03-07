@@ -1,0 +1,22 @@
+---
+title: "My maths"
+header-includes:
+  - \usepackage{bm}
+output:
+  pdf_document:
+    pandoc_args: !expr rmarkdown::pandoc_lua_filter_args("extract_commands.lua")
+    includes:
+      in_header: "commands.tex"
+  html_document:
+    pandoc_args: !expr rmarkdown::pandoc_lua_filter_args("extract_commands.lua")
+---
+
+::: {.hidden}
+$$
+\newcommand{\e}{\mathcal{E}}
+\newcommand{\fff}{\frac{1}{2}}
+\newcommand{\bm}[1]{\boldsymbol{#1}}
+$$
+:::
+
+$\bm{\e} \fff$

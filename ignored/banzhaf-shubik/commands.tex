@@ -1,0 +1,23 @@
+\newcommand{\elements}{W}
+\newcommand{\element}{w}
+\newcommand{\elementsDef}[1][\elements]{#1 = \{1, \dots, n\}}
+\newcommand{\cA}{A}
+\newcommand{\cB}{B}
+\newcommand{\coalitionDef}[1][\coalitionA]{#1 \subseteq \elements}
+\newcommand{\cardinality}[1]{\##1}
+\newcommand{\ps}[1][\elements]{\mathcal{P}(#1)}
+\newcommand{\winningCoalitions}{\mathfrak{G}}
+\newcommand{\winningCoalitionsDef}[1][\winningCoalitions]{#1 \subseteq \ps}
+\newcommand{\sg}{\mathfrak{W}}
+\newcommand{\sgDef}[1][\sg]{#1 := (\elements, \winningCoalitions)}
+\newcommand{\mwc}{\mathfrak{M}}
+\newcommand{\mwcg}{\mwc(\winningCoalitions)}
+\newcommand{\mwcgDef}[1][\mwcg]{#1 := \{\cA \in \winningCoalitions: \cB \notin \winningCoalitions, \forall \cB \subset \cA\}}
+\newcommand{\BanzhafScore}[1][\element]{\text{BS}_{#1}}
+\newcommand{\BanzhafScoreDef}[1][\element]{\BanzhafScore[#1] := \cardinality{\{\cA \in \winningCoalitions: #1 \in \cA, (\cA \setminus \{#1\}) \notin \winningCoalitions\}}}
+\newcommand{\PenroseBanzhafPower}[1][\element]{\text{PBP}_{#1}}
+\newcommand{\PenroseBanzhafPowerDef}[1][\element]{\PenroseBanzhafPower[#1] := \frac{\BanzhafScore[#1]}{2^{n-1}}}
+\newcommand{\PenroseBanzhafIndex}[1][\element]{\text{PBI}_{#1}}
+\newcommand{\PenroseBanzhafIndexDef}[1][\element]{\PenroseBanzhafIndex[#1] := \frac{\BanzhafScore[#1]}{\sum_{i=1}^n \BanzhafScore[i]}}
+\newcommand{\ShapleyShubikIndex}[1][\element]{\text{SSI}_{#1}}
+\newcommand{\ShapleyShubikIndexDef}[1][\element]{\ShapleyShubikIndex[#1] := \sum_{\substack{\cA \in \winningCoalitions \\ \text{where } #1 \text{ is decisive for } \cA}} \frac{(n - \cardinality{\cA})!(\cardinality{\cA}-1)!}{n!}}
