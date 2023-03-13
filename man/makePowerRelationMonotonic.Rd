@@ -58,6 +58,6 @@ makePowerRelationMonotonic(pr)
 }
 \seealso{
 Other helper functions transorming existing \code{\link{PowerRelation}} objects: 
-\code{\link{makePowerRelationTotal}()}
+\code{\link{appendMissingCoalitions}()}
 }
 \concept{helper functions transorming existing \code{\link{PowerRelation}} objects}

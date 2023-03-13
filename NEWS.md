@@ -13,7 +13,7 @@ This major update brings a lot of breaking changes that are hopefully justified.
 * Added `SocialRanking()`
 * Added `coalitionLookup()` and `elementLookup()`
 * Added `L1Scores()` and `L1Ranking()`, along with its aliases `lexcel1...()`
-* Added `makePowerRelationMonotonic()` and `makePowerRelationTotal()`
+* Added `makePowerRelationMonotonic()` and `appendMissingCoalitions()`
 * Added `powerRelationGenerator()` and `generateNextPartition()`
 * Changed `createPowerset()`, replaced parameters logicals `copyToClipboard` and `writeLines` with character `result` 
 * Changed `ordinalBanzhafScores()` such that it returns a third value indicating how many comparisons were not made

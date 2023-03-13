@@ -1,16 +1,34 @@
-#' Make Power Relation total
+#' Append missing coalitions
 #'
-#' Append an equivalence to a power relation with all its missing coalitions to make it total.
+#' Append an equivalence class to a power relation with all coalitions of elements that do not appear in the power relation.
 #'
-#' A power relation is total if
+#' For a given set of elements \eqn{N = \lbrace 1, ..., n \rbrace}{N = \{1, ..., n\}}, a [`PowerRelation`] object describes a total preorder
+#' of its subsets, or coalitions, \eqn{\mathcal{P} \subseteq 2^N}{P subseteq 2^N}, where \eqn{2^N}{2^N} is the superset of elements.
 #'
-#' \deqn{S \succeq T\text{ or }T \succeq S}{S>=T or T>=S}
+#' If \eqn{\mathcal{P} \neq 2^N}{P != 2^N}, that means that there are some coalitions \eqn{S \in 2^N, S \notin \mathcal{P}}{S in 2^N, S not in P},
+#' such that we cannot compare \eqn{S \succeq T}{S >= T} or \eqn{T \succeq S}{T >= S} for every \eqn{T \in \mathcal{P}}{T in P}.
 #'
-#' for every \eqn{S, T \subseteq N}{S, T subset or equal to N}.
+#' This may be caused by \eqn{2^N}{2^N} having too many coalitions to consider.
+#' In certain cases, it may be more interesting to only consider the top ranking coalitions and "shoving" all remaining coalitions into the back.
 #'
-#' In other words, we can compare every coalition against every other coalition there is.
-#' Given the equivalence classes of a [`PowerRelation`] object,
-#' the function attaches a new equivalence class containing all the missing coalitions that make the given power relation total.
+#' For this use-case, `appendMissingCoalitions()` takes the set \eqn{2^N \setminus \mathcal{P}}{2^N - P}
+#' and attaches it in form of an equivalence class to the back of the power relation.
+#'
+#' I.e., take as an example \eqn{12 \succ 13 \succ (1 \sim 2)}{12 > 13 > (1 ~ 2)}. Here, we have
+#'
+#' \deqn{
+#' \begin{aligned}
+#' 2^N &= \lbrace 123, 12, 13, 23, 1, 2, 3, \emptyset \rbrace\\
+#' \mathcal{P} &= \lbrace 12, 13, 1, 2 \rbrace\\
+#' 2^N \setminus \mathcal{P} &= \lbrace 123, 23, 3, \emptyset \rbrace .
+#' \end{aligned}
+#' }{
+#' 2^N = \{ 123, 12, 13, 23, 1, 2, 3, \{\} \}\\
+#' P = \{12, 13, 1, 2\}\\
+#' 2^N - P = \{123, 23, 3, \{\}\}
+#' }
+#'
+#' Adding the missing coalitions to the power relation then gives us \eqn{12 \succ 13 \succ (1 \sim 2) \succ (123 \sim 23 \sim 3 \sim \emptyset)}{12 > 13 > (1 ~ 2) > (123 ~ 23 ~ 3 ~ \{\})}.
 #'
 #' @template param/powerRelation
 #' @param includeEmptySet If `TRUE`, include the empty set in the last equivalence class if it is missing from the power relation.
@@ -23,14 +41,14 @@
 #' pr <- as.PowerRelation(list(c(1,2), 3))
 #' # 12 > 3
 #'
-#' makePowerRelationTotal(pr)
+#' appendMissingCoalitions(pr)
 #' # 12 > 3 > (123 ~ 13 ~ 23 ~ 1 ~ 2 ~ {})
 #'
-#' makePowerRelationTotal(pr, includeEmptySet = FALSE)
+#' appendMissingCoalitions(pr, includeEmptySet = FALSE)
 #' # 12 > 3 > (123 ~ 13 ~ 23 ~ 1 ~ 2)
 #'
 #' @export
-makePowerRelationTotal <- function(powerRelation, includeEmptySet = TRUE) {
+appendMissingCoalitions <- function(powerRelation, includeEmptySet = TRUE) {
   # --- checks (generated) --- #
   stopifnot(is.PowerRelation(powerRelation))
   # --- end checks --- #

@@ -335,11 +335,11 @@ as.PowerRelation(rev(coalitions), comparators = c("~", ">"))
 as.PowerRelation(coalitions)
 ```
 
-### `makePowerRelationTotal()`
+### `appendMissingCoalitions()`
 
 Let $\succeq \in \mathcal{T}(\mathcal{P})$. We may have not included all possible coalitions, such that $\mathcal{P} \subset 2^N, \mathcal{P} \neq 2^N$.
 
-`makePowerRelationTotal()` appends all the missing coalitions $2^N - \mathcal{P}$ as a single equivalence class to the end of the power relation.
+`appendMissingCoalitions()` appends all the missing coalitions $2^N - \mathcal{P}$ as a single equivalence class to the end of the power relation.
 
 ```{r}
 pr <- PowerRelation(list(
@@ -350,7 +350,7 @@ pr <- PowerRelation(list(
 pr
 
 # since we have 3 elements, the super set 2^N should include 8 coalitions
-makePowerRelationTotal(pr)
+appendMissingCoalitions(pr)
 ```
 
 ### `makePowerRelationMonotonic()`

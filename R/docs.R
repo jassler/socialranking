@@ -18,6 +18,7 @@
 #' |                              | [`kramerSimpsonScores()`]  | [`kramerSimpsonRanking()`]  |
 #' |                              | [`lexcelScores()`]         | [`lexcelRanking()`]         |
 #' |                              |                            | [`dualLexcelRanking()`]     |
+#' |                              | [`L1Scores()`]             | [`L1Ranking()`]             |
 #' |                              | [`ordinalBanzhafScores()`] | [`ordinalBanzhafRanking()`] |
 #'
 #' ^1 [`cpMajorityComparisonScore()`] is a faster alternative to [`cpMajorityComparison()`], but it produces less data.
@@ -32,7 +33,7 @@
 #' @importFrom relations as.relation
 #'
 #' @docType package
-#' @name socialranking
+#' @name socialrankingpackage
 NULL
 #> NULL
 
