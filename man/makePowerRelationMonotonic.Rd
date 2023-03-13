@@ -57,7 +57,7 @@ makePowerRelationMonotonic(pr)
 
 }
 \seealso{
-Other helper functions transforming existing \code{\link{PowerRelation}} objects: 
+Other helper functions for transforming power relations: 
 \code{\link{appendMissingCoalitions}()}
 }
-\concept{helper functions transforming existing \code{\link{PowerRelation}} objects}
+\concept{helper functions for transforming power relations}

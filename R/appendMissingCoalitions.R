@@ -35,7 +35,7 @@
 #'
 #' @template return/PowerRelation
 #'
-#' @family helper functions transforming existing [`PowerRelation`] objects
+#' @family helper functions for transforming power relations
 #'
 #' @examples
 #' pr <- as.PowerRelation(list(c(1,2), 3))
