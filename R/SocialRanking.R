@@ -1,8 +1,8 @@
-#' `SocialRankingSolution` object
+#' `SocialRanking` object
 #'
-#' Create a `SocialRankingSolution` object.
+#' Create a `SocialRanking` object.
 #'
-#' Similar to [`PowerRelation()`], `SocialRankingSolution` expects expects a list to represent a power relation.
+#' Similar to [`PowerRelation()`], `SocialRanking` expects expects a list to represent a power relation.
 #' Unlike [`PowerRelation()`] however, this list should not be nested and should only contain vectors, each vector containing elements that are deemed equally preferable.
 #'
 #' Use [`doRanking()`] to rank elements based on arbitrary score objects.
@@ -22,29 +22,29 @@
 #'
 #' @param l A list of vectors
 #'
-#' @template return/SocialRankingSolution
+#' @template return/SocialRanking
 #'
 #' @seealso Function that ranks elements based on their scores, [`doRanking()`]
 #'
 #' @examples
-#' SocialRankingSolution(list(c("a", "b"), "f", c("c", "d")))
+#' SocialRanking(list(c("a", "b"), "f", c("c", "d")))
 #' # a ~ b > f > c ~ d
 #'
 #' @export
-SocialRankingSolution <- function(l) {
-  structure(l, class = 'SocialRankingSolution')
+SocialRanking <- function(l) {
+  structure(l, class = 'SocialRanking')
 }
 
-#' Create a `SocialRankingSolution` object
+#' Create a `SocialRanking` object
 #'
 #' Rank elements based on their scores.
 #'
 #' All ranking solutions in the package are tied to the scores or score vectors of the elements.
-#' For these kinds of solutions, `doRanking()` offers a simple way that turns a (named) vector or list of scores for each element into a `SocialRankingSolution` object.
+#' For these kinds of solutions, `doRanking()` offers a simple way that turns a (named) vector or list of scores for each element into a `SocialRanking` object.
 #' For example, `doRanking(c(a=1,b=2))` produces `b > a` (\eqn{b P^\succeq a}{bPa}), because `b` with a score of `2` should be placed higher than `a` with a score of `1`.
 #'
 #' Ranking solutions in the package include [`lexcelRanking()`], [`ordinalBanzhafRanking()`] and [`L1Ranking()`], among others.
-#' These functions take a power relation, calculate the scores of each element and returns a `SocialRankingSolution` object.
+#' These functions take a power relation, calculate the scores of each element and returns a `SocialRanking` object.
 #'
 #' R natively supports sorting for [vectors][base::c()], but not for [lists][base::list()].
 #' If the use of lists is necessary, or if the native sort method in vectors does not produce the desired results, there are two possible ways to solve this:
@@ -75,9 +75,9 @@ SocialRankingSolution <- function(l) {
 #' these two elements. If set to `NULL`, the default [`order()`] function is called. See details for more information.
 #' @param decreasing If `TRUE` (default), elements with higher scores are ranked higher.
 #'
-#' @template return/SocialRankingSolution
+#' @template return/SocialRanking
 #'
-#' @seealso [`SocialRankingSolution()`]
+#' @seealso [`SocialRanking()`]
 #'
 #' @examples
 #' doRanking(c(a=1,b=2))
@@ -136,7 +136,7 @@ doRanking <- function(scores, compare = NULL, decreasing = TRUE) {
   if(is.null(elements)) {
     elements <- seq(scores)
   } else if(all(grepl("^[0-9]+$", elements))) {
-    elements <- as.integer(elements)
+    elements <- as.numeric(elements)
   }
 
   if(is.null(compare)) {
@@ -168,7 +168,7 @@ doRanking <- function(scores, compare = NULL, decreasing = TRUE) {
     sapply(r, function(x) elements[x])
   })
 
-  SocialRankingSolution(orderList)
+  SocialRanking(orderList)
 }
 
 customOrder <- function(scores, compare) {
@@ -181,14 +181,14 @@ customOrder <- function(scores, compare) {
 }
 
 #' @export
-print.SocialRankingSolution <- function(x, ...) {
+print.SocialRanking <- function(x, ...) {
   l <- lapply(x, function(r) paste(r, collapse = ' ~ '))
   cat(unlist(l), sep = ' > ')
   cat('\n')
 }
 
 #' @export
-`==.SocialRankingSolution` <- function(a, b) {
+`==.SocialRanking` <- function(a, b) {
   if(length(a) != length(b))
     return(FALSE)
   for(i in seq_along(a)) {
@@ -199,3 +199,4 @@ print.SocialRankingSolution <- function(x, ...) {
   }
   return(TRUE)
 }
+

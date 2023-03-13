@@ -10,7 +10,7 @@ This major update brings a lot of breaking changes that are hopefully justified.
   * Added `$elementLookup()` to make it easy (and fast) to find coalitions that an element appears in
   * Changed coalitions to no longer be `sets::set` objects, but just normal vectors. This allows for one element to appear multiple times in the same coalition, which is more consistent with the ability to have a coalition appear multiple times in a `PowerRealtion` object.
 * Added `PowerRelation()` and `as.PowerRelation()`
-* Added `SocialRankingSolution()`
+* Added `SocialRanking()`
 * Added `coalitionLookup()` and `elementLookup()`
 * Added `L1Scores()` and `L1Ranking()`, along with its aliases `lexcel1...()`
 * Added `makePowerRelationMonotonic()` and `makePowerRelationTotal()`
@@ -18,6 +18,7 @@ This major update brings a lot of breaking changes that are hopefully justified.
 * Changed `createPowerset()`, replaced parameters logicals `copyToClipboard` and `writeLines` with character `result` 
 * Changed `ordinalBanzhafScores()` such that it returns a third value indicating how many comparisons were not made
 * Deprecated `newPowerRelation()` and `newPowerRelationFromString()`
+* Deprecated `SocialRankingSolution` class
 * Removed `mathjaxr` and `sets` from dependencies
 
 

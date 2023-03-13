@@ -8,7 +8,7 @@
 #' for all possible coalitions.
 #'
 #' The functions used to analyze power relations can be grouped into comparison functions,
-#' score functions and ranking solutions. Ranking solutions produce a `SocialRankingSolution` object.
+#' score functions and ranking solutions. Ranking solutions produce a `SocialRanking` object.
 #'
 #' | Comparison Functions         | Score Functions            | Ranking Solutions           |
 #' |----------------------------  |--------------------------  |-----------------------------|

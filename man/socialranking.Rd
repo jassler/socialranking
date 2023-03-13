@@ -14,7 +14,7 @@ is a convenient function to generate a \code{\link[=PowerRelation]{PowerRelation
 for all possible coalitions.
 
 The functions used to analyze power relations can be grouped into comparison functions,
-score functions and ranking solutions. Ranking solutions produce a \code{SocialRankingSolution} object.\tabular{lll}{
+score functions and ranking solutions. Ranking solutions produce a \code{SocialRanking} object.\tabular{lll}{
    Comparison Functions \tab Score Functions \tab Ranking Solutions \cr
    \code{\link[=dominates]{dominates()}} \tab  \tab  \cr
    \code{\link[=cumulativelyDominates]{cumulativelyDominates()}} \tab \code{\link[=cumulativeScores]{cumulativeScores()}} \tab  \cr

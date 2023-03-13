@@ -158,7 +158,7 @@ Functions used to analyze a given `PowerRelation` object can be grouped into thr
 
 * *Comparison* functions, only comparing two elements;
 * *Score* functions, calculating the scores for each element;
-* *Ranking* functions, creating `SocialRankingSolution` objects.
+* *Ranking* functions, creating `SocialRanking` objects.
 
 Comparison and score functions are often used to evaluate a social ranking solution (see section `r refId("sec:prelim", "on [PowerRelation objects](ID)")` for a formal definition). Listed below are some of the most prominent functions and solutions introduced in the aforementioned papers.
 
@@ -512,7 +512,7 @@ preorderNum <- function(x) sapply(0:x, function(k) factorial(k) * stirlingSecond
 | 11              | 678.570         | 1.622.632.573        |
 | 12              | 4.213.597       | 28.091.567.595       |
 
-# `SocialRankingSolution` Objects
+# `SocialRanking` Objects
 
 The main goal of the `socialranking` package is to rank elements based on a given power ranking. More formally we try to map $R: \mathcal{T}(\mathcal{P}) \rightarrow \mathcal{T}(N)$, associating to each power relation $\succeq \in \mathcal{T}(\mathcal{P})$ a total preorder $R(\succeq)$ (or $R^\succeq$) over the elements of $N$.
 
@@ -521,7 +521,7 @@ In this context $i R^\succeq j$ tells us that, given a power relation $\succeq$ 
 In literature, $i I^\succeq j$ and $i P^\succeq j$ are often used to denote the symmetric and asymmetric part, respectively.
 $i I^\succeq j$ therefore means that $i R^\succeq j$ and $j R^\succeq i$, whereas $i P^\succeq j$ implies that $i R^\succeq j$ but not $j R^\succeq j$.
 
-In section `r refId("ch:srsobj", "[3.1](ID)")` we show how a general `SocialRankingSolution` object can be constructed using the `doRanking` function. In the following sections, we will introduce the notion of dominance[@2017axiomaticAndAlgorithmicPerspectives], cumulative dominance[@2015Cumulative] and CP-Majority comparison[@2018CPMajority] that lets us compare two elements before diving into the social ranking solutions of the Ordinal Banzhaf Index[@2019OrdinalBanzhaf], Copeland-like and Kramer-Simpson-like methods[@2021Manipulability], and lastly the Lexicographical Excellence Solution[@2021Lexcel] (Lexcel) and the Dual Lexicographical Excellence solution[@2021AntiLexcel] (Dual Lexcel).
+In section `r refId("ch:srsobj", "[3.1](ID)")` we show how a general `SocialRanking` object can be constructed using the `doRanking` function. In the following sections, we will introduce the notion of dominance[@2017axiomaticAndAlgorithmicPerspectives], cumulative dominance[@2015Cumulative] and CP-Majority comparison[@2018CPMajority] that lets us compare two elements before diving into the social ranking solutions of the Ordinal Banzhaf Index[@2019OrdinalBanzhaf], Copeland-like and Kramer-Simpson-like methods[@2021Manipulability], and lastly the Lexicographical Excellence Solution[@2021Lexcel] (Lexcel) and the Dual Lexicographical Excellence solution[@2021AntiLexcel] (Dual Lexcel).
 
 :::{.example data-latex="" .theorem text="`r exampleCounter("ex:socialrankings")`" #ex:socialrankings}
 \label{ex:socialrankings}
@@ -533,13 +533,13 @@ Let $\{a,b\} \succ (\{a,c\} \sim \{b,c\}) \succ (\{a\} \sim \{c\}) > \emptyset \
 * `a ~ c > b` for `ordinalBanzhafRanking`
 :::
 
-## Creating `SocialRankingSolution` objects\label{ch:srsobj}
+## Creating `SocialRanking` objects\label{ch:srsobj}
 
-A `SocialRankingSolution` object represents a total preorder in $\mathcal{T}(N)$ over the elements of $N$. Internally they are saved as a list of vectors, each containing players that are indifferent to one another. This is somewhat similar to the `equivalenceClasses` attribute in `PowerRelation` objects.
+A `SocialRanking` object represents a total preorder in $\mathcal{T}(N)$ over the elements of $N$. Internally they are saved as a list of vectors, each containing players that are indifferent to one another. This is somewhat similar to the `equivalenceClasses` attribute in `PowerRelation` objects.
 
-The function `doRanking` offers a generic way of creating `SocialRankingSolution` objects.
+The function `doRanking` offers a generic way of creating `SocialRanking` objects.
 Given a sortable vector or list of scores it determines the power relation between all players, where the names of the elements are determined from the `names()` attribute of `scores`.
-Hence, a `PowerRelation` object is not necessary to create a `SocialRankingSolution` object.
+Hence, a `PowerRelation` object is not necessary to create a `SocialRanking` object.
 
 ```{r}
 # we define some arbitrary score vector where "a" scores highest.
