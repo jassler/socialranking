@@ -16,7 +16,7 @@
 #'
 #' @template return/PowerRelation
 #'
-#' @family helper functions transorming existing [`PowerRelation`] objects
+#' @family helper functions transforming existing [`PowerRelation`] objects
 #'
 #' @examples
 #' pr <- as.PowerRelation("ab > ac > abc > b > a > {} > c > bc")
