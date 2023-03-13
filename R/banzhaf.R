@@ -14,7 +14,7 @@
 #' @export
 is.na.OrdinalBanzhafScores <- function(x) FALSE
 
-#' Ordinal Banzhaf
+#' Ordinal Banzhaf ranking
 #'
 #' Calculate the Ordinal Banzhaf scores, the number of positive and negative marginal contributions.
 #'
@@ -34,7 +34,7 @@ is.na.OrdinalBanzhafScores <- function(x) FALSE
 #' @template param/powerRelation
 #' @template param/elements
 #'
-#' @family score vector functions
+#' @family ranking solution functions
 #'
 #' @references
 #' \insertRef{2019OrdinalBanzhaf}{socialranking}

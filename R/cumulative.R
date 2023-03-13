@@ -28,7 +28,7 @@ is.na.CumulativeScores <- function(x) FALSE
 #' @template param/powerRelation
 #' @template param/elements
 #'
-#' @family score vector functions
+#' @family ranking solution functions
 #'
 #' @references
 #' \insertRef{2015Cumulative}{socialranking}

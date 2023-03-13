@@ -3,7 +3,7 @@
 \name{ordinalBanzhafScores}
 \alias{ordinalBanzhafScores}
 \alias{ordinalBanzhafRanking}
-\title{Ordinal Banzhaf}
+\title{Ordinal Banzhaf ranking}
 \usage{
 ordinalBanzhafScores(powerRelation, elements = powerRelation$elements)
 
@@ -65,11 +65,11 @@ ordinalBanzhafRanking(pr)
 \insertRef{1964Banzhaf}{socialranking}
 }
 \seealso{
-Other score vector functions: 
+Other ranking solution functions: 
 \code{\link{L1Scores}()},
 \code{\link{copelandScores}()},
 \code{\link{cumulativeScores}()},
 \code{\link{kramerSimpsonScores}()},
 \code{\link{lexcelScores}()}
 }
-\concept{score vector functions}
+\concept{ranking solution functions}

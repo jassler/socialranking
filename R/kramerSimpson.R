@@ -53,7 +53,7 @@ is.na.KramerSimpsonScores <- function(x) FALSE
 #' comparison score of an element against itself, which is always 0.
 #'
 #' @family CP-majority based functions
-#' @family score vector functions
+#' @family ranking solution functions
 #'
 #' @return Score function returns a list of type `KramerSimpsonScores` and length of `powerRelation$elements`
 #' (unless parameter `elements` is specified). Lower scoring elements are ranked higher.

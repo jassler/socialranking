@@ -5,7 +5,7 @@
 \alias{L1Ranking}
 \alias{lexcel1Scores}
 \alias{lexcel1Ranking}
-\title{L1 Scores}
+\title{L1 Ranking}
 \usage{
 L1Scores(powerRelation, elements = powerRelation$elements)
 
@@ -103,11 +103,11 @@ L1Ranking(pr)
 \insertRef{2021Lexcel}{socialranking}
 }
 \seealso{
-Other score vector functions: 
+Other ranking solution functions: 
 \code{\link{copelandScores}()},
 \code{\link{cumulativeScores}()},
 \code{\link{kramerSimpsonScores}()},
 \code{\link{lexcelScores}()},
 \code{\link{ordinalBanzhafScores}()}
 }
-\concept{score vector functions}
+\concept{ranking solution functions}

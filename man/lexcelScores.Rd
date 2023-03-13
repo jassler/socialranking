@@ -112,11 +112,11 @@ dualLexcelRanking(pr)
 \insertRef{2021AntiLexcel}{socialranking}
 }
 \seealso{
-Other score vector functions: 
+Other ranking solution functions: 
 \code{\link{L1Scores}()},
 \code{\link{copelandScores}()},
 \code{\link{cumulativeScores}()},
 \code{\link{kramerSimpsonScores}()},
 \code{\link{ordinalBanzhafScores}()}
 }
-\concept{score vector functions}
+\concept{ranking solution functions}

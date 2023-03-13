@@ -108,7 +108,7 @@ Other CP-majority based functions:
 \code{\link{copelandScores}()},
 \code{\link{cpMajorityComparison}()}
 
-Other score vector functions: 
+Other ranking solution functions: 
 \code{\link{L1Scores}()},
 \code{\link{copelandScores}()},
 \code{\link{cumulativeScores}()},
@@ -116,4 +116,4 @@ Other score vector functions:
 \code{\link{ordinalBanzhafScores}()}
 }
 \concept{CP-majority based functions}
-\concept{score vector functions}
+\concept{ranking solution functions}

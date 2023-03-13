@@ -37,7 +37,7 @@ is.na.CopelandScores <- function(x) FALSE
 #' @template param/elements
 #'
 #' @family CP-majority based functions
-#' @family score vector functions
+#' @family ranking solution functions
 #'
 #' @references
 #' \insertRef{2021Manipulability}{socialranking}

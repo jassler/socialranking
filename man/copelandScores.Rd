@@ -77,7 +77,7 @@ Other CP-majority based functions:
 \code{\link{cpMajorityComparison}()},
 \code{\link{kramerSimpsonScores}()}
 
-Other score vector functions: 
+Other ranking solution functions: 
 \code{\link{L1Scores}()},
 \code{\link{cumulativeScores}()},
 \code{\link{kramerSimpsonScores}()},
@@ -85,4 +85,4 @@ Other score vector functions:
 \code{\link{ordinalBanzhafScores}()}
 }
 \concept{CP-majority based functions}
-\concept{score vector functions}
+\concept{ranking solution functions}

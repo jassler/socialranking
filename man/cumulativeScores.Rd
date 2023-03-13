@@ -74,11 +74,11 @@ stopifnot(all(d1, d2, !d3))
 \insertRef{2017axiomaticAndAlgorithmicPerspectives}{socialranking}
 }
 \seealso{
-Other score vector functions: 
+Other ranking solution functions: 
 \code{\link{L1Scores}()},
 \code{\link{copelandScores}()},
 \code{\link{kramerSimpsonScores}()},
 \code{\link{lexcelScores}()},
 \code{\link{ordinalBanzhafScores}()}
 }
-\concept{score vector functions}
+\concept{ranking solution functions}

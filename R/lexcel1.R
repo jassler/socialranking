@@ -15,7 +15,7 @@
 #' @export
 is.na.L1Scores <- function(x) FALSE
 
-#' L1 Scores
+#' L1 Ranking
 #'
 #' Calculate the \eqn{L^{(1)}}{L^(1)} scores.
 #'
@@ -72,7 +72,7 @@ is.na.L1Scores <- function(x) FALSE
 #' @template param/powerRelation
 #' @template param/elements
 #'
-#' @family score vector functions
+#' @family ranking solution functions
 #'
 #' @references
 #' \insertRef{2021Lexcel}{socialranking}
