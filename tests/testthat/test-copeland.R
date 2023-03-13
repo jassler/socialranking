@@ -18,7 +18,7 @@ test_that("scores", {
 test_that("ranking", {
   pr <- as.PowerRelation('12 > 1 ~ 2')
   ranking <- evaluate_promise(copelandRanking(pr), print = TRUE)
-  expect_equal(ranking$result, structure(list(c(1, 2)), class = "SocialRankingSolution"))
+  expect_equal(ranking$result, structure(list(c(1, 2)), class = "SocialRanking"))
   expect_equal(ranking$output, "1 ~ 2")
   expect_true(pr %:% 1 %>=cop% 2)
   expect_true(pr %:% 2 %>=cop% 1)
@@ -27,7 +27,7 @@ test_that("ranking", {
 
   pr <- as.PowerRelation('12 > 1 > 2')
   ranking <- evaluate_promise(copelandRanking(pr), print = TRUE)
-  expect_equal(ranking$result, structure(list(1, 2), class = "SocialRankingSolution"))
+  expect_equal(ranking$result, structure(list(1, 2), class = "SocialRanking"))
   expect_equal(ranking$output, "1 > 2")
   expect_true(pr %:% 1 %>=cop% 2)
   expect_false(pr %:% 2 %>=cop% 1)
@@ -49,7 +49,7 @@ test_that("manip paper example", {
   expect_false(pr %:% 3 %>=cop% 1)
   expect_false(pr %:% 3 %>=cop% 2)
   expect_true(pr %:% 3 %>=cop% 3)
-  expect_equal(ranking$result, structure(list(1, 2, 3), class = "SocialRankingSolution"))
+  expect_equal(ranking$result, structure(list(1, 2, 3), class = "SocialRanking"))
 
   expect_equal(copelandScores(pr), structure(list(`1` = c(2,-1), `2` = c(2,-2), `3` = c(1,-2)), class = "CopelandScores"))
 })

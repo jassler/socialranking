@@ -1,1 +1,1 @@
-#' @return Ranking function returns corresponding [`SocialRankingSolution`] object.
+#' @return Ranking function returns corresponding [`SocialRanking`] object.

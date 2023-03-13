@@ -26,7 +26,7 @@ comparison score of an element against itself, which is always 0.}
 Score function returns a list of type \code{KramerSimpsonScores} and length of \code{powerRelation$elements}
 (unless parameter \code{elements} is specified). Lower scoring elements are ranked higher.
 
-Ranking function returns corresponding \code{\link{SocialRankingSolution}} object.
+Ranking function returns corresponding \code{\link{SocialRanking}} object.
 }
 \description{
 Calculate the Kramer-Simpson-like scores.

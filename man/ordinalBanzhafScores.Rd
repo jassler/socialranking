@@ -17,13 +17,13 @@ By default, the scores of all elements in \code{powerRelation$elements} are cons
 }
 \value{
 Score function returns list of class type \code{OrdinalBanzhafScores} and length of \code{powerRelation$elements}.
-Each index contains a vector of two numbers, the number of positive and the number of negative marginal contributions.
-Those two numbers summed together gives us the actual ordinal Banzhaf score.
+Each index contains a vector of three numbers, the number of positive marginal contributions, the number of negative marginal contributions, and the number of coalitions for which no comparison could be done.
+The first two numbers summed together gives us the actual ordinal Banzhaf score.
 
-Ranking function returns corresponding \code{\link{SocialRankingSolution}} object.
+Ranking function returns corresponding \code{\link{SocialRanking}} object.
 }
 \description{
-Calculate the Ordinal Banzhaf scores, the number of positive and negative marginal contributions.
+Calculate the Ordinal Banzhaf scores, the number of positive and the number of negative marginal contributions.
 
 \code{ordinalBanzhafRanking()} returns the corresponding ranking.
 }
@@ -38,8 +38,9 @@ had a negative impact (\eqn{S \succ S \cup \lbrace i \rbrace}{S > S u \{i\}})\in
 The original definition only takes total power relations into account, where either \eqn{S \succeq T}{S >= T} or \eqn{T \succeq S}{T >= S}
 for every \eqn{S,T \subseteq N}{S,T subseteq N}.
 If coalitions are missing from the power relation, we may not be able to perform certain comparisons.
-To indicate these missing comparisons, the ordinal Banzhaf score of an element \eqn{i}{i} also includes that number in the back.
-In the traditional ranking method, this number is not taken into account however.
+To indicate these missing comparisons, the ordinal Banzhaf score of an element \eqn{i}{i} also includes that number at index \code{3}.
+I.e., if the ordinal Banzhaf score of an element is \code{c(4, -2, 1)}, it means that it contributed positively to \code{4} coalitions and negatively to \code{2} others.
+For one coalition, no comparison could be made.
 }
 \examples{
 pr <- as.PowerRelation("12 > (2 ~ {}) > 1")

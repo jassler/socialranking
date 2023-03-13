@@ -21,7 +21,7 @@ Score function returns a list of type \code{CopelandScores} and length of \code{
 the number of pairwise winning comparisons and the number of pairwise losing comparisons.
 Those two numbers summed together gives us the actual ordinal Copeland score.
 
-Ranking function returns corresponding \code{\link{SocialRankingSolution}} object.
+Ranking function returns corresponding \code{\link{SocialRanking}} object.
 }
 \description{
 Based on \code{\link[=cpMajorityComparison]{cpMajorityComparison()}}, add or subtract scores

@@ -24,7 +24,7 @@ Score function returns a list of type \code{LexcelScores} and length of \code{po
 Each index contains a vector of length \code{powerRelation$eqs}, the number of
 times the given element appears in each equivalence class.
 
-Ranking function returns corresponding \code{\link{SocialRankingSolution}} object.
+Ranking function returns corresponding \code{\link{SocialRanking}} object.
 }
 \description{
 Calculate the Lexicographical Excellence (or Lexcel) score.

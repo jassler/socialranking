@@ -27,7 +27,7 @@ Score function returns a list of type \code{Lexcel1Scores} and length of \code{p
 Each index contains a vector of length \code{powerRelation$eqs}, the number of
 times the given element appears in each equivalence class.
 
-Ranking function returns corresponding \code{\link{SocialRankingSolution}} object.
+Ranking function returns corresponding \code{\link{SocialRanking}} object.
 }
 \description{
 Calculate the \eqn{L^{(1)}}{L^(1)} scores.
