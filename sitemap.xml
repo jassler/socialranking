@@ -34,7 +34,7 @@
     <loc>https://jassler.github.io/socialranking/reference/PowerRelation.html</loc>
   </url>
   <url>
-    <loc>https://jassler.github.io/socialranking/reference/SocialRankingSolution.html</loc>
+    <loc>https://jassler.github.io/socialranking/reference/appendMissingCoalitions.html</loc>
   </url>
   <url>
     <loc>https://jassler.github.io/socialranking/reference/as.PowerRelation.html</loc>
@@ -82,9 +82,6 @@
     <loc>https://jassler.github.io/socialranking/reference/makePowerRelationMonotonic.html</loc>
   </url>
   <url>
-    <loc>https://jassler.github.io/socialranking/reference/makePowerRelationTotal.html</loc>
-  </url>
-  <url>
     <loc>https://jassler.github.io/socialranking/reference/newPowerRelation.html</loc>
   </url>
   <url>
@@ -101,6 +98,9 @@
   </url>
   <url>
     <loc>https://jassler.github.io/socialranking/reference/socialranking.html</loc>
+  </url>
+  <url>
+    <loc>https://jassler.github.io/socialranking/reference/socialrankingpackage.html</loc>
   </url>
   <url>
     <loc>https://jassler.github.io/socialranking/reference/testRelation.html</loc>

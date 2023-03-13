@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">socialranking</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,7 +73,7 @@
 Contact: <a href="mailto:felix.fritz@dauphine.eu" class="email">felix.fritz@dauphine.eu</a>
 </div></h4>
             
-            <h4 data-toc-skip class="date">2023-03-08</h4>
+            <h4 data-toc-skip class="date">2023-03-13</h4>
       
       
       <div class="d-none name"><code>socialranking_pdf.Rmd</code></div>
@@ -155,8 +155,8 @@ can be grouped into three main categories:</p>
 <em>Score</em> functions, calculating the scores for each
 element;</li>
 <li>
-<em>Ranking</em> functions, creating
-<code>SocialRankingSolution</code> objects.</li>
+<em>Ranking</em> functions, creating <code>SocialRanking</code>
+objects.</li>
 </ul>
 <p>Comparison and score functions are often used to evaluate a social
 ranking solution (see section on <a href="#sec:prelim">PowerRelation
@@ -438,14 +438,14 @@ doesn’t require nested list indexing.</p>
 <span><span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="va">coalitions</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## 12 &gt; 1 &gt; {} &gt; 2</span></span></code></pre>
 <div class="section level4">
-<h4 id="makepowerrelationtotal">
-<code>makePowerRelationTotal()</code><a class="anchor" aria-label="anchor" href="#makepowerrelationtotal"></a>
+<h4 id="appendmissingcoalitions">
+<code>appendMissingCoalitions()</code><a class="anchor" aria-label="anchor" href="#appendmissingcoalitions"></a>
 </h4>
 <p>Let <span class="math inline">\(\succeq \in
 \mathcal{T}(\mathcal{P})\)</span>. We may have not included all possible
 coalitions, such that <span class="math inline">\(\mathcal{P} \subset
 2^N, \mathcal{P} \neq 2^N\)</span>.</p>
-<p><code><a href="../reference/makePowerRelationTotal.html">makePowerRelationTotal()</a></code> appends all the missing
+<p><code><a href="../reference/appendMissingCoalitions.html">appendMissingCoalitions()</a></code> appends all the missing
 coalitions <span class="math inline">\(2^N - \mathcal{P}\)</span> as a
 single equivalence class to the end of the power relation.</p>
 <div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
@@ -458,7 +458,7 @@ single equivalence class to the end of the power relation.</p>
 <pre><code><span><span class="co">## ({AT, DE} ~ {FR}) &gt; {DE} &gt; ({AT, FR} ~ {AT})</span></span></code></pre>
 <div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># since we have 3 elements, the super set 2^N should include 8 coalitions</span></span>
-<span><span class="fu"><a href="../reference/makePowerRelationTotal.html">makePowerRelationTotal</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/appendMissingCoalitions.html">appendMissingCoalitions</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## ({AT, DE} ~ {FR}) &gt; {DE} &gt; ({AT, FR} ~ {AT}) &gt; ({AT, DE, FR} ~ {DE, FR} ~ {})</span></span></code></pre>
 </div>
 <div class="section level4">
@@ -709,8 +709,8 @@ S(|\mathcal{P}|, k)
 </div>
 </div>
 <div class="section level2">
-<h2 id="socialrankingsolution-objects">
-<code>SocialRankingSolution</code> Objects<a class="anchor" aria-label="anchor" href="#socialrankingsolution-objects"></a>
+<h2 id="socialranking-objects">
+<code>SocialRanking</code> Objects<a class="anchor" aria-label="anchor" href="#socialranking-objects"></a>
 </h2>
 <p>The main goal of the <code>socialranking</code> package is to rank
 elements based on a given power ranking. More formally we try to map
@@ -729,7 +729,7 @@ is indifferent to <span class="math inline">\(j\)</span>.</p>
 <span class="math inline">\(i P^\succeq j\)</span> are often used to
 denote the symmetric and asymmetric part, respectively. <span class="math inline">\(i I^\succeq j\)</span> therefore means that <span class="math inline">\(i R^\succeq j\)</span> and <span class="math inline">\(j R^\succeq i\)</span>, whereas <span class="math inline">\(i P^\succeq j\)</span> implies that <span class="math inline">\(i R^\succeq j\)</span> but not <span class="math inline">\(j R^\succeq j\)</span>.</p>
 <p>In section <a href="#ch:srsobj">3.1</a> we show how a general
-<code>SocialRankingSolution</code> object can be constructed using the
+<code>SocialRanking</code> object can be constructed using the
 <code>doRanking</code> function. In the following sections, we will
 introduce the notion of dominance<span class="citation">[4]</span>,
 cumulative dominance<span class="citation">[12]</span> and CP-Majority
@@ -761,22 +761,21 @@ ranking. Using the following social ranking solutions, we get:</p>
 </ul>
 </div>
 <div class="section level3">
-<h3 id="creating-socialrankingsolution-objects">Creating <code>SocialRankingSolution</code> objects<a class="anchor" aria-label="anchor" href="#creating-socialrankingsolution-objects"></a>
+<h3 id="creating-socialranking-objects">Creating <code>SocialRanking</code> objects<a class="anchor" aria-label="anchor" href="#creating-socialranking-objects"></a>
 </h3>
-<p>A <code>SocialRankingSolution</code> object represents a total
-preorder in <span class="math inline">\(\mathcal{T}(N)\)</span> over the
-elements of <span class="math inline">\(N\)</span>. Internally they are
-saved as a list of vectors, each containing players that are indifferent
-to one another. This is somewhat similar to the
-<code>equivalenceClasses</code> attribute in <code>PowerRelation</code>
-objects.</p>
+<p>A <code>SocialRanking</code> object represents a total preorder in
+<span class="math inline">\(\mathcal{T}(N)\)</span> over the elements of
+<span class="math inline">\(N\)</span>. Internally they are saved as a
+list of vectors, each containing players that are indifferent to one
+another. This is somewhat similar to the <code>equivalenceClasses</code>
+attribute in <code>PowerRelation</code> objects.</p>
 <p>The function <code>doRanking</code> offers a generic way of creating
-<code>SocialRankingSolution</code> objects. Given a sortable vector or
-list of scores it determines the power relation between all players,
-where the names of the elements are determined from the
-<code><a href="https://rdrr.io/r/base/names.html" class="external-link">names()</a></code> attribute of <code>scores</code>. Hence, a
-<code>PowerRelation</code> object is not necessary to create a
-<code>SocialRankingSolution</code> object.</p>
+<code>SocialRanking</code> objects. Given a sortable vector or list of
+scores it determines the power relation between all players, where the
+names of the elements are determined from the <code><a href="https://rdrr.io/r/base/names.html" class="external-link">names()</a></code>
+attribute of <code>scores</code>. Hence, a <code>PowerRelation</code>
+object is not necessary to create a <code>SocialRanking</code>
+object.</p>
 <div class="sourceCode" id="cb93"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># we define some arbitrary score vector where "a" scores highest.</span></span>
 <span><span class="co"># "b" and "c" both score 1, thus they are indifferent.</span></span>
