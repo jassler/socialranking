@@ -1,4 +1,4 @@
-# socialranking 1.0.0
+# socialranking 1.0.0 (2023-03-13)
 
 This major update brings a lot of breaking changes that are hopefully justified.
 

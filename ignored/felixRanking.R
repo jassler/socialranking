@@ -32,17 +32,23 @@ rankL1 <- function(powerRelation) {
 }
 
 
-library(sets)
-makePrFelixMinimal <- function(powerRelation) {
-  eqs <- list()
-  current <- list()
-  for(eq in powerRelation$equivalenceClasses) {
-    current <- append(current, eq)
-    current <- Filter(function(x) !set_is_proper_subset(current, x), current)
-    eqs <- append(eqs, list(current))
+makeStefanoMatrix <- function(pr) {
+  l <- lapply(pr$elements, function(x) matrix(0, nrow = length(pr$elements), length(pr$eqs)))
+  names(l) <- pr$elements
+
+  for(x in seq_along(pr$eqs)) {
+    for(coalition in pr$eqs[[x]]) {
+      if(any(sapply(pr$eqs[[x]], function(otherCoal) all(otherCoal %in% coalition) && length(setdiff(coalition, otherCoal)) > 0)))
+        next
+
+      y <- length(coalition)
+      for(i in coalition) {
+        l[[i]][y,x] <- l[[i]][y,x] + 1
+      }
+    }
   }
 
-  eqs
+  structure(l, class = 'L1Scores')
 }
 
 
