@@ -1,3 +1,7 @@
+# socialranking 1.0.1 (2023-08-23)
+
+Added -package alias to package description (fixing problem listed [here](https://github.com/r-lib/roxygen2/issues/1491)).
+
 # socialranking 1.0.0 (2023-03-13)
 
 This major update brings a lot of breaking changes that are hopefully justified.

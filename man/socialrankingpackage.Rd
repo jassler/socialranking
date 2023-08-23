@@ -3,6 +3,7 @@
 \docType{package}
 \name{socialrankingpackage}
 \alias{socialrankingpackage}
+\alias{socialranking-package}
 \title{socialranking: A package for constructing ordinal power relations and evaluating social ranking solutions}
 \description{
 The package \code{socialranking} offers functions to represent ordinal

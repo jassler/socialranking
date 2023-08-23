@@ -34,6 +34,7 @@
 #'
 #' @docType package
 #' @name socialrankingpackage
+#' @aliases socialranking-package
 NULL
 #> NULL
 

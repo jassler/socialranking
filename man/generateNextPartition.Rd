@@ -39,10 +39,9 @@ gen <- generateNextPartition(gen)
 gen()
 # ab > a > b
 
-# calling it now throws a subscript out of bounds error
-if(interactive()) {
-  generateNextPartition(gen)
-}
+# went through all partitions, it will only generate NULL now
+gen <- generateNextPartition(gen)
+stopifnot(is.null(gen()))
 
 }
 \seealso{

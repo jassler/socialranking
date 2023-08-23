@@ -76,5 +76,6 @@ test_that("Skip partition", {
   gen <- generateNextPartition(gen)
   expect_true(gen() == as.PowerRelation('12 > 1 > 2 > {}'))
 
-  expect_error(generateNextPartition(gen))
+  gen <- generateNextPartition(gen)
+  expect_null(gen())
 })

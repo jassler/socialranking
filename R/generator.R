@@ -168,7 +168,7 @@ powerRelationGenerator <- function(coalitions, startWithLinearOrder = FALSE) {
       eqs,
       elements = elements,
       coalitionLookup = function(v) coalitionLookup[[toKey(v)]],
-      elementLookup = function(e) stop('not implemented')# elementLookup[[paste(e)]]
+      elementLookup = function(e) elementLookup[[paste(e)]]
     )
   }
 }
@@ -206,10 +206,9 @@ powerRelationGenerator <- function(coalitions, startWithLinearOrder = FALSE) {
 #' gen()
 #' # ab > a > b
 #'
-#' # calling it now throws a subscript out of bounds error
-#' if(interactive()) {
-#'   generateNextPartition(gen)
-#' }
+#' # went through all partitions, it will only generate NULL now
+#' gen <- generateNextPartition(gen)
+#' stopifnot(is.null(gen()))
 #'
 #' @export
 generateNextPartition <- function(gen) {

@@ -1,0 +1,37 @@
+PowerRelation <- function(equivalenceClasses, elements = NULL, coalitionLookup = NULL, elementLookup = NULL) {
+toKey <- function(coalition) {
+createLookupTables <- function(equivalenceClasses) {
+coalitionsAreIndifferent <- function(powerRelation, c1, c2) {
+equivalenceClassIndex <- function(powerRelation, coalition) {
+elementLookup <- function(powerRelation, element) {
+newPowerRelation <- function(...) {
+newPowerRelationFromString <- function(...) {
+SocialRanking <- function(l) {
+doRanking <- function(scores, compare = NULL, decreasing = TRUE) {
+customOrder <- function(scores, compare) {
+appendMissingCoalitions <- function(powerRelation, includeEmptySet = TRUE) {
+ordinalBanzhafScores <- function(powerRelation, elements = powerRelation$elements) {
+ordinalBanzhafRanking <- function(powerRelation) {
+copelandScores <- function(powerRelation, elements = powerRelation$elements) {
+copelandRanking <- function(powerRelation) {
+cpMajorityComparison <- function(powerRelation, e1, e2, strictly = FALSE, includeEmptySet = TRUE) {
+cpMajorityComparisonScore <- function(powerRelation, e1, e2, strictly = FALSE, includeEmptySet = TRUE) {
+createPowerset <- function(elements, includeEmptySet = TRUE, result = c('return', 'print', 'copy', 'printCompact', 'copyCompact')) {
+makeListCopyable <- function(elements, l, compact) {
+cumulativeScores <- function(powerRelation, elements = powerRelation$elements) {
+cumulativelyDominates <- function(powerRelation, e1, e2, strictly = FALSE) {
+release_bullets <- function() {
+dominates <- function(powerRelation, e1, e2, strictly = FALSE, includeEmptySet = TRUE) {
+powerRelationGenerator <- function(coalitions, startWithLinearOrder = FALSE) {
+generateNextPartition <- function(gen) {
+kramerSimpsonScores <- function(powerRelation, elements = powerRelation$elements, compIvsI = FALSE) {
+kramerSimpsonRanking <- function(powerRelation, compIvsI = FALSE) {
+lexcelScores <- function(powerRelation, elements = powerRelation$elements) {
+lexcelRanking <- function(powerRelation) {
+dualLexcelRanking <- function(powerRelation) {
+L1Scores <- function(powerRelation, elements = powerRelation$elements) {
+L1Ranking <- function(powerRelation) {
+makePowerRelationMonotonic <- function(powerRelation, addMissingCoalitions = TRUE) {
+testRelation <- function(powerRelation, e1) {
+powerRelationMatrix <- function(powerRelation, domainNames = c("pretty", "numericPrec", "numeric")) {
+transitiveClosure <- function(powerRelation) {
