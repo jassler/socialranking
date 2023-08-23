@@ -1,6 +1,6 @@
 Package: socialranking
 Title: Social Ranking Solutions for Power Relations on Coalitions
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: c(
  person("Felix", "Fritz", email = "felix.fritz@dauphine.eu", role = c("aut", "cre")),
  person("Jochen", "Staudacher", role = c("aut", "cph", "ths"), email = "jochen.staudacher@hs-kempten.de"),
@@ -27,4 +27,5 @@ Imports:
     Rdpack (>= 2.4)
 Config/testthat/edition: 3
 VignetteBuilder: knitr
-URL: https://jassler.github.io/socialranking/
+URL: https://jassler.github.io/socialranking/, https://github.com/jassler/socialranking
+BugReports: https://github.com/jassler/socialranking/issues
