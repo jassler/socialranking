@@ -10,3 +10,5 @@ inst/doc
 cran-comments.md
 docs
 CRAN-SUBMISSION
+*.csv
+*.xlsx
