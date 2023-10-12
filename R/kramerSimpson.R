@@ -1,62 +1,29 @@
-#' @export
-`[.KramerSimpsonScores` <- function(x, i, ...) structure(unclass(x)[i], class = 'KramerSimpsonScores')
-
-#' @export
-`==.KramerSimpsonScores` <- function(a, b) {a[[1]] == b[[1]]}
-
-#' @export
-`>.KramerSimpsonScores` <- function(a, b) {
-  # lower is better
-  a[[1]] < b[[1]]
-}
-
-#' @export
-is.na.KramerSimpsonScores <- function(x) FALSE
-
 #' Kramer-Simpson-like method
 #'
 #' Calculate the Kramer-Simpson-like scores.
-#' Lower scores are better.
+#' Higher scores are better.
 #'
 #' Inspired by the Kramer-Simpson method of social choice theory \insertCite{1969Simpson}{socialranking} \insertCite{1975Kramer}{socialranking}, the _Kramer-Simpson-like_
 #' method compares each element against all other elements using the CP-Majority rule.
 #'
-#' For a given element \eqn{i}{i} calculate the [`cpMajorityComparisonScore()`]
+#' For a given element \eqn{i}{i}, calculate the [`cpMajorityComparisonScore()`]
 #' against all elements \eqn{j}{j}, \eqn{d_{ji}(\succeq)}{d_ji(>=)} (notice that \eqn{i}{i} and
 #' \eqn{j}{j} are in reverse order).
-#' \eqn{\max_{j \in N \setminus \lbrace i \rbrace}(d_{ji}(\succeq))}{max_{j in N \\ {i}}(d_ji(>=))} then
-#' determines the final score, where lower scoring elements are ranked higher.
+#' \eqn{-\max_{j \in N \setminus \lbrace i \rbrace}(d_{ji}(\succeq))}{-max_{j in N}(d_ji(>=))} then
+#' determines the final score, where higher scoring elements are ranked higher (notice the negative symbol in front of the \eqn{\max}{max} statement).
 #'
-#' @section Note:
-#'
-#' By default this function does not compare \eqn{d_{ii}(\succeq)}{d_ii(>=)}. In other terms,
-#' the score of every element is the maximum CP-Majority comparison score against all other elements.
-#'
-#' This is slightly different from definitions found in
-#' \insertCite{2021Manipulability}{socialranking}. Since by definition  \eqn{d_{ii}(\succeq) = 0}{d_ii(>=) = 0}
-#' always holds, the Kramer-Simpson scores in those cases will never be negative, possibly discarding valuable
-#' information.
-#'
-#' For this reason `kramerSimpsonScores()` and `kramerSimpsonRanking()` includes a
-#' `compIvsI` parameter that can be set to `TRUE` if one wishes for \eqn{d_{ii}(\succeq) = 0}{d_ii(>=) = 0}
-#' to be included in the comparisons. Put into mathematical terms, if:
-#'
-#' | `compIvsI` | Score definition                                                                                   |
-#' | ---------- | -------------------------------------------------------------------------------------------------- |
-#' | `FALSE`    | \eqn{\max_{j \in N \setminus \lbrace i \rbrace}(d_{ji}(\succeq))}{max_{j in N \\ {i}}(d_ji(>=))} |
-#' | `TRUE`     | \eqn{\max_{j \in N}(d_{ji}(\succeq))}{max_{j in N}(d_ji(>=))}                                    |
-#'
+#' The implementation slightly differs from the original definition in \insertRef{2021Manipulability}{socialranking}.
+#' While the ranking solution itself is the same, the scores for this package are intentionally multiplied by -1,
+#' as this significantly improves performance when sorting the elements, as well as making simple comparisons between elements more logical to the user.
 #'
 #' @template param/powerRelation
 #' @template param/elements
-#' @param compIvsI If `TRUE`, include CP-Majority comparison \eqn{d_{ii}(\succeq)}{d_ii(>=)}, or, the CP-Majority
-#' comparison score of an element against itself, which is always 0.
 #'
 #' @family CP-majority based functions
 #' @family ranking solution functions
 #'
-#' @return Score function returns a list of type `KramerSimpsonScores` and length of `powerRelation$elements`
-#' (unless parameter `elements` is specified). Lower scoring elements are ranked higher.
+#' @return Score function returns a vector of type `KramerSimpsonScores` and length of `powerRelation$elements`
+#' (unless parameter `elements` is specified). Higher scoring elements are ranked higher.
 #'
 #' @references
 #' \insertRef{2021Manipulability}{socialranking}
@@ -70,14 +37,14 @@ is.na.KramerSimpsonScores <- function(x) FALSE
 #' pr <- as.PowerRelation("2 > (1~3) > 12 > (13~23) > {} > 123")
 #'
 #' # get scores for all elements
-#' # cpMajorityComparisonScore(pr, 2, 1) = 1
-#' # cpMajorityComparisonScore(pr, 3, 1) = -1
+#' # cpMajorityComparisonScore(pr, 2, 1, strictly = TRUE)[1] = 1
+#' # cpMajorityComparisonScore(pr, 3, 1, strictly = TRUE)[1] = 0
 #' # therefore the Kramer-Simpson-Score for element
-#' # `1` = 1
+#' # `1` = -max(0, 1) = -1
 #' #
 #' # Score analogous for the other elements
-#' # `2` = -1
-#' # `3` = 2
+#' # `2` = 0
+#' # `3` = -2
 #' kramerSimpsonScores(pr)
 #'
 #' # get scores for two elements
@@ -89,31 +56,18 @@ is.na.KramerSimpsonScores <- function(x) FALSE
 #' # result is still a list
 #' kramerSimpsonScores(pr, 2)
 #'
-#' # note how the previous result of element 2 is negative.
-#' # If we compare element 2 against itself, its max score will be 0
-#' kramerSimpsonScores(pr, 2, compIvsI = TRUE)
-#'
 #' @export
-kramerSimpsonScores <- function(powerRelation, elements = powerRelation$elements, compIvsI = FALSE) {
+kramerSimpsonScores <- function(powerRelation, elements = powerRelation$elements) {
   # --- checks (generated) --- #
   stopifnot(is.PowerRelation(powerRelation))
   # --- end checks --- #
 
-  result <- list()
-  for(p1 in elements) {
-    opponents <- if(compIvsI)
-      powerRelation$elements
-    else
-      powerRelation$elements[-which(powerRelation$elements == p1)]
+  result <- structure(
+    sapply(elements, function(p1) max(sapply(powerRelation$elements, function(p2) cpMajorityComparisonScore(powerRelation, p2, p1, TRUE)[1]))),
+    names = elements
+  )
 
-    result[[paste(p1)]] <- max(
-      sapply(opponents, function(p2) {
-        sum(cpMajorityComparisonScore(powerRelation, p2, p1))
-      })
-    )
-  }
-
-  structure(result, class = 'KramerSimpsonScores')
+  structure(-result, class = 'KramerSimpsonScores')
 }
 
 #' Kramer-Simpson-like ranking
@@ -131,6 +85,6 @@ kramerSimpsonScores <- function(powerRelation, elements = powerRelation$elements
 #' kramerSimpsonRanking(pr)
 #'
 #' @export
-kramerSimpsonRanking <- function(powerRelation, compIvsI = FALSE) {
-  doRanking(kramerSimpsonScores(powerRelation, compIvsI = compIvsI))
+kramerSimpsonRanking <- function(powerRelation) {
+  doRanking(kramerSimpsonScores(powerRelation))
 }

@@ -165,7 +165,7 @@ doRanking <- function(scores, compare = NULL, decreasing = TRUE) {
   orderList[[length(orderList)+1]] <- sort(orderItem)
 
   orderList <- lapply(orderList, function(r) {
-    sapply(r, function(x) elements[x])
+    sort(sapply(r, function(x) elements[x]))
   })
 
   SocialRanking(orderList)

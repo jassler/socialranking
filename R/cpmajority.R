@@ -199,10 +199,17 @@ cpMajorityComparisonScore <- function(powerRelation, e1, e2, strictly = FALSE, i
   # --- checks (generated) --- #
   stopifnot(is.PowerRelation(powerRelation))
   stopifnot(e1 %in% powerRelation$elements)
-  stopifnot(class(e1) == class(powerRelation$elements))
   stopifnot(e2 %in% powerRelation$elements)
-  stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #
+
+  if(e1 == e2) {
+    if(strictly) {
+      return(c(0,0))
+    } else {
+      n <- 2^(length(powerRelation$elements)-1)
+      return(c(n,-n))
+    }
+  }
 
   # 2^(N-{i,j})
   coalitions <- createPowerset(setdiff(powerRelation$elements, c(e1,e2)), includeEmptySet = includeEmptySet)

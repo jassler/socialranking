@@ -74,12 +74,10 @@ class PowerRelation:
         j_str =\
             (lambda c: ''.join(c) if len(c) > 0 else '{}') if self.only_single_chars else\
             (lambda c: '{' + ', '.join(c) + '}')
-        
         stringified = [
             [j_str(coalition) for coalition in eqc]
             for eqc in self.eqs
         ]
-
         stringified = map(lambda m: m[0] if len(m) == 1 else '(' + ' ~ '.join(m) + ')', stringified)
         return ' > '.join(stringified)
 

@@ -5,32 +5,25 @@
 \alias{kramerSimpsonRanking}
 \title{Kramer-Simpson-like method}
 \usage{
-kramerSimpsonScores(
-  powerRelation,
-  elements = powerRelation$elements,
-  compIvsI = FALSE
-)
+kramerSimpsonScores(powerRelation, elements = powerRelation$elements)
 
-kramerSimpsonRanking(powerRelation, compIvsI = FALSE)
+kramerSimpsonRanking(powerRelation)
 }
 \arguments{
 \item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
 
 \item{elements}{Vector of elements of which to calculate their scores.
 By default, the scores of all elements in \code{powerRelation$elements} are considered.}
-
-\item{compIvsI}{If \code{TRUE}, include CP-Majority comparison \eqn{d_{ii}(\succeq)}{d_ii(>=)}, or, the CP-Majority
-comparison score of an element against itself, which is always 0.}
 }
 \value{
-Score function returns a list of type \code{KramerSimpsonScores} and length of \code{powerRelation$elements}
-(unless parameter \code{elements} is specified). Lower scoring elements are ranked higher.
+Score function returns a vector of type \code{KramerSimpsonScores} and length of \code{powerRelation$elements}
+(unless parameter \code{elements} is specified). Higher scoring elements are ranked higher.
 
 Ranking function returns corresponding \code{\link{SocialRanking}} object.
 }
 \description{
 Calculate the Kramer-Simpson-like scores.
-Lower scores are better.
+Higher scores are better.
 
 \code{kramerSimpsonRanking()} returns the corresponding ranking.
 }
@@ -38,45 +31,29 @@ Lower scores are better.
 Inspired by the Kramer-Simpson method of social choice theory \insertCite{1969Simpson}{socialranking} \insertCite{1975Kramer}{socialranking}, the \emph{Kramer-Simpson-like}
 method compares each element against all other elements using the CP-Majority rule.
 
-For a given element \eqn{i}{i} calculate the \code{\link[=cpMajorityComparisonScore]{cpMajorityComparisonScore()}}
+For a given element \eqn{i}{i}, calculate the \code{\link[=cpMajorityComparisonScore]{cpMajorityComparisonScore()}}
 against all elements \eqn{j}{j}, \eqn{d_{ji}(\succeq)}{d_ji(>=)} (notice that \eqn{i}{i} and
 \eqn{j}{j} are in reverse order).
-\eqn{\max_{j \in N \setminus \lbrace i \rbrace}(d_{ji}(\succeq))}{max_{j in N \\ {i}}(d_ji(>=))} then
-determines the final score, where lower scoring elements are ranked higher.
+\eqn{-\max_{j \in N \setminus \lbrace i \rbrace}(d_{ji}(\succeq))}{-max_{j in N}(d_ji(>=))} then
+determines the final score, where higher scoring elements are ranked higher (notice the negative symbol in front of the \eqn{\max}{max} statement).
+
+The implementation slightly differs from the original definition in \insertRef{2021Manipulability}{socialranking}.
+While the ranking solution itself is the same, the scores for this package are intentionally multiplied by -1,
+as this significantly improves performance when sorting the elements, as well as making simple comparisons between elements more logical to the user.
 }
-\section{Note}{
-
-
-By default this function does not compare \eqn{d_{ii}(\succeq)}{d_ii(>=)}. In other terms,
-the score of every element is the maximum CP-Majority comparison score against all other elements.
-
-This is slightly different from definitions found in
-\insertCite{2021Manipulability}{socialranking}. Since by definition  \eqn{d_{ii}(\succeq) = 0}{d_ii(>=) = 0}
-always holds, the Kramer-Simpson scores in those cases will never be negative, possibly discarding valuable
-information.
-
-For this reason \code{kramerSimpsonScores()} and \code{kramerSimpsonRanking()} includes a
-\code{compIvsI} parameter that can be set to \code{TRUE} if one wishes for \eqn{d_{ii}(\succeq) = 0}{d_ii(>=) = 0}
-to be included in the comparisons. Put into mathematical terms, if:\tabular{ll}{
-   \code{compIvsI} \tab Score definition \cr
-   \code{FALSE} \tab \eqn{\max_{j \in N \setminus \lbrace i \rbrace}(d_{ji}(\succeq))}{max_{j in N \\ {i}}(d_ji(>=))} \cr
-   \code{TRUE} \tab \eqn{\max_{j \in N}(d_{ji}(\succeq))}{max_{j in N}(d_ji(>=))} \cr
-}
-}
-
 \examples{
 # 2 > (1 ~ 3) > 12 > (13 ~ 23) > {} > 123
 pr <- as.PowerRelation("2 > (1~3) > 12 > (13~23) > {} > 123")
 
 # get scores for all elements
-# cpMajorityComparisonScore(pr, 2, 1) = 1
-# cpMajorityComparisonScore(pr, 3, 1) = -1
+# cpMajorityComparisonScore(pr, 2, 1, strictly = TRUE)[1] = 1
+# cpMajorityComparisonScore(pr, 3, 1, strictly = TRUE)[1] = 0
 # therefore the Kramer-Simpson-Score for element
-# `1` = 1
+# `1` = -max(0, 1) = -1
 #
 # Score analogous for the other elements
-# `2` = -1
-# `3` = 2
+# `2` = 0
+# `3` = -2
 kramerSimpsonScores(pr)
 
 # get scores for two elements
@@ -87,10 +64,6 @@ kramerSimpsonScores(pr, c(1,3))
 # or single element
 # result is still a list
 kramerSimpsonScores(pr, 2)
-
-# note how the previous result of element 2 is negative.
-# If we compare element 2 against itself, its max score will be 0
-kramerSimpsonScores(pr, 2, compIvsI = TRUE)
 
 # 2 > 1 > 3
 kramerSimpsonRanking(pr)
