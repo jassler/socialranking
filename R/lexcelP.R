@@ -1,0 +1,180 @@
+#' @export
+`[.LpScores` <- function(x, i, ...) structure(unclass(x)[i], class = 'LpScores')
+
+#' @export
+`==.LpScores` <- function(a, b) {identical(a[[1]], b[[1]])}
+
+#' @export
+`>.LpScores` <- function(a, b) {
+  a <- a[[1]]
+  b <- b[[1]]
+  if(a[1] != b[1]) {
+    return(a[1] < b[1])
+  }
+  i <- which(a != b)
+  length(i) > 0 && a[i[1]] > b[i[1]]
+}
+
+#' @export
+is.na.LpScores <- function(x) FALSE
+
+#' Lp Ranking
+#'
+#' Calculate the \eqn{L^{p}}{L^p} scores.
+#'
+#' \eqn{L^{p}}{L^p} is a social ranking solution belonging to the family of lexicographical ranking functions.
+#' While related to [`L1Ranking()`], it incorporates the property of "standardness", stating that if the
+#' singleton coalition \eqn{\lbrace i\rbrace \succ \lbrace j\rbrace}{\{i\} > \{j\}}, then the ranking solution
+#' should also prefer \eqn{i}{i} over \eqn{j}{j}.
+#'
+#' If \eqn{\lbrace i\rbrace \sim \lbrace j\rbrace}{\{i\} ~ \{j\}}, then all coalitions from size 2 and upward are inspected,
+#' giving higher precedence to coalitions with a lower number of elements.
+#' While this preference is similar to the \eqn{L^{(1)}}{L^1}, it differs in two notable ways:
+#'
+#' 1. If \eqn{\lbrace i\rbrace, \lbrace j\rbrace \in \Sigma_k}{\{i\},\{k\} in E_k}, then only coalitions
+#' \eqn{S \subseteq N, S \cap \lbrace i, j \rbrace \neq \emptyset}{S subseteq N, S n \{ i, j \} != \{\}}, are considered that are in
+#' strictly higher ranking equivalence classes, \eqn{S \succ \lbrace i \rbrace}{S > \{i\}},
+#' 2. From that set of coalitions, the number of coalitions \eqn{i}{i} or \eqn{j}{j} belongs to for each coalition size matters,
+#' as opposed to considering each equivalence class individually (this differs also from the \eqn{L^{p^*}}{L^p*} solution).
+#'
+#' Let \eqn{N}{N} be a set of elements, \eqn{\succeq \in \mathcal{T}(\mathcal{P})}{>= in T(P)} be a power relation,
+#' and \eqn{\Sigma_1 \succ \Sigma_2 \succ \dots \succ \Sigma_m}{E_1 > E_2 > ... > E_m} its corresponding quotient order.
+#'
+#' For an element \eqn{i \in N}{i in N}, we get a matrix \eqn{M^\succeq_i}{M^(>=)_i} with \eqn{m}{m} columns and \eqn{|N|}{|N|} rows.
+#' Whereas each column represents an equivalence class, each row corresponds to the coalition size.
+#'
+#' \deqn{(M^\succeq_i)_{pq} = |\{S \in \Sigma_q: |S| = p\}|}{(M^(>=)_i)_(pq) = |\{S in E_q: |S| = p\}}
+#'
+#' Take as an example \eqn{\succeq: (123 \sim 12 \sim 2) \succ (13 \sim 23) \succ (1 \sim 3 \sim \{\})}{>=: (123 ~ 13 ~ 2) > (12 ~ 23) > (1 ~ 3 ~ \{\})}.
+#' From this, we get the following three matrices:
+#'
+#' \deqn{
+#' M^{\succeq,1} = \begin{bmatrix}
+#' 0 & 0 & 1\\
+#' 1 & 1 & 0\\
+#' 1 & 0 & 0
+#' \end{bmatrix}
+#' M^{\succeq,2} = \begin{bmatrix}
+#' 1 & 0 & 0\\
+#' 1 & 0 & 1\\
+#' 1 & 0 & 0
+#' \end{bmatrix}
+#' M^{\succeq,3} = \begin{bmatrix}
+#' 0 & 0 & 1\\
+#' 0 & 2 & 0\\
+#' 1 & 0 & 0
+#' \end{bmatrix}
+#' }{
+#' M^(>=,1) = matrix(c(0,1,1,0,1,0,1,0,0),nrow=3)\\
+#' M^(>=,2) = matrix(c(1,1,1,0,0,0,0,1,0),nrow=3)\\
+#' M^(>=,3) = matrix(c(0,0,1,0,2,0,1,0,0),nrow=3)
+#' }
+#'
+#' \eqn{M^{\succeq,2}_{2,3}}{M^(>=,2)_(2,3)} in this context refers to the value in the second row and third column of element 2, in this case \eqn{1}{1}.
+#'
+#' For \eqn{i, j \in N}{i, j in N}, the social ranking solution \eqn{L^p}{L^p} then ranks \eqn{i} strictly above \eqn{j} if one of the following conditions hold:
+#'
+#' 1. \eqn{\lbrace i \rbrace \succ \lbrace j \rbrace}{\{i\} > \{j\}};
+#' 2. \eqn{\lbrace i \rbrace, \lbrace j \rbrace \in \Sigma_k}{\{i\}, \{j\} in E_k} and there exists a \eqn{p_0 \in \lbrace 2, \dots, |N|\rbrace}{p_0 in \{2, ..., |N|-1\}} such that:
+#' \deqn{\sum_{q < k} M^{\succeq,i}_{p,q} = \sum_{q < k} M^{\succeq,j}_{p,q}\ \forall p < p_0}{sum_(q < k) M^(>=,i)_(p,q) = sum_(q < k) M^(>=,j)_(p,q) for all p < p_0} and
+#' \deqn{\sum_{q < k} M^{\succeq,i}_{p_0,q} = \sum_{q < k} M^{\succeq,j}_{p_0,q}.}{sum_(q < k) M^(>=,i)_(p_0,q) = sum_(q < k) M^(>=,j)_(p_0,q).}
+#'
+#' In the example, \eqn{2}{2} will be immediately put above \eqn{1}{1} and \eqn{3}{3} because \eqn{\lbrace 2 \rbrace \succ \lbrace 1 \rbrace}{\{2\} > \{3\}} and \eqn{\lbrace 2 \rbrace \succ \lbrace 1 \rbrace}{\{2\} > \{3\}}.
+#' Since \eqn{\lbrace 1 \rbrace \sim \lbrace 3 \rbrace}{\{1\} ~ \{3\}}, we next consider the coalitions of size 2. Here, it turns out that \eqn{M^{\succeq,1}_{2,1} + M^{\succeq,1}_{2,2} = 1 + 1}{M^(>=,1)_(2,1) + M^(>=,1)_(2,2) = 1 + 1}
+#' is equal to \eqn{M^{\succeq,3}_{2,1} + M^{\succeq,3}_{2,2} = 0 + 2}{M^(>=,3)_(2,1) + M^(>=,3)_(2,2) = 0 + 2}. For obvious reasons the grand coalition will not have to be considered,
+#' and thus \eqn{1}{1} and \eqn{3}{3} are considered equally powerful by the \eqn{L^p}{L^p} solution.
+#'
+#' @section Alterations:
+#'
+#' The matrices as described above and in \insertRef{beal2022lexicographic}{socialranking} can be investigated with the [`L1Scores()`] function.
+#'
+#' For efficiency, `LpScores()` discards much of the redundant information.
+#' Instead of a matrix for each element, it returns a vector of size \eqn{|N|}{|N|}.
+#'
+#' Given a score vector `v` for an element `i`, `v[1]` is the position of the singleton coalition `{i}`.
+#' This implies that if `v[1] < w[1]`, where `w` is the score vector of an element `j`, then `i` is ranked strictly above `j`.
+#'
+#' `v[2]`, `v[3]`, ..., `v[n]` then indicates the number of coalitions of size `2`, `3`, ..., `n` that the element `i` appears in.
+#'
+#' @section Aliases:
+#'
+#' For better discoverability, `lexcelPScores()` and `lexcelPRanking()` serve as aliases for `LpScores()` and `LpRanking()`, respectively.
+#'
+#' @template param/powerRelation
+#' @template param/elements
+#'
+#' @family ranking solution functions
+#'
+#' @references
+#' \insertRef{beal2022lexicographic}{socialranking}
+#'
+#' @return Score function returns a list of type `LpScores` and length of `powerRelation$elements`
+#' (unless parameter `elements` is specified).
+#' Each index contains a vector of length `length(powerRelation$elements)`.
+#'
+#' @examples
+#' pr <- as.PowerRelation("(123 ~ 13 ~ 2) > (12 ~ 1 ~ 3) > (23 ~ {})")
+#' scores <- LpScores(pr)
+#' scores$`2`
+#' # [1] 1 0 0
+#'
+#' LpRanking(pr)
+#' # 2 > 1 ~ 3
+#'
+#' @export
+LpScores <- function(powerRelation, elements = powerRelation$elements) {
+  # --- checks (generated) --- #
+  stopifnot(is.PowerRelation(powerRelation))
+  # --- end checks --- #
+
+  elements <- paste(elements)
+  res <- structure(
+    lapply(rep(0, length(elements)), rep, length(powerRelation$elements)),
+    names = elements
+  )
+
+  for(el in elements) {
+    pi <- powerRelation$coalitionLookup(el)
+    res[[el]][1] <- pi
+    for(coalIn in powerRelation$elementLookup(el)) {
+      if(coalIn[1] >= pi) {
+        next
+      }
+      s <- length(powerRelation$eqs[[coalIn[1]]][[coalIn[2]]])
+      res[[el]][s] <- res[[el]][s] + 1
+    }
+  }
+
+  structure(res, class = 'LpScores')
+}
+
+
+#' `LpRanking()` returns the corresponding ranking.
+#'
+#' @rdname LpScores
+#'
+#' @template return/ranking
+#'
+#' @export
+LpRanking <- function(powerRelation) {
+  doRanking(LpScores(powerRelation))
+}
+
+#' @rdname LpScores
+#' @export
+lexcelPScores <- LpScores
+
+#' @rdname LpScores
+#' @export
+lexcelPRanking <- LpRanking
+
+
+
+
+
+
+
+
+
+
+

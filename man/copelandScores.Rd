@@ -79,6 +79,7 @@ Other CP-majority based functions:
 
 Other ranking solution functions: 
 \code{\link{L1Scores}()},
+\code{\link{LpScores}()},
 \code{\link{cumulativeScores}()},
 \code{\link{kramerSimpsonScores}()},
 \code{\link{lexcelScores}()},

@@ -114,6 +114,7 @@ dualLexcelRanking(pr)
 \seealso{
 Other ranking solution functions: 
 \code{\link{L1Scores}()},
+\code{\link{LpScores}()},
 \code{\link{copelandScores}()},
 \code{\link{cumulativeScores}()},
 \code{\link{kramerSimpsonScores}()},

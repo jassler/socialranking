@@ -104,6 +104,7 @@ L1Ranking(pr)
 }
 \seealso{
 Other ranking solution functions: 
+\code{\link{LpScores}()},
 \code{\link{copelandScores}()},
 \code{\link{cumulativeScores}()},
 \code{\link{kramerSimpsonScores}()},
