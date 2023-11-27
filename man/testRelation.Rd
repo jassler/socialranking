@@ -19,6 +19,14 @@
 \alias{\%>lex\%}
 \alias{\%>=duallex\%}
 \alias{\%>duallex\%}
+\alias{\%>=L1\%}
+\alias{\%>L1\%}
+\alias{\%>=L2\%}
+\alias{\%>L2\%}
+\alias{\%>=LP\%}
+\alias{\%>LP\%}
+\alias{\%>=LPS\%}
+\alias{\%>LPS\%}
 \title{Test relation between two elements}
 \usage{
 testRelation(powerRelation, e1)
@@ -56,6 +64,22 @@ pr_e1 \%>lex\% e2
 pr_e1 \%>=duallex\% e2
 
 pr_e1 \%>duallex\% e2
+
+pr_e1 \%>=L1\% e2
+
+pr_e1 \%>L1\% e2
+
+pr_e1 \%>=L2\% e2
+
+pr_e1 \%>L2\% e2
+
+pr_e1 \%>=LP\% e2
+
+pr_e1 \%>LP\% e2
+
+pr_e1 \%>=LPS\% e2
+
+pr_e1 \%>LPS\% e2
 }
 \arguments{
 \item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
@@ -80,7 +104,7 @@ The function \code{testRelation} is somewhat only used to make the offered compa
 comparison operators listed in the usage section.
 }
 \examples{
-pr <- as.PowerRelation("123 > 12 ~ 13 > 3 > 1 ~ 2")
+pr <- as.PowerRelation("123 > 12 ~ 13 ~ 23 > 3 > 1 ~ 2 > {}")
 
 # Dominance
 stopifnot(pr \%:\% 1 \%>=dom\% 2)
@@ -92,7 +116,7 @@ stopifnot((pr \%:\% 1 \%>dom\% 2) == FALSE)
 stopifnot(pr \%:\% 1 \%>=cumuldom\% 2)
 
 # Strict cumulative dominance
-stopifnot(pr \%:\% 1 \%>cumuldom\% 2)
+stopifnot((pr \%:\% 1 \%>cumuldom\% 2) == FALSE)
 
 # CP-Majority relation
 stopifnot(pr \%:\% 1 \%>=cp\% 2)
@@ -129,13 +153,35 @@ stopifnot((pr \%:\% 1 \%>ks\% 2) == FALSE)
 stopifnot(pr \%:\% 3 \%>ks\% 1)
 
 # Lexicographical and dual lexicographical excellence
-stopifnot(pr \%:\% 1 \%>=lex\% 3)
+stopifnot(pr \%:\% 3 \%>=lex\% 1)
 stopifnot(pr \%:\% 3 \%>=duallex\% 1)
 
 # Strict lexicographical and dual lexicographical excellence
 # (meaning their lexicographical scores don't match)
-stopifnot(pr \%:\% 1 \%>lex\% 3)
+stopifnot(pr \%:\% 3 \%>lex\% 1)
 stopifnot(pr \%:\% 3 \%>duallex\% 1)
+
+# L^(1) and L^(2)
+stopifnot(pr \%:\% 1 \%>=L1\% 2)
+stopifnot(pr \%:\% 1 \%>=L2\% 2)
+
+# Strict L^(1) and L^(2)
+stopifnot((pr \%:\% 1 \%>L1\% 2) == FALSE)
+stopifnot(pr \%:\% 3 \%>L1\% 1)
+
+stopifnot((pr \%:\% 1 \%>L2\% 2) == FALSE)
+stopifnot(pr \%:\% 3 \%>L2\% 1)
+
+# L^p and L^p*
+stopifnot(pr \%:\% 1 \%>=LP\% 2)
+stopifnot(pr \%:\% 1 \%>=LPS\% 2)
+
+# Strict L^(1) and L^(2)
+stopifnot((pr \%:\% 1 \%>LP\% 2) == FALSE)
+stopifnot(pr \%:\% 3 \%>LP\% 1)
+
+stopifnot((pr \%:\% 1 \%>LPS\% 2) == FALSE)
+stopifnot(pr \%:\% 3 \%>LPS\% 1)
 
 }
 \seealso{

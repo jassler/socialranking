@@ -93,13 +93,14 @@ It can be assumed, however, that \eqn{L^{p^*}}{L^p*} is more granular, as it doe
 The matrices as described above and in \insertRef{beal2022lexicographic}{socialranking} can be investigated with the \code{\link[=L1Scores]{L1Scores()}} function.
 
 \code{LPSScores()} discards some redundant information, most notably all columns from each element's singleton class and the ones thereafter.
+The first row is also removed, as all values there are guaranteed to be 0.
 
 For the example above, this would actually result in the matrices
 
 \preformatted{
-matrix(c(0,1,1, 0,1,0), nrow=3)
-matrix(numeric(), nrow=3)
-matrix(c(0,0,1, 0,2,0), nrow=3)
+matrix(c(1,1, 1,0), nrow=2)
+matrix(numeric(), nrow=2)
+matrix(c(0,1, 2,0), nrow=2)
 }
 }
 

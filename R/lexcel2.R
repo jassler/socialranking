@@ -21,7 +21,7 @@
       return(a[i,j] > b[i,j])
     }
   }
-  length(i) > 0 && a[i[1]] > b[i[1]]
+  return(FALSE)
 }
 
 #' @export
@@ -142,18 +142,9 @@ L2Scores <- function(powerRelation, elements = powerRelation$elements) {
   stopifnot(is.PowerRelation(powerRelation))
   # --- end checks --- #
 
-  l <- list()
-  for(e in elements) {
-    m <- matrix(0, nrow = length(powerRelation$elements), ncol = length(powerRelation$eqs))
-    for(index in powerRelation$elementLookup(e)) {
-      y <- length(powerRelation$eqs[[index[1]]][[index[2]]])
-      x <- index[1]
-      m[y,x] <- m[y,x] + 1
-    }
-    l[[paste(e)]] <- m
-  }
-
-  structure(l, class = 'L2Scores')
+  l <- L1Scores(powerRelation, elements)
+  class(l) <- 'L2Scores'
+  return(l)
 }
 
 #' `L2Ranking()` returns the corresponding ranking.

@@ -21,7 +21,7 @@
 #' Score Functions: [`ordinalBanzhafScores()`], [`copelandScores()`], [`kramerSimpsonScores()`], [`lexcelScores()`].
 #'
 #' @examples
-#' pr <- as.PowerRelation("123 > 12 ~ 13 > 3 > 1 ~ 2")
+#' pr <- as.PowerRelation("123 > 12 ~ 13 ~ 23 > 3 > 1 ~ 2 > {}")
 #'
 #' @export
 testRelation <- function(powerRelation, e1) {
@@ -53,9 +53,8 @@ testRelation <- function(powerRelation, e1) {
   powerRelation <- pr_e1[[1]]
   e1 <- pr_e1[[2]]
   stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
-  stopifnot('First element does not exist in the given PowerRelation object.' = (e1 %in% powerRelation$elements))
+  stopifnot(e1 %in% powerRelation$elements)
   stopifnot(e2 %in% powerRelation$elements)
-  stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #
   dominates(powerRelation, e1, e2, strictly = FALSE)
 }
@@ -72,9 +71,8 @@ testRelation <- function(powerRelation, e1) {
   powerRelation <- pr_e1[[1]]
   e1 <- pr_e1[[2]]
   stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
-  stopifnot('First element does not exist in the given PowerRelation object.' = (e1 %in% powerRelation$elements))
+  stopifnot(e1 %in% powerRelation$elements)
   stopifnot(e2 %in% powerRelation$elements)
-  stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #
   dominates(powerRelation, e1, e2, strictly = TRUE)
 }
@@ -92,9 +90,8 @@ testRelation <- function(powerRelation, e1) {
   powerRelation <- pr_e1[[1]]
   e1 <- pr_e1[[2]]
   stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
-  stopifnot('First element does not exist in the given PowerRelation object.' = (e1 %in% powerRelation$elements))
+  stopifnot(e1 %in% powerRelation$elements)
   stopifnot(e2 %in% powerRelation$elements)
-  stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #
   cumulativelyDominates(powerRelation, e1, e2, strictly = FALSE)
 }
@@ -103,7 +100,7 @@ testRelation <- function(powerRelation, e1) {
 #' @rdname testRelation
 #' @examples
 #' # Strict cumulative dominance
-#' stopifnot(pr %:% 1 %>cumuldom% 2)
+#' stopifnot((pr %:% 1 %>cumuldom% 2) == FALSE)
 #'
 #' @export
 `%>cumuldom%` <- function(pr_e1, e2) {
@@ -112,9 +109,8 @@ testRelation <- function(powerRelation, e1) {
   powerRelation <- pr_e1[[1]]
   e1 <- pr_e1[[2]]
   stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
-  stopifnot('First element does not exist in the given PowerRelation object.' = (e1 %in% powerRelation$elements))
+  stopifnot(e1 %in% powerRelation$elements)
   stopifnot(e2 %in% powerRelation$elements)
-  stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #
   cumulativelyDominates(powerRelation, e1, e2, strictly = TRUE)
 }
@@ -132,9 +128,8 @@ testRelation <- function(powerRelation, e1) {
   powerRelation <- pr_e1[[1]]
   e1 <- pr_e1[[2]]
   stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
-  stopifnot('First element does not exist in the given PowerRelation object.' = (e1 %in% powerRelation$elements))
+  stopifnot(e1 %in% powerRelation$elements)
   stopifnot(e2 %in% powerRelation$elements)
-  stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #
 
   sum(cpMajorityComparisonScore(powerRelation, e1, e2)) >= 0
@@ -152,9 +147,8 @@ testRelation <- function(powerRelation, e1) {
   powerRelation <- pr_e1[[1]]
   e1 <- pr_e1[[2]]
   stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
-  stopifnot('First element does not exist in the given PowerRelation object.' = (e1 %in% powerRelation$elements))
+  stopifnot(e1 %in% powerRelation$elements)
   stopifnot(e2 %in% powerRelation$elements)
-  stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #
 
   sum(cpMajorityComparisonScore(powerRelation, e1, e2)) > 0
@@ -172,9 +166,8 @@ testRelation <- function(powerRelation, e1) {
   powerRelation <- pr_e1[[1]]
   e1 <- pr_e1[[2]]
   stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
-  stopifnot('First element does not exist in the given PowerRelation object.' = (e1 %in% powerRelation$elements))
+  stopifnot(e1 %in% powerRelation$elements)
   stopifnot(e2 %in% powerRelation$elements)
-  stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #
 
   scores <- ordinalBanzhafScores(powerRelation)
@@ -194,9 +187,8 @@ testRelation <- function(powerRelation, e1) {
   powerRelation <- pr_e1[[1]]
   e1 <- pr_e1[[2]]
   stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
-  stopifnot('First element does not exist in the given PowerRelation object.' = (e1 %in% powerRelation$elements))
+  stopifnot(e1 %in% powerRelation$elements)
   stopifnot(e2 %in% powerRelation$elements)
-  stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #
 
   scores <- ordinalBanzhafScores(powerRelation)
@@ -216,9 +208,8 @@ testRelation <- function(powerRelation, e1) {
   powerRelation <- pr_e1[[1]]
   e1 <- pr_e1[[2]]
   stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
-  stopifnot('First element does not exist in the given PowerRelation object.' = (e1 %in% powerRelation$elements))
+  stopifnot(e1 %in% powerRelation$elements)
   stopifnot(e2 %in% powerRelation$elements)
-  stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #
 
   scores <- copelandScores(powerRelation, c(e1, e2))
@@ -241,9 +232,8 @@ testRelation <- function(powerRelation, e1) {
   powerRelation <- pr_e1[[1]]
   e1 <- pr_e1[[2]]
   stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
-  stopifnot('First element does not exist in the given PowerRelation object.' = (e1 %in% powerRelation$elements))
+  stopifnot(e1 %in% powerRelation$elements)
   stopifnot(e2 %in% powerRelation$elements)
-  stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #
 
   scores <- copelandScores(powerRelation, c(e1, e2))
@@ -264,9 +254,8 @@ testRelation <- function(powerRelation, e1) {
   powerRelation <- pr_e1[[1]]
   e1 <- pr_e1[[2]]
   stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
-  stopifnot('First element does not exist in the given PowerRelation object.' = (e1 %in% powerRelation$elements))
+  stopifnot(e1 %in% powerRelation$elements)
   stopifnot(e2 %in% powerRelation$elements)
-  stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #
 
   scores <- kramerSimpsonScores(powerRelation, c(e1, e2))
@@ -288,9 +277,8 @@ testRelation <- function(powerRelation, e1) {
   powerRelation <- pr_e1[[1]]
   e1 <- pr_e1[[2]]
   stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
-  stopifnot('First element does not exist in the given PowerRelation object.' = (e1 %in% powerRelation$elements))
+  stopifnot(e1 %in% powerRelation$elements)
   stopifnot(e2 %in% powerRelation$elements)
-  stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #
 
   scores <- kramerSimpsonScores(powerRelation, c(e1, e2))
@@ -301,12 +289,12 @@ testRelation <- function(powerRelation, e1) {
 #' @rdname testRelation
 #' @examples
 #' # Lexicographical and dual lexicographical excellence
-#' stopifnot(pr %:% 1 %>=lex% 3)
+#' stopifnot(pr %:% 3 %>=lex% 1)
 #' stopifnot(pr %:% 3 %>=duallex% 1)
 #'
 #' # Strict lexicographical and dual lexicographical excellence
 #' # (meaning their lexicographical scores don't match)
-#' stopifnot(pr %:% 1 %>lex% 3)
+#' stopifnot(pr %:% 3 %>lex% 1)
 #' stopifnot(pr %:% 3 %>duallex% 1)
 #'
 #' @export
@@ -316,9 +304,8 @@ testRelation <- function(powerRelation, e1) {
   powerRelation <- pr_e1[[1]]
   e1 <- pr_e1[[2]]
   stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
-  stopifnot('First element does not exist in the given PowerRelation object.' = (e1 %in% powerRelation$elements))
+  stopifnot(e1 %in% powerRelation$elements)
   stopifnot(e2 %in% powerRelation$elements)
-  stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #
 
   scores <- lexcelScores(powerRelation, c(e1, e2))
@@ -334,9 +321,8 @@ testRelation <- function(powerRelation, e1) {
   powerRelation <- pr_e1[[1]]
   e1 <- pr_e1[[2]]
   stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
-  stopifnot('First element does not exist in the given PowerRelation object.' = (e1 %in% powerRelation$elements))
+  stopifnot(e1 %in% powerRelation$elements)
   stopifnot(e2 %in% powerRelation$elements)
-  stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #
 
   scores <- lexcelScores(powerRelation, c(e1, e2))
@@ -353,9 +339,8 @@ testRelation <- function(powerRelation, e1) {
   powerRelation <- pr_e1[[1]]
   e1 <- pr_e1[[2]]
   stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
-  stopifnot('First element does not exist in the given PowerRelation object.' = (e1 %in% powerRelation$elements))
+  stopifnot(e1 %in% powerRelation$elements)
   stopifnot(e2 %in% powerRelation$elements)
-  stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #
 
   scores <- lexcelScores(powerRelation, c(e1, e2))
@@ -375,9 +360,8 @@ testRelation <- function(powerRelation, e1) {
   powerRelation <- pr_e1[[1]]
   e1 <- pr_e1[[2]]
   stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
-  stopifnot('First element does not exist in the given PowerRelation object.' = (e1 %in% powerRelation$elements))
+  stopifnot(e1 %in% powerRelation$elements)
   stopifnot(e2 %in% powerRelation$elements)
-  stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #
 
   scores <- lexcelScores(powerRelation, c(e1, e2))
@@ -385,5 +369,160 @@ testRelation <- function(powerRelation, e1) {
     lapply(lexcelScores(powerRelation, c(e1, e2)), function(x) -rev(x)),
     class = class(scores)
   )
+  scores[paste(e1)] > scores[paste(e2)]
+}
+
+
+#' @rdname testRelation
+#' @examples
+#' # L^(1) and L^(2)
+#' stopifnot(pr %:% 1 %>=L1% 2)
+#' stopifnot(pr %:% 1 %>=L2% 2)
+#'
+#' @export
+`%>=L1%` <- function(pr_e1, e2) {
+  # --- checks (generated) --- #
+  stopifnot('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.' = (is.list(pr_e1) && length(pr_e1) == 2))
+  powerRelation <- pr_e1[[1]]
+  e1 <- pr_e1[[2]]
+  stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
+  stopifnot(e1 %in% powerRelation$elements)
+  stopifnot(e2 %in% powerRelation$elements)
+  # --- end checks --- #
+
+  scores <- L1Scores(powerRelation, c(e1, e2))
+  scores[paste(e1)] > scores[paste(e2)] || scores[paste(e1)] == scores[paste(e2)]
+}
+
+#' @rdname testRelation
+#' @examples
+#' # Strict L^(1) and L^(2)
+#' stopifnot((pr %:% 1 %>L1% 2) == FALSE)
+#' stopifnot(pr %:% 3 %>L1% 1)
+#'
+#' stopifnot((pr %:% 1 %>L2% 2) == FALSE)
+#' stopifnot(pr %:% 3 %>L2% 1)
+#'
+#' @export
+`%>L1%` <- function(pr_e1, e2) {
+  # --- checks (generated) --- #
+  stopifnot('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.' = (is.list(pr_e1) && length(pr_e1) == 2))
+  powerRelation <- pr_e1[[1]]
+  e1 <- pr_e1[[2]]
+  stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
+  stopifnot(e1 %in% powerRelation$elements)
+  stopifnot(e2 %in% powerRelation$elements)
+  # --- end checks --- #
+
+  scores <- L1Scores(powerRelation, c(e1, e2))
+  scores[paste(e1)] > scores[paste(e2)]
+}
+#' @rdname testRelation
+#' @export
+`%>=L2%` <- function(pr_e1, e2) {
+  # --- checks (generated) --- #
+  stopifnot('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.' = (is.list(pr_e1) && length(pr_e1) == 2))
+  powerRelation <- pr_e1[[1]]
+  e1 <- pr_e1[[2]]
+  stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
+  stopifnot(e1 %in% powerRelation$elements)
+  stopifnot(e2 %in% powerRelation$elements)
+  # --- end checks --- #
+
+  scores <- L2Scores(powerRelation, c(e1, e2))
+  scores[paste(e1)] > scores[paste(e2)] || scores[paste(e1)] == scores[paste(e2)]
+}
+
+#' @rdname testRelation
+#' @export
+`%>L2%` <- function(pr_e1, e2) {
+  # --- checks (generated) --- #
+  stopifnot('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.' = (is.list(pr_e1) && length(pr_e1) == 2))
+  powerRelation <- pr_e1[[1]]
+  e1 <- pr_e1[[2]]
+  stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
+  stopifnot(e1 %in% powerRelation$elements)
+  stopifnot(e2 %in% powerRelation$elements)
+  # --- end checks --- #
+
+  scores <- L2Scores(powerRelation, c(e1, e2))
+  scores[paste(e1)] > scores[paste(e2)]
+}
+
+
+
+#' @rdname testRelation
+#' @examples
+#' # L^p and L^p*
+#' stopifnot(pr %:% 1 %>=LP% 2)
+#' stopifnot(pr %:% 1 %>=LPS% 2)
+#'
+#' @export
+`%>=LP%` <- function(pr_e1, e2) {
+  # --- checks (generated) --- #
+  stopifnot('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.' = (is.list(pr_e1) && length(pr_e1) == 2))
+  powerRelation <- pr_e1[[1]]
+  e1 <- pr_e1[[2]]
+  stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
+  stopifnot(e1 %in% powerRelation$elements)
+  stopifnot(e2 %in% powerRelation$elements)
+  # --- end checks --- #
+
+  scores <- LPScores(powerRelation, c(e1, e2))
+  scores[paste(e1)] > scores[paste(e2)] || scores[paste(e1)] == scores[paste(e2)]
+}
+
+#' @rdname testRelation
+#' @examples
+#' # Strict L^(1) and L^(2)
+#' stopifnot((pr %:% 1 %>LP% 2) == FALSE)
+#' stopifnot(pr %:% 3 %>LP% 1)
+#'
+#' stopifnot((pr %:% 1 %>LPS% 2) == FALSE)
+#' stopifnot(pr %:% 3 %>LPS% 1)
+#'
+#' @export
+`%>LP%` <- function(pr_e1, e2) {
+  # --- checks (generated) --- #
+  stopifnot('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.' = (is.list(pr_e1) && length(pr_e1) == 2))
+  powerRelation <- pr_e1[[1]]
+  e1 <- pr_e1[[2]]
+  stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
+  stopifnot(e1 %in% powerRelation$elements)
+  stopifnot(e2 %in% powerRelation$elements)
+  # --- end checks --- #
+
+  scores <- LPScores(powerRelation, c(e1, e2))
+  scores[paste(e1)] > scores[paste(e2)]
+}
+#' @rdname testRelation
+#' @export
+`%>=LPS%` <- function(pr_e1, e2) {
+  # --- checks (generated) --- #
+  stopifnot('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.' = (is.list(pr_e1) && length(pr_e1) == 2))
+  powerRelation <- pr_e1[[1]]
+  e1 <- pr_e1[[2]]
+  stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
+  stopifnot(e1 %in% powerRelation$elements)
+  stopifnot(e2 %in% powerRelation$elements)
+  # --- end checks --- #
+
+  scores <- LPSScores(powerRelation, c(e1, e2))
+  scores[paste(e1)] > scores[paste(e2)] || scores[paste(e1)] == scores[paste(e2)]
+}
+
+#' @rdname testRelation
+#' @export
+`%>LPS%` <- function(pr_e1, e2) {
+  # --- checks (generated) --- #
+  stopifnot('To check for a relation, provide a PowerRelation object, add "%:%" and then test between 2 elements.' = (is.list(pr_e1) && length(pr_e1) == 2))
+  powerRelation <- pr_e1[[1]]
+  e1 <- pr_e1[[2]]
+  stopifnot('Left side must be an object of type PowerRelation.' = is.PowerRelation(powerRelation))
+  stopifnot(e1 %in% powerRelation$elements)
+  stopifnot(e2 %in% powerRelation$elements)
+  # --- end checks --- #
+
+  scores <- LPSScores(powerRelation, c(e1, e2))
   scores[paste(e1)] > scores[paste(e2)]
 }
