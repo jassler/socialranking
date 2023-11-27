@@ -101,10 +101,19 @@ powerRelationGenerator <- function(coalitions, startWithLinearOrder = FALSE) {
   # create warning about duplicate coalitions
   PowerRelation(list(coalitions))
 
-  compositions <- partitions::firstcomposition(length(coalitions))
-  r <- length(coalitions)
+  compositions <- partitions::compositions(length(coalitions))
+  compositions <- compositions[,apply(compositions, 2, function(x) {
+    zeros <- which(x == 0)
+    l <- length(zeros)
+    l == 0 || l == (zeros[l] - zeros[1] + 1)
+  })]
+  r <- nrow(compositions)
+  compositions <- compositions[,order(apply(compositions, 2, function(x)
+    sum(sapply(seq_along(x), function(i) x[i] * (r + 1 - i)))
+  ), decreasing = !startWithLinearOrder)]
 
-  part <- Filter(function(x) x != 0, compositions)
+  compI <- 1
+  part <- Filter(function(x) x != 0, compositions[,1])
   perms <- partitions::multinomial(part)
   partCum <- c(0, cumsum(part))
   permsI <- 0
@@ -112,13 +121,13 @@ powerRelationGenerator <- function(coalitions, startWithLinearOrder = FALSE) {
   done <- FALSE
 
   nextPartition <- function() {
-    if(partitions::islastcomposition(compositions, FALSE)) {
+    if(compI >= ncol(compositions)) {
       done <<- TRUE
       return()
     }
 
-    compositions <<- partitions::nextcomposition(compositions, FALSE)
-    part <<- Filter(function(x) x != 0, compositions)
+    compI <<- compI + 1
+    part <<- Filter(function(x) x != 0, compositions[,compI])
     perms <<- partitions::multinomial(part)
     partCum <<- c(0, cumsum(part))
 
@@ -206,5 +215,4 @@ generateNextPartition <- function(gen) {
   environment(gen)$nextPartition()
   gen
 }
-
 
