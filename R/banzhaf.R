@@ -25,7 +25,7 @@ is.na.OrdinalBanzhafScores <- function(x) FALSE
 #' and subtracting the amount of coalitions where its contribution
 #' had a negative impact (\eqn{S \succ S \cup \lbrace i \rbrace}{S > S u \{i\}})\insertCite{2019OrdinalBanzhaf}{socialranking}.
 #'
-#' The original definition only takes total power relations into account, where either \eqn{S \succeq T}{S >= T} or \eqn{T \succeq S}{T >= S}
+#' The original definition only takes total power relations into account, where either \eqn{S \succsim T}{S >= T} or \eqn{T \succsim S}{T >= S}
 #' for every \eqn{S,T \subseteq N}{S,T subseteq N}.
 #' If coalitions are missing from the power relation, we may not be able to perform certain comparisons.
 #' To indicate these missing comparisons, the ordinal Banzhaf score of an element \eqn{i}{i} also includes that number at index `3`.

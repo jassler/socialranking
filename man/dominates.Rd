@@ -13,7 +13,7 @@ dominates(powerRelation, e1, e2, strictly = FALSE, includeEmptySet = TRUE)
 
 \item{strictly}{If \code{TRUE}, check if \code{p1} \emph{strictly} dominates \code{p2}}
 
-\item{includeEmptySet}{If \code{TRUE}, check \eqn{\lbrace i \rbrace \succeq \lbrace j \rbrace}{\{i\} >= \{j\}} even if
+\item{includeEmptySet}{If \code{TRUE}, check \eqn{\lbrace i \rbrace \succsim \lbrace j \rbrace}{\{i\} >= \{j\}} even if
 empty set is not part of the power relation.}
 }
 \value{
@@ -24,7 +24,7 @@ Check if one element dominates the other.
 }
 \details{
 \eqn{i}{i} is said to dominate \eqn{j}{j} if
-\eqn{S \cup \lbrace i \rbrace \succeq S \cup \lbrace j \rbrace}{Sn\{i\} >= Sn\{j\}} for all
+\eqn{S \cup \lbrace i \rbrace \succsim S \cup \lbrace j \rbrace}{Sn\{i\} >= Sn\{j\}} for all
 \eqn{S \in 2^{N \setminus \lbrace i,j \rbrace}}{S in 2^(N-\{i,j\})}.
 
 \eqn{i}{i} \emph{strictly} dominates \eqn{j}{j} if there also exists an

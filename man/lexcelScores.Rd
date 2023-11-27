@@ -39,7 +39,7 @@ An equivalence class \eqn{\sum_i}{Sigma_i} contains coalitions that are indiffer
 In a given power relation created with \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}, the equivalence classes are saved in \verb{$eqs}.
 
 As an example, consider the power relation
-\eqn{\succeq: 123 \succ (12 \sim 13 \sim 1 \sim \emptyset) \succ (23 \sim 1 \sim 2)}{>=: 123 > (12 ~ 13 ~ 1) > (23 ~ 1 ~ 2)}.
+\eqn{\succsim: 123 \succ (12 \sim 13 \sim 1 \sim \emptyset) \succ (23 \sim 1 \sim 2)}{>=: 123 > (12 ~ 13 ~ 1) > (23 ~ 1 ~ 2)}.
 The corresponding equivalence classes are:
 
 \deqn{
@@ -114,7 +114,9 @@ dualLexcelRanking(pr)
 \seealso{
 Other ranking solution functions: 
 \code{\link{L1Scores}()},
-\code{\link{LpScores}()},
+\code{\link{L2Scores}()},
+\code{\link{LPSScores}()},
+\code{\link{LPScores}()},
 \code{\link{copelandScores}()},
 \code{\link{cumulativeScores}()},
 \code{\link{kramerSimpsonScores}()},

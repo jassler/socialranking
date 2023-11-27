@@ -13,10 +13,10 @@ as.PowerRelation <- function(x, ...) {
 
 #' @section Using a character string:
 #'
-#' The same way a power relation \eqn{\succeq}{>=} may be represented in literature (or printed by an [`PowerRelation`] object),
+#' The same way a power relation \eqn{\succsim}{>=} may be represented in literature (or printed by an [`PowerRelation`] object),
 #' a simple string containing letters, numbers, `>` or `~` can be used to input a new power relation.
 #'
-#' Every special character is ignored, with the exception of \eqn{\succeq}{\\succeq} (`"\u227B"`) and \eqn{\sim}{\\sim} (`"\u223C"`).
+#' Every special character is ignored, with the exception of \eqn{\succsim}{\\succsim} (`"\u227B"`) and \eqn{\sim}{\\sim} (`"\u223C"`).
 #'
 #' Every letter or number is assumed to be an individual element.
 #' `"abc > ac"` therefore would represent two coalitions, the first one of size 3 with the elements `a`, `b`, and `c`.

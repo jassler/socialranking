@@ -28,7 +28,7 @@ For a given set of elements \eqn{N = \lbrace 1, ..., n \rbrace}{N = \{1, ..., n\
 of its subsets, or coalitions, \eqn{\mathcal{P} \subseteq 2^N}{P subseteq 2^N}, where \eqn{2^N}{2^N} is the superset of elements.
 
 If \eqn{\mathcal{P} \neq 2^N}{P != 2^N}, that means that there are some coalitions \eqn{S \in 2^N, S \notin \mathcal{P}}{S in 2^N, S not in P},
-such that we cannot compare \eqn{S \succeq T}{S >= T} or \eqn{T \succeq S}{T >= S} for every \eqn{T \in \mathcal{P}}{T in P}.
+such that we cannot compare \eqn{S \succsim T}{S >= T} or \eqn{T \succsim S}{T >= S} for every \eqn{T \in \mathcal{P}}{T in P}.
 
 This may be caused by \eqn{2^N}{2^N} having too many coalitions to consider.
 In certain cases, it may be more interesting to only consider the top ranking coalitions and "shoving" all remaining coalitions into the back.

@@ -3,27 +3,27 @@
 #' The Ceteris Paribus-majority relation compares the relative success between two players joining a coalition.
 #'
 #' Given two elements \eqn{i}{i} and \eqn{j}{j}, go through each coalition \eqn{S \in 2^{N \setminus \lbrace i, j \rbrace}}{S in 2^(N - \{i,j\})}.
-#' \eqn{D_{ij}(\succeq)}{D_ij(>=)} then contains all coalitions \eqn{S}{S} where
-#' \eqn{S \cup \lbrace i \rbrace \succeq S \cup \lbrace j \rbrace}{S u \{i\} >= S u \{j\}} and \eqn{D_{ji}(\succeq)}{D_ji(>=)} contains all coalitions where
-#' \eqn{S \cup \lbrace j \rbrace \succeq S \cup \lbrace i \rbrace}{S u \{j\} >= S u \{i\}}.
+#' \eqn{D_{ij}(\succsim)}{D_ij(>=)} then contains all coalitions \eqn{S}{S} where
+#' \eqn{S \cup \lbrace i \rbrace \succsim S \cup \lbrace j \rbrace}{S u \{i\} >= S u \{j\}} and \eqn{D_{ji}(\succsim)}{D_ji(>=)} contains all coalitions where
+#' \eqn{S \cup \lbrace j \rbrace \succsim S \cup \lbrace i \rbrace}{S u \{j\} >= S u \{i\}}.
 #'
 #' The cardinalities
-#' \eqn{d_{ij}(\succeq) = |D_{ij}|}{d_ij(>=) = |D_ij|} and
-#' \eqn{d_{ji}(\succeq) = |D_{ji}|}{d_ij(>=) = |D_ji|} represent the score of the two elements, where
-#' \eqn{i \succ j}{i > j}    if \eqn{d_{ij}(\succeq)   >  d_{ji}(\succeq)}{d_ij(>=) >  d_ji(>=)} and
-#' \eqn{i \sim  j}{i ~ j}    if \eqn{d_{ij}(\succeq)  ==  d_{ji}(\succeq)}{d_ij(>=) == d_ji(>=)}.
+#' \eqn{d_{ij}(\succsim) = |D_{ij}|}{d_ij(>=) = |D_ij|} and
+#' \eqn{d_{ji}(\succsim) = |D_{ji}|}{d_ij(>=) = |D_ji|} represent the score of the two elements, where
+#' \eqn{i \succ j}{i > j}    if \eqn{d_{ij}(\succsim)   >  d_{ji}(\succsim)}{d_ij(>=) >  d_ji(>=)} and
+#' \eqn{i \sim  j}{i ~ j}    if \eqn{d_{ij}(\succsim)  ==  d_{ji}(\succsim)}{d_ij(>=) == d_ji(>=)}.
 #'
 #' [`cpMajorityComparison()`] tries to retain all that information. The list returned contains the following information.
 #' Note that in this context the two elements \eqn{i}{i} and \eqn{j}{j} refer to element 1 and element 2 respectively.
 #'
 #' * `$e1`: list of information about element 1
 #'   * `$e1$name`: name of element 1
-#'   * `$e1$score`: score \eqn{d_{ij}(\succeq)}{d_ij(>=)}. \eqn{d_{ij}(\succ)}{d_ij(>)} if `strictly == TRUE`
-#'   * `$e1$winningCoalitions`: list of coalition [`vectors`][base::c()] \eqn{S \in D_{ij}(\succeq)}{S in D_ij(>=)}. \eqn{S \in D_{ij}(\succ)}{S in D_ij(>)} if `strictly == TRUE`
+#'   * `$e1$score`: score \eqn{d_{ij}(\succsim)}{d_ij(>=)}. \eqn{d_{ij}(\succ)}{d_ij(>)} if `strictly == TRUE`
+#'   * `$e1$winningCoalitions`: list of coalition [`vectors`][base::c()] \eqn{S \in D_{ij}(\succsim)}{S in D_ij(>=)}. \eqn{S \in D_{ij}(\succ)}{S in D_ij(>)} if `strictly == TRUE`
 #' * `$e2`: list of information about element 2
 #'   * `$e2$name`: name of element 2
-#'   * `$e1$score`: score \eqn{d_{ji}(\succeq)}{d_ji(>=)}. \eqn{d_{ji}(\succ)}{d_ji(>)} if `strictly == TRUE`
-#'   * `$e1$winningCoalitions`: list of coalition [`vectors`][base::c()] \eqn{S \in D_{ji}(\succeq)}{S in D_ji(>=)}.  \eqn{S \in D_{ji}(\succ)}{S in D_ji(>)} if `strictly == TRUE`
+#'   * `$e1$score`: score \eqn{d_{ji}(\succsim)}{d_ji(>=)}. \eqn{d_{ji}(\succ)}{d_ji(>)} if `strictly == TRUE`
+#'   * `$e1$winningCoalitions`: list of coalition [`vectors`][base::c()] \eqn{S \in D_{ji}(\succsim)}{S in D_ji(>=)}.  \eqn{S \in D_{ji}(\succ)}{S in D_ji(>)} if `strictly == TRUE`
 #' * `$winner`: name of higher scoring element. `NULL` if they are indifferent.
 #' * `$loser`: name of lower scoring element. `NULL` if they are indifferent.
 #' * `$tuples`: a list of coalitions \eqn{S \in 2^{N \setminus \lbrace i, j \rbrace }}{S in 2^(N - \{i,j\})} with:
@@ -188,7 +188,7 @@ cpMajorityComparison <- function(powerRelation, e1, e2, strictly = FALSE, includ
 #' @rdname cpMajorityComparison
 #'
 #' @return `cpMajorityComparisonScore()` returns a vector of two numbers, a positive number of coalitions where `e1` beats `e2`
-#' (\eqn{d_{ij}(\succeq)}{d_ij(>=)}), and a negative number of coalitions where `e1` is beaten by `e2` (\eqn{-d_{ji}(\succeq)}{-d_ji(>=)}).
+#' (\eqn{d_{ij}(\succsim)}{d_ij(>=)}), and a negative number of coalitions where `e1` is beaten by `e2` (\eqn{-d_{ji}(\succsim)}{-d_ji(>=)}).
 #'
 #' @examples
 #' cpMajorityComparisonScore(pr, "a", "b") # c(1,0)

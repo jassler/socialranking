@@ -22,7 +22,7 @@ lexcel1Ranking(powerRelation)
 By default, the scores of all elements in \code{powerRelation$elements} are considered.}
 }
 \value{
-Score function returns a list of type \code{Lexcel1Scores} and length of \code{powerRelation$elements}
+Score function returns a list of type \code{L1Scores} and length of \code{powerRelation$elements}
 (unless parameter \code{elements} is specified).
 Each index contains a vector of length \code{powerRelation$eqs}, the number of
 times the given element appears in each equivalence class.
@@ -36,29 +36,40 @@ Calculate the \eqn{L^{(1)}}{L^(1)} scores.
 Similar to \code{\link[=lexcelRanking]{lexcelRanking()}}, the number of times an element appears in each equivalence class is counted.
 In addition, we now also consider the size of the coalitions.
 
-Let \eqn{N}{N} be a set of elements, \eqn{\succeq \in \mathcal{T}(\mathcal{P})}{>= in T(P)} be a power relation,
+Let \eqn{N}{N} be a set of elements, \eqn{\succsim \in \mathcal{T}(\mathcal{P})}{>= in T(P)} a power relation,
 and \eqn{\Sigma_1 \succ \Sigma_2 \succ \dots \succ \Sigma_m}{E_1 > E_2 > ... > E_m} its corresponding quotient order.
 
-For an element \eqn{i \in N}{i in N}, we get a matrix \eqn{M^\succeq_i}{M^(>=)_i} with \eqn{m}{m} columns and \eqn{|N|}{|N|} rows.
-Whereas each column represents an equivalence class, each row corresponds to the coalition size.
+For an element \eqn{i \in N}{i in N}, construct a matrix \eqn{M^\succsim_i}{M^(>=)_i} with \eqn{m}{m} columns and \eqn{|N|}{|N|} rows.
+Whereas each column \eqn{q}{q} represents an equivalence class, each row \eqn{p}{p} corresponds to the coalition size.
 
-\deqn{(M^\succeq_i)_{pq} = |\{S \in \Sigma_q: |S| = p\}|}{(M^(>=)_i)_(pq) = |\{S in E_q: |S| = p\}}
+\deqn{(M^\succsim_i)_{p,q} = |\lbrace S \in \Sigma_q: |S| = p\rbrace|}{(M^(>=)_i)_pq = |\{S in E_q: |S| = p\}}
 
-Take as an example \eqn{\succeq: (123 \sim 13 \sim 2) \succ (12 \sim 1 \sim 3) \succ (23 \sim \{\})}{>=: (123 ~ 13 ~ 2) > (12 ~ 1 ~ 3) > (23 ~ \{\})}.
+The \eqn{L^{(1)}}{L^(1)} rewards elements that appear in higher ranking coalitions as well as in smaller coalitions.
+When comparing two matrices for a power relation, if \eqn{M^\succsim_i >_{L^{(1)}} M^\succsim_j}{M^(>=)_i > M^(>=)_j (the ^(>=) will be omitted to improve readability)},
+this suggests that there exists a \eqn{p^0 \in \{1, \dots, |N|\}}{p^0 in \{1, ..., |N|\}} and \eqn{q^0 \in \{1, \dots, m\}}{q^0 in \{1, ..., m\}} such that the following holds:
+\enumerate{
+\item \eqn{(M^\succsim_i)_{p^0,q^0} > (M^\succsim_j)_{p^0,q^0}}{(M_i)_(p^0 q^0) > (M_j)_(p^0 q^0)}
+\item \eqn{(M^\succsim_i)_{p,q^0} = (M^\succsim_j)_{p,q^0}}{(M_i)_(p q^0) = (M_j)_(p q^0)} for all \eqn{p < p^0}{p < p^0}
+\item \eqn{(M^\succsim_i)_{p,q} = (M^\succsim_j)_{p,q}}{(M_i)_(pq) = (M_j)_(p,q)} for all \eqn{q < q^0}{q < q^0} and \eqn{p \in \{1, \dots, |N|\}}{p in \{1, ..., |N|\}}
+}
+}
+\section{Example}{
+
+Let \eqn{\succsim: (123 \sim 13 \sim 2) \succ (12 \sim 1 \sim 3) \succ (23 \sim \{\})}{>=: (123 ~ 13 ~ 2) > (12 ~ 1 ~ 3) > (23 ~ \{\})}.
 From this, we get the following three matrices:
 
 \deqn{
-M^\succeq_1 = \begin{bmatrix}
+M^\succsim_1 = \begin{bmatrix}
 0 & 1 & 0\\
 1 & 1 & 0\\
 1 & 0 & 0
 \end{bmatrix}
-M^\succeq_2 = \begin{bmatrix}
+M^\succsim_2 = \begin{bmatrix}
 1 & 0 & 0\\
 0 & 1 & 1\\
 1 & 0 & 0
 \end{bmatrix}
-M^\succeq_3 = \begin{bmatrix}
+M^\succsim_3 = \begin{bmatrix}
 0 & 1 & 0\\
 1 & 0 & 1\\
 1 & 0 & 0
@@ -69,17 +80,16 @@ M^(>=)_2 = matrix(c(1,0,1,0,1,0,0,1,0),nrow=3)\\
 M^(>=)_3 = matrix(c(0,1,1,1,0,0,0,1,0),nrow=3)
 }
 
-The \eqn{L^{(1)}}{L^(1)} then ranks the elements, rewarding elements that appear in higher ranking coalitions as well as smaller coalitions.
-When comparing two matrices for a power relation, if \eqn{M^\succeq_i >_{L^{(1)}} M^\succeq_j}{M^(>=)_i > M^(>=)_j (the ^(>=) will be omitted to improve readability)},
-this suggests that there exists a \eqn{p^0 \in \{1, \dots, |N|\}}{p^0 in \{1, ..., |N|\}} and \eqn{q^0 \in \{1, \dots, m\}}{q^0 in \{1, ..., m\}} such that the following holds:
-\enumerate{
-\item \eqn{(M^\succeq_i)_{p^0q^0} > (M^\succeq_j)_{p^0q^0}}{(M_i)_(p^0 q^0) > (M_j)_(p^0 q^0)}
-\item \eqn{(M^\succeq_i)_{pq^0} = (M^\succeq_j)_{pq^0}}{(M_i)_(p q^0) = (M_j)_(p q^0)} for all \eqn{p < p^0}{p < p^0}
-\item \eqn{(M^\succeq_i)_{pq} = (M^\succeq_j)_{pq}}{(M_i)_(pq) = (M_j)_(pq)} for all \eqn{q < q^0}{q < q^0} and \eqn{p \in \{1, \dots, |N|\}}{p in \{1, ..., |N|\}}
+From \eqn{(M^\succsim_2)_{1,1} > (M^\succsim_1)_{1,1}}{(M_2)_(1,1) > (M_1)_1,1} and \eqn{(M^\succsim_2)_{1,1} > (M^\succsim_3)_{1,1}}{(M_2)_(1,1) > (M_3)_1,1} it
+immediately follows that \eqn{2}{2} is ranked above \eqn{1}{1} and \eqn{3}{3} according to \eqn{L^{(1)}}{L^(1)}.
+
+Comparing \eqn{1}{1} against \eqn{3}{3} we can set \eqn{p^0 = 2}{p^0 = 2} and \eqn{q^0 = 2}{q^0 = 2}.
+Following the constraints from the definition above, we can verify that the entire column 1 is identical.
+In column 2, we determine that \eqn{(M^\succsim_1)_{1,q^0} = (M^\succsim_3)_{1,q^0}}{(M_1)_(1,q^0) = (M_3)_(1,q^0)}, whereas
+\eqn{(M^\succsim_1)_{p^0,q^0} > (M^\succsim_3)_{p^0,q^0}}{(M_1)_(p^0,q^0) > (M_3)_(p^0,q^0)}, indicating that \eqn{1}{1}
+is ranked higher than \eqn{3}{3}, hence \eqn{2 \succ 1 \succ 3}{2 > 1 > 3} according to \eqn{L^{(1)}}{L^(1)}.
 }
 
-In the aforementioned example, we have that \eqn{M^\succeq_2 >_{L^{(1)}} M^\succeq_1 >_{L^{(1)}} M^\succeq_3}{M_2 > M_1 > M_3}, suggesting that element 2 should be ranked highest and 3 lowest.
-}
 \section{Aliases}{
 
 
@@ -104,7 +114,9 @@ L1Ranking(pr)
 }
 \seealso{
 Other ranking solution functions: 
-\code{\link{LpScores}()},
+\code{\link{L2Scores}()},
+\code{\link{LPSScores}()},
+\code{\link{LPScores}()},
 \code{\link{copelandScores}()},
 \code{\link{cumulativeScores}()},
 \code{\link{kramerSimpsonScores}()},

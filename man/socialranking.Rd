@@ -23,17 +23,17 @@ Unlike \code{\link[=PowerRelation]{PowerRelation()}} however, this list should n
 Use \code{\link[=doRanking]{doRanking()}} to rank elements based on arbitrary score objects.
 
 A social ranking solution, or ranking solution, or solution, maps each power relation between coalitions to a power relation between its elements.
-I.e., from the power relation \eqn{\succeq: \{1,2\} \succ \{2\} \succ \{1\}}{\{1,2\} > \{2\} > \{1\}}, we may expect the result of a ranking solution \eqn{R^\succeq}{R^(>=)}
-to rank element 2 over 1. Therefore \eqn{2 R^\succeq 1}{2 R^(>=) 1} will be present, but not \eqn{1 R^\succeq 2}{1 R^(>=) 2}.
+I.e., from the power relation \eqn{\succsim: \{1,2\} \succ \{2\} \succ \{1\}}{\{1,2\} > \{2\} > \{1\}}, we may expect the result of a ranking solution \eqn{R^\succsim}{R^(>=)}
+to rank element 2 over 1. Therefore \eqn{2 R^\succsim 1}{2 R^(>=) 1} will be present, but not \eqn{1 R^\succsim 2}{1 R^(>=) 2}.
 
 Formally, a ranking solution \eqn{R: \mathcal{T}(\mathcal{P}) \rightarrow \mathcal{T}(N)} is a function that,
-given a power relation \eqn{\succeq \in \mathcal{T}(\mathcal{P})}{>= in T(P)}, always produces a power relation
-\eqn{R(\succeq)}{R(>=)} (or \eqn{R^\succeq}{R^(>=), or just R here for better readability}) over its set of elements.
-For two elements \eqn{i, j \in N}{i,j in N}, \eqn{i R^\succeq j}{iRj} means that applying the solution \eqn{R}{R} on the ranking \eqn{\succeq}{>=}
+given a power relation \eqn{\succsim \in \mathcal{T}(\mathcal{P})}{>= in T(P)}, always produces a power relation
+\eqn{R(\succsim)}{R(>=)} (or \eqn{R^\succsim}{R^(>=), or just R here for better readability}) over its set of elements.
+For two elements \eqn{i, j \in N}{i,j in N}, \eqn{i R^\succsim j}{iRj} means that applying the solution \eqn{R}{R} on the ranking \eqn{\succsim}{>=}
 makes \eqn{i}{i} at least as preferable as \eqn{j}{j}.
-Often times \eqn{iI^\succeq j}{iIj} and \eqn{iP^\succeq j}{iPj} are used to indicate its symmetric and asymmetric part, respectively.
-As in, \eqn{iI^\succeq j}{iIj} implies that \eqn{iR^\succeq j}{iRj} and \eqn{jR^\succeq i}{jRi},
-whereas \eqn{iP^\succeq j}{iIj} implies that \eqn{iR^\succeq j}{iRj} but not \eqn{jR^\succeq i}{jRi}.
+Often times \eqn{iI^\succsim j}{iIj} and \eqn{iP^\succsim j}{iPj} are used to indicate its symmetric and asymmetric part, respectively.
+As in, \eqn{iI^\succsim j}{iIj} implies that \eqn{iR^\succsim j}{iRj} and \eqn{jR^\succsim i}{jRi},
+whereas \eqn{iP^\succsim j}{iIj} implies that \eqn{iR^\succsim j}{iRj} but not \eqn{jR^\succsim i}{jRi}.
 }
 \examples{
 SocialRanking(list(c("a", "b"), "f", c("c", "d")))

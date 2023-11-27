@@ -25,7 +25,7 @@ Rank elements based on their scores.
 \details{
 All ranking solutions in the package are tied to the scores or score vectors of the elements.
 For these kinds of solutions, \code{doRanking()} offers a simple way that turns a (named) vector or list of scores for each element into a \code{SocialRanking} object.
-For example, \code{doRanking(c(a=1,b=2))} produces \code{b > a} (\eqn{b P^\succeq a}{bPa}), because \code{b} with a score of \code{2} should be placed higher than \code{a} with a score of \code{1}.
+For example, \code{doRanking(c(a=1,b=2))} produces \code{b > a} (\eqn{b P^\succsim a}{bPa}), because \code{b} with a score of \code{2} should be placed higher than \code{a} with a score of \code{1}.
 
 Ranking solutions in the package include \code{\link[=lexcelRanking]{lexcelRanking()}}, \code{\link[=ordinalBanzhafRanking]{ordinalBanzhafRanking()}} and \code{\link[=L1Ranking]{L1Ranking()}}, among others.
 These functions take a power relation, calculate the scores of each element and returns a \code{SocialRanking} object.

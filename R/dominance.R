@@ -3,7 +3,7 @@
 #' Check if one element dominates the other.
 #'
 #' \eqn{i}{i} is said to dominate \eqn{j}{j} if
-#' \eqn{S \cup \lbrace i \rbrace \succeq S \cup \lbrace j \rbrace}{Sn\{i\} >= Sn\{j\}} for all
+#' \eqn{S \cup \lbrace i \rbrace \succsim S \cup \lbrace j \rbrace}{Sn\{i\} >= Sn\{j\}} for all
 #' \eqn{S \in 2^{N \setminus \lbrace i,j \rbrace}}{S in 2^(N-\{i,j\})}.
 #'
 #' \eqn{i}{i} *strictly* dominates \eqn{j}{j} if there also exists an

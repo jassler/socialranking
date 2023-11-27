@@ -32,9 +32,9 @@ Inspired by the Kramer-Simpson method of social choice theory \insertCite{1969Si
 method compares each element against all other elements using the CP-Majority rule.
 
 For a given element \eqn{i}{i}, calculate the \code{\link[=cpMajorityComparisonScore]{cpMajorityComparisonScore()}}
-against all elements \eqn{j}{j}, \eqn{d_{ji}(\succeq)}{d_ji(>=)} (notice that \eqn{i}{i} and
+against all elements \eqn{j}{j}, \eqn{d_{ji}(\succsim)}{d_ji(>=)} (notice that \eqn{i}{i} and
 \eqn{j}{j} are in reverse order).
-\eqn{-\max_{j \in N \setminus \lbrace i \rbrace}(d_{ji}(\succeq))}{-max_{j in N}(d_ji(>=))} then
+\eqn{-\max_{j \in N \setminus \lbrace i \rbrace}(d_{ji}(\succsim))}{-max_{j in N}(d_ji(>=))} then
 determines the final score, where higher scoring elements are ranked higher (notice the negative symbol in front of the \eqn{\max}{max} statement).
 
 The implementation slightly differs from the original definition in \insertRef{2021Manipulability}{socialranking}.
@@ -83,7 +83,9 @@ Other CP-majority based functions:
 
 Other ranking solution functions: 
 \code{\link{L1Scores}()},
-\code{\link{LpScores}()},
+\code{\link{L2Scores}()},
+\code{\link{LPSScores}()},
+\code{\link{LPScores}()},
 \code{\link{copelandScores}()},
 \code{\link{cumulativeScores}()},
 \code{\link{lexcelScores}()},

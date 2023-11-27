@@ -4,7 +4,7 @@
 #'
 #' A power relation is monotonic if
 #'
-#' \deqn{T \subset S \Leftrightarrow S \succeq T.}{T subset of S <=> S >= T.}
+#' \deqn{T \subset S \Leftrightarrow S \succsim T.}{T subset of S <=> S >= T.}
 #'
 #' for every coalition \eqn{S \subseteq N}{S subset of N}.
 #'

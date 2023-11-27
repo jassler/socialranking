@@ -35,7 +35,7 @@ its contribution impacts positively (\eqn{S \cup \lbrace i \rbrace \succ S}{S u 
 and subtracting the amount of coalitions where its contribution
 had a negative impact (\eqn{S \succ S \cup \lbrace i \rbrace}{S > S u \{i\}})\insertCite{2019OrdinalBanzhaf}{socialranking}.
 
-The original definition only takes total power relations into account, where either \eqn{S \succeq T}{S >= T} or \eqn{T \succeq S}{T >= S}
+The original definition only takes total power relations into account, where either \eqn{S \succsim T}{S >= T} or \eqn{T \succsim S}{T >= S}
 for every \eqn{S,T \subseteq N}{S,T subseteq N}.
 If coalitions are missing from the power relation, we may not be able to perform certain comparisons.
 To indicate these missing comparisons, the ordinal Banzhaf score of an element \eqn{i}{i} also includes that number at index \code{3}.
@@ -68,7 +68,9 @@ ordinalBanzhafRanking(pr)
 \seealso{
 Other ranking solution functions: 
 \code{\link{L1Scores}()},
-\code{\link{LpScores}()},
+\code{\link{L2Scores}()},
+\code{\link{LPSScores}()},
+\code{\link{LPScores}()},
 \code{\link{copelandScores}()},
 \code{\link{cumulativeScores}()},
 \code{\link{kramerSimpsonScores}()},

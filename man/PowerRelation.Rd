@@ -66,20 +66,20 @@ where \eqn{\{\}}{\{\}} is referred to as the empty coalition, \eqn{\{i\}}{\{i\}}
 The power set \eqn{2^N}{2^N} denotes the set of all subsets over \eqn{N}{N}.
 
 Let \eqn{\mathcal{P} \subseteq 2^N}{P \\subseteq 2^N} be a collection of coalitions.
-A \emph{power relation} on \eqn{\mathcal{P}}{P} is a total preorder \eqn{\succeq \subseteq \mathcal{P} \times \mathcal{P}}{>= \\subseteq P x P}.
-That is, for any two coalitions \eqn{S, T \in \mathcal{P}}{S, T in P}, either \eqn{(S,T) \in \succeq}{(S,T) in >=}, or \eqn{(T,S) \in \succeq}{(T,S) in >=}, or both.
+A \emph{power relation} on \eqn{\mathcal{P}}{P} is a total preorder \eqn{\succsim \subseteq \mathcal{P} \times \mathcal{P}}{>= \\subseteq P x P}.
+That is, for any two coalitions \eqn{S, T \in \mathcal{P}}{S, T in P}, either \eqn{(S,T) \in \succsim}{(S,T) in >=}, or \eqn{(T,S) \in \succsim}{(T,S) in >=}, or both.
 In other words, we can compare any two groups of elements in \eqn{\mathcal{P}}{P} and determine, if one group is better than, worse than, or equivalent to the other.
 
-More commonly, the relation \eqn{(S,T) \in \succeq}{(S,T) in >=} is notated as \eqn{S \succeq T}{S >= T}.
+More commonly, the relation \eqn{(S,T) \in \succsim}{(S,T) in >=} is notated as \eqn{S \succsim T}{S >= T}.
 
 \eqn{\mathcal{T}(\mathcal{P})}{T(P)} denotes the family of all power relations on every collection \eqn{\mathcal{P} \subseteq 2^N}{P \\subseteq 2^N}.
-Given a power relation \eqn{\succeq \in \mathcal{T}(\mathcal{P})}{>= in T(P)}, \eqn{\sim}{~} denotes its symmetric part whereas \eqn{\succ}{>} its asymmetric part.
+Given a power relation \eqn{\succsim \in \mathcal{T}(\mathcal{P})}{>= in T(P)}, \eqn{\sim}{~} denotes its symmetric part whereas \eqn{\succ}{>} its asymmetric part.
 Let \eqn{S, T \in \mathcal{P}}{S, T in P}.
 Then,
 
 \deqn{
-S \sim T \textrm{ if } S \succeq T \textrm{ and } T \succeq S,\\
-S \succ T \textrm{ if } S \succeq T \textrm{ and not } T \succeq S.
+S \sim T \textrm{ if } S \succsim T \textrm{ and } T \succsim S,\\
+S \succ T \textrm{ if } S \succsim T \textrm{ and not } T \succsim S.
 }{
 S ~ T if S >= T and T >= S,\\
 S > T if S >= T and not T >= S.
@@ -98,7 +98,7 @@ If we consider all possibilities, we will have to compare the sets
 
 \deqn{\mathcal{P} = 2^N = \{\{a,b,c\}, \{a,b\}, \{a,c\}, \{b,c\}, \{a\}, \{b\}, \{c\}, \{\}\}.}{P = 2^N = \{\{a,b,c\}, \{a,b\}, \{a,c\}, \{b,c\}, \{a\}, \{b\}, \{c\}, \{\}\}.}
 
-Looking for a way to rank this group of objects, one may arrive at the following total preorder \eqn{\succeq \in \mathcal{T}(\mathcal{P})}{>= in T(P)}:
+Looking for a way to rank this group of objects, one may arrive at the following total preorder \eqn{\succsim \in \mathcal{T}(\mathcal{P})}{>= in T(P)}:
 
 \deqn{\{b,c\} \succ (\{a\} \sim \{c\}) \succ \{b\} \succ \{\} \succ (\{a,b,c\} \sim \{a,b\} \sim \{a, c\}).}{>=: \{b,c\} > (\{a\} ~ \{c\}) > \{b\} > \{\} > (\{a,b,c\} ~ \{a,b\} ~ \{a, c\}).}
 
@@ -111,7 +111,7 @@ In this particular case, we get five equivalence classes.
 \Sigma_5 = \{\{a,b,c\},\{a,b\},\{a,c\}\}
 }{}
 
-The power relation \eqn{\succeq}{>=} can be copy-pasted as a character string to the \code{\link[=as.PowerRelation]{as.PowerRelation()}} function (it should accept the special characters \eqn{\succeq}{>=} and \eqn{\sim}{~}).
+The power relation \eqn{\succsim}{>=} can be copy-pasted as a character string to the \code{\link[=as.PowerRelation]{as.PowerRelation()}} function (it should accept the special characters \eqn{\succsim}{>=} and \eqn{\sim}{~}).
 
 \code{as.PowerRelation("{b,c} > ({a} ~ {c}) > {b} > {} > ({a,b,c} ~ {a,b} ~ {a,c})")}
 }

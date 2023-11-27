@@ -23,7 +23,7 @@ is.na.LexcelScores <- function(x) FALSE
 #' In a given power relation created with [`PowerRelation()`] or [`as.PowerRelation()`], the equivalence classes are saved in `$eqs`.
 #'
 #' As an example, consider the power relation
-#' \eqn{\succeq: 123 \succ (12 \sim 13 \sim 1 \sim \emptyset) \succ (23 \sim 1 \sim 2)}{>=: 123 > (12 ~ 13 ~ 1) > (23 ~ 1 ~ 2)}.
+#' \eqn{\succsim: 123 \succ (12 \sim 13 \sim 1 \sim \emptyset) \succ (23 \sim 1 \sim 2)}{>=: 123 > (12 ~ 13 ~ 1) > (23 ~ 1 ~ 2)}.
 #' The corresponding equivalence classes are:
 #'
 #' \deqn{

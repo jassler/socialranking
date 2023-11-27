@@ -25,10 +25,10 @@ Alternative ways of creating \code{\link{PowerRelation}} objects.
 \section{Using a character string}{
 
 
-The same way a power relation \eqn{\succeq}{>=} may be represented in literature (or printed by an \code{\link{PowerRelation}} object),
+The same way a power relation \eqn{\succsim}{>=} may be represented in literature (or printed by an \code{\link{PowerRelation}} object),
 a simple string containing letters, numbers, \code{>} or \code{~} can be used to input a new power relation.
 
-Every special character is ignored, with the exception of \eqn{\succeq}{\\succeq} (\code{"\\u227B"}) and \eqn{\sim}{\\sim} (\code{"\\u223C"}).
+Every special character is ignored, with the exception of \eqn{\succsim}{\\succsim} (\code{"\\u227B"}) and \eqn{\sim}{\\sim} (\code{"\\u223C"}).
 
 Every letter or number is assumed to be an individual element.
 \code{"abc > ac"} therefore would represent two coalitions, the first one of size 3 with the elements \code{a}, \code{b}, and \code{c}.

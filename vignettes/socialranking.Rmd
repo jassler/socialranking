@@ -118,7 +118,7 @@ refDef <- function(def) {
 }
 ```
 
-\newcommand{\rel}[1]{R^\succeq_\textrm{#1}}
+\newcommand{\rel}[1]{R^\succsim_\textrm{#1}}
 \newcommand{\score}[1]{\text{Score}_\text{#1}}
 
 <!--
@@ -222,11 +222,11 @@ $$
 S \in 2^N \quad \Leftrightarrow \quad S \subseteq N.
 $$
 
-$\mathcal{T}(N)$ denotes the set of all total preorders on $N$, $\mathcal{T}(\mathcal{P})$ the set of all total preorders on $\mathcal{P}$. A single total preorder $\succeq \in \mathcal{T}(\mathcal{P})$ is said a *power relation*.
+$\mathcal{T}(N)$ denotes the set of all total preorders on $N$, $\mathcal{T}(\mathcal{P})$ the set of all total preorders on $\mathcal{P}$. A single total preorder $\succsim \in \mathcal{T}(\mathcal{P})$ is said a *power relation*.
 
-In a given power relation $\succeq \in \mathcal{T}(\mathcal{P})$ on $\mathcal{P} \subseteq 2^N$, its symmetric part is denoted by $\sim$ (i.e., $S \sim T$ if $S \succeq T$ and $T \succeq S$), whereas its asymmetric part is denoted by $\succ$ (i.e., $S \succ T$ if $S \succeq T$ and not $T \succeq S$). In other terms, for $S \sim T$ we say that $S$ is *indifferent* to $T$, whereas for $S \succ T$ we say that $S$ is *strictly better* than $T$.
+In a given power relation $\succsim \in \mathcal{T}(\mathcal{P})$ on $\mathcal{P} \subseteq 2^N$, its symmetric part is denoted by $\sim$ (i.e., $S \sim T$ if $S \succsim T$ and $T \succsim S$), whereas its asymmetric part is denoted by $\succ$ (i.e., $S \succ T$ if $S \succsim T$ and not $T \succsim S$). In other terms, for $S \sim T$ we say that $S$ is *indifferent* to $T$, whereas for $S \succ T$ we say that $S$ is *strictly better* than $T$.
 
-Lastly for a given power relation in the form of $S_1 \succeq S_2 \succeq \ldots \succeq S_m$, coalitions that are indifferent to one another can be grouped into *equivalence classes* $\sum_i$ such that we get the *quotient order* $\sum_1 \succ \sum_2 \succ \ldots \succ \sum_m$.
+Lastly for a given power relation in the form of $S_1 \succsim S_2 \succsim \ldots \succsim S_m$, coalitions that are indifferent to one another can be grouped into *equivalence classes* $\sum_i$ such that we get the *quotient order* $\sum_1 \succ \sum_2 \succ \ldots \succ \sum_m$.
 
 :::{.example data-latex="" .theorem text="`r exampleCounter("ex:1")`" #ex:1}
 \label{ex:1}
@@ -234,17 +234,17 @@ Let $N=\{1,2\}$ be two players with its corresponding power set $2^N = \{\{1,2\}
 
 $$
 \begin{array}{rrrr}
-\succeq \ =\ \{(\{1,2\},\{1,2\}), & (\{1,2\},\{2\}), & (\{1,2\},\emptyset), & (\{1,2\},\{1\}),\hphantom{\}}\\
+\succsim \ =\ \{(\{1,2\},\{1,2\}), & (\{1,2\},\{2\}), & (\{1,2\},\emptyset), & (\{1,2\},\{1\}),\hphantom{\}}\\
 & (\{2\}, \{2\}), & (\{2\}, \emptyset), & \hphantom{1,}(\{2\}, \{1\}),\hphantom{\}}\\
 & (\emptyset, \emptyset), & (\emptyset, \{2\}), & (\emptyset, \{1\}),\hphantom{\}}\\
 & & & (\{1\}, \{1\})\hphantom{,}\}
 \end{array}
 $$
 
-This power relation can be rewritten in a consecutive order as: $\{1,2\} \succ \{2\} \sim \emptyset \succ \{1\}$. Its quotient order is formed by three equivalence classes $\sum_1 = \{\{1,2\}\}, \sum_2 = \{\{2\}, \emptyset\},$ and $\sum_3 = \{\{1\}\}$; so the quotient order of $\succeq$ is such that $\{\{1,2\}\} \succ \{\{2\}, \emptyset\} \succ \{\{1\}\}$.
+This power relation can be rewritten in a consecutive order as: $\{1,2\} \succ \{2\} \sim \emptyset \succ \{1\}$. Its quotient order is formed by three equivalence classes $\sum_1 = \{\{1,2\}\}, \sum_2 = \{\{2\}, \emptyset\},$ and $\sum_3 = \{\{1\}\}$; so the quotient order of $\succsim$ is such that $\{\{1,2\}\} \succ \{\{2\}, \emptyset\} \succ \{\{1\}\}$.
 :::
 
-Note that the way the set $\succeq$ is presented in the example is somewhat deliberate to better visualize occurring symmetries and asymmetries. This also lets us neatly represent a power relation in the form of an `r if(knitr::is_latex_output()) "incidence matrix in chapter"` `r refId("relations", "[incidence matrix](ID)")`.
+Note that the way the set $\succsim$ is presented in the example is somewhat deliberate to better visualize occurring symmetries and asymmetries. This also lets us neatly represent a power relation in the form of an `r if(knitr::is_latex_output()) "incidence matrix in chapter"` `r refId("relations", "[incidence matrix](ID)")`.
 
 ## Creating `PowerRelation` objects
 
@@ -348,7 +348,7 @@ as.PowerRelation(coalitions)
 
 ### `appendMissingCoalitions()`
 
-Let $\succeq \in \mathcal{T}(\mathcal{P})$. We may have not included all possible coalitions, such that $\mathcal{P} \subset 2^N, \mathcal{P} \neq 2^N$.
+Let $\succsim \in \mathcal{T}(\mathcal{P})$. We may have not included all possible coalitions, such that $\mathcal{P} \subset 2^N, \mathcal{P} \neq 2^N$.
 
 `appendMissingCoalitions()` appends all the missing coalitions $2^N - \mathcal{P}$ as a single equivalence class to the end of the power relation.
 
@@ -366,10 +366,10 @@ appendMissingCoalitions(pr)
 
 ### `makePowerRelationMonotonic()`
 
-A power relation $\succeq \in \mathcal{T}(\mathcal{P})$ is monotonic if
+A power relation $\succsim \in \mathcal{T}(\mathcal{P})$ is monotonic if
 
 $$
-S \succeq T \quad \Rightarrow \quad T \subset S
+S \succsim T \quad \Rightarrow \quad T \subset S
 $$
 
 for all $S, T \subseteq N$.
@@ -518,12 +518,12 @@ preorderNum <- function(x) sapply(0:x, function(k) factorial(k) * stirlingSecond
 
 # `SocialRanking` Objects
 
-The main goal of the `socialranking` package is to rank elements based on a given power ranking. More formally we try to map $R: \mathcal{T}(\mathcal{P}) \rightarrow \mathcal{T}(N)$, associating to each power relation $\succeq \in \mathcal{T}(\mathcal{P})$ a total preorder $R(\succeq)$ (or $R^\succeq$) over the elements of $N$.
+The main goal of the `socialranking` package is to rank elements based on a given power ranking. More formally we try to map $R: \mathcal{T}(\mathcal{P}) \rightarrow \mathcal{T}(N)$, associating to each power relation $\succsim \in \mathcal{T}(\mathcal{P})$ a total preorder $R(\succsim)$ (or $R^\succsim$) over the elements of $N$.
 
-In this context $i R^\succeq j$ tells us that, given a power relation $\succeq$ and applying a social ranking solution $R(\succeq)$, $i$ is ranked higher than or equal to $j$. From here on out, `>` and `~` also denote the asymmetric and the symmetric part of a social ranking, respectively, $i$ `>` $j$ indicating that $i$ is strictly better than $j$, whereas in $i$ `~` $j$, $i$ is indifferent to $j$.
+In this context $i R^\succsim j$ tells us that, given a power relation $\succsim$ and applying a social ranking solution $R(\succsim)$, $i$ is ranked higher than or equal to $j$. From here on out, `>` and `~` also denote the asymmetric and the symmetric part of a social ranking, respectively, $i$ `>` $j$ indicating that $i$ is strictly better than $j$, whereas in $i$ `~` $j$, $i$ is indifferent to $j$.
 
-In literature, $i I^\succeq j$ and $i P^\succeq j$ are often used to denote the symmetric and asymmetric part, respectively.
-$i I^\succeq j$ therefore means that $i R^\succeq j$ and $j R^\succeq i$, whereas $i P^\succeq j$ implies that $i R^\succeq j$ but not $j R^\succeq j$.
+In literature, $i I^\succsim j$ and $i P^\succsim j$ are often used to denote the symmetric and asymmetric part, respectively.
+$i I^\succsim j$ therefore means that $i R^\succsim j$ and $j R^\succsim i$, whereas $i P^\succsim j$ implies that $i R^\succsim j$ but not $j R^\succsim j$.
 
 In section `r refId("ch:srsobj", "[3.1](ID)")` we show how a general `SocialRanking` object can be constructed using the `doRanking` function. In the following sections, we will introduce the notion of dominance[@2017axiomaticAndAlgorithmicPerspectives], cumulative dominance[@2015Cumulative] and CP-Majority comparison[@2018CPMajority] that lets us compare two elements before diving into the social ranking solutions of the Ordinal Banzhaf Index[@2019OrdinalBanzhaf], Copeland-like and Kramer-Simpson-like methods[@2021Manipulability], and lastly the Lexicographical Excellence Solution[@2021Lexcel] (Lexcel) and the Dual Lexicographical Excellence solution[@2021AntiLexcel] (Dual Lexcel).
 
@@ -578,7 +578,7 @@ Comparison functions only compare two elements in a given power relation. They d
 ### Dominance {#ch:dominance}
 
 ::: {.definition data-latex="" text="`r definitionCounter()`" .theorem}
-(Dominance [@2017axiomaticAndAlgorithmicPerspectives]) Given a power relation $\succeq \in \mathcal{T}(\mathcal{P})$ and two elements $i,j \in N$, $i$ *dominates* $j$ in $\succeq$ if $S \cup \{i\} \succeq S \cup \{j\}$ for each $S \in 2^{N\setminus \{i,j\}}$. $i$ also *strictly* dominates $j$ if there exists $S \in 2^{N\setminus \{i,j\}}$ such that $S \cup \{i\} \succ S \cup \{j\}$.
+(Dominance [@2017axiomaticAndAlgorithmicPerspectives]) Given a power relation $\succsim \in \mathcal{T}(\mathcal{P})$ and two elements $i,j \in N$, $i$ *dominates* $j$ in $\succsim$ if $S \cup \{i\} \succsim S \cup \{j\}$ for each $S \in 2^{N\setminus \{i,j\}}$. $i$ also *strictly* dominates $j$ if there exists $S \in 2^{N\setminus \{i,j\}}$ such that $S \cup \{i\} \succ S \cup \{j\}$.
 :::
 
 The implication is that for every coalition $i$ and $j$ can join, $i$ has at least the same positive impact as $j$.
@@ -603,9 +603,9 @@ dominates(pr, 1, 1)
 dominates(pr, 1, 1, strictly = TRUE)
 ```
 
-For any $S \in 2^{N \setminus \{i,j\}}$, we can only compare $S \cup \{i\} \succeq S \cup \{j\}$ if both $S \cup \{i\}$ and $S \cup \{j\}$ take part in the power relation.
+For any $S \in 2^{N \setminus \{i,j\}}$, we can only compare $S \cup \{i\} \succsim S \cup \{j\}$ if both $S \cup \{i\}$ and $S \cup \{j\}$ take part in the power relation.
 
-Additionally, for $S = \emptyset$, we also want to compare $\{i\} \succeq \{j\}$. In some situations however a comparison between singletons is not desired. For this reason the parameter `includeEmptySet` can be set to `FALSE` such that $\emptyset \cup \{i\} \succeq \emptyset \cup \{j\}$ is not considered in the CP-Majority comparison.
+Additionally, for $S = \emptyset$, we also want to compare $\{i\} \succsim \{j\}$. In some situations however a comparison between singletons is not desired. For this reason the parameter `includeEmptySet` can be set to `FALSE` such that $\emptyset \cup \{i\} \succsim \emptyset \cup \{j\}$ is not considered in the CP-Majority comparison.
 
 ```{r}
 pr <- as.PowerRelation("ac > bc ~ b > a ~ abc > ab")
@@ -622,11 +622,11 @@ dominates(pr, "a", "b", includeEmptySet = FALSE)
 
 When comparing two players $i,j \in N$, instead of looking at particular coalitions $S \in 2^{N \setminus \{i,j\}}$ they can join, we look at how many stronger coalitions they can form at each point. This property was originally introduced in [@2015Cumulative] as a regular dominance axiom.
 
-For a given power relation $\succeq \in \mathcal{T}(\mathcal{P})$ and its corresponding quotient order  $\sum_1 \succ \dots \succ \sum_m$, the power of a player $i$ is given by a vector $\textrm{Score}_\textrm{Cumul}(i) \in \mathbb{N}^m$ where we cumulatively sum the amount of times $i$ appears in $\sum_k$ for each index $k$.
+For a given power relation $\succsim \in \mathcal{T}(\mathcal{P})$ and its corresponding quotient order  $\sum_1 \succ \dots \succ \sum_m$, the power of a player $i$ is given by a vector $\textrm{Score}_\textrm{Cumul}(i) \in \mathbb{N}^m$ where we cumulatively sum the amount of times $i$ appears in $\sum_k$ for each index $k$.
 
 ::: {.definition data-latex="" text="`r definitionCounter("def:cumuldomscore")`" .theorem #def:cumuldomscore}
 \label{def:cumuldomscore}
-(Cumulative Dominance Score) Given a power relation $\succeq \in \mathcal{T}(\mathcal{P})$ and its quotient order $\sum_1 \succ \dots \succ \sum_m$, the cumulative score vector $\textrm{Score}_\textrm{Cumul}(i) \in \mathbb{N}^m$ of an element $i \in N$ is given by:
+(Cumulative Dominance Score) Given a power relation $\succsim \in \mathcal{T}(\mathcal{P})$ and its quotient order $\sum_1 \succ \dots \succ \sum_m$, the cumulative score vector $\textrm{Score}_\textrm{Cumul}(i) \in \mathbb{N}^m$ of an element $i \in N$ is given by:
 
 \begin{equation}
     \textrm{Score}_\textrm{Cumul}(i) = \Big( \sum_{t=1}^k |\{S \in \textstyle \sum_t : i \in S\}|\Big)_{k \in \{1, \dots, m\}}
@@ -635,7 +635,7 @@ For a given power relation $\succeq \in \mathcal{T}(\mathcal{P})$ and its corres
 
 ::: {.definition data-latex="" text="`r definitionCounter("def:cumuldom")`" .theorem #def:cumuldom}
 \label{def:cumuldom}
-(Cumulative Dominance) Given two elements $i,j \in N$, $i$ *cumulatively dominates* $j$ in $\succeq$, if $\textrm{Score}_\textrm{Cumul}(i)_k \geq \textrm{Score}_\textrm{Cumul}(j)_k$ for each $k \in \{1, \dots, m\}$.  $i$ also *strictly* cumulatively dominates $j$ if there exists a $k$ such that $\textrm{Score}_\textrm{Cumul}(i)_k > \textrm{Score}_\textrm{Cumul}(j)_k$.
+(Cumulative Dominance) Given two elements $i,j \in N$, $i$ *cumulatively dominates* $j$ in $\succsim$, if $\textrm{Score}_\textrm{Cumul}(i)_k \geq \textrm{Score}_\textrm{Cumul}(j)_k$ for each $k \in \{1, \dots, m\}$.  $i$ also *strictly* cumulatively dominates $j$ if there exists a $k$ such that $\textrm{Score}_\textrm{Cumul}(i)_k > \textrm{Score}_\textrm{Cumul}(j)_k$.
 :::
 
 For a given `PowerRelation` object `pr` and two elements `e1` and `e2`, `cumulativeScores(pr)` returns the vectors described in definition `r refDef("def:cumuldomscore")` for each element, `cumulativelyDominates(pr, e1, e2)` returns `TRUE` or `FALSE` based on definition `r refDef("def:cumuldom")`.
@@ -660,19 +660,19 @@ Similar to the dominance property from our previous section, two elements not do
 
 ### CP-Majority comparison
 
-The Ceteris Paribus Majority (CP-Majority) relation is a somewhat relaxed version of the dominance property. Instead of checking if $S \cup \{i\} \succeq S \cup \{j\}$ for all $S \in 2^{N \setminus \{i,j\}}$, the CP-Majority relation $i\rel{CP}j$ holds if the number of times $S \cup \{i\} \succeq S \cup \{j\}$ is greater than or equal to the number of times $S \cup \{j\} \succeq S \cup \{i\}$.
+The Ceteris Paribus Majority (CP-Majority) relation is a somewhat relaxed version of the dominance property. Instead of checking if $S \cup \{i\} \succsim S \cup \{j\}$ for all $S \in 2^{N \setminus \{i,j\}}$, the CP-Majority relation $i\rel{CP}j$ holds if the number of times $S \cup \{i\} \succsim S \cup \{j\}$ is greater than or equal to the number of times $S \cup \{j\} \succsim S \cup \{i\}$.
 
 ::: {.definition data-latex="" text="`r definitionCounter()`" .theorem}
-(CP-Majority [@2018CPMajority]) Let $\succeq \in \mathcal{T}(\mathcal{P})$. The *Ceteris Paribus majority* relation is the binary relation $\rel{CP} \subseteq N \times N$ such that for all $i,j \in N$:
+(CP-Majority [@2018CPMajority]) Let $\succsim \in \mathcal{T}(\mathcal{P})$. The *Ceteris Paribus majority* relation is the binary relation $\rel{CP} \subseteq N \times N$ such that for all $i,j \in N$:
 
 \begin{equation}
-    i\rel{CP}j \Leftrightarrow d_{ij}(\succeq) \geq d_{ji}(\succeq)
+    i\rel{CP}j \Leftrightarrow d_{ij}(\succsim) \geq d_{ji}(\succsim)
 \end{equation}
 
-where $d_{ij}(\succeq)$ represents the cardinality of the set $D_{ij}(\succeq)$, the set of all coalitions $S \in 2^{N \setminus \{i,j\}}$ for which $S \cup \{i\} \succeq S \cup \{j\}$.
+where $d_{ij}(\succsim)$ represents the cardinality of the set $D_{ij}(\succsim)$, the set of all coalitions $S \in 2^{N \setminus \{i,j\}}$ for which $S \cup \{i\} \succsim S \cup \{j\}$.
 :::
 
-`cpMajorityComparisonScore(pr, e1, e2)` calculates the two scores $d_{ij}(\succeq)$ and $-d_{ji}(\succeq)$. Notice the minus sign - that way we can use the sum of both values to determine the relation between `e1` and `e2`.
+`cpMajorityComparisonScore(pr, e1, e2)` calculates the two scores $d_{ij}(\succsim)$ and $-d_{ji}(\succsim)$. Notice the minus sign - that way we can use the sum of both values to determine the relation between `e1` and `e2`.
 
 ```{r}
 pr <- as.PowerRelation("ab > (ac ~ bc) > (a ~ c) > {} > b")
@@ -687,7 +687,7 @@ if(sum(cpMajorityComparisonScore(pr, "a", "b")) >= 0) {
 }
 ```
 
-As a slight variation the logical parameter `strictly` calculates $d^*_{ij}(\succeq)$ and $-d^*_{ji}(\succeq)$, the number of coalitions $S \in 2^{N\setminus \{i,j\}}$ where $S\cup\{i\}\succ S\cup\{j\}$.
+As a slight variation the logical parameter `strictly` calculates $d^*_{ij}(\succsim)$ and $-d^*_{ji}(\succsim)$, the number of coalitions $S \in 2^{N\setminus \{i,j\}}$ where $S\cup\{i\}\succ S\cup\{j\}$.
 
 ```{r}
 # Now (ac ~ bc) is not counted
@@ -700,7 +700,7 @@ sum(cpMajorityComparisonScore(pr, "a", "b", strictly = FALSE)) ==
 
 Coincidentally, `cpMajorityComparisonScore` with `strictly = TRUE` can be used to determine if `e1` (strictly) dominates `e2`.
 
-`cpMajorityComparisonScore` should be used for simple and quick calculations. The more comprehensive function `cpMajorityComparison(pr, e1, e2)` does the same calculations, but in the process retains more information about all the comparisons that might be interesting to a user, i.e., the set $D_{ij}(\succeq)$ and $D_{ji}(\succeq)$ as well as the relation $i\rel{CP}j$. See the documentation for a full list of available data.
+`cpMajorityComparisonScore` should be used for simple and quick calculations. The more comprehensive function `cpMajorityComparison(pr, e1, e2)` does the same calculations, but in the process retains more information about all the comparisons that might be interesting to a user, i.e., the set $D_{ij}(\succsim)$ and $D_{ji}(\succsim)$ as well as the relation $i\rel{CP}j$. See the documentation for a full list of available data.
 
 ```{r}
 # extract more information in cpMajorityComparison
@@ -722,10 +722,10 @@ The CP-Majority relation can generate cycles, which is the reason that it is not
 The Ordinal Banzhaf Score is a vector defined by the principle of marginal contributions. Intuitively speaking, if a player joining a coalition causes it to move up in the ranking, it can be interpreted as a positive contribution. On the contrary a negative contribution means that participating causes the coalition to go down in the ranking.
 
 ::: {.definition data-latex="" text="`r definitionCounter()`" .theorem}
-(Ordinal marginal contribution [@2019OrdinalBanzhaf]) Let $\succeq \in \mathcal{T}(\mathcal{P})$. For a given element $i \in N$, its *ordinal marginal contribution* $m_i^S(\succeq)$ with right to a coalition $S \in \mathcal{P}$ is defined as:
+(Ordinal marginal contribution [@2019OrdinalBanzhaf]) Let $\succsim \in \mathcal{T}(\mathcal{P})$. For a given element $i \in N$, its *ordinal marginal contribution* $m_i^S(\succsim)$ with right to a coalition $S \in \mathcal{P}$ is defined as:
 
 \begin{equation}
-    m_i^S(\succeq) = \begin{cases}
+    m_i^S(\succsim) = \begin{cases}
         \hphantom{-}1 & \textrm{if } S \cup \{i\} \succ S\\
         -1 & \textrm{if } S \succ S \cup \{i\}\\
         \hphantom{-}0 & \textrm{otherwise}
@@ -734,16 +734,16 @@ The Ordinal Banzhaf Score is a vector defined by the principle of marginal contr
 :::
 
 ::: {.definition data-latex="" text="`r definitionCounter()`" .theorem}
-(Ordinal Banzhaf relation) Let $\succeq \in \mathcal{T}(\mathcal{P})$. The *Ordinal Banzhaf relation* is the binary relation $\rel{Banz} \subseteq N \times N$ such that for all $i,j \in N$:
+(Ordinal Banzhaf relation) Let $\succsim \in \mathcal{T}(\mathcal{P})$. The *Ordinal Banzhaf relation* is the binary relation $\rel{Banz} \subseteq N \times N$ such that for all $i,j \in N$:
 
 \begin{equation}
     i\rel{Banz}j \Leftrightarrow \score{Banz}(i) \geq \score{Banz}(j),
 \end{equation}
 
-where $\score{Banz}(i) = \sum_{S} m^S_i(\succeq)$ for all $S \in N\setminus\{i\}$.
+where $\score{Banz}(i) = \sum_{S} m^S_i(\succsim)$ for all $S \in N\setminus\{i\}$.
 :::
 
-Note that if $S \notin \mathcal{P}$ or $S \cup \{i\} \notin \mathcal{P}$, $m_i^S(\succeq) = 0$.
+Note that if $S \notin \mathcal{P}$ or $S \cup \{i\} \notin \mathcal{P}$, $m_i^S(\succsim) = 0$.
 
 The function `ordinalBanzhafScores()` returns three numbers for each element,
 
@@ -782,13 +782,13 @@ ordinalBanzhafRanking(pr)
 The Copeland-like method of ranking elements based on the CP-Majority rule is strongly inspired by the Copeland score from social choice theory[@1951Copeland]. The score of an element $i \in N$ is determined by the amount of the pairwise CP-Majority winning comparisons $i \rel{CP} j$, minus the number of all losing comparisons $j \rel{CP} i$ against all other elements $j \in N \setminus \{i\}$.
 
 ::: {.definition data-latex="" text="`r definitionCounter()`" .theorem}
-(Copeland-like relation [@2021Manipulability]) Let $\succeq \in \mathcal{T}(\mathcal{P})$. The *Copeland-like* relation is the binary relation $\rel{Cop} \subseteq N \times N$ such that for all $i,j \in N$:
+(Copeland-like relation [@2021Manipulability]) Let $\succsim \in \mathcal{T}(\mathcal{P})$. The *Copeland-like* relation is the binary relation $\rel{Cop} \subseteq N \times N$ such that for all $i,j \in N$:
 
 \begin{equation}
     i\rel{Cop}j \Leftrightarrow \score{Cop}(i) \geq \score{Cop}(j),
 \end{equation}
 
-where $\score{Cop}(i) = |\{j \in N \setminus \{i\}: d_{ij}(\succeq) \geq d_{ji}(\succeq)\}| - |\{j \in N \setminus \{i\}: d_{ij}(\succeq) \leq d_{ji}(\succeq)\}|$
+where $\score{Cop}(i) = |\{j \in N \setminus \{i\}: d_{ij}(\succsim) \geq d_{ji}(\succsim)\}| - |\{j \in N \setminus \{i\}: d_{ij}(\succsim) \leq d_{ji}(\succsim)\}|$
 :::
 
 `copelandScores(pr)` returns two numerical values for each element, a positive number for the winning comparisons (shown in $\score{Cop}(i)$ on the left) and a negative number for the losing comparisons (in $\score{Cop}(i)$ on the right).
@@ -811,16 +811,16 @@ Strongly inspired by the Kramer-Simpson method of social choice theory[@1969Simp
 
 ::: {.definition data-latex="" text="`r definitionCounter("def:ks")`" .theorem #def:ks}
 \label{def:ks}
-(Kramer-Simpson-like relation [@2021Manipulability]) Let $\succeq \in \mathcal{T}(\mathcal{P})$. The *Kramer-Simpson-like* relation is the binary relation $\rel{KS} \subseteq N \times N$ such that for all $i,j \in N$:
+(Kramer-Simpson-like relation [@2021Manipulability]) Let $\succsim \in \mathcal{T}(\mathcal{P})$. The *Kramer-Simpson-like* relation is the binary relation $\rel{KS} \subseteq N \times N$ such that for all $i,j \in N$:
 
 \begin{equation}
     i\rel{KS}j \Leftrightarrow \score{KS}(i) \geq \score{KS}(j),
 \end{equation}
 
-where $\score{KS}(i) = -\max_j d^*_{ji}(\succeq)$ for all $j \in N \setminus \{i\}$.
+where $\score{KS}(i) = -\max_j d^*_{ji}(\succsim)$ for all $j \in N \setminus \{i\}$.
 :::
 
-Recall that $d^*_{ji}(\succeq)$ returns the number of _strict_ relations of $S \cup \{j\} \succ S \cup \{i\}$.
+Recall that $d^*_{ji}(\succsim)$ returns the number of _strict_ relations of $S \cup \{j\} \succ S \cup \{i\}$.
 
 `kramerSimpsonScores(pr)` returns a vector with a single numerical value for each element which, sorted highest to lowest, gives us the ranking solution.
 
@@ -831,12 +831,12 @@ kramerSimpsonScores(pr)
 kramerSimpsonRanking(pr)
 ```
 
-There is a small caveat to Definition `r refDef("def:ks")`. For one, it compares the number of strict relation By default this function does not compare $d_{ii}(\succeq)$. In other terms,
+There is a small caveat to Definition `r refDef("def:ks")`. For one, it compares the number of strict relation By default this function does not compare $d_{ii}(\succsim)$. In other terms,
 the score of every element is the maximum CP-Majority comparison score against all *other* elements.
 
-This is slightly different from the definition found in [@2021Manipulability], where the CP-Majority comparison $d_{ii}(\succeq)$ is also considered. Since by definition  $d_{ii}(\succeq) = 0$, the Kramer-Simpson scores in those cases will never be negative, possibly discarding valuable information.
+This is slightly different from the definition found in [@2021Manipulability], where the CP-Majority comparison $d_{ii}(\succsim)$ is also considered. Since by definition  $d_{ii}(\succsim) = 0$, the Kramer-Simpson scores in those cases will never be negative, possibly discarding valuable information.
 
-To still account for the original definition in [@2021Manipulability], the functions `kramerSimpsonScores` and `kramerSimpsonRanking` offer a `compIvsI` parameter that can be set to `TRUE` if one wishes for $d_{ii}(\succeq)$ to be included in the comparisons.
+To still account for the original definition in [@2021Manipulability], the functions `kramerSimpsonScores` and `kramerSimpsonRanking` offer a `compIvsI` parameter that can be set to `TRUE` if one wishes for $d_{ii}(\succsim)$ to be included in the comparisons.
 
 ```{r}
 pr <- as.PowerRelation("b > (a ~ c) > ab > (ac ~ bc) > {} > abc")
@@ -852,17 +852,17 @@ kramerSimpsonScores(pr, elements = "b", compIvsI = TRUE)
 
 The idea behind the lexicographical excellence solution (Lexcel) is to reward elements appearing more frequently in higher ranked equivalence classes.
 
-For a given power relation $\succeq$ and its quotient order $\sum_1 \succ \dots \succ \sum_m$, we denote by $i_k$ the number of coalitions in $\sum_k$ containing $i$:
+For a given power relation $\succsim$ and its quotient order $\sum_1 \succ \dots \succ \sum_m$, we denote by $i_k$ the number of coalitions in $\sum_k$ containing $i$:
 
 \begin{equation}
     i_k = |\{S \in \textstyle \sum_k: i \in S\}|
 \end{equation}
 
-for $k \in \{1, \dots, m\}$. Now, let $\score{Lex}(i)$ be the $m$-dimensional vector $\score{Lex}(i) = (i_1, \dots, i_m)$ associated to $\succeq$. Consider the lexicographic order $\geq_\textrm{Lex}$ among vectors $\mathbf{i}$ and $\mathbf{j}$: $\mathbf{i} \geq_\textrm{Lex} \mathbf{j}$ if either $\mathbf{i} = \mathbf{j}$ or there exists $t : i_r = j_r, r \in \{1,\dots,t-1\}$, and $i_t > j_t$.
+for $k \in \{1, \dots, m\}$. Now, let $\score{Lex}(i)$ be the $m$-dimensional vector $\score{Lex}(i) = (i_1, \dots, i_m)$ associated to $\succsim$. Consider the lexicographic order $\geq_\textrm{Lex}$ among vectors $\mathbf{i}$ and $\mathbf{j}$: $\mathbf{i} \geq_\textrm{Lex} \mathbf{j}$ if either $\mathbf{i} = \mathbf{j}$ or there exists $t : i_r = j_r, r \in \{1,\dots,t-1\}$, and $i_t > j_t$.
 
 ::: {.definition data-latex="" text="`r definitionCounter("def:lexcel")`" .theorem #def:lexcel}
 \label{def:lexcel}
-(Lexicographic-Excellence relation [@2019PreferenceRelation]) Let $\succeq \in \mathcal{T}(\mathcal{P})$ with its corresponding quotient order $\sum_1 \succ \dots \succ \sum_m$. The *Lexicographic-Excellence* relation is the binary relation $\rel{Lex} \subseteq N \times N$ such that for all $i,j \in N$:
+(Lexicographic-Excellence relation [@2019PreferenceRelation]) Let $\succsim \in \mathcal{T}(\mathcal{P})$ with its corresponding quotient order $\sum_1 \succ \dots \succ \sum_m$. The *Lexicographic-Excellence* relation is the binary relation $\rel{Lex} \subseteq N \times N$ such that for all $i,j \in N$:
 
 \begin{equation}
     i\rel{Lex}j \Leftrightarrow \score{Lex}(i) \geq_{\textrm{Lex}} \score{Lex}(j)
@@ -909,7 +909,7 @@ Similar to the Lexcel ranking, the Dual Lexcel also uses the Lexcel score vector
 Take the values $i_k$ for $k \in \{1, \dots, m\}$ and the Lexcel score vector $\score{Lex}(i)$ from section `r refId("ch:lexcel", "[Lexicographical Excellence Solution](#ch:lexcel)")`. Consider the dual lexicographical order $\geq_\textrm{DualLex}$ among vectors $\mathbf{i}$ and $\mathbf{j}$: $\mathbf{i} \geq_\textrm{DualLex} \mathbf{j}$ if either $\mathbf{i} = \mathbf{j}$ or there exists $t: i_t < j_t$ and $i_r = j_r, r\in\{t+1, \dots, m\}$.
 
 ::: {.definition data-latex="" text="`r definitionCounter()`" .theorem}
-(Dual Lexicographical-Excellence relation [@2021AntiLexcel]) Let $\succeq \in \mathcal{T}(\mathcal{P})$. The *Dual Lexicographic-Excellence* relation is the binary relation $\rel{DualLex} \subseteq N \times N$ such that for all $i,j \in N$:
+(Dual Lexicographical-Excellence relation [@2021AntiLexcel]) Let $\succsim \in \mathcal{T}(\mathcal{P})$. The *Dual Lexicographic-Excellence* relation is the binary relation $\rel{DualLex} \subseteq N \times N$ such that for all $i,j \in N$:
 
 \begin{equation}
     i\rel{DualLex}j \Leftrightarrow \score{Lex}(i) \geq_\textrm{DualLex} \score{Lex}(j)
@@ -946,7 +946,7 @@ dualLexcelRanking(pr)
 
 ## Incidence Matrix\label{ch:incidencematrix}
 
-In our vignette we focused more on the intuitive aspects of power relations and social ranking solutions. To reiterate, a power relation is a total preorder, or a reflexive and transitive relation $\succeq \in \mathcal{P} \times \mathcal{P}$, where $\sim$ denotes the symmetric part and $\succ$ its asymmetric part.
+In our vignette we focused more on the intuitive aspects of power relations and social ranking solutions. To reiterate, a power relation is a total preorder, or a reflexive and transitive relation $\succsim \in \mathcal{P} \times \mathcal{P}$, where $\sim$ denotes the symmetric part and $\succ$ its asymmetric part.
 
 A power relation can be viewed as an incidence matrix $(b_{ij}) = B \in \{0,1\}^{|\mathcal{P}| \times |\mathcal{P}|}$. Given two coalitions $i, j \in \mathcal{P}$, if $iRj$ then $b_{ij} = 1$, else $0$.
 
@@ -999,7 +999,7 @@ Properly handling power relations and calculating social ranking solutions with 
 as.PowerRelation("12 > 2 > (1 ~ 2) > 12")
 ```
 
-Recall that a power relation is transitive, meaning for three coalitions $x, y, z \in 2^N$, if $xRy$ and $yRz$, then $xRz$. If we introduce cycles, we pretty much introduce symmetry. Assume we have the power relation $x \succ y \succ x$. Then, even though $xRy$ and $yRx$ are defined as the asymmetric part of the power relation $\succeq$, together they form the symmetric power relation $x \sim y$.
+Recall that a power relation is transitive, meaning for three coalitions $x, y, z \in 2^N$, if $xRy$ and $yRz$, then $xRz$. If we introduce cycles, we pretty much introduce symmetry. Assume we have the power relation $x \succ y \succ x$. Then, even though $xRy$ and $yRx$ are defined as the asymmetric part of the power relation $\succsim$, together they form the symmetric power relation $x \sim y$.
 
 `transitiveClosure(pr)` is a function that turns a power relation with cycles into one without one. In the process of removing duplicate coalitions, it turns all asymmectric relations within a cycle into symmetric relations.
 

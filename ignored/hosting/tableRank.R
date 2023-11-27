@@ -84,8 +84,8 @@ ui <- fluidPage(
       verbatimTextOutput('spec'),
       br(),
       withMathJax('We define a social ranking function wherein \\(i \\succ_{F(T)} j \\quad \\Leftrightarrow \\quad \\begin{cases}
-                    V_1(i, T) \\succ_V V_1(j, T) &\\text{ and } V_2(i, T) \\succeq_V V_2(j, T)\\\\[5pt]
-                    V_1(i, T) \\succeq_V V_1(j, T) &\\text{ and } V_2(i, T) \\succ_V V_2(j, T)
+                    V_1(i, T) \\succ_V V_1(j, T) &\\text{ and } V_2(i, T) \\succsim_V V_2(j, T)\\\\[5pt]
+                    V_1(i, T) \\succsim_V V_1(j, T) &\\text{ and } V_2(i, T) \\succ_V V_2(j, T)
                   \\end{cases}
                   \\)'),
       # h3('No Coincides'),

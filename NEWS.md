@@ -1,3 +1,11 @@
+# socialranking 1.1.0
+
+* Added `L2Scores()` and `L2Ranking()`, along with aliases `lexcel2...()`
+* Added `LPScores()` and `LPRanking()`, along with aliases `lexcelP...()`
+* Added `LPSScores()` and `LPSRanking()`, along with aliases `lexcelPS...()`
+* Fixed `kramerSimpsonScores()` implementation which was not in line with the official definition
+* Changed succeq to succsim notation in documentation to reflect modern literature
+
 # socialranking 1.0.1 (2023-08-23)
 
 Added -package alias to package description (fixing problem listed [here](https://github.com/r-lib/roxygen2/issues/1491)).
