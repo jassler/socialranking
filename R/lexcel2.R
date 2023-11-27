@@ -40,11 +40,10 @@ is.na.L2Scores <- function(x) FALSE
 #' \eqn{q^0 \in \lbrace 1, \dots, m \rbrace}{q^0 in \{1, ..., m\}} such that
 #'
 #' 1. \eqn{\sum_{p = 1}^{|N|} (M^\succsim_i)_{p,q} = \sum_{p = 1}^{|N|} (M^\succsim_j)_{p,q}\text{ for all } q < q^0}{sum_(p=1)^(|N|) (M^(>=)_i)_(p,q) = sum_(p=1)^(|N|) (M^(>=)_j)_(p,q) for all q < q^0},
-#' 2. \eqn{(M^\succsim_i)_{p,q} = (M^\succsim_j)_{p,q}\text{ for all } p \leq |N|, q < q^0}{(M^(>=)_i)_(p,q) = (M^(>=)_j)_(p,q) for all p <= |N|, q < q^0},
-#' 3. \eqn{\begin{cases}
+#' 2. \eqn{\begin{cases}
 #' \text{(i)\hphantom{i} either } & \sum_{p=1}^{|N|} (M^\succsim_i)_{p,q^0} > \sum_{p=1}^{|N|} (M^\succsim_j)_{p,q^0}\\[5pt]
-#' \text{(ii) or } & (M^\succsim_i)_{p^0,q^0} > (M^\succsim_j)_{p^0,q^0} \text{ and } (M^\succsim_i)_{p,q^0} > (M^\succsim_j)_{p,q^0} \text{ for all } p < p^0
-#' \end{cases}}{either (i) the sum of the values in column q^0 in M^(>=)_i is greater than in M^(>=)_j, or (ii), (M^(>=)_i)_(p^0,q^0) > (M^(>=)_j)_(p^0,q^0) and every value above p^0 is the same}.
+#' \text{(ii) or } & (M^\succsim_i)_{p^0,q^0} > (M^\succsim_j)_{p^0,q^0} \text{ and } (M^\succsim_i)_{p,q^0} = (M^\succsim_j)_{p,q^0} \text{ for all } p < p^0
+#' \end{cases}}{either (i) the sum of the values in column q^0 in M^(>=)_i is greater than in M^(>=)_j, or (ii), (M^(>=)_i)_(p^0,q^0) > (M^(>=)_j)_(p^0,q^0) and every value above p^0 is the same.}
 #'
 #' Note that the conditions are very similar to [`L1Ranking()`], with the difference that condition 3.(i)
 #' also ranks an element over another if they simply appear more often in an equivalence class, regardless of coalition size.

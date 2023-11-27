@@ -20,7 +20,7 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
 bibliography: references.bib
 csl: biomed-central.csl
-abstract: "This document gives a brief introduction to power relations and social ranking solutions aimed at ranking elements based on their contributions within coalitions. This document accompanies version 1.0.0 of the package `socialranking`.\n\n**Keywords**: power relation, social ranking solution, cooperative game theory, dominance, cp-majority, Copeland, Kramer-Simpson, ordinal Banzhaf, dominance, lexicographical excellence, relations."
+abstract: "This document gives a brief introduction to power relations and social ranking solutions aimed at ranking elements based on their contributions within coalitions. This document accompanies version 1.1.0 of the package `socialranking`.\n\n**Keywords**: power relation, social ranking solution, cooperative game theory, dominance, cp-majority, Copeland, Kramer-Simpson, ordinal Banzhaf, dominance, lexicographical excellence, L1, L2, LP, LP*, relations."
 ---
 
 ```{r echo=FALSE}
@@ -122,9 +122,9 @@ refDef <- function(def) {
 
 # Introduction
 
-In the literature of cooperative games, the notion of *power index* [@shapley1954method; @1964Banzhaf; @holler2013power] has been widely studied to analyze the "influence" of individuals   taking into account  their ability   to force a decision within groups or coalitions. In practical situations, however, the information concerning the strength of coalitions  is hardly quantifiable. So, any attempt to numerically represent  the influence of groups and individuals clashes with the complex and multi-attribute nature of the problem and it seems more realistic to represent collective decision-making mechanisms using an ordinal coalitional framework based on two main ingredients: a binary relation over groups or coalitions and a ranking over the individuals.
+Innn the literature of cooperative games, the notion of *power index* [@shapley1954method; @1964Banzhaf; @holler2013power] has been widely studied to analyze the "influence" of individuals   taking into account  their ability   to force a decision within groups or coalitions. In practical situations, however, the information concerning the strength of coalitions  is hardly quantifiable. So, any attempt to numerically represent  the influence of groups and individuals clashes with the complex and multi-attribute nature of the problem and it seems more realistic to represent collective decision-making mechanisms using an ordinal coalitional framework based on two main ingredients: a binary relation over groups or coalitions and a ranking over the individuals.
 
-The main objective of the package `socialranking` is to provide answers for  the general problem of how to compare the elements of a finite set $N$ given a ranking over the elements of its power-set (the set of all possible subsets of $N$). To do this, the package `socialranking` implements a portfolio of solutions from the recent literature on *social rankings* [@2017axiomaticAndAlgorithmicPerspectives; @2019OrdinalBanzhaf; @2018CPMajority; @2018CPMajoritySims; @2019PreferenceRelation; @2021Lexcel; @2021Manipulability].
+The main objective of the package `socialranking` is to provide answers for  the general problem of how to compare the elements of a finite set $N$ given a ranking over the elements of its power-set (the set of all possible subsets of $N$). To do this, the package `socialranking` implements a portfolio of solutions from the recent literature on *social rankings* [@2017axiomaticAndAlgorithmicPerspectives; @2019OrdinalBanzhaf; @2018CPMajority; @2018CPMajoritySims; @2019PreferenceRelation; @2021Lexcel; @2021Manipulability; @beal2022lexicographic].
 
 ## Quick start
 
@@ -500,6 +500,10 @@ preorderNum <- function(x) sapply(0:x, function(k) factorial(k) * stirlingSecond
 | 10              | 115.975         | 102.247.563          |
 | 11              | 678.570         | 1.622.632.573        |
 | 12              | 4.213.597       | 28.091.567.595       |
+| 13              | 27.644.437      | 526.858.348.381      |
+| 14              | 190.899.322     | 10.641.342.970.441   |
+| ($2^4-1$) 15    | 1.382.958.545   | 230.283.190.977.959  |
+| 16              | 10.480.142.147  | 5.315.654.681.940.580|
 
 # `SocialRanking` Objects
 
@@ -672,7 +676,7 @@ if(sum(cpMajorityComparisonScore(pr, "a", "b")) >= 0) {
 }
 ```
 
-As a slight variation the logical parameter `strictly` calculates $d_{ij}(\succ)$ and $-d_{ji}(\succ)$, the number of coalitions $S \in 2^{N\setminus \{i,j\}}$ where $S\cup\{i\}\succ S\cup\{j\}$.
+As a slight variation the logical parameter `strictly` calculates $d^*_{ij}(\succsim)$ and $-d^*_{ji}(\succsim)$, the number of coalitions $S \in 2^{N\setminus \{i,j\}}$ where $S\cup\{i\}\succ S\cup\{j\}$.
 
 ```{r}
 # Now (ac ~ bc) is not counted
@@ -696,7 +700,7 @@ cpMajorityComparison(pr, "a", "b")
 cpMajorityComparison(pr, "a", "b", strictly = TRUE)
 ```
 
-The CP-Majority relation can generate cycles, which is the reason that it is not offered as a social ranking solution. Instead we will introduce the [Copeland-like method] and [Kramer-Simpson-like method]`r if(knitr::is_latex_output()) " in chapters \\ref{ch:copeland} and \\ref{ch:kramerSimpson}"` that make use of the CP-Majority functions to determine a power relation between elements. For further readings on CP-Majority, see [@2018CPMajoritySims] and [@2021Manipulability].
+The CP-Majority relation can generate cycles, which is the reason that it is not offered as a social ranking solution. Instead, we will introduce the [Copeland-like method] and [Kramer-Simpson-like method]`r if(knitr::is_latex_output()) " in chapters \\ref{ch:copeland} and \\ref{ch:kramerSimpson}"` that make use of the CP-Majority functions to determine a power relation between elements. For further readings on CP-Majority, see [@2018CPMajoritySims] and [@2021Manipulability].
 
 
 ## Social Ranking Solutions
@@ -799,36 +803,21 @@ Strongly inspired by the Kramer-Simpson method of social choice theory[@1969Simp
 (Kramer-Simpson-like relation [@2021Manipulability]) Let $\succsim \in \mathcal{T}(\mathcal{P})$. The *Kramer-Simpson-like* relation is the binary relation $\rel{KS} \subseteq N \times N$ such that for all $i,j \in N$:
 
 \begin{equation}
-    i\rel{KS}j \Leftrightarrow \score{KS}(i) \leq \score{KS}(j),
+    i\rel{KS}j \Leftrightarrow \score{KS}(i) \geq \score{KS}(j),
 \end{equation}
 
-where $\score{KS}(i) = \max_j d_{ji}(\succsim)$ for all $j \in N \setminus \{i\}$.
+where $\score{KS}(i) = -\max_j d^*_{ji}(\succsim)$ for all $j \in N \setminus \{i\}$.
 :::
 
-`kramerSimpsonScores(pr)` returns a single numerical value for each element, which sorted lowest to highest gives us the ranking solution.
+Recall that $d^*_{ji}(\succsim)$ returns the number of _strict_ relations of $S \cup \{j\} \succ S \cup \{i\}$.
+
+`kramerSimpsonScores(pr)` returns a vector with a single numerical value for each element which, sorted highest to lowest, gives us the ranking solution.
 
 ```{r}
 pr <- as.PowerRelation("(abc ~ ab ~ c ~ a) > (b ~ bc) > ac")
-unlist(kramerSimpsonScores(pr))
+kramerSimpsonScores(pr)
 
 kramerSimpsonRanking(pr)
-```
-
-There is a small caveat to Definition `r refDef("def:ks")`. By default this function does not compare $d_{ii}(\succsim)$. In other terms,
-the score of every element is the maximum CP-Majority comparison score against all *other* elements.
-
-This is slightly different from the definition found in [@2021Manipulability], where the CP-Majority comparison $d_{ii}(\succsim)$ is also considered. Since by definition  $d_{ii}(\succsim) = 0$, the Kramer-Simpson scores in those cases will never be negative, possibly discarding valuable information.
-
-To still account for the original definition in [@2021Manipulability], the functions `kramerSimpsonScores` and `kramerSimpsonRanking` offer a `compIvsI` parameter that can be set to `TRUE` if one wishes for $d_{ii}(\succsim)$ to be included in the comparisons.
-
-```{r}
-pr <- as.PowerRelation("b > (a ~ c) > ab > (ac ~ bc) > {} > abc")
-kramerSimpsonRanking(pr)
-
-# notice how b's score is negative
-unlist(kramerSimpsonScores(pr))
-
-kramerSimpsonScores(pr, elements = "b", compIvsI = TRUE)
 ```
 
 ### Lexicographical Excellence Solution {#ch:lexcel}

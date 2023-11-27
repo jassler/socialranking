@@ -31,7 +31,7 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
 bibliography: references.bib
 csl: biomed-central.csl
-abstract: "This document gives a brief introduction to power relations and social ranking solutions aimed at ranking elements based on their contributions within coalitions. This document accompanies version 1.0.0 of the package `socialranking`.\n\n**Keywords**: power relation, social ranking solution, cooperative game theory, dominance, cp-majority, Copeland, Kramer-Simpson, ordinal Banzhaf, dominance, lexicographical excellence, relations."
+abstract: "This document gives a brief introduction to power relations and social ranking solutions aimed at ranking elements based on their contributions within coalitions. This document accompanies version 1.1.0 of the package `socialranking`.\n\n**Keywords**: power relation, social ranking solution, cooperative game theory, dominance, cp-majority, Copeland, Kramer-Simpson, ordinal Banzhaf, dominance, lexicographical excellence, L1, L2, LP, LP*, relations."
 ---
 
 ```{r echo=FALSE}
@@ -135,7 +135,7 @@ refDef <- function(def) {
 
 In the literature of cooperative games, the notion of *power index* [@shapley1954method; @1964Banzhaf; @holler2013power] has been widely studied to analyze the "influence" of individuals   taking into account  their ability   to force a decision within groups or coalitions. In practical situations, however, the information concerning the strength of coalitions  is hardly quantifiable. So, any attempt to numerically represent  the influence of groups and individuals clashes with the complex and multi-attribute nature of the problem and it seems more realistic to represent collective decision-making mechanisms using an ordinal coalitional framework based on two main ingredients: a binary relation over groups or coalitions and a ranking over the individuals.
 
-The main objective of the package `socialranking` is to provide answers for  the general problem of how to compare the elements of a finite set $N$ given a ranking over the elements of its power-set (the set of all possible subsets of $N$). To do this, the package `socialranking` implements a portfolio of solutions from the recent literature on *social rankings* [@2017axiomaticAndAlgorithmicPerspectives; @2019OrdinalBanzhaf; @2018CPMajority; @2018CPMajoritySims; @2019PreferenceRelation; @2021Lexcel; @2021Manipulability].
+The main objective of the package `socialranking` is to provide answers for  the general problem of how to compare the elements of a finite set $N$ given a ranking over the elements of its power-set (the set of all possible subsets of $N$). To do this, the package `socialranking` implements a portfolio of solutions from the recent literature on *social rankings* [@2017axiomaticAndAlgorithmicPerspectives; @2019OrdinalBanzhaf; @2018CPMajority; @2018CPMajoritySims; @2019PreferenceRelation; @2021Lexcel; @2021Manipulability; @beal2022lexicographic].
 
 ## Quick start
 
@@ -216,17 +216,13 @@ For two elements $x, y \in X$, $xRy$ refers to their relation, more formally it 
 
 A *preorder* is defined as a reflexive and transitive relation. If it is total, it is called a *total preorder*. Additionally if it is antisymmetric, it is called a *linear order*.
 
-Let $N = \{1, 2, \dots, n\}$ be a finite set of *elements*, sometimes also called *players*. For some $p \in \{1, \ldots, 2^n\}$, let $\mathcal{P} = \{S_1, S_2, \dots, S_{p}\}$ be a set of *coalitions* such that $S_i \subseteq N$ for all $i \in \{1, \ldots, p\}$.  Thus $\mathcal{P} \subseteq 2^N$, where $2^N$ denotes the power set of $N$, the set of all subsets or coalitions of $N$,
-
-$$
-S \in 2^N \quad \Leftrightarrow \quad S \subseteq N.
-$$
+Let $N = \{1, 2, \dots, n\}$ be a finite set of *elements*, sometimes also called *players*. For some $p \in \{1, \ldots, 2^n\}$, let $\mathcal{P} = \{S_1, S_2, \dots, S_{p}\}$ be a set of *coalitions* such that $S_i \subseteq N$ for all $i \in \{1, \ldots, p\}$.  Thus $\mathcal{P} \subseteq 2^N$, where $2^N$ denotes the power set of $N$, the set of all subsets or coalitions of $N$.
 
 $\mathcal{T}(N)$ denotes the set of all total preorders on $N$, $\mathcal{T}(\mathcal{P})$ the set of all total preorders on $\mathcal{P}$. A single total preorder $\succsim \in \mathcal{T}(\mathcal{P})$ is said a *power relation*.
 
 In a given power relation $\succsim \in \mathcal{T}(\mathcal{P})$ on $\mathcal{P} \subseteq 2^N$, its symmetric part is denoted by $\sim$ (i.e., $S \sim T$ if $S \succsim T$ and $T \succsim S$), whereas its asymmetric part is denoted by $\succ$ (i.e., $S \succ T$ if $S \succsim T$ and not $T \succsim S$). In other terms, for $S \sim T$ we say that $S$ is *indifferent* to $T$, whereas for $S \succ T$ we say that $S$ is *strictly better* than $T$.
 
-Lastly for a given power relation in the form of $S_1 \succsim S_2 \succsim \ldots \succsim S_m$, coalitions that are indifferent to one another can be grouped into *equivalence classes* $\sum_i$ such that we get the *quotient order* $\sum_1 \succ \sum_2 \succ \ldots \succ \sum_m$.
+Lastly, for a given power relation in the form of $S_1 \succsim S_2 \succsim \ldots \succsim S_m$, coalitions that are indifferent to one another can be grouped into *equivalence classes* $\sum_i$ such that we get the *quotient order* $\sum_1 \succ \sum_2 \succ \ldots \succ \sum_m$.
 
 :::{.example data-latex="" .theorem text="`r exampleCounter("ex:1")`" #ex:1}
 \label{ex:1}
@@ -529,12 +525,12 @@ In section `r refId("ch:srsobj", "[3.1](ID)")` we show how a general `SocialRank
 
 :::{.example data-latex="" .theorem text="`r exampleCounter("ex:socialrankings")`" #ex:socialrankings}
 \label{ex:socialrankings}
-Let $\{a,b\} \succ (\{a,c\} \sim \{b,c\}) \succ (\{a\} \sim \{c\}) > \emptyset \succ \{b\}$ be a power ranking. Using the following social ranking solutions, we get:
+Let $\{a,b\} \succ (\{a,c\} \sim \{b,c\}) \succ (\{a\} \sim \{c\}) > (\{a,b,c\} \sim \emptyset) \succ \{b\}$ be a power ranking. Using the following social ranking solutions, we get:
 
-* `a > b > c` for `lexcelRanking`
-* `a > c > b` for `dualLexcelRanking`
+* `a > b > c` for `lexcelRanking`, `L1Ranking` and `L2Ranking`
+* `a > c > b` for `dualLexcelRanking`, `ordinalBanzhafRanking` and `LPSRanking`
 * `a > b ~ c` for `copelandRanking` and `kramerSimpsonRanking`
-* `a ~ c > b` for `ordinalBanzhafRanking`
+* `a ~ c > b` for `ordinalBanzhafRanking` and `LPRanking`
 :::
 
 ## Creating `SocialRanking` objects\label{ch:srsobj}
@@ -831,23 +827,6 @@ kramerSimpsonScores(pr)
 kramerSimpsonRanking(pr)
 ```
 
-There is a small caveat to Definition `r refDef("def:ks")`. For one, it compares the number of strict relation By default this function does not compare $d_{ii}(\succsim)$. In other terms,
-the score of every element is the maximum CP-Majority comparison score against all *other* elements.
-
-This is slightly different from the definition found in [@2021Manipulability], where the CP-Majority comparison $d_{ii}(\succsim)$ is also considered. Since by definition  $d_{ii}(\succsim) = 0$, the Kramer-Simpson scores in those cases will never be negative, possibly discarding valuable information.
-
-To still account for the original definition in [@2021Manipulability], the functions `kramerSimpsonScores` and `kramerSimpsonRanking` offer a `compIvsI` parameter that can be set to `TRUE` if one wishes for $d_{ii}(\succsim)$ to be included in the comparisons.
-
-```{r}
-pr <- as.PowerRelation("b > (a ~ c) > ab > (ac ~ bc) > {} > abc")
-kramerSimpsonRanking(pr)
-
-# notice how b's score is negative
-unlist(kramerSimpsonScores(pr))
-
-kramerSimpsonScores(pr, elements = "b", compIvsI = TRUE)
-```
-
 ### Lexicographical Excellence Solution {#ch:lexcel}
 
 The idea behind the lexicographical excellence solution (Lexcel) is to reward elements appearing more frequently in higher ranked equivalence classes.
@@ -940,6 +919,64 @@ lexcelRanking(pr)
 
 dualLexcelRanking(pr)
 ```
+
+### $L^{(1)}$, $L^{(2)}$, $L^p$, $L^{p^*}$
+
+The remaining social ranking solutions make the lexcel a little more granular by also considering coalition sizes.
+More often than not, we may want to attribute a higher value to an element that does better in smaller coalitions than others.
+
+::: {.definition data-latex="" text="`r definitionCounter()`" .theorem}
+Let $N$ be a set of elements, $\succsim \in \mathcal{T}(\mathcal{P})$ a power relation,
+and $\Sigma_1 \succ \Sigma_2 \succ \dots \succ \Sigma_m$ its corresponding quotient order.
+For an element $i \in N$, its _appearance matrix_ is the matrix $M^\succsim_i$ with $m$ columns and $|N|$ rows.
+Whereas each column $q$ represents an equivalence class, each row $p$ corresponds to the coalition size.
+
+$$(M^\succsim_i)_{p,q} = |\lbrace S \in \Sigma_q: |S| = p\rbrace|$$
+:::
+
+Based on the appearance matrix, the remaining lexcel-based ranking solutions can be explored.
+
+::: {.definition data-latex="" text="`r definitionCounter()`" .theorem}
+($L^{(1)}$ solution [@2021Lexcel]) The $L^{(1)}$ solution on $\mathcal{T}(\mathcal{P})$ ranks $i$ above $j$, $i R^\succsim_{L^{(1)}}j$, if a $p^0 \in \{1, \dots, n\}$ and $q^0 \in \{1, \dots, m\}$ exists such that the following conditions hold:
+
+1. $(M^\succsim_i)_{p,q\hphantom{^0}} = (M^\succsim_j)_{p,q\hphantom{^0}}$ for all $1 \leq p \leq n$ and $1 \leq q < q^0$,
+2. $(M^\succsim_i)_{p,q^0} = (M^\succsim_j)_{p,q^0}$ for all $1 \leq p < p^0$,
+3. $(M^\succsim_i)_{p^0,q^0} > (M^\succsim_j)_{p^0,q^0}$
+:::
+
+This is $L^{(1)}$
+
+::: {.definition data-latex="" text="`r definitionCounter()`" .theorem}
+($L^{(2)}$ solution [@2021Lexcel]) The $L^{(2)}$ solution on $\mathcal{T}(\mathcal{P})$ ranks $i$ above $j$, $i R^\succsim_{L^{(2)}}j$, if a $p^0 \in \{1, \dots, n\}$ and $q^0 \in \{1, \dots, m\}$ exists such that the following conditions hold:
+
+1. $(M^\succsim_i)_{p,q\hphantom{^0}} = (M^\succsim_j)_{p,q\hphantom{^0}}$ for all $1 \leq p \leq n$ and $1 \leq q < q^0$,
+2. Either (2.1) $\sum (M^\succsim_i)_{:,q^0} > \sum (M^\succsim_j)_{:,q^0}$, or (2.2) $(M^\succsim_i)_{p,q^0} = (M^\succsim_j)_{p,q^0}$ for all $1 \leq p < p^0$ and $(M^\succsim_i)_{p^0,q^0} > (M^\succsim_j)_{p^0,q^0}$
+:::
+
+
+::: {.definition data-latex="" text="`r definitionCounter()`" .theorem}
+($L^{p}$ solution [@beal2022lexicographic]) For $i, j \in N$, the social ranking solution $L^p$ then ranks $i$ strictly above $i$ if one of the following conditions hold:
+
+1. $\lbrace i \rbrace \succ \lbrace j \rbrace$;
+2. $\lbrace i \rbrace, \lbrace j \rbrace \in \Sigma_k$ and there exists a row $p^0 \in \lbrace 2, \dots, |N|\rbrace$ such that:
+$$\sum_{q < k} (M^\succsim_i)_{p,q} = \sum_{q < k} (M^\succsim_j)_{p,q}\quad \forall p < p^0,\text{ and}$$
+$$\sum_{q < k} (M^\succsim_i)_{p^0,q} > \sum_{q < k} (M^\succsim_j)_{p^0,q}.$$
+:::
+
+
+
+::: {.definition data-latex="" text="`r definitionCounter()`" .theorem}
+($L^{p^*}$ solution [@beal2022lexicographic]) For $i, j \in N$, the social ranking solution $L^{p^*}$ then ranks $i$ strictly above $j$ if one of the following conditions hold:
+
+1. $\lbrace i \rbrace \succ \lbrace j \rbrace$;
+2. $\lbrace i \rbrace, \lbrace j \rbrace \in \Sigma_k$ and there exists a row $p^0 \in \lbrace 2, \dots, |N|\rbrace$ and column $q^0 \in \lbrace 1, \dots, k-1\rbrace$ such that:
+$$(M^\succsim_i)_{p,q} = (M^\succsim_j)_{p,q}\quad \forall p < p^0, q < k,$$
+$$(M^\succsim_i)_{p^0,q} = (M^\succsim_j)_{p^0,q}\quad \forall q < q^0,\text{ and}$$
+$$(M^\succsim_i)_{p^0,q^0} > (M^\succsim_j)_{p^0,q^0}.$$
+:::
+
+
+
 
 
 # Relations

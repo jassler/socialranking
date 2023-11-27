@@ -39,8 +39,8 @@ local({
 
   tbl <- data.frame(
     "Comparison functions" = c("`dominates()`", "`cumulativelyDominates()`", "`cpMajorityComparison()`<br>`cpMajorityComparisonScore()`", "", "", ""),
-    "Score functions" = c("", "`cumulativeScores()`", "`copelandScores()`<br>`kramerSimpsonScores()`", "`lexcelScores()`", "`L1Scores()`", "`ordinalBanzhafScores()`"),
-    "Ranking functions" = c("", "", "`copelandRanking()`<br>`kramerSimpsonRanking()`", "`lexcelRanking()`<br>`dualLexcelRanking()`", "`L1Ranking()`", "`ordinalBanzhafRanking()`")
+    "Score functions" = c("", "`cumulativeScores()`", "`copelandScores()`<br>`kramerSimpsonScores()`", "`lexcelScores()`", "`L1Scores()`<br>`L2Scores()`<br>`LPScores()`<br>`LPSScores()`", "`ordinalBanzhafScores()`"),
+    "Ranking functions" = c("", "", "`copelandRanking()`<br>`kramerSimpsonRanking()`", "`lexcelRanking()`<br>`dualLexcelRanking()`", "`L1Ranking()`<br>`L2Ranking()`<br>`LPRanking()`<br>`LPSRanking()`", "`ordinalBanzhafRanking()`")
   )
   createTables(tbl, "functionTable")
 
