@@ -8,8 +8,8 @@
 <meta name="description" content="socialranking">
 <title>`socialranking`: A package for evaluating ordinal power relations in cooperative game theory • socialranking</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="`socialranking`: A package for evaluating ordinal power relations in cooperative game theory">
 <meta property="og:description" content="socialranking">
@@ -80,7 +80,7 @@
 Contact: <a href="mailto:felix.fritz@dauphine.eu" class="email">felix.fritz@dauphine.eu</a>
 </div></h4>
             
-            <h4 data-toc-skip class="date">2023-08-23</h4>
+            <h4 data-toc-skip class="date">2023-11-29</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/jassler/socialranking/blob/HEAD/vignettes/socialranking.Rmd" class="external-link"><code>vignettes/socialranking.Rmd</code></a></small>
       <div class="d-none name"><code>socialranking.Rmd</code></div>
@@ -92,11 +92,11 @@ Contact: <a href="mailto:felix.fritz@dauphine.eu" class="email">felix.fritz@daup
       This document gives a brief introduction to power relations and
       social ranking solutions aimed at ranking elements based on their
       contributions within coalitions. This document accompanies version
-      1.0.0 of the package <code>socialranking</code>. ¶
+      1.1.0 of the package <code>socialranking</code>. ¶
       <strong>Keywords</strong>: power relation, social ranking
       solution, cooperative game theory, dominance, cp-majority,
       Copeland, Kramer-Simpson, ordinal Banzhaf, dominance,
-      lexicographical excellence, relations.
+      lexicographical excellence, L1, L2, LP, LP*, relations.
     </div>
     
 <!--
@@ -129,7 +129,7 @@ of a finite set <span class="math inline">\(N\)</span> given a ranking
 over the elements of its power-set (the set of all possible subsets of
 <span class="math inline">\(N\)</span>). To do this, the package
 <code>socialranking</code> implements a portfolio of solutions from the
-recent literature on <em>social rankings</em> <span class="citation">[4–10]</span>.</p>
+recent literature on <em>social rankings</em> <span class="citation">[4–11]</span>.</p>
 <div class="section level3">
 <h3 id="quick-start">Quick start<a class="anchor" aria-label="anchor" href="#quick-start"></a>
 </h3>
@@ -199,8 +199,8 @@ papers.</p>
   </tr>
 <tr>
 <td style="text-align:left;">  </td>
-   <td style="text-align:left;"> <code><a href="../reference/L1Scores.html">L1Scores()</a></code> </td>
-   <td style="text-align:left;"> <code><a href="../reference/L1Scores.html">L1Ranking()</a></code> </td>
+   <td style="text-align:left;"> <code><a href="../reference/L1Scores.html">L1Scores()</a></code><br><code><a href="../reference/L2Scores.html">L2Scores()</a></code><br><code><a href="../reference/LpScores.html">LPScores()</a></code><br><code><a href="../reference/LPSScores.html">LPSScores()</a></code> </td>
+   <td style="text-align:left;"> <code><a href="../reference/L1Scores.html">L1Ranking()</a></code><br><code><a href="../reference/L2Scores.html">L2Ranking()</a></code><br><code><a href="../reference/LpScores.html">LPRanking()</a></code><br><code><a href="../reference/LPSScores.html">LPSRanking()</a></code> </td>
   </tr>
 <tr>
 <td style="text-align:left;">  </td>
@@ -245,7 +245,7 @@ papers.</p>
 <p>Lastly, an incidence matrix for all given coalitions can be
 constructed using <code>powerRelationMatrix(pr)</code> or
 <code>as.relation(pr)</code> from the <code>relations</code> package
-<span class="citation">[11]</span>. The incidence matrix may be
+<span class="citation">[12]</span>. The incidence matrix may be
 displayed using <code><a href="https://rdrr.io/pkg/relations/man/incidence.html" class="external-link">relations::relation_incidence()</a></code>.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">rel</span> <span class="op">&lt;-</span> <span class="fu">relations</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/relations/man/relation.html" class="external-link">as.relation</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span>
@@ -306,21 +306,19 @@ finite set of <em>elements</em>, sometimes also called <em>players</em>.
 For some <span class="math inline">\(p \in \{1, \ldots, 2^n\}\)</span>,
 let <span class="math inline">\(\mathcal{P} = \{S_1, S_2, \dots,
 S_{p}\}\)</span> be a set of <em>coalitions</em> such that <span class="math inline">\(S_i \subseteq N\)</span> for all <span class="math inline">\(i \in \{1, \ldots, p\}\)</span>. Thus <span class="math inline">\(\mathcal{P} \subseteq 2^N\)</span>, where <span class="math inline">\(2^N\)</span> denotes the power set of <span class="math inline">\(N\)</span>, the set of all subsets or coalitions
-of <span class="math inline">\(N\)</span>,</p>
-<p><span class="math display">\[
-S \in 2^N \quad \Leftrightarrow \quad S \subseteq N.
-\]</span></p>
+of <span class="math inline">\(N\)</span>.</p>
 <p><span class="math inline">\(\mathcal{T}(N)\)</span> denotes the set
 of all total preorders on <span class="math inline">\(N\)</span>, <span class="math inline">\(\mathcal{T}(\mathcal{P})\)</span> the set of all
 total preorders on <span class="math inline">\(\mathcal{P}\)</span>. A
-single total preorder <span class="math inline">\(\succeq \in
+single total preorder <span class="math inline">\(\succsim \in
 \mathcal{T}(\mathcal{P})\)</span> is said a <em>power relation</em>.</p>
-<p>In a given power relation <span class="math inline">\(\succeq \in
+<p>In a given power relation <span class="math inline">\(\succsim \in
 \mathcal{T}(\mathcal{P})\)</span> on <span class="math inline">\(\mathcal{P} \subseteq 2^N\)</span>, its symmetric
 part is denoted by <span class="math inline">\(\sim\)</span> (i.e.,
-<span class="math inline">\(S \sim T\)</span> if <span class="math inline">\(S \succeq T\)</span> and <span class="math inline">\(T \succeq S\)</span>), whereas its asymmetric part
-is denoted by <span class="math inline">\(\succ\)</span> (i.e., <span class="math inline">\(S \succ T\)</span> if <span class="math inline">\(S \succeq T\)</span> and not <span class="math inline">\(T \succeq S\)</span>). In other terms, for <span class="math inline">\(S \sim T\)</span> we say that <span class="math inline">\(S\)</span> is <em>indifferent</em> to <span class="math inline">\(T\)</span>, whereas for <span class="math inline">\(S \succ T\)</span> we say that <span class="math inline">\(S\)</span> is <em>strictly better</em> than <span class="math inline">\(T\)</span>.</p>
-<p>Lastly for a given power relation in the form of <span class="math inline">\(S_1 \succeq S_2 \succeq \ldots \succeq
+<span class="math inline">\(S \sim T\)</span> if <span class="math inline">\(S \succsim T\)</span> and <span class="math inline">\(T \succsim S\)</span>), whereas its asymmetric
+part is denoted by <span class="math inline">\(\succ\)</span> (i.e.,
+<span class="math inline">\(S \succ T\)</span> if <span class="math inline">\(S \succsim T\)</span> and not <span class="math inline">\(T \succsim S\)</span>). In other terms, for <span class="math inline">\(S \sim T\)</span> we say that <span class="math inline">\(S\)</span> is <em>indifferent</em> to <span class="math inline">\(T\)</span>, whereas for <span class="math inline">\(S \succ T\)</span> we say that <span class="math inline">\(S\)</span> is <em>strictly better</em> than <span class="math inline">\(T\)</span>.</p>
+<p>Lastly, for a given power relation in the form of <span class="math inline">\(S_1 \succsim S_2 \succsim \ldots \succsim
 S_m\)</span>, coalitions that are indifferent to one another can be
 grouped into <em>equivalence classes</em> <span class="math inline">\(\sum_i\)</span> such that we get the <em>quotient
 order</em> <span class="math inline">\(\sum_1 \succ \sum_2 \succ \ldots
@@ -332,7 +330,7 @@ with its corresponding power set <span class="math inline">\(2^N =
 relation is given:</p>
 <p><span class="math display">\[
 \begin{array}{rrrr}
-\succeq \ =\ \{(\{1,2\},\{1,2\}), &amp; (\{1,2\},\{2\}), &amp;
+\succsim \ =\ \{(\{1,2\},\{1,2\}), &amp; (\{1,2\},\{2\}), &amp;
 (\{1,2\},\emptyset), &amp; (\{1,2\},\{1\}),\hphantom{\}}\\
 &amp; (\{2\}, \{2\}), &amp; (\{2\}, \emptyset), &amp;
 \hphantom{1,}(\{2\}, \{1\}),\hphantom{\}}\\
@@ -345,10 +343,10 @@ relation is given:</p>
 \{1\}\)</span>. Its quotient order is formed by three equivalence
 classes <span class="math inline">\(\sum_1 = \{\{1,2\}\}, \sum_2 =
 \{\{2\}, \emptyset\},\)</span> and <span class="math inline">\(\sum_3 =
-\{\{1\}\}\)</span>; so the quotient order of <span class="math inline">\(\succeq\)</span> is such that <span class="math inline">\(\{\{1,2\}\} \succ \{\{2\}, \emptyset\} \succ
+\{\{1\}\}\)</span>; so the quotient order of <span class="math inline">\(\succsim\)</span> is such that <span class="math inline">\(\{\{1,2\}\} \succ \{\{2\}, \emptyset\} \succ
 \{\{1\}\}\)</span>.</p>
 </div>
-<p>Note that the way the set <span class="math inline">\(\succeq\)</span> is presented in the example is
+<p>Note that the way the set <span class="math inline">\(\succsim\)</span> is presented in the example is
 somewhat deliberate to better visualize occurring symmetries and
 asymmetries. This also lets us neatly represent a power relation in the
 form of an <a href="#relations">incidence matrix</a>.</p>
@@ -516,7 +514,7 @@ doesn’t require nested list indexing.</p>
 <h4 id="appendmissingcoalitions">
 <code>appendMissingCoalitions()</code><a class="anchor" aria-label="anchor" href="#appendmissingcoalitions"></a>
 </h4>
-<p>Let <span class="math inline">\(\succeq \in
+<p>Let <span class="math inline">\(\succsim \in
 \mathcal{T}(\mathcal{P})\)</span>. We may have not included all possible
 coalitions, such that <span class="math inline">\(\mathcal{P} \subset
 2^N, \mathcal{P} \neq 2^N\)</span>.</p>
@@ -540,10 +538,10 @@ single equivalence class to the end of the power relation.</p>
 <h4 id="makepowerrelationmonotonic">
 <code>makePowerRelationMonotonic()</code><a class="anchor" aria-label="anchor" href="#makepowerrelationmonotonic"></a>
 </h4>
-<p>A power relation <span class="math inline">\(\succeq \in
+<p>A power relation <span class="math inline">\(\succsim \in
 \mathcal{T}(\mathcal{P})\)</span> is monotonic if</p>
 <p><span class="math display">\[
-S \succeq T \quad \Rightarrow \quad T \subset S
+S \succsim T \quad \Rightarrow \quad T \subset S
 \]</span></p>
 <p>for all <span class="math inline">\(S, T \subseteq N\)</span>. In
 other terms, given a monotonic power relation, for any coalition, all
@@ -810,48 +808,53 @@ S(|\mathcal{P}|, k)
 <p>The main goal of the <code>socialranking</code> package is to rank
 elements based on a given power ranking. More formally we try to map
 <span class="math inline">\(R: \mathcal{T}(\mathcal{P}) \rightarrow
-\mathcal{T}(N)\)</span>, associating to each power relation <span class="math inline">\(\succeq \in \mathcal{T}(\mathcal{P})\)</span> a
-total preorder <span class="math inline">\(R(\succeq)\)</span> (or <span class="math inline">\(R^\succeq\)</span>) over the elements of <span class="math inline">\(N\)</span>.</p>
-<p>In this context <span class="math inline">\(i R^\succeq j\)</span>
-tells us that, given a power relation <span class="math inline">\(\succeq\)</span> and applying a social ranking
-solution <span class="math inline">\(R(\succeq)\)</span>, <span class="math inline">\(i\)</span> is ranked higher than or equal to <span class="math inline">\(j\)</span>. From here on out, <code>&gt;</code>
+\mathcal{T}(N)\)</span>, associating to each power relation <span class="math inline">\(\succsim \in \mathcal{T}(\mathcal{P})\)</span> a
+total preorder <span class="math inline">\(R(\succsim)\)</span> (or
+<span class="math inline">\(R^\succsim\)</span>) over the elements of
+<span class="math inline">\(N\)</span>.</p>
+<p>In this context <span class="math inline">\(i R^\succsim j\)</span>
+tells us that, given a power relation <span class="math inline">\(\succsim\)</span> and applying a social ranking
+solution <span class="math inline">\(R(\succsim)\)</span>, <span class="math inline">\(i\)</span> is ranked higher than or equal to <span class="math inline">\(j\)</span>. From here on out, <code>&gt;</code>
 and <code>~</code> also denote the asymmetric and the symmetric part of
 a social ranking, respectively, <span class="math inline">\(i\)</span>
 <code>&gt;</code> <span class="math inline">\(j\)</span> indicating that
 <span class="math inline">\(i\)</span> is strictly better than <span class="math inline">\(j\)</span>, whereas in <span class="math inline">\(i\)</span> <code>~</code> <span class="math inline">\(j\)</span>, <span class="math inline">\(i\)</span>
 is indifferent to <span class="math inline">\(j\)</span>.</p>
-<p>In literature, <span class="math inline">\(i I^\succeq j\)</span> and
-<span class="math inline">\(i P^\succeq j\)</span> are often used to
-denote the symmetric and asymmetric part, respectively. <span class="math inline">\(i I^\succeq j\)</span> therefore means that <span class="math inline">\(i R^\succeq j\)</span> and <span class="math inline">\(j R^\succeq i\)</span>, whereas <span class="math inline">\(i P^\succeq j\)</span> implies that <span class="math inline">\(i R^\succeq j\)</span> but not <span class="math inline">\(j R^\succeq j\)</span>.</p>
+<p>In literature, <span class="math inline">\(i I^\succsim j\)</span>
+and <span class="math inline">\(i P^\succsim j\)</span> are often used
+to denote the symmetric and asymmetric part, respectively. <span class="math inline">\(i I^\succsim j\)</span> therefore means that <span class="math inline">\(i R^\succsim j\)</span> and <span class="math inline">\(j R^\succsim i\)</span>, whereas <span class="math inline">\(i P^\succsim j\)</span> implies that <span class="math inline">\(i R^\succsim j\)</span> but not <span class="math inline">\(j R^\succsim j\)</span>.</p>
 <p>In section <a href="#ch:srsobj">3.1</a> we show how a general
 <code>SocialRanking</code> object can be constructed using the
 <code>doRanking</code> function. In the following sections, we will
 introduce the notion of dominance<span class="citation">[4]</span>,
-cumulative dominance<span class="citation">[12]</span> and CP-Majority
+cumulative dominance<span class="citation">[13]</span> and CP-Majority
 comparison<span class="citation">[6]</span> that lets us compare two
 elements before diving into the social ranking solutions of the Ordinal
 Banzhaf Index<span class="citation">[5]</span>, Copeland-like and
 Kramer-Simpson-like methods<span class="citation">[10]</span>, and
 lastly the Lexicographical Excellence Solution<span class="citation">[9]</span> (Lexcel) and the Dual Lexicographical
-Excellence solution<span class="citation">[13]</span> (Dual Lexcel).</p>
+Excellence solution<span class="citation">[14]</span> (Dual Lexcel).</p>
 <div id="ex:socialrankings" class="example theorem" text="2">
 <p> Let <span class="math inline">\(\{a,b\} \succ (\{a,c\} \sim \{b,c\})
-\succ (\{a\} \sim \{c\}) &gt; \emptyset \succ \{b\}\)</span> be a power
-ranking. Using the following social ranking solutions, we get:</p>
+\succ (\{a\} \sim \{c\}) &gt; (\{a,b,c\} \sim \emptyset) \succ
+\{b\}\)</span> be a power ranking. Using the following social ranking
+solutions, we get:</p>
 <ul>
 <li>
-<code>a &gt; b &gt; c</code> for <code>lexcelRanking</code>
+<code>a &gt; b &gt; c</code> for <code>lexcelRanking</code>,
+<code>L1Ranking</code> and <code>L2Ranking</code>
 </li>
 <li>
-<code>a &gt; c &gt; b</code> for <code>dualLexcelRanking</code>
+<code>a &gt; c &gt; b</code> for <code>dualLexcelRanking</code>,
+<code>ordinalBanzhafRanking</code> and <code>LPSRanking</code>
 </li>
 <li>
 <code>a &gt; b ~ c</code> for <code>copelandRanking</code> and
 <code>kramerSimpsonRanking</code>
 </li>
 <li>
-<code>a ~ c &gt; b</code> for
-<code>ordinalBanzhafRanking</code>
+<code>a ~ c &gt; b</code> for <code>ordinalBanzhafRanking</code> and
+<code>LPRanking</code>
 </li>
 </ul>
 </div>
@@ -920,9 +923,9 @@ to construct a social ranking solution in some particular cases.</p>
 </h4>
 <div class="definition theorem" text="1">
 <p>(Dominance <span class="citation">[4]</span>) Given a power relation
-<span class="math inline">\(\succeq \in
-\mathcal{T}(\mathcal{P})\)</span> and two elements <span class="math inline">\(i,j \in N\)</span>, <span class="math inline">\(i\)</span> <em>dominates</em> <span class="math inline">\(j\)</span> in <span class="math inline">\(\succeq\)</span> if <span class="math inline">\(S
-\cup \{i\} \succeq S \cup \{j\}\)</span> for each <span class="math inline">\(S \in 2^{N\setminus \{i,j\}}\)</span>. <span class="math inline">\(i\)</span> also <em>strictly</em> dominates <span class="math inline">\(j\)</span> if there exists <span class="math inline">\(S \in 2^{N\setminus \{i,j\}}\)</span> such that
+<span class="math inline">\(\succsim \in
+\mathcal{T}(\mathcal{P})\)</span> and two elements <span class="math inline">\(i,j \in N\)</span>, <span class="math inline">\(i\)</span> <em>dominates</em> <span class="math inline">\(j\)</span> in <span class="math inline">\(\succsim\)</span> if <span class="math inline">\(S
+\cup \{i\} \succsim S \cup \{j\}\)</span> for each <span class="math inline">\(S \in 2^{N\setminus \{i,j\}}\)</span>. <span class="math inline">\(i\)</span> also <em>strictly</em> dominates <span class="math inline">\(j\)</span> if there exists <span class="math inline">\(S \in 2^{N\setminus \{i,j\}}\)</span> such that
 <span class="math inline">\(S \cup \{i\} \succ S \cup
 \{j\}\)</span>.</p>
 </div>
@@ -961,14 +964,14 @@ dominating <code>e2</code> does <em>not</em> indicate that
 <pre><code><span><span class="co">## [1] FALSE</span></span></code></pre>
 <p>For any <span class="math inline">\(S \in 2^{N \setminus
 \{i,j\}}\)</span>, we can only compare <span class="math inline">\(S
-\cup \{i\} \succeq S \cup \{j\}\)</span> if both <span class="math inline">\(S \cup \{i\}\)</span> and <span class="math inline">\(S \cup \{j\}\)</span> take part in the power
+\cup \{i\} \succsim S \cup \{j\}\)</span> if both <span class="math inline">\(S \cup \{i\}\)</span> and <span class="math inline">\(S \cup \{j\}\)</span> take part in the power
 relation.</p>
 <p>Additionally, for <span class="math inline">\(S = \emptyset\)</span>,
-we also want to compare <span class="math inline">\(\{i\} \succeq
+we also want to compare <span class="math inline">\(\{i\} \succsim
 \{j\}\)</span>. In some situations however a comparison between
 singletons is not desired. For this reason the parameter
 <code>includeEmptySet</code> can be set to <code>FALSE</code> such that
-<span class="math inline">\(\emptyset \cup \{i\} \succeq \emptyset \cup
+<span class="math inline">\(\emptyset \cup \{i\} \succsim \emptyset \cup
 \{j\}\)</span> is not considered in the CP-Majority comparison.</p>
 <div class="sourceCode" id="cb113"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"ac &gt; bc ~ b &gt; a ~ abc &gt; ab"</span><span class="op">)</span></span>
@@ -987,8 +990,8 @@ singletons is not desired. For this reason the parameter
 <p>When comparing two players <span class="math inline">\(i,j \in
 N\)</span>, instead of looking at particular coalitions <span class="math inline">\(S \in 2^{N \setminus \{i,j\}}\)</span> they can
 join, we look at how many stronger coalitions they can form at each
-point. This property was originally introduced in <span class="citation">[12]</span> as a regular dominance axiom.</p>
-<p>For a given power relation <span class="math inline">\(\succeq \in
+point. This property was originally introduced in <span class="citation">[13]</span> as a regular dominance axiom.</p>
+<p>For a given power relation <span class="math inline">\(\succsim \in
 \mathcal{T}(\mathcal{P})\)</span> and its corresponding quotient order
 <span class="math inline">\(\sum_1 \succ \dots \succ \sum_m\)</span>,
 the power of a player <span class="math inline">\(i\)</span> is given by
@@ -996,7 +999,7 @@ a vector <span class="math inline">\(\textrm{Score}_\textrm{Cumul}(i)
 \in \mathbb{N}^m\)</span> where we cumulatively sum the amount of times
 <span class="math inline">\(i\)</span> appears in <span class="math inline">\(\sum_k\)</span> for each index <span class="math inline">\(k\)</span>.</p>
 <div id="def:cumuldomscore" class="definition theorem" text="2">
-<p> (Cumulative Dominance Score) Given a power relation <span class="math inline">\(\succeq \in \mathcal{T}(\mathcal{P})\)</span> and
+<p> (Cumulative Dominance Score) Given a power relation <span class="math inline">\(\succsim \in \mathcal{T}(\mathcal{P})\)</span> and
 its quotient order <span class="math inline">\(\sum_1 \succ \dots \succ
 \sum_m\)</span>, the cumulative score vector <span class="math inline">\(\textrm{Score}_\textrm{Cumul}(i) \in
 \mathbb{N}^m\)</span> of an element <span class="math inline">\(i \in
@@ -1007,7 +1010,7 @@ N\)</span> is given by:</p>
 \end{equation}\]</span></p>
 </div>
 <div id="def:cumuldom" class="definition theorem" text="3">
-<p> (Cumulative Dominance) Given two elements <span class="math inline">\(i,j \in N\)</span>, <span class="math inline">\(i\)</span> <em>cumulatively dominates</em> <span class="math inline">\(j\)</span> in <span class="math inline">\(\succeq\)</span>, if <span class="math inline">\(\textrm{Score}_\textrm{Cumul}(i)_k \geq
+<p> (Cumulative Dominance) Given two elements <span class="math inline">\(i,j \in N\)</span>, <span class="math inline">\(i\)</span> <em>cumulatively dominates</em> <span class="math inline">\(j\)</span> in <span class="math inline">\(\succsim\)</span>, if <span class="math inline">\(\textrm{Score}_\textrm{Cumul}(i)_k \geq
 \textrm{Score}_\textrm{Cumul}(j)_k\)</span> for each <span class="math inline">\(k \in \{1, \dots, m\}\)</span>. <span class="math inline">\(i\)</span> also <em>strictly</em> cumulatively
 dominates <span class="math inline">\(j\)</span> if there exists a <span class="math inline">\(k\)</span> such that <span class="math inline">\(\textrm{Score}_\textrm{Cumul}(i)_k &gt;
 \textrm{Score}_\textrm{Cumul}(j)_k\)</span>.</p>
@@ -1056,29 +1059,30 @@ indifferent.</p>
 <h4 id="cp-majority-comparison">CP-Majority comparison<a class="anchor" aria-label="anchor" href="#cp-majority-comparison"></a>
 </h4>
 <p>The Ceteris Paribus Majority (CP-Majority) relation is a somewhat
-relaxed version of the dominance property. Instead of checking if <span class="math inline">\(S \cup \{i\} \succeq S \cup \{j\}\)</span> for all
-<span class="math inline">\(S \in 2^{N \setminus \{i,j\}}\)</span>, the
-CP-Majority relation <span class="math inline">\(iR^\succeq_\textrm{CP}j\)</span> holds if the
-number of times <span class="math inline">\(S \cup \{i\} \succeq S \cup
-\{j\}\)</span> is greater than or equal to the number of times <span class="math inline">\(S \cup \{j\} \succeq S \cup \{i\}\)</span>.</p>
+relaxed version of the dominance property. Instead of checking if <span class="math inline">\(S \cup \{i\} \succsim S \cup \{j\}\)</span> for
+all <span class="math inline">\(S \in 2^{N \setminus \{i,j\}}\)</span>,
+the CP-Majority relation <span class="math inline">\(iR^\succsim_\textrm{CP}j\)</span> holds if the
+number of times <span class="math inline">\(S \cup \{i\} \succsim S \cup
+\{j\}\)</span> is greater than or equal to the number of times <span class="math inline">\(S \cup \{j\} \succsim S \cup \{i\}\)</span>.</p>
 <div class="definition theorem" text="4">
-<p>(CP-Majority <span class="citation">[6]</span>) Let <span class="math inline">\(\succeq \in \mathcal{T}(\mathcal{P})\)</span>. The
-<em>Ceteris Paribus majority</em> relation is the binary relation <span class="math inline">\(R^\succeq_\textrm{CP} \subseteq N \times
+<p>(CP-Majority <span class="citation">[6]</span>) Let <span class="math inline">\(\succsim \in \mathcal{T}(\mathcal{P})\)</span>.
+The <em>Ceteris Paribus majority</em> relation is the binary relation
+<span class="math inline">\(R^\succsim_\textrm{CP} \subseteq N \times
 N\)</span> such that for all <span class="math inline">\(i,j \in
 N\)</span>:</p>
 <p><span class="math display">\[\begin{equation}
-    iR^\succeq_\textrm{CP}j \Leftrightarrow d_{ij}(\succeq) \geq
-d_{ji}(\succeq)
+    iR^\succsim_\textrm{CP}j \Leftrightarrow d_{ij}(\succsim) \geq
+d_{ji}(\succsim)
 \end{equation}\]</span></p>
-<p>where <span class="math inline">\(d_{ij}(\succeq)\)</span> represents
-the cardinality of the set <span class="math inline">\(D_{ij}(\succeq)\)</span>, the set of all
+<p>where <span class="math inline">\(d_{ij}(\succsim)\)</span>
+represents the cardinality of the set <span class="math inline">\(D_{ij}(\succsim)\)</span>, the set of all
 coalitions <span class="math inline">\(S \in 2^{N \setminus
 \{i,j\}}\)</span> for which <span class="math inline">\(S \cup \{i\}
-\succeq S \cup \{j\}\)</span>.</p>
+\succsim S \cup \{j\}\)</span>.</p>
 </div>
 <p><code>cpMajorityComparisonScore(pr, e1, e2)</code> calculates the two
-scores <span class="math inline">\(d_{ij}(\succeq)\)</span> and <span class="math inline">\(-d_{ji}(\succeq)\)</span>. Notice the minus sign -
-that way we can use the sum of both values to determine the relation
+scores <span class="math inline">\(d_{ij}(\succsim)\)</span> and <span class="math inline">\(-d_{ji}(\succsim)\)</span>. Notice the minus sign
+- that way we can use the sum of both values to determine the relation
 between <code>e1</code> and <code>e2</code>.</p>
 <div class="sourceCode" id="cb127"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"ab &gt; (ac ~ bc) &gt; (a ~ c) &gt; {} &gt; b"</span><span class="op">)</span></span>
@@ -1095,9 +1099,11 @@ between <code>e1</code> and <code>e2</code>.</p>
 <span><span class="op">}</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "a &gt;= b"</span></span></code></pre>
 <p>As a slight variation the logical parameter <code>strictly</code>
-calculates <span class="math inline">\(d_{ij}(\succ)\)</span> and <span class="math inline">\(-d_{ji}(\succ)\)</span>, the number of coalitions
-<span class="math inline">\(S \in 2^{N\setminus \{i,j\}}\)</span> where
-<span class="math inline">\(S\cup\{i\}\succ S\cup\{j\}\)</span>.</p>
+calculates <span class="math inline">\(d^*_{ij}(\succsim)\)</span> and
+<span class="math inline">\(-d^*_{ji}(\succsim)\)</span>, the number of
+coalitions <span class="math inline">\(S \in 2^{N\setminus
+\{i,j\}}\)</span> where <span class="math inline">\(S\cup\{i\}\succ
+S\cup\{j\}\)</span>.</p>
 <div class="sourceCode" id="cb133"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Now (ac ~ bc) is not counted</span></span>
 <span><span class="fu"><a href="../reference/cpMajorityComparison.html">cpMajorityComparisonScore</a></span><span class="op">(</span><span class="va">pr</span>, <span class="st">"a"</span>, <span class="st">"b"</span>, strictly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
@@ -1114,8 +1120,8 @@ calculates <span class="math inline">\(d_{ij}(\succ)\)</span> and <span class="m
 quick calculations. The more comprehensive function
 <code>cpMajorityComparison(pr, e1, e2)</code> does the same
 calculations, but in the process retains more information about all the
-comparisons that might be interesting to a user, i.e., the set <span class="math inline">\(D_{ij}(\succeq)\)</span> and <span class="math inline">\(D_{ji}(\succeq)\)</span> as well as the relation
-<span class="math inline">\(iR^\succeq_\textrm{CP}j\)</span>. See the
+comparisons that might be interesting to a user, i.e., the set <span class="math inline">\(D_{ij}(\succsim)\)</span> and <span class="math inline">\(D_{ji}(\succsim)\)</span> as well as the relation
+<span class="math inline">\(iR^\succsim_\textrm{CP}j\)</span>. See the
 documentation for a full list of available data.</p>
 <div class="sourceCode" id="cb137"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># extract more information in cpMajorityComparison</span></span>
@@ -1135,7 +1141,7 @@ documentation for a full list of available data.</p>
 <span><span class="co">## Score of a = 1</span></span>
 <span><span class="co">## Score of b = 0</span></span></code></pre>
 <p>The CP-Majority relation can generate cycles, which is the reason
-that it is not offered as a social ranking solution. Instead we will
+that it is not offered as a social ranking solution. Instead, we will
 introduce the <a href="#ch:copeland">Copeland-like method</a> and <a href="#ch:kramerSimpson">Kramer-Simpson-like method</a> that make use of
 the CP-Majority functions to determine a power relation between
 elements. For further readings on CP-Majority, see <span class="citation">[7]</span> and <span class="citation">[10]</span>.</p>
@@ -1154,13 +1160,13 @@ a positive contribution. On the contrary a negative contribution means
 that participating causes the coalition to go down in the ranking.</p>
 <div class="definition theorem" text="5">
 <p>(Ordinal marginal contribution <span class="citation">[5]</span>) Let
-<span class="math inline">\(\succeq \in
+<span class="math inline">\(\succsim \in
 \mathcal{T}(\mathcal{P})\)</span>. For a given element <span class="math inline">\(i \in N\)</span>, its <em>ordinal marginal
-contribution</em> <span class="math inline">\(m_i^S(\succeq)\)</span>
+contribution</em> <span class="math inline">\(m_i^S(\succsim)\)</span>
 with right to a coalition <span class="math inline">\(S \in
 \mathcal{P}\)</span> is defined as:</p>
 <p><span class="math display">\[\begin{equation}
-    m_i^S(\succeq) = \begin{cases}
+    m_i^S(\succsim) = \begin{cases}
         \hphantom{-}1 &amp; \textrm{if } S \cup \{i\} \succ S\\
         -1 &amp; \textrm{if } S \succ S \cup \{i\}\\
         \hphantom{-}0 &amp; \textrm{otherwise}
@@ -1168,22 +1174,22 @@ with right to a coalition <span class="math inline">\(S \in
 \end{equation}\]</span></p>
 </div>
 <div class="definition theorem" text="6">
-<p>(Ordinal Banzhaf relation) Let <span class="math inline">\(\succeq
+<p>(Ordinal Banzhaf relation) Let <span class="math inline">\(\succsim
 \in \mathcal{T}(\mathcal{P})\)</span>. The <em>Ordinal Banzhaf
-relation</em> is the binary relation <span class="math inline">\(R^\succeq_\textrm{Banz} \subseteq N \times
+relation</em> is the binary relation <span class="math inline">\(R^\succsim_\textrm{Banz} \subseteq N \times
 N\)</span> such that for all <span class="math inline">\(i,j \in
 N\)</span>:</p>
 <p><span class="math display">\[\begin{equation}
-    iR^\succeq_\textrm{Banz}j \Leftrightarrow
+    iR^\succsim_\textrm{Banz}j \Leftrightarrow
 \text{Score}_\text{Banz}(i) \geq \text{Score}_\text{Banz}(j),
 \end{equation}\]</span></p>
 <p>where <span class="math inline">\(\text{Score}_\text{Banz}(i) =
-\sum_{S} m^S_i(\succeq)\)</span> for all <span class="math inline">\(S
+\sum_{S} m^S_i(\succsim)\)</span> for all <span class="math inline">\(S
 \in N\setminus\{i\}\)</span>.</p>
 </div>
 <p>Note that if <span class="math inline">\(S \notin
 \mathcal{P}\)</span> or <span class="math inline">\(S \cup \{i\} \notin
-\mathcal{P}\)</span>, <span class="math inline">\(m_i^S(\succeq) =
+\mathcal{P}\)</span>, <span class="math inline">\(m_i^S(\succsim) =
 0\)</span>.</p>
 <p>The function <code><a href="../reference/ordinalBanzhafScores.html">ordinalBanzhafScores()</a></code> returns three
 numbers for each element,</p>
@@ -1235,23 +1241,23 @@ Players with higher scores rank higher.</p>
 </h4>
 <p>The Copeland-like method of ranking elements based on the CP-Majority
 rule is strongly inspired by the Copeland score from social choice
-theory<span class="citation">[14]</span>. The score of an element <span class="math inline">\(i \in N\)</span> is determined by the amount of
-the pairwise CP-Majority winning comparisons <span class="math inline">\(i R^\succeq_\textrm{CP} j\)</span>, minus the
+theory<span class="citation">[15]</span>. The score of an element <span class="math inline">\(i \in N\)</span> is determined by the amount of
+the pairwise CP-Majority winning comparisons <span class="math inline">\(i R^\succsim_\textrm{CP} j\)</span>, minus the
 number of all losing comparisons <span class="math inline">\(j
-R^\succeq_\textrm{CP} i\)</span> against all other elements <span class="math inline">\(j \in N \setminus \{i\}\)</span>.</p>
+R^\succsim_\textrm{CP} i\)</span> against all other elements <span class="math inline">\(j \in N \setminus \{i\}\)</span>.</p>
 <div class="definition theorem" text="7">
-<p>(Copeland-like relation <span class="citation">[10]</span>) Let <span class="math inline">\(\succeq \in \mathcal{T}(\mathcal{P})\)</span>. The
-<em>Copeland-like</em> relation is the binary relation <span class="math inline">\(R^\succeq_\textrm{Cop} \subseteq N \times
+<p>(Copeland-like relation <span class="citation">[10]</span>) Let <span class="math inline">\(\succsim \in \mathcal{T}(\mathcal{P})\)</span>.
+The <em>Copeland-like</em> relation is the binary relation <span class="math inline">\(R^\succsim_\textrm{Cop} \subseteq N \times
 N\)</span> such that for all <span class="math inline">\(i,j \in
 N\)</span>:</p>
 <p><span class="math display">\[\begin{equation}
-    iR^\succeq_\textrm{Cop}j \Leftrightarrow \text{Score}_\text{Cop}(i)
+    iR^\succsim_\textrm{Cop}j \Leftrightarrow \text{Score}_\text{Cop}(i)
 \geq \text{Score}_\text{Cop}(j),
 \end{equation}\]</span></p>
 <p>where <span class="math inline">\(\text{Score}_\text{Cop}(i) = |\{j
-\in N \setminus \{i\}: d_{ij}(\succeq) \geq d_{ji}(\succeq)\}| - |\{j
-\in N \setminus \{i\}: d_{ij}(\succeq) \leq
-d_{ji}(\succeq)\}|\)</span></p>
+\in N \setminus \{i\}: d_{ij}(\succsim) \geq d_{ji}(\succsim)\}| - |\{j
+\in N \setminus \{i\}: d_{ij}(\succsim) \leq
+d_{ji}(\succsim)\}|\)</span></p>
 </div>
 <p><code>copelandScores(pr)</code> returns two numerical values for each
 element, a positive number for the winning comparisons (shown in <span class="math inline">\(\text{Score}_\text{Cop}(i)\)</span> on the left)
@@ -1276,72 +1282,50 @@ right).</p>
 <h4 id="ch:kramerSimpson">Kramer-Simpson-like method<a class="anchor" aria-label="anchor" href="#ch:kramerSimpson"></a>
 </h4>
 <p>Strongly inspired by the Kramer-Simpson method of social choice
-theory<span class="citation">[15, 16]</span>, elements are ranked
+theory<span class="citation">[16, 17]</span>, elements are ranked
 inversely to their greatest pairwise defeat over all possible
 CP-Majority comparisons.</p>
 <div id="def:ks" class="definition theorem" text="8">
 <p> (Kramer-Simpson-like relation <span class="citation">[10]</span>)
-Let <span class="math inline">\(\succeq \in
+Let <span class="math inline">\(\succsim \in
 \mathcal{T}(\mathcal{P})\)</span>. The <em>Kramer-Simpson-like</em>
-relation is the binary relation <span class="math inline">\(R^\succeq_\textrm{KS} \subseteq N \times
+relation is the binary relation <span class="math inline">\(R^\succsim_\textrm{KS} \subseteq N \times
 N\)</span> such that for all <span class="math inline">\(i,j \in
 N\)</span>:</p>
 <p><span class="math display">\[\begin{equation}
-    iR^\succeq_\textrm{KS}j \Leftrightarrow \text{Score}_\text{KS}(i)
-\leq \text{Score}_\text{KS}(j),
+    iR^\succsim_\textrm{KS}j \Leftrightarrow \text{Score}_\text{KS}(i)
+\geq \text{Score}_\text{KS}(j),
 \end{equation}\]</span></p>
-<p>where <span class="math inline">\(\text{Score}_\text{KS}(i) = \max_j
-d_{ji}(\succeq)\)</span> for all <span class="math inline">\(j \in N
+<p>where <span class="math inline">\(\text{Score}_\text{KS}(i) = -\max_j
+d^*_{ji}(\succsim)\)</span> for all <span class="math inline">\(j \in N
 \setminus \{i\}\)</span>.</p>
 </div>
-<p><code>kramerSimpsonScores(pr)</code> returns a single numerical value
-for each element, which sorted lowest to highest gives us the ranking
-solution.</p>
+<p>Recall that <span class="math inline">\(d^*_{ji}(\succsim)\)</span>
+returns the number of <em>strict</em> relations of <span class="math inline">\(S \cup \{j\} \succ S \cup \{i\}\)</span>.</p>
+<p><code>kramerSimpsonScores(pr)</code> returns a vector with a single
+numerical value for each element which, sorted highest to lowest, gives
+us the ranking solution.</p>
 <div class="sourceCode" id="cb157"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"(abc ~ ab ~ c ~ a) &gt; (b ~ bc) &gt; ac"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="fu"><a href="../reference/kramerSimpsonScores.html">kramerSimpsonScores</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## a b c </span></span>
-<span><span class="co">## 0 0 1</span></span></code></pre>
-<div class="sourceCode" id="cb159"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/kramerSimpsonScores.html">kramerSimpsonRanking</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## a ~ b &gt; c</span></span></code></pre>
-<p>There is a small caveat to Definition <a href="#def:ks">8</a>. By
-default this function does not compare <span class="math inline">\(d_{ii}(\succeq)\)</span>. In other terms, the
-score of every element is the maximum CP-Majority comparison score
-against all <em>other</em> elements.</p>
-<p>This is slightly different from the definition found in <span class="citation">[10]</span>, where the CP-Majority comparison <span class="math inline">\(d_{ii}(\succeq)\)</span> is also considered. Since
-by definition <span class="math inline">\(d_{ii}(\succeq) = 0\)</span>,
-the Kramer-Simpson scores in those cases will never be negative,
-possibly discarding valuable information.</p>
-<p>To still account for the original definition in <span class="citation">[10]</span>, the functions
-<code>kramerSimpsonScores</code> and <code>kramerSimpsonRanking</code>
-offer a <code>compIvsI</code> parameter that can be set to
-<code>TRUE</code> if one wishes for <span class="math inline">\(d_{ii}(\succeq)\)</span> to be included in the
-comparisons.</p>
-<div class="sourceCode" id="cb161"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"b &gt; (a ~ c) &gt; ab &gt; (ac ~ bc) &gt; {} &gt; abc"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/kramerSimpsonScores.html">kramerSimpsonRanking</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## b &gt; a &gt; c</span></span></code></pre>
-<div class="sourceCode" id="cb163"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># notice how b's score is negative</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="fu"><a href="../reference/kramerSimpsonScores.html">kramerSimpsonScores</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/kramerSimpsonScores.html">kramerSimpsonScores</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##  a  b  c </span></span>
-<span><span class="co">##  1 -1  2</span></span></code></pre>
-<div class="sourceCode" id="cb165"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/kramerSimpsonScores.html">kramerSimpsonScores</a></span><span class="op">(</span><span class="va">pr</span>, elements <span class="op">=</span> <span class="st">"b"</span>, compIvsI <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## $b</span></span>
-<span><span class="co">## [1] 0</span></span>
-<span><span class="co">## </span></span>
+<span><span class="co">## -1 -1 -1 </span></span>
 <span><span class="co">## attr(,"class")</span></span>
 <span><span class="co">## [1] "KramerSimpsonScores"</span></span></code></pre>
+<div class="sourceCode" id="cb159"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/kramerSimpsonScores.html">kramerSimpsonRanking</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## a ~ b ~ c</span></span></code></pre>
 </div>
 <div class="section level4">
-<h4 id="ch:lexcel">Lexicographical Excellence Solution<a class="anchor" aria-label="anchor" href="#ch:lexcel"></a>
+<h4 id="ch:lexcel">Lexcel and Dual Lexcel<a class="anchor" aria-label="anchor" href="#ch:lexcel"></a>
 </h4>
+<div class="section level5">
+<h5 class="unnumbered" id="lexicographical-excellence-solution">Lexicographical Excellence Solution<a class="anchor" aria-label="anchor" href="#lexicographical-excellence-solution"></a>
+</h5>
 <p>The idea behind the lexicographical excellence solution (Lexcel) is
 to reward elements appearing more frequently in higher ranked
 equivalence classes.</p>
-<p>For a given power relation <span class="math inline">\(\succeq\)</span> and its quotient order <span class="math inline">\(\sum_1 \succ \dots \succ \sum_m\)</span>, we
+<p>For a given power relation <span class="math inline">\(\succsim\)</span> and its quotient order <span class="math inline">\(\sum_1 \succ \dots \succ \sum_m\)</span>, we
 denote by <span class="math inline">\(i_k\)</span> the number of
 coalitions in <span class="math inline">\(\sum_k\)</span> containing
 <span class="math inline">\(i\)</span>:</p>
@@ -1351,34 +1335,33 @@ coalitions in <span class="math inline">\(\sum_k\)</span> containing
 <p>for <span class="math inline">\(k \in \{1, \dots, m\}\)</span>. Now,
 let <span class="math inline">\(\text{Score}_\text{Lex}(i)\)</span> be
 the <span class="math inline">\(m\)</span>-dimensional vector <span class="math inline">\(\text{Score}_\text{Lex}(i) = (i_1, \dots,
-i_m)\)</span> associated to <span class="math inline">\(\succeq\)</span>. Consider the lexicographic order
-<span class="math inline">\(\geq_\textrm{Lex}\)</span> among vectors
-<span class="math inline">\(\mathbf{i}\)</span> and <span class="math inline">\(\mathbf{j}\)</span>: <span class="math inline">\(\mathbf{i} \geq_\textrm{Lex} \mathbf{j}\)</span>
+i_m)\)</span> associated to <span class="math inline">\(\succsim\)</span>. Consider the lexicographic
+order <span class="math inline">\(\geq_\textrm{Lex}\)</span> among
+vectors <span class="math inline">\(\mathbf{i}\)</span> and <span class="math inline">\(\mathbf{j}\)</span>: <span class="math inline">\(\mathbf{i} \geq_\textrm{Lex} \mathbf{j}\)</span>
 if either <span class="math inline">\(\mathbf{i} = \mathbf{j}\)</span>
 or there exists <span class="math inline">\(t : i_r = j_r, r \in
 \{1,\dots,t-1\}\)</span>, and <span class="math inline">\(i_t &gt;
 j_t\)</span>.</p>
 <div id="def:lexcel" class="definition theorem" text="9">
-<p> (Lexicographic-Excellence relation <span class="citation">[8]</span>) Let <span class="math inline">\(\succeq \in
-\mathcal{T}(\mathcal{P})\)</span> with its corresponding quotient order
-<span class="math inline">\(\sum_1 \succ \dots \succ \sum_m\)</span>.
-The <em>Lexicographic-Excellence</em> relation is the binary relation
-<span class="math inline">\(R^\succeq_\textrm{Lex} \subseteq N \times
-N\)</span> such that for all <span class="math inline">\(i,j \in
-N\)</span>:</p>
+<p> (Lexicographic-Excellence relation <span class="citation">[8]</span>) Let <span class="math inline">\(\succsim
+\in \mathcal{T}(\mathcal{P})\)</span> with its corresponding quotient
+order <span class="math inline">\(\sum_1 \succ \dots \succ
+\sum_m\)</span>. The <em>Lexicographic-Excellence</em> relation is the
+binary relation <span class="math inline">\(R^\succsim_\textrm{Lex}
+\subseteq N \times N\)</span> such that for all <span class="math inline">\(i,j \in N\)</span>:</p>
 <p><span class="math display">\[\begin{equation}
-    iR^\succeq_\textrm{Lex}j \Leftrightarrow \text{Score}_\text{Lex}(i)
+    iR^\succsim_\textrm{Lex}j \Leftrightarrow \text{Score}_\text{Lex}(i)
 \geq_{\textrm{Lex}} \text{Score}_\text{Lex}(j)
 \end{equation}\]</span></p>
 </div>
-<div class="sourceCode" id="cb167"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb161"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"12 &gt; (123 ~ 23 ~ 3) &gt; (1 ~ 2) &gt; 13"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># show the number of times an element appears in each equivalence class</span></span>
 <span><span class="co"># e.g. 3 appears 3 times in [[2]] and 1 time in [[4]]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">pr</span><span class="op">$</span><span class="va">equivalenceClasses</span>, <span class="va">unlist</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## list()</span></span></code></pre>
-<div class="sourceCode" id="cb169"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb163"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lexScores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lexcelScores.html">lexcelScores</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span>
 <span><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">lexScores</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"Lexcel score of element "</span>, <span class="va">i</span>, <span class="st">": "</span>, <span class="va">lexScores</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">)</span></span>
@@ -1386,11 +1369,11 @@ N\)</span>:</p>
 <span><span class="co"># at index 1, element 2 ranks higher than 3</span></span>
 <span><span class="va">lexScores</span><span class="op">[</span><span class="st">'2'</span><span class="op">]</span> <span class="op">&gt;</span> <span class="va">lexScores</span><span class="op">[</span><span class="st">'3'</span><span class="op">]</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] TRUE</span></span></code></pre>
-<div class="sourceCode" id="cb171"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb165"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># at index 2, element 2 ranks higher than 1</span></span>
 <span><span class="va">lexScores</span><span class="op">[</span><span class="st">'2'</span><span class="op">]</span> <span class="op">&gt;</span> <span class="va">lexScores</span><span class="op">[</span><span class="st">'1'</span><span class="op">]</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] TRUE</span></span></code></pre>
-<div class="sourceCode" id="cb173"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb167"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/lexcelScores.html">lexcelRanking</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## 2 &gt; 1 &gt; 3</span></span></code></pre>
 <p>For some generalizations of the Lexcel solution see also <span class="citation">[9]</span>.</p>
@@ -1399,40 +1382,40 @@ N\)</span>:</p>
 the number of times an element appears in a given equivalence class is
 of interest. In fact, applying the base function <code>cumsum</code> on
 an element’s lexcel score gives us its cumulative score.</p>
-<div class="sourceCode" id="cb175"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb169"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lexcelCumulated</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">lexScores</span>, <span class="va">cumsum</span><span class="op">)</span></span>
 <span><span class="va">cumulScores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/cumulativeScores.html">cumulativeScores</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">lexcelCumulated</span><span class="op">)</span>, <span class="st">": "</span>, <span class="va">lexcelCumulated</span>, collapse <span class="op">=</span> <span class="st">', '</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "1: 1:4, 2: c(1, 3, 4, 4), 3: c(0, 3, 3, 4)"</span></span></code></pre>
-<div class="sourceCode" id="cb177"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb171"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">cumulScores</span><span class="op">)</span>, <span class="st">": "</span>, <span class="va">cumulScores</span>, collapse <span class="op">=</span> <span class="st">', '</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "1: 1:4, 2: c(1, 3, 4, 4), 3: c(0, 3, 3, 4)"</span></span></code></pre>
 </div>
-<div class="section level4">
-<h4 id="dual-lexicographical-excellence-solution">Dual Lexicographical Excellence Solution<a class="anchor" aria-label="anchor" href="#dual-lexicographical-excellence-solution"></a>
-</h4>
+<div class="section level5">
+<h5 class="unnumbered" id="dual-lexicographical-excellence-solution">Dual Lexicographical Excellence Solution<a class="anchor" aria-label="anchor" href="#dual-lexicographical-excellence-solution"></a>
+</h5>
 <p>Similar to the Lexcel ranking, the Dual Lexcel also uses the Lexcel
 score vectors from definition <a href="#def:lexcel">9</a> to establish a
 ranking. However, instead of rewarding higher frequencies in high
-ranking coalitions, it punishes higher frequencies in lower ranking
-coalitions, or, it punishes mediocrity<span class="citation">[13]</span>.</p>
+ranking coalitions, it punishes players that appear more frequently in
+lower ranking equivalence classes. In a more interpreted sense, it
+punishes mediocrity.</p>
 <p>Take the values <span class="math inline">\(i_k\)</span> for <span class="math inline">\(k \in \{1, \dots, m\}\)</span> and the Lexcel
-score vector <span class="math inline">\(\text{Score}_\text{Lex}(i)\)</span> from section
-<a href="#ch:lexcel">Lexicographical Excellence Solution</a>. Consider
-the dual lexicographical order <span class="math inline">\(\geq_\textrm{DualLex}\)</span> among vectors <span class="math inline">\(\mathbf{i}\)</span> and <span class="math inline">\(\mathbf{j}\)</span>: <span class="math inline">\(\mathbf{i} \geq_\textrm{DualLex}
+score vector <span class="math inline">\(\text{Score}_\text{Lex}(i)\)</span> from the
+section above. Consider the dual lexicographical order <span class="math inline">\(\geq_\textrm{DualLex}\)</span> among vectors <span class="math inline">\(\mathbf{i}\)</span> and <span class="math inline">\(\mathbf{j}\)</span>: <span class="math inline">\(\mathbf{i} \geq_\textrm{DualLex}
 \mathbf{j}\)</span> if either <span class="math inline">\(\mathbf{i} =
 \mathbf{j}\)</span> or there exists <span class="math inline">\(t: i_t
 &lt; j_t\)</span> and <span class="math inline">\(i_r = j_r, r\in\{t+1,
 \dots, m\}\)</span>.</p>
 <div class="definition theorem" text="10">
-<p>(Dual Lexicographical-Excellence relation <span class="citation">[13]</span>) Let <span class="math inline">\(\succeq
+<p>(Dual Lexicographical-Excellence relation <span class="citation">[14]</span>) Let <span class="math inline">\(\succsim
 \in \mathcal{T}(\mathcal{P})\)</span>. The <em>Dual
-Lexicographic-Excellence</em> relation is the binary relation <span class="math inline">\(R^\succeq_\textrm{DualLex} \subseteq N \times
+Lexicographic-Excellence</em> relation is the binary relation <span class="math inline">\(R^\succsim_\textrm{DualLex} \subseteq N \times
 N\)</span> such that for all <span class="math inline">\(i,j \in
 N\)</span>:</p>
 <p><span class="math display">\[\begin{equation}
-    iR^\succeq_\textrm{DualLex}j \Leftrightarrow
+    iR^\succsim_\textrm{DualLex}j \Leftrightarrow
 \text{Score}_\text{Lex}(i) \geq_\textrm{DualLex}
 \text{Score}_\text{Lex}(j)
 \end{equation}\]</span></p>
@@ -1441,7 +1424,7 @@ N\)</span>:</p>
 Lexcel comparisons. Instead <code>-rev(x)</code> is called on a Lexcel
 score vector <code>x</code> such that the resulting comparisons produces
 a Dual Lexcel ranking solution.</p>
-<div class="sourceCode" id="cb179"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb173"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"12 &gt; (123 ~ 23 ~ 3) &gt; (1 ~ 2) &gt; 13"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">lexScores</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lexcelScores.html">lexcelScores</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span>
@@ -1449,7 +1432,7 @@ a Dual Lexcel ranking solution.</p>
 <span><span class="co"># in regular Lexcel, 1 scores higher than 3</span></span>
 <span><span class="va">lexScores</span><span class="op">[</span><span class="st">'1'</span><span class="op">]</span> <span class="op">&gt;</span> <span class="va">lexScores</span><span class="op">[</span><span class="st">'3'</span><span class="op">]</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] TRUE</span></span></code></pre>
-<div class="sourceCode" id="cb181"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb175"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># turn Lexcel score into Dual Lexcel score</span></span>
 <span><span class="va">dualLexScores</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/structure.html" class="external-link">structure</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="../reference/lexcelScores.html">lexcelScores</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">r</span><span class="op">)</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/rev.html" class="external-link">rev</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -1459,13 +1442,314 @@ a Dual Lexcel ranking solution.</p>
 <span><span class="co"># now 1 scores lower than 3</span></span>
 <span><span class="va">dualLexScores</span><span class="op">[</span><span class="st">'1'</span><span class="op">]</span> <span class="op">&gt;</span> <span class="va">dualLexScores</span><span class="op">[</span><span class="st">'3'</span><span class="op">]</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] FALSE</span></span></code></pre>
-<div class="sourceCode" id="cb183"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb177"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># element 2 comes out at the top in both Lexcel and Dual Lexcel</span></span>
 <span><span class="fu"><a href="../reference/lexcelScores.html">lexcelRanking</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## 2 &gt; 1 &gt; 3</span></span></code></pre>
-<div class="sourceCode" id="cb185"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb179"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/lexcelScores.html">dualLexcelRanking</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## 2 &gt; 3 &gt; 1</span></span></code></pre>
+</div>
+</div>
+<div class="section level4">
+<h4 id="l1-l2-lp-lp">
+<span class="math inline">\(L^{(1)}\)</span>, <span class="math inline">\(L^{(2)}\)</span>, <span class="math inline">\(L^p\)</span>, <span class="math inline">\(L^{p^*}\)</span><a class="anchor" aria-label="anchor" href="#l1-l2-lp-lp"></a>
+</h4>
+<p>The remaining social ranking solutions are an extension of the lexcel
+solutions from the previous section. While they all rank individuals
+using a lexicographical approach, they all not only consider the
+equivalence classes, but also the size of the coalitions an element
+appears in. In answering the question of what player has more influence
+in a group than others, we may want to attribute a higher value to
+smaller coalitions.</p>
+<p>For a given coalitional ranking <span class="math inline">\(\succsim\)</span> and its associated quotient
+order <span class="math inline">\(\Sigma_1 \succ \dots \succ
+\Sigma_m\)</span>, <span class="math inline">\(\text{Score}_\text{Lex}(i)\)</span> produced a
+vector of length <span class="math inline">\(m\)</span> with each index
+signifying the number of times <span class="math inline">\(i\)</span>
+appears in each equivalence class. This is now further extended to a
+function</p>
+<p><span class="math display">\[M^\succsim_i = \text{Score}_\text{L}(i)
+\in \mathbb{N}^{|N| \times m}\]</span></p>
+<p>that produces a matrix. Each column <span class="math inline">\(q\)</span> corresponds to an equivalence class,
+each row <span class="math inline">\(p\)</span> to a coalition size. The
+values are then defined as</p>
+<p><span class="math display">\[(M^\succsim_i)_{p,q} = |\lbrace S \in
+\Sigma_q: |S| = p \text{ and } i \in S\rbrace|.\]</span></p>
+<p>For a ranking such as <span class="math inline">\((\{1, 2\} \sim
+\{1\} \sim \{2, 3\}) \succ N \succ \varnothing \succ (\{1, 3\} \sim
+\{2\} \sim \{3\})\)</span> this would give use the following three
+matrices.</p>
+<p><span class="math display">\[M^\succsim_1 = \begin{bmatrix}
+1 &amp; 0 &amp; 0 &amp; 0\\
+1 &amp; 0 &amp; 0 &amp; 1\\
+0 &amp; 1 &amp; 0 &amp; 0
+\end{bmatrix} M^\succsim_2 = \begin{bmatrix}
+0 &amp; 0 &amp; 0 &amp; 1\\
+2 &amp; 0 &amp; 0 &amp; 0\\
+0 &amp; 1 &amp; 0 &amp; 0
+\end{bmatrix} M^\succsim_3 = \begin{bmatrix}
+0 &amp; 0 &amp; 0 &amp; 1\\
+1 &amp; 0 &amp; 0 &amp; 1\\
+0 &amp; 1 &amp; 0 &amp; 0
+\end{bmatrix}\]</span></p>
+<p>These matrices can be created with the <code><a href="../reference/L1Scores.html">L1Scores()</a></code>
+function.</p>
+<div class="sourceCode" id="cb181"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">'(12 ~ 1 ~ 23) &gt; 123 &gt; {} &gt; (13 ~ 2 ~ 3)'</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/L1Scores.html">L1Scores</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## $`1`</span></span>
+<span><span class="co">##      [,1] [,2] [,3] [,4]</span></span>
+<span><span class="co">## [1,]    1    0    0    0</span></span>
+<span><span class="co">## [2,]    1    0    0    1</span></span>
+<span><span class="co">## [3,]    0    1    0    0</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $`2`</span></span>
+<span><span class="co">##      [,1] [,2] [,3] [,4]</span></span>
+<span><span class="co">## [1,]    0    0    0    1</span></span>
+<span><span class="co">## [2,]    2    0    0    0</span></span>
+<span><span class="co">## [3,]    0    1    0    0</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $`3`</span></span>
+<span><span class="co">##      [,1] [,2] [,3] [,4]</span></span>
+<span><span class="co">## [1,]    0    0    0    1</span></span>
+<span><span class="co">## [2,]    1    0    0    1</span></span>
+<span><span class="co">## [3,]    0    1    0    0</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## attr(,"class")</span></span>
+<span><span class="co">## [1] "L1Scores"</span></span></code></pre>
+<p>Comparing these matrices builds the foundation the the <span class="math inline">\(L^{(1)}\)</span>, <span class="math inline">\(L^{(2)}\)</span>, <span class="math inline">\(L^p\)</span> and <span class="math inline">\(L^{p^*}\)</span> solutions.</p>
+<div class="section level5">
+<h5 class="unnumbered" id="l1">
+<span class="math inline">\(L^{(1)}\)</span><a class="anchor" aria-label="anchor" href="#l1"></a>
+</h5>
+<div class="definition theorem" text="11">
+<p>(<span class="math inline">\(L^{(1)}\)</span> solution <span class="citation">[9]</span>) For <span class="math inline">\(i, j \in
+N\)</span>, the <span class="math inline">\(L^{(1)}\)</span> solution
+ranks <span class="math inline">\(i\)</span> above <span class="math inline">\(j\)</span> if there exists a <span class="math inline">\(p^0 \in \{1, \dots, n\}\)</span> and <span class="math inline">\(q^0 \in \{1, \dots, m\}\)</span> such that the
+following conditions hold:</p>
+<ol style="list-style-type: decimal">
+<li>
+<span class="math inline">\((M^\succsim_i)_{p,q\hphantom{^0}} =
+(M^\succsim_j)_{p,q\hphantom{^0}}\)</span> for all <span class="math inline">\(1 \leq p \leq n\)</span> and <span class="math inline">\(1 \leq q &lt; q^0\)</span>,</li>
+<li>
+<span class="math inline">\((M^\succsim_i)_{p,q^0} =
+(M^\succsim_j)_{p,q^0}\)</span> for all <span class="math inline">\(1
+\leq p &lt; p^0\)</span>,</li>
+<li><span class="math inline">\((M^\succsim_i)_{p^0,q^0} &gt;
+(M^\succsim_j)_{p^0,q^0}\)</span></li>
+</ol>
+</div>
+<p>Put into simple terms, when comparing two elements <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span> with their corresponding matrices, we
+first compare the first column, top to bottom. The first row in which
+the value for one is higher than the other determines their relation. If
+both their columns are the same, we move forward to the next column.</p>
+<p>In the example above, the lexcel determines that <code>1 ~ 2</code>.
+However, in their matrices, 1 has a higher value in the first row of the
+first column. This implies that <span class="math inline">\(L^{(1)}\)</span> prefers <code>1 &gt; 2</code>
+simply because the singleton coalition <span class="math inline">\(\{1\}\)</span> appears in the first equivalence
+class, whereas <span class="math inline">\(\{2\}\)</span> does not.</p>
+<div class="sourceCode" id="cb183"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/L1Scores.html">L1Ranking</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## 1 &gt; 2 &gt; 3</span></span></code></pre>
+</div>
+<div class="section level5">
+<h5 class="unnumbered" id="l2">
+<span class="math inline">\(L^{(2)}\)</span><a class="anchor" aria-label="anchor" href="#l2"></a>
+</h5>
+<p>Compared to the lexcel, <span class="math inline">\(L^{(1)}\)</span>
+could be seen as a little too strict in enforcing a relation based on a
+singular coalition while discarding all others in the same equivalence
+class. Take for instance <span class="math inline">\((\{1\} \sim \{2,
+3\} \sim \{2, 4\} \sim \{2, 3, 4\}) \succ \dots\)</span>. Even though
+<span class="math inline">\(2\)</span> seems to have a lot more
+possibilities to cooperate, <span class="math inline">\(L^{(1)}\)</span>
+prefers <span class="math inline">\(1\)</span> simply because the
+coalition it appears in is smaller than all others.</p>
+<p>The <span class="math inline">\(L^{(2)}\)</span> tries to find a
+happy medium between these two solutions. For a given equivalence class,
+it first compares the total number of times each element appears (aka.,
+the lexcel score). If both scores are the same, only then does it
+compare the corresponding column according to the <span class="math inline">\(L^{(1)}\)</span>.</p>
+<div class="definition theorem" text="12">
+<p>(<span class="math inline">\(L^{(2)}\)</span> solution <span class="citation">[9]</span>) For <span class="math inline">\(i, j \in
+N\)</span>, the <span class="math inline">\(L^{(2)}\)</span> solution
+ranks <span class="math inline">\(i\)</span> above <span class="math inline">\(j\)</span> if there exists a <span class="math inline">\(p^0 \in \{1, \dots, n\}\)</span> and <span class="math inline">\(q^0 \in \{1, \dots, m\}\)</span> such that the
+following conditions hold:</p>
+<ol style="list-style-type: decimal">
+<li>
+<span class="math inline">\((M^\succsim_i)_{p,q\hphantom{^0}} =
+(M^\succsim_j)_{p,q\hphantom{^0}}\)</span> for all <span class="math inline">\(1 \leq p \leq n\)</span> and <span class="math inline">\(1 \leq q &lt; q^0\)</span>,</li>
+<li>Either (2.1) <span class="math inline">\(\text{Score}_\text{Lex}(i)_{q^0} &gt;
+\text{Score}_\text{Lex}(j)_{q^0}\)</span>, or (2.2) <span class="math inline">\((M^\succsim_i)_{p,q^0} =
+(M^\succsim_j)_{p,q^0}\)</span> for all <span class="math inline">\(1
+\leq p &lt; p^0\)</span> and <span class="math inline">\((M^\succsim_i)_{p^0,q^0} &gt;
+(M^\succsim_j)_{p^0,q^0}\)</span>
+</li>
+</ol>
+</div>
+<p>Note again that <span class="math inline">\(\text{Score}_\text{Lex}(i)_{q^0} =
+\sum_{p=1}^{|N|} (M^\succsim_i)_{p,q^0}\)</span>. To make finding the
+sum of each column easier, these values are added as an extra row above.
+This also conveniently allows us to use the traditional <span class="math inline">\(L^{(1)}\)</span> comparison on these matrices.</p>
+<p>The solution of <span class="math inline">\(L^{(2)}\)</span> will
+always coincide either with the lexcel or with the <span class="math inline">\(L^{(1)}\)</span> solution. In the example of the
+beginning of the section, in comparing <span class="math inline">\(1\)</span> against <span class="math inline">\(2\)</span>, the relation for <span class="math inline">\(L^{(2)}\)</span> coincides with <span class="math inline">\(L^{(1)}\)</span>: the sum of the first column in
+<span class="math inline">\(M^\succsim_1\)</span> and <span class="math inline">\(M^\succsim_2\)</span> equal both to <span class="math inline">\(2\)</span>, inducing a row-by-row comparison, same
+as with <span class="math inline">\(L^{(1)}\)</span>. In the latter
+example in this subsection, the sum of the first column vectors of <span class="math inline">\(1\)</span> and <span class="math inline">\(2\)</span> are vastly different, causing <span class="math inline">\(L^{(2)}\)</span> to coincide with the lexcel
+solution.</p>
+<div class="sourceCode" id="cb185"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/L2Scores.html">L2Ranking</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## 1 &gt; 2 &gt; 3</span></span></code></pre>
+<div class="sourceCode" id="cb187"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">pr2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">'1 ~ 23 ~ 24 ~ 234'</span><span class="op">)</span></span>
+<span><span class="va">pr2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/appendMissingCoalitions.html">appendMissingCoalitions</a></span><span class="op">(</span><span class="va">pr2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/L1Scores.html">L1Ranking</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## 1 &gt; 2 &gt; 3</span></span></code></pre>
+<div class="sourceCode" id="cb189"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/L2Scores.html">L2Ranking</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## 1 &gt; 2 &gt; 3</span></span></code></pre>
+</div>
+<div class="section level5">
+<h5 class="unnumbered" id="lp">
+<span class="math inline">\(L^p\)</span><a class="anchor" aria-label="anchor" href="#lp"></a>
+</h5>
+<p><span class="math inline">\(L^p\)</span> and <span class="math inline">\(L^{p^*}\)</span> differ drastically in that they
+compare the matrices on a row-by-row basis rather than column-by-column.
+This puts a much higher value on smaller coalitions, regardless of which
+equivalence class they are placed in.</p>
+<p>Both of these solutions first consider the singleton coalition. For
+two given elements <span class="math inline">\(i\)</span> and <span class="math inline">\(j\)</span>, if <span class="math inline">\(\{i\}
+\succ \{j\}\)</span>, then the relation according to the <span class="math inline">\(L^p\)</span> and <span class="math inline">\(L^{p^*}\)</span> is already determined. If <span class="math inline">\(\{i\} ~ \{j\}\)</span>, every subsequent
+comparison is done on the number of coalitions that rank strictly
+higher. This may be practical in situation where we want individuals to
+work in small groups and disregard any coalitions where they’d be better
+off alone.</p>
+<div class="definition theorem" text="13">
+<p>(<span class="math inline">\(L^p\)</span> solution <span class="citation">[11]</span>) For <span class="math inline">\(i, j \in
+N\)</span>, the social ranking solution <span class="math inline">\(L^p\)</span> ranks <span class="math inline">\(i\)</span> above <span class="math inline">\(j\)</span> if one of the following conditions
+hold:</p>
+<ol style="list-style-type: decimal">
+<li>
+<span class="math inline">\(\lbrace i \rbrace \succ \lbrace j
+\rbrace\)</span>;</li>
+<li>
+<span class="math inline">\(\lbrace i \rbrace, \lbrace j \rbrace \in
+\Sigma_k\)</span> and there exists a row <span class="math inline">\(p^0
+\in \lbrace 2, \dots, |N|\rbrace\)</span> such that: <span class="math display">\[\sum_{q &lt; k} (M^\succsim_i)_{p,q} = \sum_{q
+&lt; k} (M^\succsim_j)_{p,q}\quad \forall p &lt; p^0,\text{
+and}\]</span> <span class="math display">\[\sum_{q &lt; k}
+(M^\succsim_i)_{p^0,q} &gt; \sum_{q &lt; k}
+(M^\succsim_j)_{p^0,q}.\]</span>
+</li>
+</ol>
+</div>
+<p>The <span class="math inline">\(L^p\)</span> looks at the total
+number of times an element has the chance to form a better coalition
+than its singleton. Since a lot of the information from the matrix of an
+element is therefore redundant, <code><a href="../reference/LpScores.html">LPScores()</a></code> discards much of
+it to save space. The first value then corresponds to the equivalence
+class index that the singleton appears in, each subsequent value the
+number of times it is able to form coalitions of size 2, 3, and so
+on.</p>
+<div class="sourceCode" id="cb191"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/LpScores.html">LPScores</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## $`1`</span></span>
+<span><span class="co">## [1] 1 0 0</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $`2`</span></span>
+<span><span class="co">## [1] 4 2 1</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $`3`</span></span>
+<span><span class="co">## [1] 4 1 1</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## attr(,"class")</span></span>
+<span><span class="co">## [1] "LPScores"</span></span></code></pre>
+<div class="sourceCode" id="cb193"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/LpScores.html">LPRanking</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## 1 &gt; 2 &gt; 3</span></span></code></pre>
+</div>
+<div class="section level5">
+<h5 class="unnumbered" id="lp-1">
+<span class="math inline">\(L^{p^*}\)</span><a class="anchor" aria-label="anchor" href="#lp-1"></a>
+</h5>
+<p>Only taking the sum of all coalitions of a certain size might not be
+informative enough. Similarly to how <span class="math inline">\(L^{(1)}\)</span> builds a more granual comparison
+between two elements by incorporating the coalition size, <span class="math inline">\(L^{p^*}\)</span> can be seen as a more granual
+version of the <span class="math inline">\(L^p\)</span> by incorporating
+the specific equivalence class the element appears in.</p>
+<div class="definition theorem" text="14">
+<p>(<span class="math inline">\(L^{p^*}\)</span> solution <span class="citation">[11]</span>) For <span class="math inline">\(i, j \in
+N\)</span>, the social ranking solution <span class="math inline">\(L^{p^*}\)</span> ranks <span class="math inline">\(i\)</span> above <span class="math inline">\(j\)</span> if one of the following conditions
+hold:</p>
+<ol style="list-style-type: decimal">
+<li>
+<span class="math inline">\(\lbrace i \rbrace \succ \lbrace j
+\rbrace\)</span>;</li>
+<li>
+<span class="math inline">\(\lbrace i \rbrace, \lbrace j \rbrace \in
+\Sigma_k\)</span> and there exists a row <span class="math inline">\(p^0
+\in \lbrace 2, \dots, |N|\rbrace\)</span> and column <span class="math inline">\(q^0 \in \lbrace 1, \dots, k-1\rbrace\)</span> such
+that: <span class="math display">\[(M^\succsim_i)_{p,q} =
+(M^\succsim_j)_{p,q}\quad \forall p &lt; p^0, q &lt; k,\]</span> <span class="math display">\[(M^\succsim_i)_{p^0,q} =
+(M^\succsim_j)_{p^0,q}\quad \forall q &lt; q^0,\text{ and}\]</span>
+<span class="math display">\[(M^\succsim_i)_{p^0,q^0} &gt;
+(M^\succsim_j)_{p^0,q^0}.\]</span>
+</li>
+</ol>
+</div>
+<p>The score matrices of <code><a href="../reference/LPSScores.html">LPSScores()</a></code> look similar to
+<code><a href="../reference/L1Scores.html">L1Scores()</a></code> then, the only difference being the number of
+columns; as any equivalence class with <span class="math inline">\(\{i\}
+\in \Sigma_k\)</span> and <span class="math inline">\(\Sigma_k \succ
+\Sigma_l\)</span> does not influence the final ranking, these columns
+are discarded in the final matrix.</p>
+<div class="sourceCode" id="cb195"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/L1Scores.html">L1Scores</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## $`1`</span></span>
+<span><span class="co">##      [,1] [,2] [,3] [,4]</span></span>
+<span><span class="co">## [1,]    1    0    0    0</span></span>
+<span><span class="co">## [2,]    1    0    0    1</span></span>
+<span><span class="co">## [3,]    0    1    0    0</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $`2`</span></span>
+<span><span class="co">##      [,1] [,2] [,3] [,4]</span></span>
+<span><span class="co">## [1,]    0    0    0    1</span></span>
+<span><span class="co">## [2,]    2    0    0    0</span></span>
+<span><span class="co">## [3,]    0    1    0    0</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $`3`</span></span>
+<span><span class="co">##      [,1] [,2] [,3] [,4]</span></span>
+<span><span class="co">## [1,]    0    0    0    1</span></span>
+<span><span class="co">## [2,]    1    0    0    1</span></span>
+<span><span class="co">## [3,]    0    1    0    0</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## attr(,"class")</span></span>
+<span><span class="co">## [1] "L1Scores"</span></span></code></pre>
+<div class="sourceCode" id="cb197"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/LPSScores.html">LPSScores</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## $`1`</span></span>
+<span><span class="co">##     </span></span>
+<span><span class="co">## [1,]</span></span>
+<span><span class="co">## [2,]</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $`2`</span></span>
+<span><span class="co">##      [,1] [,2] [,3]</span></span>
+<span><span class="co">## [1,]    2    0    0</span></span>
+<span><span class="co">## [2,]    0    1    0</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $`3`</span></span>
+<span><span class="co">##      [,1] [,2] [,3]</span></span>
+<span><span class="co">## [1,]    1    0    0</span></span>
+<span><span class="co">## [2,]    0    1    0</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## attr(,"class")</span></span>
+<span><span class="co">## [1] "LP*Scores"</span></span></code></pre>
+<div class="sourceCode" id="cb199"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/LPSScores.html">LPSRanking</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## 1 &gt; 2 &gt; 3</span></span></code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -1477,7 +1761,7 @@ a Dual Lexcel ranking solution.</p>
 </h3>
 <p>In our vignette we focused more on the intuitive aspects of power
 relations and social ranking solutions. To reiterate, a power relation
-is a total preorder, or a reflexive and transitive relation <span class="math inline">\(\succeq \in \mathcal{P} \times
+is a total preorder, or a reflexive and transitive relation <span class="math inline">\(\succsim \in \mathcal{P} \times
 \mathcal{P}\)</span>, where <span class="math inline">\(\sim\)</span>
 denotes the symmetric part and <span class="math inline">\(\succ\)</span> its asymmetric part.</p>
 <p>A power relation can be viewed as an incidence matrix <span class="math inline">\((b_{ij}) = B \in \{0,1\}^{|\mathcal{P}| \times
@@ -1491,8 +1775,8 @@ matrix with <code>relation_incidence(rel)</code> and to test basic
 properties such <code>relation_is_linear_order(rel)</code>,
 <code>relation_is_acyclic(rel)</code> and
 <code>relation_is_antisymmetric(rel)</code> (see <code>relations</code>
-package for more <span class="citation">[11]</span>).</p>
-<div class="sourceCode" id="cb187"><pre class="downlit sourceCode r">
+package for more <span class="citation">[12]</span>).</p>
+<div class="sourceCode" id="cb201"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"ab &gt; a &gt; {} &gt; b"</span><span class="op">)</span></span>
 <span><span class="va">rel</span> <span class="op">&lt;-</span> <span class="fu">relations</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/relations/man/relation.html" class="external-link">as.relation</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span>
 <span></span>
@@ -1503,7 +1787,7 @@ package for more <span class="citation">[11]</span>).</p>
 <span><span class="co">## ​a   0 1  1 1</span></span>
 <span><span class="co">## ​​{}  0 0  1 1</span></span>
 <span><span class="co">## ​​​b   0 0  0 1</span></span></code></pre>
-<div class="sourceCode" id="cb189"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb203"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>  <span class="fu">relations</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/relations/man/predicates.html" class="external-link">relation_is_acyclic</a></span><span class="op">(</span><span class="va">rel</span><span class="op">)</span>,</span>
 <span>  <span class="fu">relations</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/relations/man/predicates.html" class="external-link">relation_is_antisymmetric</a></span><span class="op">(</span><span class="va">rel</span><span class="op">)</span>,</span>
@@ -1516,7 +1800,7 @@ package for more <span class="citation">[11]</span>).</p>
 <p>Note that the columns and rows are sorted by their names in
 <code>relation_domain(rel)</code>, hence why each name is preceded by
 the ordering number.</p>
-<div class="sourceCode" id="cb191"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb205"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># a power relation where coalitions {1} and {2} are indifferent</span></span>
 <span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"12 &gt; (1 ~ 2)"</span><span class="op">)</span></span>
 <span><span class="va">rel</span> <span class="op">&lt;-</span> <span class="fu">relations</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/relations/man/relation.html" class="external-link">as.relation</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span>
@@ -1528,7 +1812,7 @@ the ordering number.</p>
 <span><span class="co">## 12  1 1 1</span></span>
 <span><span class="co">## ​1   0 1 1</span></span>
 <span><span class="co">## ​​2   0 1 1</span></span></code></pre>
-<div class="sourceCode" id="cb193"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb207"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># FALSE</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>  <span class="fu">relations</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/relations/man/predicates.html" class="external-link">relation_is_acyclic</a></span><span class="op">(</span><span class="va">rel</span><span class="op">)</span>,</span>
@@ -1550,7 +1834,7 @@ the end of the power relation.</p>
 <p>Properly handling power relations and calculating social ranking
 solutions with cycles is somewhat ill-defined, hence a warning message
 is shown as soon as one is created.</p>
-<div class="sourceCode" id="cb195"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb209"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"12 &gt; 2 &gt; (1 ~ 2) &gt; 12"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Warning in createLookupTables(equivalenceClasses): Found 2 duplicate coalitions, listed below. This violates transitivity and can cause issues with certain ranking solutions. You may want to take a look at socialranking::transitiveClosure().</span></span>
 <span><span class="co">##     - {2}</span></span>
@@ -1561,20 +1845,20 @@ coalitions <span class="math inline">\(x, y, z \in 2^N\)</span>, if
 <span class="math inline">\(xRy\)</span> and <span class="math inline">\(yRz\)</span>, then <span class="math inline">\(xRz\)</span>. If we introduce cycles, we pretty
 much introduce symmetry. Assume we have the power relation <span class="math inline">\(x \succ y \succ x\)</span>. Then, even though
 <span class="math inline">\(xRy\)</span> and <span class="math inline">\(yRx\)</span> are defined as the asymmetric part of
-the power relation <span class="math inline">\(\succeq\)</span>,
+the power relation <span class="math inline">\(\succsim\)</span>,
 together they form the symmetric power relation <span class="math inline">\(x \sim y\)</span>.</p>
 <p><code>transitiveClosure(pr)</code> is a function that turns a power
 relation with cycles into one without one. In the process of removing
 duplicate coalitions, it turns all asymmectric relations within a cycle
 into symmetric relations.</p>
-<div class="sourceCode" id="cb198"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb212"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/warning.html" class="external-link">suppressWarnings</a></span><span class="op">(</span><span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">pr</span></span></code></pre></div>
 <pre><code><span><span class="co">## 1 &gt; 2 &gt; 1</span></span></code></pre>
-<div class="sourceCode" id="cb200"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb214"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/transitiveClosure.html">transitiveClosure</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## (1 ~ 2)</span></span></code></pre>
-<div class="sourceCode" id="cb202"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb216"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># two cycles, (1&gt;3&gt;1) and (2&gt;23&gt;2)</span></span>
 <span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/warning.html" class="external-link">suppressWarnings</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"1 &gt; 3 &gt; 1 &gt; 2 &gt; 23 &gt; 2"</span><span class="op">)</span></span>
@@ -1582,7 +1866,7 @@ into symmetric relations.</p>
 <span></span>
 <span><span class="fu"><a href="../reference/transitiveClosure.html">transitiveClosure</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## (1 ~ 3) &gt; (2 ~ 23)</span></span></code></pre>
-<div class="sourceCode" id="cb204"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb218"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># overlapping cycles</span></span>
 <span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/warning.html" class="external-link">suppressWarnings</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"c &gt; ac &gt; b &gt; ac &gt; (a ~ b) &gt; abc"</span><span class="op">)</span></span>
@@ -1645,29 +1929,34 @@ international joint conference on artificial intelligence,
 <span>IJCAI-20</span>. International Joint Conferences on Artificial
 Intelligence Organization; 2020. p. 17–23. doi:<a href="https://doi.org/10.24963/ijcai.2020/3" class="external-link">10.24963/ijcai.2020/3</a>.
 </div>
+<div id="ref-beal2022lexicographic" class="csl-entry">
+11. Béal S, Rémila E, Solal P. Lexicographic solutions for coalitional
+rankings based on individual and collective performances. Journal of
+Mathematical Economics. 2022;102:102738.
+</div>
 <div id="ref-relationsPackage" class="csl-entry">
-11. Meyer D, Hornik K. Relations: Data structures and algorithms for
+12. Meyer D, Hornik K. Relations: Data structures and algorithms for
 relations. 2022. <a href="https://CRAN.R-project.org/package=relations" class="external-link">https://CRAN.R-project.org/package=relations</a>.
 </div>
 <div id="ref-2015Cumulative" class="csl-entry">
-12. Moretti S. An axiomatic approach to social ranking under coalitional
+13. Moretti S. An axiomatic approach to social ranking under coalitional
 power relations. Homo Oeconomicus. 2015;32:183–208.
 </div>
 <div id="ref-2021AntiLexcel" class="csl-entry">
-13. Serramia M, López-Sánchez M, Moretti S, Rodríguez-Aguilar JA. On the
+14. Serramia M, López-Sánchez M, Moretti S, Rodríguez-Aguilar JA. On the
 dominant set selection problem and its application to value alignment.
 Autonomous Agents and Multi-Agent Systems. 2021;35:1–38.
 </div>
 <div id="ref-1951Copeland" class="csl-entry">
-14. Copeland AH. A reasonable social welfare function. mimeo, 1951.
+15. Copeland AH. A reasonable social welfare function. mimeo, 1951.
 University of Michigan; 1951.
 </div>
 <div id="ref-1969Simpson" class="csl-entry">
-15. Simpson PB. On defining areas of voter choice: Professor tullock on
+16. Simpson PB. On defining areas of voter choice: Professor tullock on
 stable voting. The Quarterly Journal of Economics. 1969;83:478–90.
 </div>
 <div id="ref-1975Kramer" class="csl-entry">
-16. Kramer GH. A dynamical model of political equilibrium. Journal of
+17. Kramer GH. A dynamical model of political equilibrium. Journal of
 Economic Theory. 1975;16:310–34.
 </div>
 </div>
