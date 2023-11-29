@@ -12,3 +12,4 @@ docs
 CRAN-SUBMISSION
 *.csv
 *.xlsx
+vignettes/socialranking_pdf.log
