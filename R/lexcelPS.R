@@ -97,7 +97,7 @@
 #'
 #' @return Score function returns a list of type `LP*Scores` and length of `powerRelation$elements`
 #' (unless parameter `elements` is specified).
-#' Each index contains a matrix with `length(powerRelation$elements)` rows and a variable number of columns, depending on the location of the singleton coalition of that element (matrix can have 0 columns).
+#' Each index contains a matrix with `length(powerRelation$elements)` rows and a variable number of columns, depending on the equivalence class index containing the singleton coalition of that element (matrix can have 0 columns).
 #'
 #' @examples
 #' pr <- as.PowerRelation("(123 ~ 12 ~ 2) > (13 ~ 23) > (1 ~ 3 ~ {})")

@@ -8,20 +8,8 @@
 `>.L2Scores` <- function(a, b) {
   a <- a[[1]]
   b <- b[[1]]
-  if(ncol(a) == 0) {
-    return(FALSE)
-  }
-  diffs <- apply(a, 2, sum) - apply(b, 2, sum)
-  for(j in seq(ncol(a))) {
-    if(diffs[j] != 0) {
-      return(diffs[j] > 0)
-    }
-    i <- which(a[,j] != b[,j])[1]
-    if(!is.na(i)) {
-      return(a[i,j] > b[i,j])
-    }
-  }
-  return(FALSE)
+  i <- which(a != b)
+  length(i) > 0 && a[i[1]] > b[i[1]]
 }
 
 #' @export
@@ -101,6 +89,13 @@ is.na.L2Scores <- function(x) FALSE
 #' Note that, if the column was identical for \eqn{3}{3} and \eqn{4}{4}, we would go to the next column and repeat the process.
 #' Elements are only then considered indifferent from each other, if the entire matrix is identical between the two.
 #'
+#' @section Alterations:
+#'
+#' The matrices as described above and in \insertRef{beal2022lexicographic}{socialranking} can be investigated with the [`L1Scores()`] function.
+#'
+#' For less complexity, another row is prepended to the matrix showing the sum of each column.
+#' Through this, a simple \eqn{L^{(1)}}{L^(1)} comparison can be applied.
+#'
 #' @section Aliases:
 #'
 #' For better discoverability, `lexcel2Scores()` and `lexcel2Ranking()` serve as aliases for `L2Scores()` and `L2Ranking()`, respectively.
@@ -115,8 +110,7 @@ is.na.L2Scores <- function(x) FALSE
 #'
 #' @return Score function returns a list of type `L2Scores` and length of `powerRelation$elements`
 #' (unless parameter `elements` is specified).
-#' Each index contains a vector of length `powerRelation$eqs`, the number of
-#' times the given element appears in each equivalence class.
+#' Each index contains a matrix with `length(powerRelation$eqs)` columns and `1 + length(powerRelation$elements)` rows.
 #'
 #' @examples
 #' pr <- as.PowerRelation("123 ~ 12 ~ 13 ~ 14 ~ 2 ~ 4")
@@ -142,6 +136,7 @@ L2Scores <- function(powerRelation, elements = powerRelation$elements) {
   # --- end checks --- #
 
   l <- L1Scores(powerRelation, elements)
+  l <- lapply(l, function(m) rbind(apply(m, 2, sum), m))
   class(l) <- 'L2Scores'
   return(l)
 }

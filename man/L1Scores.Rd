@@ -42,7 +42,7 @@ and \eqn{\Sigma_1 \succ \Sigma_2 \succ \dots \succ \Sigma_m}{E_1 > E_2 > ... > E
 For an element \eqn{i \in N}{i in N}, construct a matrix \eqn{M^\succsim_i}{M^(>=)_i} with \eqn{m}{m} columns and \eqn{|N|}{|N|} rows.
 Whereas each column \eqn{q}{q} represents an equivalence class, each row \eqn{p}{p} corresponds to the coalition size.
 
-\deqn{(M^\succsim_i)_{p,q} = |\lbrace S \in \Sigma_q: |S| = p\rbrace|}{(M^(>=)_i)_pq = |\{S in E_q: |S| = p\}}
+\deqn{(M^\succsim_i)_{p,q} = |\lbrace S \in \Sigma_q: |S| = p \text{ and } i \in S\rbrace|}{(M^(>=)_i)_pq = |\{S in E_q: |S| = p and i in S\}}
 
 The \eqn{L^{(1)}}{L^(1)} rewards elements that appear in higher ranking coalitions as well as in smaller coalitions.
 When comparing two matrices for a power relation, if \eqn{M^\succsim_i >_{L^{(1)}} M^\succsim_j}{M^(>=)_i > M^(>=)_j (the ^(>=) will be omitted to improve readability)},

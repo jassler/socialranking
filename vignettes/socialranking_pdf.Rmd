@@ -122,7 +122,7 @@ refDef <- function(def) {
 
 # Introduction
 
-Innn the literature of cooperative games, the notion of *power index* [@shapley1954method; @1964Banzhaf; @holler2013power] has been widely studied to analyze the "influence" of individuals   taking into account  their ability   to force a decision within groups or coalitions. In practical situations, however, the information concerning the strength of coalitions  is hardly quantifiable. So, any attempt to numerically represent  the influence of groups and individuals clashes with the complex and multi-attribute nature of the problem and it seems more realistic to represent collective decision-making mechanisms using an ordinal coalitional framework based on two main ingredients: a binary relation over groups or coalitions and a ranking over the individuals.
+In the literature of cooperative games, the notion of *power index* [@shapley1954method; @1964Banzhaf; @holler2013power] has been widely studied to analyze the "influence" of individuals   taking into account  their ability   to force a decision within groups or coalitions. In practical situations, however, the information concerning the strength of coalitions  is hardly quantifiable. So, any attempt to numerically represent  the influence of groups and individuals clashes with the complex and multi-attribute nature of the problem and it seems more realistic to represent collective decision-making mechanisms using an ordinal coalitional framework based on two main ingredients: a binary relation over groups or coalitions and a ranking over the individuals.
 
 The main objective of the package `socialranking` is to provide answers for  the general problem of how to compare the elements of a finite set $N$ given a ranking over the elements of its power-set (the set of all possible subsets of $N$). To do this, the package `socialranking` implements a portfolio of solutions from the recent literature on *social rankings* [@2017axiomaticAndAlgorithmicPerspectives; @2019OrdinalBanzhaf; @2018CPMajority; @2018CPMajoritySims; @2019PreferenceRelation; @2021Lexcel; @2021Manipulability; @beal2022lexicographic].
 
@@ -205,17 +205,13 @@ For two elements $x, y \in X$, $xRy$ refers to their relation, more formally it 
 
 A *preorder* is defined as a reflexive and transitive relation. If it is total, it is called a *total preorder*. Additionally if it is antisymmetric, it is called a *linear order*.
 
-Let $N = \{1, 2, \dots, n\}$ be a finite set of *elements*, sometimes also called *players*. For some $p \in \{1, \ldots, 2^n\}$, let $\mathcal{P} = \{S_1, S_2, \dots, S_{p}\}$ be a set of *coalitions* such that $S_i \subseteq N$ for all $i \in \{1, \ldots, p\}$.  Thus $\mathcal{P} \subseteq 2^N$, where $2^N$ denotes the power set of $N$, the set of all subsets or coalitions of $N$,
-
-$$
-S \in 2^N \quad \Leftrightarrow \quad S \subseteq N.
-$$
+Let $N = \{1, 2, \dots, n\}$ be a finite set of *elements*, sometimes also called *players*. For some $p \in \{1, \ldots, 2^n\}$, let $\mathcal{P} = \{S_1, S_2, \dots, S_{p}\}$ be a set of *coalitions* such that $S_i \subseteq N$ for all $i \in \{1, \ldots, p\}$.  Thus $\mathcal{P} \subseteq 2^N$, where $2^N$ denotes the power set of $N$, the set of all subsets or coalitions of $N$.
 
 $\mathcal{T}(N)$ denotes the set of all total preorders on $N$, $\mathcal{T}(\mathcal{P})$ the set of all total preorders on $\mathcal{P}$. A single total preorder $\succsim \in \mathcal{T}(\mathcal{P})$ is said a *power relation*.
 
 In a given power relation $\succsim \in \mathcal{T}(\mathcal{P})$ on $\mathcal{P} \subseteq 2^N$, its symmetric part is denoted by $\sim$ (i.e., $S \sim T$ if $S \succsim T$ and $T \succsim S$), whereas its asymmetric part is denoted by $\succ$ (i.e., $S \succ T$ if $S \succsim T$ and not $T \succsim S$). In other terms, for $S \sim T$ we say that $S$ is *indifferent* to $T$, whereas for $S \succ T$ we say that $S$ is *strictly better* than $T$.
 
-Lastly for a given power relation in the form of $S_1 \succsim S_2 \succsim \ldots \succsim S_m$, coalitions that are indifferent to one another can be grouped into *equivalence classes* $\sum_i$ such that we get the *quotient order* $\sum_1 \succ \sum_2 \succ \ldots \succ \sum_m$.
+Lastly, for a given power relation in the form of $S_1 \succsim S_2 \succsim \ldots \succsim S_m$, coalitions that are indifferent to one another can be grouped into *equivalence classes* $\sum_i$ such that we get the *quotient order* $\sum_1 \succ \sum_2 \succ \ldots \succ \sum_m$.
 
 :::{.example data-latex="" .theorem text="`r exampleCounter("ex:1")`" #ex:1}
 \label{ex:1}
@@ -518,12 +514,12 @@ In section `r refId("ch:srsobj", "[3.1](ID)")` we show how a general `SocialRank
 
 :::{.example data-latex="" .theorem text="`r exampleCounter("ex:socialrankings")`" #ex:socialrankings}
 \label{ex:socialrankings}
-Let $\{a,b\} \succ (\{a,c\} \sim \{b,c\}) \succ (\{a\} \sim \{c\}) > \emptyset \succ \{b\}$ be a power ranking. Using the following social ranking solutions, we get:
+Let $\{a,b\} \succ (\{a,c\} \sim \{b,c\}) \succ (\{a\} \sim \{c\}) > (\{a,b,c\} \sim \emptyset) \succ \{b\}$ be a power ranking. Using the following social ranking solutions, we get:
 
-* `a > b > c` for `lexcelRanking`
-* `a > c > b` for `dualLexcelRanking`
+* `a > b > c` for `lexcelRanking`, `L1Ranking` and `L2Ranking`
+* `a > c > b` for `dualLexcelRanking`, `ordinalBanzhafRanking` and `LPSRanking`
 * `a > b ~ c` for `copelandRanking` and `kramerSimpsonRanking`
-* `a ~ c > b` for `ordinalBanzhafRanking`
+* `a ~ c > b` for `ordinalBanzhafRanking` and `LPRanking`
 :::
 
 ## Creating `SocialRanking` objects\label{ch:srsobj}
@@ -820,7 +816,9 @@ kramerSimpsonScores(pr)
 kramerSimpsonRanking(pr)
 ```
 
-### Lexicographical Excellence Solution {#ch:lexcel}
+### Lexcel and Dual Lexcel {#ch:lexcel}
+
+#### Lexicographical Excellence Solution {-}
 
 The idea behind the lexicographical excellence solution (Lexcel) is to reward elements appearing more frequently in higher ranked equivalence classes.
 
@@ -874,11 +872,11 @@ paste0(names(cumulScores), ": ", cumulScores, collapse = ', ')
 ```
 
 
-### Dual Lexicographical Excellence Solution
+#### Dual Lexicographical Excellence Solution {-}
 
-Similar to the Lexcel ranking, the Dual Lexcel also uses the Lexcel score vectors from definition `r refDef("def:lexcel")` to establish a ranking. However, instead of rewarding higher frequencies in high ranking coalitions, it punishes higher frequencies in lower ranking coalitions, or, it punishes mediocrity[@2021AntiLexcel].
+Similar to the Lexcel ranking, the Dual Lexcel also uses the Lexcel score vectors from definition `r refDef("def:lexcel")` to establish a ranking. However, instead of rewarding higher frequencies in high ranking coalitions, it punishes players that appear more frequently in lower ranking equivalence classes. In a more interpreted sense, it punishes mediocrity.
 
-Take the values $i_k$ for $k \in \{1, \dots, m\}$ and the Lexcel score vector $\score{Lex}(i)$ from section `r refId("ch:lexcel", "[Lexicographical Excellence Solution](#ch:lexcel)")`. Consider the dual lexicographical order $\geq_\textrm{DualLex}$ among vectors $\mathbf{i}$ and $\mathbf{j}$: $\mathbf{i} \geq_\textrm{DualLex} \mathbf{j}$ if either $\mathbf{i} = \mathbf{j}$ or there exists $t: i_t < j_t$ and $i_r = j_r, r\in\{t+1, \dots, m\}$.
+Take the values $i_k$ for $k \in \{1, \dots, m\}$ and the Lexcel score vector $\score{Lex}(i)$ from the section above. Consider the dual lexicographical order $\geq_\textrm{DualLex}$ among vectors $\mathbf{i}$ and $\mathbf{j}$: $\mathbf{i} \geq_\textrm{DualLex} \mathbf{j}$ if either $\mathbf{i} = \mathbf{j}$ or there exists $t: i_t < j_t$ and $i_r = j_r, r\in\{t+1, \dots, m\}$.
 
 ::: {.definition data-latex="" text="`r definitionCounter()`" .theorem}
 (Dual Lexicographical-Excellence relation [@2021AntiLexcel]) Let $\succsim \in \mathcal{T}(\mathcal{P})$. The *Dual Lexicographic-Excellence* relation is the binary relation $\rel{DualLex} \subseteq N \times N$ such that for all $i,j \in N$:
@@ -913,6 +911,134 @@ lexcelRanking(pr)
 dualLexcelRanking(pr)
 ```
 
+### $L^{(1)}$, $L^{(2)}$, $L^p$, $L^{p^*}$
+
+The remaining social ranking solutions are an extension of the lexcel solutions from the previous section.
+While they all rank individuals using a lexicographical approach, they all not only consider the equivalence classes, but also the size of the coalitions an element appears in.
+In answering the question of what player has more influence in a group than others, we may want to attribute a higher value to smaller coalitions.
+
+For a given coalitional ranking $\succsim$ and its associated quotient order $\Sigma_1 \succ \dots \succ \Sigma_m$, $\score{Lex}(i)$ produced a vector of length $m$ with each index signifying the number of times $i$ appears in each equivalence class. This is now further extended to a function
+
+$$M^\succsim_i = \score{L}(i) \in \mathbb{N}^{|N| \times m}$$ 
+
+that produces a matrix. Each column $q$ corresponds to an equivalence class, each row $p$ to a coalition size. The values are then defined as
+
+$$(M^\succsim_i)_{p,q} = |\lbrace S \in \Sigma_q: |S| = p \text{ and } i \in S\rbrace|.$$
+
+For a ranking such as $(\{1, 2\} \sim \{1\} \sim \{2, 3\}) \succ N \succ \varnothing \succ (\{1, 3\} \sim \{2\} \sim \{3\})$ this would give use the following three matrices.
+
+$$M^\succsim_1 = \begin{bmatrix}
+1 & 0 & 0 & 0\\
+1 & 0 & 0 & 1\\
+0 & 1 & 0 & 0
+\end{bmatrix} M^\succsim_2 = \begin{bmatrix}
+0 & 0 & 0 & 1\\
+2 & 0 & 0 & 0\\
+0 & 1 & 0 & 0
+\end{bmatrix} M^\succsim_3 = \begin{bmatrix}
+0 & 0 & 0 & 1\\
+1 & 0 & 0 & 1\\
+0 & 1 & 0 & 0
+\end{bmatrix}$$
+
+These matrices can be created with the `L1Scores()` function.
+
+```{r}
+pr <- as.PowerRelation('(12 ~ 1 ~ 23) > 123 > {} > (13 ~ 2 ~ 3)')
+L1Scores(pr)
+```
+
+Comparing these matrices builds the foundation the the $L^{(1)}$, $L^{(2)}$, $L^p$ and $L^{p^*}$ solutions.
+
+#### $L^{(1)}$ {-}
+
+::: {.definition data-latex="" text="`r definitionCounter()`" .theorem}
+($L^{(1)}$ solution [@2021Lexcel]) For $i, j \in N$, the $L^{(1)}$ solution ranks $i$ above $j$ if there exists a $p^0 \in \{1, \dots, n\}$ and $q^0 \in \{1, \dots, m\}$ such that the following conditions hold:
+
+1. $(M^\succsim_i)_{p,q\hphantom{^0}} = (M^\succsim_j)_{p,q\hphantom{^0}}$ for all $1 \leq p \leq n$ and $1 \leq q < q^0$,
+2. $(M^\succsim_i)_{p,q^0} = (M^\succsim_j)_{p,q^0}$ for all $1 \leq p < p^0$,
+3. $(M^\succsim_i)_{p^0,q^0} > (M^\succsim_j)_{p^0,q^0}$
+:::
+
+Put into simple terms, when comparing two elements $i$ and $j$ with their corresponding matrices, we first compare the first column, top to bottom. The first row in which the value for one is higher than the other determines their relation. If both their columns are the same, we move forward to the next column.
+
+In the example above, the lexcel determines that `1 ~ 2`. However, in their matrices, 1 has a higher value in the first row of the first column. This implies that $L^{(1)}$ prefers `1 > 2` simply because the singleton coalition $\{1\}$ appears in the first equivalence class, whereas $\{2\}$ does not.
+
+```{r}
+L1Ranking(pr)
+```
+
+#### $L^{(2)}$ {-}
+
+Compared to the lexcel, $L^{(1)}$ could be seen as a little too strict in enforcing a relation based on a singular coalition while discarding all others in the same equivalence class.
+Take for instance $(\{1\} \sim \{2, 3\} \sim \{2, 4\} \sim \{2, 3, 4\}) \succ \dots$. Even though $2$ seems to have a lot more possibilities to cooperate, $L^{(1)}$ prefers $1$ simply because the coalition it appears in is smaller than all others.
+
+The $L^{(2)}$ tries to find a happy medium between these two solutions. For a given equivalence class, it first compares the total number of times each element appears (aka., the lexcel score). If both scores are the same, only then does it compare the corresponding column according to the $L^{(1)}$.
+
+::: {.definition data-latex="" text="`r definitionCounter()`" .theorem}
+($L^{(2)}$ solution [@2021Lexcel]) For $i, j \in N$, the $L^{(2)}$ solution ranks $i$ above $j$ if there exists a $p^0 \in \{1, \dots, n\}$ and $q^0 \in \{1, \dots, m\}$ such that the following conditions hold:
+
+1. $(M^\succsim_i)_{p,q\hphantom{^0}} = (M^\succsim_j)_{p,q\hphantom{^0}}$ for all $1 \leq p \leq n$ and $1 \leq q < q^0$,
+2. Either (2.1) $\score{Lex}(i)_{q^0} > \score{Lex}(j)_{q^0}$, or (2.2) $(M^\succsim_i)_{p,q^0} = (M^\succsim_j)_{p,q^0}$ for all $1 \leq p < p^0$ and $(M^\succsim_i)_{p^0,q^0} > (M^\succsim_j)_{p^0,q^0}$
+:::
+
+Note again that $\score{Lex}(i)_{q^0} = \sum_{p=1}^{|N|} (M^\succsim_i)_{p,q^0}$.
+To make finding the sum of each column easier, these values are added as an extra row above.
+This also conveniently allows us to use the traditional $L^{(1)}$ comparison on these matrices.
+
+The solution of $L^{(2)}$ will always coincide either with the lexcel or with the $L^{(1)}$ solution. In the example of the beginning of the section, in comparing $1$ against $2$, the relation for $L^{(2)}$ coincides with $L^{(1)}$: the sum of the first column in $M^\succsim_1$ and $M^\succsim_2$ equal both to $2$, inducing a row-by-row comparison, same as with $L^{(1)}$. In the latter example in this subsection, the sum of the first column vectors of $1$ and $2$ are vastly different, causing $L^{(2)}$ to coincide with the lexcel solution.
+
+```{r}
+L2Ranking(pr)
+pr2 <- as.PowerRelation('1 ~ 23 ~ 24 ~ 234')
+pr2 <- appendMissingCoalitions(pr2)
+L1Ranking(pr)
+L2Ranking(pr)
+```
+
+#### $L^p$ {-}
+
+$L^p$ and $L^{p^*}$ differ drastically in that they compare the matrices on a row-by-row basis rather than column-by-column. This puts a much higher value on smaller coalitions, regardless of which equivalence class they are placed in.
+
+Both of these solutions first consider the singleton coalition. For two given elements $i$ and $j$, if $\{i\} \succ \{j\}$, then the relation according to the $L^p$ and $L^{p^*}$ is already determined. If $\{i\} ~ \{j\}$, every subsequent comparison is done on the number of coalitions that rank strictly higher. This may be practical in situation where we want individuals to work in small groups and disregard any coalitions where they'd be better off alone.
+
+::: {.definition data-latex="" text="`r definitionCounter()`" .theorem}
+($L^p$ solution [@beal2022lexicographic]) For $i, j \in N$, the social ranking solution $L^p$ ranks $i$ above $j$ if one of the following conditions hold:
+
+1. $\lbrace i \rbrace \succ \lbrace j \rbrace$;
+2. $\lbrace i \rbrace, \lbrace j \rbrace \in \Sigma_k$ and there exists a row $p^0 \in \lbrace 2, \dots, |N|\rbrace$ such that:
+$$\sum_{q < k} (M^\succsim_i)_{p,q} = \sum_{q < k} (M^\succsim_j)_{p,q}\quad \forall p < p^0,\text{ and}$$
+$$\sum_{q < k} (M^\succsim_i)_{p^0,q} > \sum_{q < k} (M^\succsim_j)_{p^0,q}.$$
+:::
+
+The $L^p$ looks at the total number of times an element has the chance to form a better coalition than its singleton. Since a lot of the information from the matrix of an element is therefore redundant, `LPScores()` discards much of it to save space. The first value then corresponds to the equivalence class index that the singleton appears in, each subsequent value the number of times it is able to form coalitions of size 2, 3, and so on.
+
+```{r}
+LPScores(pr)
+LPRanking(pr)
+```
+
+#### $L^{p^*}$ {-}
+
+Only taking the sum of all coalitions of a certain size might not be informative enough. Similarly to how $L^{(1)}$ builds a more granual comparison between two elements by incorporating the coalition size, $L^{p^*}$ can be seen as a more granual version of the $L^p$ by incorporating the specific equivalence class the element appears in.
+
+::: {.definition data-latex="" text="`r definitionCounter()`" .theorem}
+($L^{p^*}$ solution [@beal2022lexicographic]) For $i, j \in N$, the social ranking solution $L^{p^*}$ ranks $i$ above $j$ if one of the following conditions hold:
+
+1. $\lbrace i \rbrace \succ \lbrace j \rbrace$;
+2. $\lbrace i \rbrace, \lbrace j \rbrace \in \Sigma_k$ and there exists a row $p^0 \in \lbrace 2, \dots, |N|\rbrace$ and column $q^0 \in \lbrace 1, \dots, k-1\rbrace$ such that:
+$$(M^\succsim_i)_{p,q} = (M^\succsim_j)_{p,q}\quad \forall p < p^0, q < k,$$
+$$(M^\succsim_i)_{p^0,q} = (M^\succsim_j)_{p^0,q}\quad \forall q < q^0,\text{ and}$$
+$$(M^\succsim_i)_{p^0,q^0} > (M^\succsim_j)_{p^0,q^0}.$$
+:::
+
+The score matrices of `LPSScores()` look similar to `L1Scores()` then, the only difference being the number of columns; as any equivalence class with $\{i\} \in \Sigma_k$ and $\Sigma_k \succ \Sigma_l$ does not influence the final ranking, these columns are discarded in the final matrix.
+
+```{r}
+L1Scores(pr)
+LPSScores(pr)
+LPSRanking(pr)
+```
 
 # Relations
 

@@ -38,7 +38,7 @@ and \eqn{\Sigma_1 \succ \Sigma_2 \succ \dots \succ \Sigma_m}{E_1 > E_2 > ... > E
 For an element \eqn{i \in N}{i in N}, construct a matrix \eqn{M^\succsim_i}{M^(>=)_i} with \eqn{m}{m} columns and \eqn{|N|}{|N|} rows.
 Whereas each column \eqn{q}{q} represents an equivalence class, each row \eqn{p}{p} corresponds to the coalition size.
 
-\deqn{(M^\succsim_i)_{p,q} = |\lbrace S \in \Sigma_q: |S| = p\rbrace|}{(M^(>=)_i)_pq = |\{S in E_q: |S| = p\}}
+\deqn{(M^\succsim_i)_{p,q} = |\lbrace S \in \Sigma_q: |S| = p \text{ and } i \in S\rbrace|}{(M^(>=)_i)_pq = |\{S in E_q: |S| = p and i in S\}}
 
 For \eqn{i, j \in N}{i, j in N}, the social ranking solution \eqn{L^p}{L^p} then ranks \eqn{i} strictly above \eqn{j} if one of the following conditions hold:
 \enumerate{

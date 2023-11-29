@@ -24,8 +24,7 @@ By default, the scores of all elements in \code{powerRelation$elements} are cons
 \value{
 Score function returns a list of type \code{L2Scores} and length of \code{powerRelation$elements}
 (unless parameter \code{elements} is specified).
-Each index contains a vector of length \code{powerRelation$eqs}, the number of
-times the given element appears in each equivalence class.
+Each index contains a matrix with \code{length(powerRelation$eqs)} columns and \code{1 + length(powerRelation$elements)} rows.
 
 Ranking function returns corresponding \code{\link{SocialRanking}} object.
 }
@@ -39,7 +38,7 @@ and \eqn{\Sigma_1 \succ \Sigma_2 \succ \dots \succ \Sigma_m}{E_1 > E_2 > ... > E
 For an element \eqn{i \in N}{i in N}, construct a matrix \eqn{M^\succsim_i}{M^(>=)_i} with \eqn{m}{m} columns and \eqn{|N|}{|N|} rows.
 Whereas each column \eqn{q}{q} represents an equivalence class, each row \eqn{p}{p} corresponds to the coalition size.
 
-\deqn{(M^\succsim_i)_{p,q} = |\lbrace S \in \Sigma_q: |S| = p\rbrace|}{(M^(>=)_i)_pq = |\{S in E_q: |S| = p\}}
+\deqn{(M^\succsim_i)_{p,q} = |\lbrace S \in \Sigma_q: |S| = p \text{ and } i \in S\rbrace|}{(M^(>=)_i)_pq = |\{S in E_q: |S| = p and i in S\}}
 
 Given two elements \eqn{i, j \in N}{i, j in N}, \eqn{L^{(2)}}{L^(2)} then ranks
 \eqn{i}{i} \emph{strictly above} \eqn{j}{j} if there is some row
@@ -108,6 +107,15 @@ Here, since \eqn{(M^\succsim_4)_{1,1} > (M^\succsim_3)_{1,1}}, this gives an edg
 
 Note that, if the column was identical for \eqn{3}{3} and \eqn{4}{4}, we would go to the next column and repeat the process.
 Elements are only then considered indifferent from each other, if the entire matrix is identical between the two.
+}
+
+\section{Alterations}{
+
+
+The matrices as described above and in \insertRef{beal2022lexicographic}{socialranking} can be investigated with the \code{\link[=L1Scores]{L1Scores()}} function.
+
+For less complexity, another row is prepended to the matrix showing the sum of each column.
+Through this, a simple \eqn{L^{(1)}}{L^(1)} comparison can be applied.
 }
 
 \section{Aliases}{
