@@ -79,6 +79,11 @@
 #' gen <- generateNextPartition(gen)
 #' gen <- generateNextPartition(gen)
 #' gen()
+#' # ab > (a ~ b)
+#'
+#' gen <- generateNextPartition(gen)
+#' gen()
+#' # ab > a > b
 #'
 #' @export
 powerRelationGenerator <- function(coalitions, startWithLinearOrder = FALSE) {
@@ -86,9 +91,6 @@ powerRelationGenerator <- function(coalitions, startWithLinearOrder = FALSE) {
 
   if(length(coalitions) < 2) {
     stop('At least two coalitions must be given.')
-
-  } else if(length(coalitions) > 20) {
-    warning('More than 20 coalitions were given. partitions::compositions() is called to generate all partitions beforehand. This may dampen or exceed system resources.')
   }
 
   # created once, used every time upon generating a new PowerRelation object
@@ -101,19 +103,29 @@ powerRelationGenerator <- function(coalitions, startWithLinearOrder = FALSE) {
   # create warning about duplicate coalitions
   PowerRelation(list(coalitions))
 
-  compositions <- partitions::compositions(length(coalitions))
-  compositions <- compositions[,apply(compositions, 2, function(x) {
-    zeros <- which(x == 0)
-    l <- length(zeros)
-    l == 0 || l == (zeros[l] - zeros[1] + 1)
-  })]
-  r <- nrow(compositions)
-  compositions <- compositions[,order(apply(compositions, 2, function(x)
-    sum(sapply(seq_along(x), function(i) x[i] * (r + 1 - i)))
-  ), decreasing = !startWithLinearOrder)]
+  if(length(coalitions) <= 16) {
+    compositions <- partitions::compositions(length(coalitions))
+    compositions <- compositions[,apply(compositions, 2, function(x) {
+      zeros <- which(x == 0)
+      l <- length(zeros)
+      l == 0 || l == (zeros[l] - zeros[1] + 1)
+    })]
+    r <- nrow(compositions)
+    compositions <- compositions[,order(apply(compositions, 2, function(x)
+      sum(sapply(seq_along(x), function(i) x[i] * (r + 1 - i)))
+    ), decreasing = !startWithLinearOrder)]
 
-  compI <- 1
-  part <- Filter(function(x) x != 0, compositions[,1])
+    compI <- 1
+    part <- Filter(function(x) x != 0, compositions[,1])
+
+  } else {
+    compositions <- partitions::firstcomposition(length(coalitions), include.zero = FALSE)
+    compI <- -1
+    part <- Filter(function(x) x != 0, compositions)
+    warning('More than 16 coalitions provided. To save on memory, partitions are generated sequentially rather than all at once (as in, we call partitions::firstcomposition() rather than partisions::compositions()). Because of this, the startWithLinearOrder parameter will be ignored.')
+
+  }
+
   perms <- partitions::multinomial(part)
   partCum <- c(0, cumsum(part))
   permsI <- 0
@@ -121,13 +133,25 @@ powerRelationGenerator <- function(coalitions, startWithLinearOrder = FALSE) {
   done <- FALSE
 
   nextPartition <- function() {
-    if(compI >= ncol(compositions)) {
-      done <<- TRUE
-      return()
+    if(compI == -1) {
+      if(partitions::islastcomposition(compositions, restricted = FALSE, include.zero = FALSE)) {
+        done <<- TRUE
+        return()
+      }
+
+      compositions <<- partitions::nextcomposition(compositions, restricted = FALSE, include.zero = FALSE)
+      part <<- compositions
+
+    } else {
+      if(compI >= ncol(compositions)) {
+        done <<- TRUE
+        return()
+      }
+
+      compI <<- compI + 1
+      part <<- Filter(function(x) x != 0, compositions[,compI])
     }
 
-    compI <<- compI + 1
-    part <<- Filter(function(x) x != 0, compositions[,compI])
     perms <<- partitions::multinomial(part)
     partCum <<- c(0, cumsum(part))
 
@@ -173,13 +197,14 @@ powerRelationGenerator <- function(coalitions, startWithLinearOrder = FALSE) {
   }
 }
 
-#' Next partition
+#' @rdname powerRelationGenerator
 #'
-#' Skip to the next partition of the generator.
 #'
-#' @param gen A generator object.
+#' @param gen A generator object returned by `powerRelationGenerator()`.
 #' @return A generator function.
 #' If the generator is already down to its last partition, it will throw an error.
+#'
+#' Use `generateNextPartition(gen)` to skip to the next partition of the generator.
 #'
 #' @family generator functions
 #'
@@ -214,5 +239,53 @@ powerRelationGenerator <- function(coalitions, startWithLinearOrder = FALSE) {
 generateNextPartition <- function(gen) {
   environment(gen)$nextPartition()
   gen
+}
+
+
+#' @rdname powerRelationGenerator
+#'
+#' @description
+#' Alternatively, use `generateRandomPowerRelation()` to create random power relations.
+#'
+#' @param linearOrder logical, if TRUE, only linear orders are generated.
+#'
+#' @note
+#'
+#' Due to its implementation, `randomPowerRelation()` does not create weak orders uniformly.
+#' I.e., it is much less likely to generate linear orders even though they have the proportionally highest representation
+#' in the set of all weak orders.
+#'
+#' @examples
+#'
+#' # create random power relation
+#' generateRandomPowerRelation(coalitions)
+#'
+#' # make sure it's monotonic, i.e., {1} > {1,2} cannot exist
+#' # because {1} is a subset of {1,2}
+#' generateRandomPowerRelation(coalitions, monotonic = TRUE)
+#'
+#' @export
+generateRandomPowerRelation <- function(coalitions, linearOrder = FALSE, monotonic = FALSE) {
+  comparators <- if(linearOrder) '>' else sample(c('>','~'), length(coalitions) - 1, replace = TRUE)
+
+  if(monotonic) {
+    pr <- generateRandomPowerRelation(coalitions, linearOrder = TRUE)
+    pr <- makePowerRelationMonotonic(pr)
+    return(as.PowerRelation(
+      unlist(pr$eqs, recursive = FALSE),
+      comparators = comparators
+    ))
+    # sapply(coalitions, function(X) sapply(coalitions, setdiff, x = X) |> sapply(length) |> unlist() |> length())
+  }
+
+  pr <- as.PowerRelation(
+    sample(coalitions),
+    comparators = comparators
+  )
+  eqs <- pr$eqs
+  els <- pr$elements
+  PowerRelation(lapply(eqs, function(x)
+    x[order(sapply(x, function(coal) length(els) * length(coal) + sum(match(coal, els))))]
+  ))
 }
 

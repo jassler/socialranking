@@ -32,7 +32,7 @@
 #' @importFrom Rdpack reprompt
 #' @importFrom relations as.relation
 #'
-#' @docType package
+#' @docType _PACKAGE
 #' @name socialrankingpackage
 #' @aliases socialranking-package
 NULL

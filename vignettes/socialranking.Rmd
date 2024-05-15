@@ -1003,8 +1003,8 @@ The solution of $L^{(2)}$ will always coincide either with the lexcel or with th
 L2Ranking(pr)
 pr2 <- as.PowerRelation('1 ~ 23 ~ 24 ~ 234')
 pr2 <- appendMissingCoalitions(pr2)
-L1Ranking(pr)
-L2Ranking(pr)
+L1Ranking(pr2)
+L2Ranking(pr2)
 ```
 
 #### $L^p$ {-}

@@ -83,9 +83,9 @@ ui <- fluidPage(
       h3('Special Ranking'),
       verbatimTextOutput('spec'),
       br(),
-      withMathJax('We define a social ranking function wherein \\(i \\succ_{F(T)} j \\quad \\Leftrightarrow \\quad \\begin{cases}
-                    V_1(i, T) \\succ_V V_1(j, T) &\\text{ and } V_2(i, T) \\succsim_V V_2(j, T)\\\\[5pt]
-                    V_1(i, T) \\succsim_V V_1(j, T) &\\text{ and } V_2(i, T) \\succ_V V_2(j, T)
+      withMathJax('We define a social ranking function wherein \\(i \\succ_{F(T)} j \\quad \\Leftarrow \\quad \\begin{cases}
+                    1.\\enspace V_k(i, T) \\succeq_V V_k(j, T) &\\forall k \\in \\{1, \\dots, |V|\\},\\text{ and}\\\\[5pt]
+                    2.\\enspace V_k(i, T) \\succ_V V_k(j, T) &\\text{for at least one } k \\in \\{1, \\dots, |V|\\}
                   \\end{cases}
                   \\)'),
       # h3('No Coincides'),
@@ -108,11 +108,13 @@ server <- function(input, output, session) {
 
     hasFaults <- FALSE
     ranking <- doRanking(m2, compare = function(a, b) {
-      if(a[1] > b[1] && a[2] >= b[2]) return(1)
-      if(a[1] >= b[1] && a[2] > b[2]) return(1)
-      if(b[1] > a[1] && b[2] >= a[2]) return(-1)
-      if(b[1] >= a[1] && b[2] > a[2]) return(-1)
-      if(a[1] == b[1] && a[2] == b[2]) return(0)
+      if(all(a >= b)) {
+        if(any(a > b)) return(1)
+        else return(0)
+      } else if(all(b >= a)) {
+        if(any(b > a)) return(-1)
+        else return(0)
+      }
       hasFaults <<- TRUE
       return(0)
     })
@@ -282,3 +284,25 @@ server <- function(input, output, session) {
 }
 
 shinyApp(ui, server)
+
+count <- 0
+ps <- createPowerset(1:4, FALSE)
+while(TRUE) {
+  pr <- randomPowerRelation(ps, linearOrder = TRUE)
+  r <- c(
+    cpMajorityComparisonScore(pr, 1, 2) |> sum(),
+    cpMajorityComparisonScore(pr, 2, 3) |> sum(),
+    cpMajorityComparisonScore(pr, 3, 1) |> sum()
+  )
+  if(all(r > 0) || all(r < 0))
+    print(pr)
+}
+
+checkCycle <- function(pr) {
+  r <- c(
+    cpMajorityComparisonScore(pr, 1, 2) |> sum(),
+    cpMajorityComparisonScore(pr, 2, 3) |> sum(),
+    cpMajorityComparisonScore(pr, 3, 1) |> sum()
+  )
+  return(all(r > 0) || all(r < 0))
+}
