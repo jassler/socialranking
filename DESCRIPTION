@@ -1,6 +1,6 @@
 Package: socialranking
 Title: Social Ranking Solutions for Power Relations on Coalitions
-Version: 1.1.0
+Version: 1.2.0
 Authors@R: c(
  person("Felix", "Fritz", email = "felix.fritz@dauphine.eu", role = c("aut", "cre")),
  person("Jochen", "Staudacher", role = c("aut", "cph", "ths"), email = "jochen.staudacher@hs-kempten.de"),
