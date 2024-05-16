@@ -76,9 +76,6 @@
     <loc>https://jassler.github.io/socialranking/reference/equivalenceClassIndex.html</loc>
   </url>
   <url>
-    <loc>https://jassler.github.io/socialranking/reference/generateNextPartition.html</loc>
-  </url>
-  <url>
     <loc>https://jassler.github.io/socialranking/reference/index.html</loc>
   </url>
   <url>
@@ -106,10 +103,10 @@
     <loc>https://jassler.github.io/socialranking/reference/powerRelationMatrix.html</loc>
   </url>
   <url>
-    <loc>https://jassler.github.io/socialranking/reference/socialranking.html</loc>
+    <loc>https://jassler.github.io/socialranking/reference/socialranking-package.html</loc>
   </url>
   <url>
-    <loc>https://jassler.github.io/socialranking/reference/socialrankingpackage.html</loc>
+    <loc>https://jassler.github.io/socialranking/reference/socialranking.html</loc>
   </url>
   <url>
     <loc>https://jassler.github.io/socialranking/reference/testRelation.html</loc>
