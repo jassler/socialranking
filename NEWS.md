@@ -3,7 +3,7 @@
 * Added `generateRandomPowerRelation()`
 * Added S3 class `DualLexcelScores`
 
-# socialranking 1.1.0
+# socialranking 1.1.0 (2023-11-29)
 
 * Added `L2Scores()` and `L2Ranking()`, along with aliases `lexcel2...()`
 * Added `LPScores()` and `LPRanking()`, along with aliases `lexcelP...()`
