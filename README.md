@@ -89,15 +89,18 @@ The functions used to analyze power relations can be grouped into
 comparison functions, score functions and ranking solutions. Ranking
 solutions produce a `SocialRankingSolution` object.
 
-| Comparison Functions       | Score Functions          | Ranking Solutions         |
-|----------------------------|--------------------------|---------------------------|
-| `dominates()`              |                          |                           |
-| `cumulativelyDominates()`  | `cumulativeScores()`     |                           |
-| `cpMajorityComparison()`^1 | `copelandScores()`       | `copelandRanking()`       |
-|                            | `kramerSimpsonScores()`  | `kramerSimpsonRanking()`  |
-|                            | `lexcelScores()`         | `lexcelRanking()`         |
-|                            |                          | `dualLexcelRanking()`     |
-|                            | `ordinalBanzhafScores()` | `ordinalBanzhafRanking()` |
+| Comparison Functions | Score Functions | Ranking Solutions |
+|----|----|----|
+| `dominates()` |  |  |
+| `cumulativelyDominates()` | `cumulativeScores()` |  |
+| `cpMajorityComparison()`^1 | `copelandScores()` | `copelandRanking()` |
+|  | `kramerSimpsonScores()` | `kramerSimpsonRanking()` |
+|  | `ordinalBanzhafScores()` | `ordinalBanzhafRanking()` |
+|  | `lexcelScores()` | `lexcelRanking()` |
+|  |  | `dualLexcelRanking()` |
+|  | `L1Scores()` | `L1Ranking()` |
+|  | `LPScores()` | `LPRanking()` |
+|  | `LPSScores()` | `LPSRanking()` |
 
 ^1 `cpMajorityComparisonScore()` is a faster alternative to
 `cpMajorityComparison()`, but it produces less data.

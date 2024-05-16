@@ -903,7 +903,7 @@ Take the values $i_k$ for $k \in \{1, \dots, m\}$ and the Lexcel score vector $\
 \end{equation}
 :::
 
-The S3 class `LexcelScores` does not account for Dual Lexcel comparisons. Instead `-rev(x)` is called on a Lexcel score vector `x` such that the resulting comparisons produces a Dual Lexcel ranking solution.
+The only difference between the two functions `lexcelScores()` and `dualLexcelScores()` is the S3 class attached to the list, the former being `LexcelScores` and the latter being `DualLexcelScores`.
 
 ```{r}
 pr <- as.PowerRelation("12 > (123 ~ 23 ~ 3) > (1 ~ 2) > 13")
@@ -915,8 +915,8 @@ lexScores['1'] > lexScores['3']
 
 # turn Lexcel score into Dual Lexcel score
 dualLexScores <- structure(
-  lapply(lexcelScores(pr), function(r) -rev(r)),
-  class = 'LexcelScores'
+  lexScores,
+  class = 'DualLexcelScores'
 )
 
 # now 1 scores lower than 3

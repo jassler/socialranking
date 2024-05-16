@@ -89,9 +89,12 @@ score functions and ranking solutions. Ranking solutions produce a `SocialRankin
 | `cumulativelyDominates()`  | `cumulativeScores()`     |                           |
 | `cpMajorityComparison()`^1 | `copelandScores()`       | `copelandRanking()`       |
 |                            | `kramerSimpsonScores()`  | `kramerSimpsonRanking()`  |
+|                            | `ordinalBanzhafScores()` | `ordinalBanzhafRanking()` |
 |                            | `lexcelScores()`         | `lexcelRanking()`         |
 |                            |                          | `dualLexcelRanking()`     |
-|                            | `ordinalBanzhafScores()` | `ordinalBanzhafRanking()` |
+|                            | `L1Scores()`             | `L1Ranking()`             |
+|                            | `LPScores()`             | `LPRanking()`             |
+|                            | `LPSScores()`            | `LPSRanking()`            |
 
 ^1 `cpMajorityComparisonScore()` is a faster alternative to `cpMajorityComparison()`, but it produces less data.
 
