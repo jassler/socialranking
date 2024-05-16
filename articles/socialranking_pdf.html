@@ -1382,10 +1382,11 @@ N\)</span>:</p>
 \text{Score}_\text{Lex}(j)
 \end{equation}\]</span></p>
 </div>
-<p>The S3 class <code>LexcelScores</code> does not account for Dual
-Lexcel comparisons. Instead <code>-rev(x)</code> is called on a Lexcel
-score vector <code>x</code> such that the resulting comparisons produces
-a Dual Lexcel ranking solution.</p>
+<p>The only difference between the two functions
+<code><a href="../reference/lexcelScores.html">lexcelScores()</a></code> and <code>dualLexcelScores()</code> is the
+S3 class attached to the list, the former being
+<code>LexcelScores</code> and the latter being
+<code>DualLexcelScores</code>.</p>
 <div class="sourceCode" id="cb183"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pr</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as.PowerRelation.html">as.PowerRelation</a></span><span class="op">(</span><span class="st">"12 &gt; (123 ~ 23 ~ 3) &gt; (1 ~ 2) &gt; 13"</span><span class="op">)</span></span>
 <span></span>
@@ -1397,8 +1398,8 @@ a Dual Lexcel ranking solution.</p>
 <div class="sourceCode" id="cb185"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># turn Lexcel score into Dual Lexcel score</span></span>
 <span><span class="va">dualLexScores</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/structure.html" class="external-link">structure</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="../reference/lexcelScores.html">lexcelScores</a></span><span class="op">(</span><span class="va">pr</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">r</span><span class="op">)</span> <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/rev.html" class="external-link">rev</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  class <span class="op">=</span> <span class="st">'LexcelScores'</span></span>
+<span>  <span class="va">lexScores</span>,</span>
+<span>  class <span class="op">=</span> <span class="st">'DualLexcelScores'</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># now 1 scores lower than 3</span></span>
