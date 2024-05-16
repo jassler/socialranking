@@ -79,3 +79,8 @@ test_that("Skip partition", {
   gen <- generateNextPartition(gen)
   expect_null(gen())
 })
+
+test_that("Random prs", {
+  pr <- generateRandomPowerRelation(list(c('a','b'),'a','b',c()))
+  expect_equal(pr$elements, c('a','b'))
+})

@@ -15,6 +15,25 @@
 #' @export
 is.na.LexcelScores <- function(x) FALSE
 
+
+#' @export
+`[.DualLexcelScores` <- function(x, i, ...) structure(unclass(x)[i], class = 'DualLexcelScores')
+
+#' @export
+`==.DualLexcelScores` <- function(a, b) {identical(a[[1]], b[[1]])}
+
+#' @export
+`>.DualLexcelScores` <- function(a, b) {
+  a <- a[[1]]
+  b <- b[[1]]
+  i <- which(a != b)
+  length(i) > 0 && a[i[length(i)]] < b[i[length(i)]]
+}
+
+#' @export
+is.na.DualLexcelScores <- function(x) FALSE
+
+
 #' Lexicographical Excellence
 #'
 #' Calculate the Lexicographical Excellence (or Lexcel) score.
@@ -147,7 +166,7 @@ lexcelRanking <- function(powerRelation) {
 #' @export
 dualLexcelRanking <- function(powerRelation) {
   doRanking(structure(
-    lapply(lexcelScores(powerRelation), function(r) -rev(r)),
-    class = 'LexcelScores'
+    lexcelScores(powerRelation),
+    class = 'DualLexcelScores'
   ))
 }

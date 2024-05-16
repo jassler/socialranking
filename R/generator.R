@@ -248,6 +248,7 @@ generateNextPartition <- function(gen) {
 #' Alternatively, use `generateRandomPowerRelation()` to create random power relations.
 #'
 #' @param linearOrder logical, if TRUE, only linear orders are generated.
+#' @param monotonic logical, if TRUE, only monotonic power relations are created (see [`makePowerRelationMonotonic()`]).
 #'
 #' @note
 #'

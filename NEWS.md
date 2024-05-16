@@ -1,3 +1,8 @@
+# socialranking 1.2.0
+
+* Added `generateRandomPowerRelation()`
+* Added S3 class `DualLexcelScores`
+
 # socialranking 1.1.0
 
 * Added `L2Scores()` and `L2Ranking()`, along with aliases `lexcel2...()`

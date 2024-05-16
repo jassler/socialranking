@@ -387,7 +387,7 @@ makePowerRelationMonotonic(as.PowerRelation("ab > c > {} > abc > a > b"))
 
 ## Creating power sets
 
-As the number of elements $n$ increases, the number of possible coalitions increases to $|2^N| = 2^n$. `createPowerset` is a convenient function that not only creates a power set $2^N$ which can be used to call `PowerRelation` or `as.PowerRelation`, but also formats the function call in such a way that makes it easy to rearrange the ordering of the coalitions.
+As the number of elements $n$ increases, the number of possible coalitions increases to $|2^N| = 2^n$. `createPowerset()` is a convenient function that not only creates a power set $2^N$ which can be used to call `PowerRelation` or `as.PowerRelation()`, but also formats the function call in such a way that makes it easy to rearrange the ordering of the coalitions.
 RStudio offers shortcuts such as Alt+Up or Alt+Down (Option+Up or Option+Down on MacOS) to move one or multiple lines of code up or down (see fig. `r refId("fig:alt", "[below](ID)")`).
 
 ```{r}
@@ -417,8 +417,25 @@ as.PowerRelation(createPowerset(letters[1:4]))
 
 ## Generating `PowerRelation` objects
 
-Given a list of coalitions, it is possible to loop through all possible permutations of power relations using `powerRelationGenerator()`.
-Calling `gen()` in the example below always produces a unique `PowerRelation` object.
+For the ease of experimentation, it is possible to have power relations created automatically given a list of coalitions. Either,
+
+* create random power relations using `generateRandomPowerRelation()`, or
+* generate a sequence of all possible power relations with `powerRelationGenerator()`.
+
+For the former, one may also specify if the generated power relation should be a linear order (as in, there are no `~` but only strict `>` relations) and whether or not the power relation should be monotonic (as in, $\{1\} \succ \{1,2\}$ is not monotonic because $\{1\} \subset \{1,2\}$).
+
+```{r}
+set.seed(1)
+coalitions <- createPowerset(1:3)
+generateRandomPowerRelation(coalitions)
+generateRandomPowerRelation(coalitions)
+
+generateRandomPowerRelation(coalitions, linearOrder = TRUE)
+generateRandomPowerRelation(coalitions, monotonic = TRUE)
+generateRandomPowerRelation(coalitions, linearOrder = TRUE, monotonic = TRUE)
+```
+
+For looping through all possible power relations, `powerRelationGenerator()` returns a generator function that, when called repeatedly, returns one unique `PowerRelation` object after the other.
 If all permutations have been exhausted, `NULL` is returned.
 
 ```{r}
@@ -924,7 +941,7 @@ dualLexcelRanking(pr)
 
 ### $L^{(1)}$, $L^{(2)}$, $L^p$, $L^{p^*}$
 
-The remaining social ranking solutions are an extension of the lexcel solutions from the previous section.
+The remaining social ranking solutions are a variation of the lexcel solutions from the previous section.
 While they all rank individuals using a lexicographical approach, they all not only consider the equivalence classes, but also the size of the coalitions an element appears in.
 In answering the question of what player has more influence in a group than others, we may want to attribute a higher value to smaller coalitions.
 
@@ -1057,9 +1074,9 @@ LPSRanking(pr)
 
 In our vignette we focused more on the intuitive aspects of power relations and social ranking solutions. To reiterate, a power relation is a total preorder, or a reflexive and transitive relation $\succsim \in \mathcal{P} \times \mathcal{P}$, where $\sim$ denotes the symmetric part and $\succ$ its asymmetric part.
 
-A power relation can be viewed as an incidence matrix $(b_{ij}) = B \in \{0,1\}^{|\mathcal{P}| \times |\mathcal{P}|}$. Given two coalitions $i, j \in \mathcal{P}$, if $iRj$ then $b_{ij} = 1$, else $0$.
+A power relation can be represented as an incidence matrix $(b_{ij}) = B \in \{0,1\}^{|\mathcal{P}| \times |\mathcal{P}|}$. Given two coalitions $i, j \in \mathcal{P}$, if $iRj$ then $b_{ij} = 1$, else $0$.
 
-With help of the `relations` package, the functions `relations::as.relation(pr)` and `powerRelationMatrix(pr)` turn a `PowerRelation` object into a `relation` object. `relations` then offers ways to display the `relation` object as an incidence matrix with `relation_incidence(rel)` and to test basic properties such `relation_is_linear_order(rel)`, `relation_is_acyclic(rel)` and `relation_is_antisymmetric(rel)` (see `relations` package for more [@relationsPackage]).
+With the help of the `relations` package, the functions `relations::as.relation(pr)` and `powerRelationMatrix(pr)` turn a `PowerRelation` object into a `relation` object. `relations` then offers ways to display the `relation` object as an incidence matrix with `relation_incidence(rel)` and to test basic properties such `relation_is_linear_order(rel)`, `relation_is_acyclic(rel)` and `relation_is_antisymmetric(rel)` (see `relations` package for more [@relationsPackage]).
 
 ```{r}
 pr <- as.PowerRelation("ab > a > {} > b")

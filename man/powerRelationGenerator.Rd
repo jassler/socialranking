@@ -21,6 +21,8 @@ If set to \code{FALSE}, the first \code{\link{PowerRelation}} object generated w
 \item{gen}{A generator object returned by \code{powerRelationGenerator()}.}
 
 \item{linearOrder}{logical, if TRUE, only linear orders are generated.}
+
+\item{monotonic}{logical, if TRUE, only monotonic power relations are created (see \code{\link[=makePowerRelationMonotonic]{makePowerRelationMonotonic()}}).}
 }
 \value{
 A generator function.
