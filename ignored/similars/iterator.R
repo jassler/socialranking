@@ -95,5 +95,5 @@ testRanking <- function(score, N = 4, linearOrders = FALSE, ignoreI = FALSE) {
   }
 }
 
-pr <- testRanking(ordinalBanzhafScores, N = 6, ignoreI = T)
+pr <- testRanking(ordinalBanzhafScores, N = 6, ignoreI = F)
 print(pr)

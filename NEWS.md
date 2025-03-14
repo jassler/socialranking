@@ -1,4 +1,8 @@
-# socialranking 1.2.0
+# socialranking 1.2.1
+
+* Fixed `appendMissingCoalitions()` failing when there are no coalitions to add
+
+# socialranking 1.2.0 (2024-05-16)
 
 * Added `generateRandomPowerRelation()`
 * Added S3 class `DualLexcelScores`

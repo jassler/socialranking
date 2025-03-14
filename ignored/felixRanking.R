@@ -51,4 +51,23 @@ makeStefanoMatrix <- function(pr) {
   structure(l, class = 'L1Scores')
 }
 
+countL1 <- function(mwc, size, i) {
+  n <- unlist(mwc) |> unique() |> length()
+  result <- 0
+  for(r in seq_along(mwc)) {
+    result <- result + (-1)^(r-1) * (
+      combn(length(mwc), r)
+      |> apply(2, function(col) {
+          S <- Reduce(union, append(mwc[col], i))
+          S_l <- length(S)
+          choose(n - S_l, size - S_l)
+        })
+      |> sum()
+    )
+  }
+  return(result)
+}
 
+mwc <- list(c(1,2),c(1,3,4),c(1,3,5))
+pr <- PowerRelation(list(mwc)) |> appendMissingCoalitions() |> makePowerRelationMonotonic()
+countL1(mwc, 4, 1)

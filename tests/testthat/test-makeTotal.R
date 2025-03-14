@@ -24,4 +24,7 @@ test_that("Make total", {
     appendMissingCoalitions(pr),
     as.PowerRelation('123 > 3 > 12 ~ 13 ~ 23 ~ 1 ~ 2 ~ {}')
   )
+
+  pr <- PowerRelation(list(list(c(1, 2), 1), list(2, c())))
+  expect_equal(appendMissingCoalitions(pr), pr)
 })

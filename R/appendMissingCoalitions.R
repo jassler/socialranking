@@ -53,6 +53,10 @@ appendMissingCoalitions <- function(powerRelation, includeEmptySet = TRUE) {
   stopifnot(is.PowerRelation(powerRelation))
   # --- end checks --- #
   els <- powerRelation$elements
+  missing <- unlist(powerRelation$eqs, recursive = FALSE)
+  if(length(missing) == 2^length(els)) {
+    return(powerRelation)
+  }
   allCoals <- createPowerset(els, includeEmptySet = includeEmptySet)
   missing <- setdiff(allCoals, unlist(powerRelation$eqs, recursive = FALSE))
   PowerRelation(append(powerRelation$eqs, list(missing)))
