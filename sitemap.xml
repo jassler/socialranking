@@ -1,117 +1,41 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://jassler.github.io/socialranking/404.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/articles/socialranking.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/articles/socialranking_pdf.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/articles/tables/functionTable.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/articles/tables/prObject.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/index.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/reference/L1Scores.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/reference/L2Scores.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/reference/LPSScores.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/reference/LpScores.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/reference/PowerRelation.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/reference/appendMissingCoalitions.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/reference/as.PowerRelation.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/reference/coalitionsAreIndifferent.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/reference/copelandScores.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/reference/cpMajorityComparison.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/reference/createPowerset.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/reference/cumulativeScores.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/reference/doRanking.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/reference/dominates.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/reference/elementLookup.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/reference/equivalenceClassIndex.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/reference/kramerSimpsonScores.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/reference/lexcelScores.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/reference/makePowerRelationMonotonic.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/reference/newPowerRelation.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/reference/newPowerRelationFromString.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/reference/ordinalBanzhafScores.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/reference/powerRelationGenerator.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/reference/powerRelationMatrix.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/reference/socialranking-package.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/reference/socialranking.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/reference/testRelation.html</loc>
-  </url>
-  <url>
-    <loc>https://jassler.github.io/socialranking/reference/transitiveClosure.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://jassler.github.io/socialranking/404.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/articles/index.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/articles/socialranking.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/articles/socialranking_pdf.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/articles/tables/functionTable.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/articles/tables/prObject.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/authors.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/index.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/news/index.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/reference/L1Scores.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/reference/L2Scores.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/reference/LPSScores.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/reference/LpScores.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/reference/PowerRelation.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/reference/appendMissingCoalitions.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/reference/as.PowerRelation.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/reference/coalitionsAreIndifferent.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/reference/copelandScores.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/reference/cpMajorityComparison.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/reference/createPowerset.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/reference/cumulativeScores.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/reference/doRanking.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/reference/dominates.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/reference/elementLookup.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/reference/equivalenceClassIndex.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/reference/index.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/reference/kramerSimpsonScores.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/reference/lexcelScores.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/reference/makePowerRelationMonotonic.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/reference/newPowerRelation.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/reference/newPowerRelationFromString.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/reference/ordinalBanzhafScores.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/reference/powerRelationGenerator.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/reference/powerRelationMatrix.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/reference/socialranking-package.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/reference/socialranking.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/reference/testRelation.html</loc></url>
+<url><loc>https://jassler.github.io/socialranking/reference/transitiveClosure.html</loc></url>
 </urlset>
+
