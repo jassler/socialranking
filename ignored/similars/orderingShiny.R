@@ -135,14 +135,21 @@ $(document).on("click", "#other", (evt) => {
             column(6, uiOutput('aBanz')),
             column(6, uiOutput('bBanz'))
           )
+        ),
+        tabPanel(
+          'Lex-cel',
+          uiOutput('lexRanking', style = 'text-align: center'),
+          br(),
+
+          h2('Applying IWS'),
         )
       ),
-      uiOutput('abCP'),
-      hr(),
-      fluidRow(
-        column(6, uiOutput('aCP')),
-        column(6, uiOutput('bCP'))
-      )
+      # uiOutput('abCP'),
+      # hr(),
+      # fluidRow(
+      #   column(6, uiOutput('aCP')),
+      #   column(6, uiOutput('bCP'))
+      # )
     )
   )
 )
@@ -211,6 +218,7 @@ server <- function(input, output, session) {
 
   output$ksRanking <- renderUI({ capture.output(kramerSimpsonRanking(pr())) })
   output$copRanking <- renderUI({ capture.output(copelandRanking(pr())) })
+  output$lexRanking <- renderUI({ capture.output(lexcelRanking(pr())) })
 
   output$aKS <- renderUI({
     pr <- pr()

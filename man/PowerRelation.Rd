@@ -4,27 +4,21 @@
 \alias{PowerRelation}
 \alias{is.PowerRelation}
 \alias{print.PowerRelation}
+\alias{sort.PowerRelation}
 \title{PowerRelation object}
 \usage{
-PowerRelation(
-  equivalenceClasses,
-  elements = NULL,
-  coalitionLookup = NULL,
-  elementLookup = NULL
-)
+PowerRelation(eqs, elements = NULL, asBits = FALSE)
 
 is.PowerRelation(x, ...)
 
 \method{print}{PowerRelation}(x, ...)
+
+\method{sort}{PowerRelation}(x, decreasing = FALSE, ...)
 }
 \arguments{
-\item{equivalenceClasses}{A nested list of lists, each containing coalitions or groups represented as vectors that are in the same equivalence class.}
+\item{eqs}{A nested list of lists, each containing coalitions or groups represented as vectors that are in the same equivalence class.}
 
 \item{elements}{Vector of elements in power relation. Only set this value if you know what you are doing. See Details for more.}
-
-\item{coalitionLookup}{A function taking a vector parameter and returning an index. See return value for more details. Only set this value if you know what you are doing.}
-
-\item{elementLookup}{A function taking an element and returning a list of 2-sized tuples. See return value for more details. Only set this value if you know what you are doing.}
 
 \item{x}{An \R object.}
 

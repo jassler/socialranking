@@ -71,3 +71,72 @@ countL1 <- function(mwc, size, i) {
 mwc <- list(c(1,2),c(1,3,4),c(1,3,5))
 pr <- PowerRelation(list(mwc)) |> appendMissingCoalitions() |> makePowerRelationMonotonic()
 countL1(mwc, 4, 1)
+
+
+(function() {
+  pr <- as.PowerRelation('1~23 > 13~24 > 3~12~14 > 2') |> appendMissingCoalitions()
+  lexSc <- lexcelScores(pr)
+  L1Sc <- L1Scores(pr)
+  for(e in pr$elements) {
+    writeLines(paste0('\\theta^{\\succsim,', e, '} = (', paste(lexSc[[e]], collapse=', '), ')'))
+  }
+  for(e in pr$elements) {
+    writeLines((
+      paste0('\\begin{aligned}&M^{\\succsim,',e,'} = \\\\ &\\begin{bmatrix}\n        ', paste(apply(L1Sc[[e]], 1, paste, collapse=' & '), collapse='\\\\\n        '), '\n      \\end{bmatrix}\\end{aligned}')
+    ))
+  }
+
+  prPr <- (
+    capture.output(pr)
+    |> stringr::str_replace_all('(\\(|\\))', '')
+    |> stringr::str_replace_all('([^>]*) ', '\\\\underbrace{\\1}_{X}')
+    |> gsub(pattern='~', replacement='\\\\sim')
+    |> gsub(pattern='>', replacement=' \\\\succ ')
+    |> gsub(pattern='(\\d+)', replacement='\\\\{\\1\\\\}')
+    |> gsub(pattern='(\\d)(\\d)', replacement='\\1, \\2')
+    |> gsub(pattern='(\\d)(\\d)', replacement='\\1, \\2')
+    |> gsub(pattern='(\\d)(\\d)', replacement='\\1, \\2')
+  )
+
+  count <- 1
+  prPrNew <- stringr::str_replace(prPr, 'X', paste0('\\\\Sigma_', count))
+  while(prPrNew != prPr) {
+    count <- count + 1
+    prPr <- prPrNew
+    prPrNew <- stringr::str_replace(prPr, 'X', paste0('\\\\Sigma_', count))
+  }
+
+  writeLines(prPrNew)
+
+  print('lex-cel')
+  print(lexcelRanking(pr))
+  print('L1')
+  print(L1Ranking(pr))
+  print('CP')
+  cps <- list(
+    capture.output(cpMajorityComparison(pr, 1, 2, strictly = TRUE)) |> strsplit('\\n'),
+    capture.output(cpMajorityComparison(pr, 1, 3, strictly = TRUE)) |> strsplit('\\n'),
+    capture.output(cpMajorityComparison(pr, 2, 3, strictly = TRUE)) |> strsplit('\\n')
+  )
+  for(cp in cps) {
+    writeLines('\\begin{aligned}')
+    writeLines(paste0(
+      '    ',
+      (cp[2]
+       |> stringr::str_replace_all('D_(\\d\\d)', 'D_{\\1}(\\\\succsim)')
+       |> stringr::str_replace_all('\\{\\}', '\\\\varnothing')
+       |> stringr::str_replace_all('=', '& =')
+       |> stringr::str_replace_all('(\\D)(\\d)(\\D)', '\\1\\\\{\\2\\\\}\\3')
+      ),
+      ' \\\\\n    ',
+      (cp[3]
+       |> stringr::str_replace_all('D_(\\d\\d)', 'D_{\\1}(\\\\succsim)')
+       |> stringr::str_replace_all('\\{\\}', '\\\\varnothing')
+       |> stringr::str_replace_all('=', '& =')
+       |> stringr::str_replace_all('(\\D)(\\d)(\\D)', '\\1\\\\{\\2\\\\}\\3')
+      )
+    ))
+    writeLines('  \\end{aligned}')
+  }
+})()
+

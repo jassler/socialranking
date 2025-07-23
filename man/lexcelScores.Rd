@@ -6,22 +6,22 @@
 \alias{dualLexcelRanking}
 \title{Lexicographical Excellence}
 \usage{
-lexcelScores(powerRelation, elements = powerRelation$elements)
+lexcelScores(pr, elements = pr$elements)
 
-lexcelRanking(powerRelation)
+lexcelRanking(pr)
 
-dualLexcelRanking(powerRelation)
+dualLexcelRanking(pr)
 }
 \arguments{
-\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
+\item{pr}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
 
 \item{elements}{Vector of elements of which to calculate their scores.
 By default, the scores of all elements in \code{powerRelation$elements} are considered.}
 }
 \value{
-Score function returns a list of type \code{LexcelScores} and length of \code{powerRelation$elements}
+Score function returns a list of type \code{LexcelScores} and length of \code{pr$elements}
 (unless parameter \code{elements} is specified).
-Each index contains a vector of length \code{powerRelation$eqs}, the number of
+Each index contains a vector of length \code{pr$eqs}, the number of
 times the given element appears in each equivalence class.
 
 Ranking function returns corresponding \code{\link{SocialRanking}} object.
@@ -36,7 +36,7 @@ participation, it punishes mediocrity.
 }
 \details{
 An equivalence class \eqn{\sum_i}{Sigma_i} contains coalitions that are indifferent to one another.
-In a given power relation created with \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}, the equivalence classes are saved in \verb{$eqs}.
+In a given power relation created with \code{\link[=pr]{pr()}} or \code{\link[=as.pr]{as.pr()}}, the equivalence classes are saved in \verb{$eqs}.
 
 As an example, consider the power relation
 \eqn{\succsim: 123 \succ (12 \sim 13 \sim 1 \sim \emptyset) \succ (23 \sim 1 \sim 2)}{>=: 123 > (12 ~ 13 ~ 1) > (23 ~ 1 ~ 2)}.
@@ -83,7 +83,7 @@ because:
 # note that the coalition {1} appears twice
 # 123 > 12 ~ 13 ~ 1 ~ {} > 23 ~ 1 ~ 2
 # E = {123} > {12, 13, 1, {}} > {23, 1, 2}
-pr <- suppressWarnings(as.PowerRelation(
+pr <- suppressWarnings(as.pr(
   "123 > (12 ~ 13 ~ 1 ~ {}) > (23 ~ 1 ~ 2)"
 ))
 

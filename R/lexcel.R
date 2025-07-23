@@ -39,7 +39,7 @@ is.na.DualLexcelScores <- function(x) FALSE
 #' Calculate the Lexicographical Excellence (or Lexcel) score.
 #'
 #' An equivalence class \eqn{\sum_i}{Sigma_i} contains coalitions that are indifferent to one another.
-#' In a given power relation created with [`PowerRelation()`] or [`as.PowerRelation()`], the equivalence classes are saved in `$eqs`.
+#' In a given power relation created with [`pr()`] or [`as.pr()`], the equivalence classes are saved in `$eqs`.
 #'
 #' As an example, consider the power relation
 #' \eqn{\succsim: 123 \succ (12 \sim 13 \sim 1 \sim \emptyset) \succ (23 \sim 1 \sim 2)}{>=: 123 > (12 ~ 13 ~ 1) > (23 ~ 1 ~ 2)}.
@@ -55,7 +55,7 @@ is.na.DualLexcelScores <- function(x) FALSE
 #'
 #' \deqn{\textrm{lexcel}(1) = [ 1, 3, 1 ], \textrm{lexcel}(2) = [ 1, 1, 2 ], \textrm{lexcel}(3) = [ 1, 1, 1 ].}{lexcel(1) = [1,3,1], \textrm{lexcel}(2) = [ 1, 1, 2 ], lexcel(3) = [1,1,1].}
 #'
-#' @template param/powerRelation
+#' @template param/pr
 #' @template param/elements
 #'
 #' @family ranking solution functions
@@ -65,16 +65,16 @@ is.na.DualLexcelScores <- function(x) FALSE
 #'
 #' \insertRef{2021Lexcel}{socialranking}
 #'
-#' @return Score function returns a list of type `LexcelScores` and length of `powerRelation$elements`
+#' @return Score function returns a list of type `LexcelScores` and length of `pr$elements`
 #' (unless parameter `elements` is specified).
-#' Each index contains a vector of length `powerRelation$eqs`, the number of
+#' Each index contains a vector of length `pr$eqs`, the number of
 #' times the given element appears in each equivalence class.
 #'
 #' @examples
 #' # note that the coalition {1} appears twice
 #' # 123 > 12 ~ 13 ~ 1 ~ {} > 23 ~ 1 ~ 2
 #' # E = {123} > {12, 13, 1, {}} > {23, 1, 2}
-#' pr <- suppressWarnings(as.PowerRelation(
+#' pr <- suppressWarnings(as.pr(
 #'   "123 > (12 ~ 13 ~ 1 ~ {}) > (23 ~ 1 ~ 2)"
 #' ))
 #'
@@ -89,20 +89,34 @@ is.na.DualLexcelScores <- function(x) FALSE
 #' lexcelScores(pr, 2)
 #'
 #' @export
-lexcelScores <- function(powerRelation, elements = powerRelation$elements) {
-  # --- checks (generated) --- #
-  stopifnot(is.PowerRelation(powerRelation))
-  # --- end checks --- #
-
-  result <- list()
-  for(e in elements) {
-    result[[paste(e)]] <- unlist(lapply(
-      powerRelation$eqs,
-      function(coalition) sum(e == unlist(coalition))
-    ))
-  }
-
-  structure(result, class = 'LexcelScores')
+lexcelScores <- function(pr, elements = pr$elements) {
+  eqs <- unclass(pr$eqs)
+  structure(
+    if(identical(elements, pr$elements)) {
+      lapply(seq_along(elements), function(x)
+        unlist(lapply(
+          eqs, function(coal) sum(bitwAnd(coal, as.integer(2 ^ (x-1))) != 0)
+        ))
+      )
+    } else {
+      lapply(seq_along(elements), function(x)
+        unlist(lapply(
+          eqs, function(coal) sum(bitwAnd(coal, as.integer(2 ^ (x-1))) != 0)
+        ))
+      )
+    },
+    names = elements,
+    class = 'LexcelScores'
+  )
+  # result <- list()
+  #
+  # eqs <- unclass(pr$eqs)
+  # for(i in seq_along(elements)) {
+  #   result[[paste(elements[i])]] <- unlist(lapply(
+  #     eqs,
+  #     function(coalition) sum(i == unlist(coalition))
+  #   ))
+  # }
 }
 
 #' Lexcel Ranking
@@ -122,7 +136,7 @@ lexcelScores <- function(powerRelation, elements = powerRelation$elements) {
 #' \eqn{\textrm{Score}(1)_2 = 3 > \textrm{Score}(2)_2 = \textrm{Score}(3)_2 = 1}{Score(1)_2 = 3 > Score(2) = Score(3) = 1},
 #' \eqn{\textrm{Score}(2)_3 = 2 > \textrm{Score}(3)_3 = 1}{Score(2)_3 = 2 > Score(3)_3 = 1}.
 #'
-#' @template param/powerRelation
+#' @template param/pr
 #'
 #' @rdname lexcelScores
 #'
@@ -133,8 +147,8 @@ lexcelScores <- function(powerRelation, elements = powerRelation$elements) {
 #' lexcelRanking(pr)
 #'
 #' @export
-lexcelRanking <- function(powerRelation) {
-  doRanking(lexcelScores(powerRelation))
+lexcelRanking <- function(pr) {
+  doRanking(lexcelScores(pr))
 }
 
 #' Dual Lexcel Ranking
@@ -152,7 +166,7 @@ lexcelRanking <- function(powerRelation) {
 #' \eqn{\textrm{Score}(3)_2 < \textrm{Score}(1)_2}{Score(3)_2 < Score(1)_3},
 #' \eqn{\textrm{Score}(1)_3 < \textrm{Score}(2)_3}{Score(1)_3 < Score(2)_3}.
 #'
-#' @template param/powerRelation
+#' @template param/pr
 #'
 #' @rdname lexcelScores
 #'
@@ -164,9 +178,9 @@ lexcelRanking <- function(powerRelation) {
 #' dualLexcelRanking(pr)
 #'
 #' @export
-dualLexcelRanking <- function(powerRelation) {
+dualLexcelRanking <- function(pr) {
   doRanking(structure(
-    lexcelScores(powerRelation),
+    lexcelScores(pr),
     class = 'DualLexcelScores'
   ))
 }

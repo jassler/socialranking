@@ -93,9 +93,7 @@ cpMajorityComparison <- function(powerRelation, e1, e2, strictly = FALSE, includ
   # --- checks (generated) --- #
   stopifnot(is.PowerRelation(powerRelation))
   stopifnot(e1 %in% powerRelation$elements)
-  stopifnot(class(e1) == class(powerRelation$elements))
   stopifnot(e2 %in% powerRelation$elements)
-  stopifnot(class(e2) == class(powerRelation$elements))
   # --- end checks --- #
 
   result <- list(
