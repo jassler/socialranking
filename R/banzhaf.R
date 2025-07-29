@@ -66,25 +66,33 @@ ordinalBanzhafScores <- function(pr, elements = pr$elements) {
   stopifnot(is.PowerRelation(pr))
   # --- end checks --- #
 
-  result <- list()
-  for(i in seq_along(elements)) {
-    score <- c(0,0,0)
-    for(coalition in createPowerset(pr$elements[-i])) {
-      e1 <- pr$coalitionLookup(coalition)
-      e2 <- pr$coalitionLookup(c(coalition, elements[i]))
-      if(is.null(e1) || is.null(e2)) {
-        score[3] <- score[3] + 1
-      } else if(e1 < e2) {
-        score[2] <- score[2] - 1
-      } else if(e2 < e1) {
-        score[1] <- score[1] + 1
-      }
-    }
-
-    result[[paste(elements[i])]] <- score
+  els <- if(identical(elements, pr$elements)) {
+    seq_along(elements)
+  } else {
+    match(elements, pr$elements)
   }
 
-  structure(result, class = 'OrdinalBanzhafScores')
+  result <- structure(
+    lapply(els, function(x) c(0,0,0)),
+    names = paste(elements),
+    class = 'OrdinalBanzhafScores'
+  )
+
+  for(i in seq_along(els)) {
+    for(coalition in createPowerset(pr$elements[-els[i]])) {
+      e1 <- pr$coalitionLookup(coalition)
+      e2 <- pr$coalitionLookup(c(coalition, elements[i]))
+      if(is.na(e1) || is.na(e2)) {
+        result[[i]][3] <- result[[i]][3] + 1
+      } else if(e1 < e2) {
+        result[[i]][2] <- result[[i]][2] - 1
+      } else if(e2 < e1) {
+        result[[i]][1] <- result[[i]][1] + 1
+      }
+    }
+  }
+
+  result
 }
 
 #' Ordinal Banzhaf Ranking

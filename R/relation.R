@@ -35,7 +35,7 @@
 #'
 #' @examples
 #' pr <- as.PowerRelation("12 > 1 > 2")
-#' relation <- prMatrix(pr)
+#' relation <- powerRelationMatrix(pr)
 #'
 #' # do relation stuff
 #' # Incidence matrix
@@ -57,7 +57,7 @@
 #'
 #' # a power relation where coalitions {1} and {2} are indifferent
 #' pr <- as.PowerRelation("12 > (1 ~ 2)")
-#' relation <- prMatrix(pr)
+#' relation <- powerRelationMatrix(pr)
 #'
 #' # Incidence matrix
 #' # 111
@@ -81,7 +81,7 @@
 #'
 #' # a pr with cycles
 #' pr <- suppressWarnings(as.PowerRelation("12 > 1 > 2 > 1"))
-#' relation <- prMatrix(pr)
+#' relation <- powerRelationMatrix(pr)
 #'
 #' # Incidence matrix
 #' # 1111
@@ -91,7 +91,7 @@
 #' relations::relation_incidence(relation)
 #'
 #' # custom naming convention
-#' relation <- prMatrix(
+#' relation <- powerRelationMatrix(
 #'   pr,
 #'   function(x) paste0(letters[x], ":", paste(pr$rankingCoalitions[[x]], collapse = "|"))
 #' )
@@ -105,12 +105,12 @@
 #' # d:1       0   1   1   1
 #'
 #' @export
-prMatrix <- function(pr, domainNames = c("pretty", "numericPrec", "numeric")) {
+powerRelationMatrix <- function(pr, domainNames = c("pretty", "numericPrec", "numeric")) {
   # --- checks (generated) --- #
   stopifnot(is.PowerRelation(pr))
   # --- end checks --- #
 
-  rankingCoalitions <- unlist(pr$eqs, recursive = FALSE)
+  rankingCoalitions <- unlist(pr$eqs, recursive = FALSE) |> lapply(decodeCoalition, pr$elements)
 
   headerNameFunc <- if(is.function(domainNames)) {
     domainNames
@@ -159,12 +159,12 @@ prMatrix <- function(pr, domainNames = c("pretty", "numericPrec", "numeric")) {
   relations::as.relation(m)
 }
 
-#' @rdname prMatrix
+#' @rdname powerRelationMatrix
 #'
 #' @param x A [`PowerRelation`] object
 #' @param ... Further parameters (ignored)
 #'
 #' @exportS3Method as.relation PowerRelation
 as.relation.PowerRelation <- function(x, ...) {
-  prMatrix(x)
+  powerRelationMatrix(x)
 }

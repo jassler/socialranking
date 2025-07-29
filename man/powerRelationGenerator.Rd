@@ -2,24 +2,43 @@
 % Please edit documentation in R/generator.R
 \name{powerRelationGenerator}
 \alias{powerRelationGenerator}
+\alias{generateNextPartition}
+\alias{generateRandomPowerRelation}
 \title{Generate power relations}
 \usage{
 powerRelationGenerator(coalitions, startWithLinearOrder = FALSE)
+
+generateNextPartition(gen)
+
+generateRandomPowerRelation(coalitions, linearOrder = FALSE, monotonic = FALSE)
 }
 \arguments{
 \item{coalitions}{List of coalition vectors. An empty coalition can be set with \code{c()}.}
 
 \item{startWithLinearOrder}{If set to \code{TRUE}, the first \code{\link{PowerRelation}} object generated will be a linear order in the order of the list of \code{coalitions} they are given.
 If set to \code{FALSE}, the first \code{\link{PowerRelation}} object generated will have a single equivalence class containing all coalitions, as in, every coalition is equally powerful.}
+
+\item{gen}{A generator object returned by \code{powerRelationGenerator()}.}
+
+\item{linearOrder}{logical, if TRUE, only linear orders are generated.}
+
+\item{monotonic}{logical, if TRUE, only monotonic power relations are created (see \code{\link[=makePowerRelationMonotonic]{makePowerRelationMonotonic()}}).}
 }
 \value{
 A generator function.
 Every time this generator function is called, a different \code{\link{PowerRelation}} object is returned.
 Once all possible power relations have been generated, the generator function returns \code{NULL}.
+
+A generator function.
+If the generator is already down to its last partition, it will throw an error.
+
+Use \code{generateNextPartition(gen)} to skip to the next partition of the generator.
 }
 \description{
 Based on a list of coalitions, create a generator function that returns a new \code{\link{PowerRelation}} object with every call.
 \code{NULL} is returned once every possible power relation has been generated.
+
+Alternatively, use \code{generateRandomPowerRelation()} to create random power relations.
 }
 \details{
 Using the \code{partitions} library, \code{\link[partitions:parts]{partitions::compositions()}} is used to create all possible partitions over the set of coalitions.
@@ -53,11 +72,16 @@ The number of preorders then are:\tabular{llll}{
    4 \tab 16 \tab 5,315,654,681,981,355 \tab 168,558 years \cr
 }
 }
+\note{
+Due to its implementation, \code{randomPowerRelation()} does not create weak orders uniformly.
+I.e., it is much less likely to generate linear orders even though they have the proportionally highest representation
+in the set of all weak orders.
+}
 \examples{
 coalitions <- createPowerset(c('a','b'), includeEmptySet = FALSE)
 # list(c('a','b'), 'a', 'b')
 
-gen <- prGenerator(coalitions)
+gen <- powerRelationGenerator(coalitions)
 
 while(!is.null(pr <- gen())) {
   print(pr)
@@ -81,7 +105,7 @@ gen()
 # NULL
 
 # Use generateNextPartition() to skip certain partitions
-gen <- prGenerator(coalitions)
+gen <- powerRelationGenerator(coalitions)
 
 gen <- generateNextPartition(gen)
 gen <- generateNextPartition(gen)
@@ -92,9 +116,39 @@ gen <- generateNextPartition(gen)
 gen()
 # ab > a > b
 
-}
-\seealso{
-Other generator functions: 
-\code{\link{generateNextPartition}()}
+coalitions <- createPowerset(c('a','b'), includeEmptySet = FALSE)
+# list(c('a','b'), 'a', 'b')
+
+gen <- powerRelationGenerator(coalitions)
+gen()
+# (ab ~ a ~ b)
+
+gen()
+# (ab ~ b) > a
+
+# skipping partition of size two, where the first partition has
+# 2 coalitions and the second partition has 1 coalition
+gen <- generateNextPartition(gen)
+gen()
+# ab > (a ~ b)
+
+# only remaining partition is one of size 3, wherein each
+# equivalence class is of size 1
+gen <- generateNextPartition(gen)
+gen()
+# ab > a > b
+
+# went through all partitions, it will only generate NULL now
+gen <- generateNextPartition(gen)
+stopifnot(is.null(gen()))
+
+
+# create random power relation
+generateRandomPowerRelation(coalitions)
+
+# make sure it's monotonic, i.e., {1} > {1,2} cannot exist
+# because {1} is a subset of {1,2}
+generateRandomPowerRelation(coalitions, monotonic = TRUE)
+
 }
 \concept{generator functions}
