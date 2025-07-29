@@ -90,7 +90,7 @@ SocialRanking <- function(l) {
 #' # disregard any big coalitions and only rank elements based on their individual performances
 #' # iRj if and only if {i} >= {j}
 #' singletonRanking <- function(pr) {
-#'   scores <- sapply(pr$elements, equivalenceClassIndex, powerRelation = pr)
+#'   scores <- sapply(pr$elements, equivalenceClassIndex, pr = pr)
 #'   # note that coalitions in higher indexed equivalence classes are less preferable
 #'   # hence, scores should be sorted in an increasing order
 #'   doRanking(scores, decreasing = FALSE)

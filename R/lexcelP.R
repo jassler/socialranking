@@ -113,7 +113,7 @@ is.na.LPScores <- function(x) FALSE
 #'
 #' For better discoverability, `lexcelPScores()` and `lexcelPRanking()` serve as aliases for `LPScores()` and `LPRanking()`, respectively.
 #'
-#' @template param/powerRelation
+#' @template param/pr
 #' @template param/elements
 #'
 #' @family ranking solution functions
@@ -121,9 +121,9 @@ is.na.LPScores <- function(x) FALSE
 #' @references
 #' \insertRef{beal2022lexicographic}{socialranking}
 #'
-#' @return Score function returns a list of type `LPScores` and length of `powerRelation$elements`
+#' @return Score function returns a list of type `LPScores` and length of `pr$elements`
 #' (unless parameter `elements` is specified).
-#' Each index contains a vector of length `length(powerRelation$elements)`.
+#' Each index contains a vector of length `length(pr$elements)`.
 #'
 #' @examples
 #' pr <- as.PowerRelation("(123 ~ 13 ~ 2) > (12 ~ 1 ~ 3) > (23 ~ {})")
@@ -139,30 +139,35 @@ is.na.LPScores <- function(x) FALSE
 #' # 2 > 1 > 3
 #'
 #' @export
-LPScores <- function(powerRelation, elements = powerRelation$elements) {
+LPScores <- function(pr, elements = pr$elements) {
   # --- checks (generated) --- #
-  stopifnot(is.PowerRelation(powerRelation))
+  stopifnot(is.PowerRelation(pr))
   # --- end checks --- #
 
-  elements <- paste(elements)
+  els <- if(identical(elements, pr$elements)) {
+    seq_along(elements)
+  } else {
+    match(elements, pr$elements)
+  }
   res <- structure(
-    lapply(rep(0, length(elements)), rep, length(powerRelation$elements)),
-    names = elements
+    lapply(rep(0, length(elements)), rep, length(pr$elements)),
+    names = paste(elements),
+    class = 'LPScores'
   )
 
-  for(el in elements) {
-    pi <- powerRelation$coalitionLookup(el)
+  for(el in seq_along(elements)) {
+    pi <- pr$coalitionLookup(elements[el])
     res[[el]][1] <- pi
-    for(coalIn in powerRelation$elementLookup(el)) {
-      if(coalIn[1] >= pi) {
-        next
+    apply(pr$elementLookup(elements[el]), 2, function(v) {
+      if(v[1] >= pi) {
+        return()
       }
-      s <- length(powerRelation$eqs[[coalIn[1]]][[coalIn[2]]])
-      res[[el]][s] <- res[[el]][s] + 1
-    }
+      s <- length(pr$eqs[[v[1]]][[v[2]]])
+      res[[el]][s] <<- res[[el]][s] + 1
+    })
   }
-
-  structure(res, class = 'LPScores')
+  
+  res
 }
 
 
@@ -173,8 +178,8 @@ LPScores <- function(powerRelation, elements = powerRelation$elements) {
 #' @template return/ranking
 #'
 #' @export
-LPRanking <- function(powerRelation) {
-  doRanking(LPScores(powerRelation))
+LPRanking <- function(pr) {
+  doRanking(LPScores(pr))
 }
 
 #' @rdname LPScores

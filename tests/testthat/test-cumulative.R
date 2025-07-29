@@ -1,12 +1,12 @@
 test_that("cumulativeScores", {
   pr <- as.PowerRelation('12 > 1 > 2')
-  expect_equal(cumulativeScores(pr, 1), structure(list(`1` = c(1, 2, 2)), class = "CumulativeScores"))
-  expect_equal(cumulativeScores(pr, 2), structure(list(`2` = c(1, 1, 2)), class = "CumulativeScores"))
+  expect_equal(cumulativeScores(pr, 1), structure(list(`1` = c(1, 2, 2)), class = "LexcelScores"))
+  expect_equal(cumulativeScores(pr, 2), structure(list(`2` = c(1, 1, 2)), class = "LexcelScores"))
   expect_equal(cumulativeScores(pr), structure(
     list(
       `1` = c(1, 2, 2),
       `2` = c(1, 1, 2)
-    ), class = "CumulativeScores")
+    ), class = "LexcelScores")
   )
 })
 

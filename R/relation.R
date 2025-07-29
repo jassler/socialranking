@@ -5,7 +5,7 @@
 #' Turn a [`PowerRelation`] object into a [`relations::relation()`] object. The incidence matrix can be viewed with
 #' [`relations::relation_incidence()`].
 #'
-#' The columns and rows of a [`PowerRelation`] object are ordered by TODO `powerRelation$rankingCoalitions`.
+#' The columns and rows of a [`PowerRelation`] object are ordered by TODO `pr$rankingCoalitions`.
 #' The `relations` package automatically sorts the columns and rows by their domain names, which is the reason the
 #' parameter `domainNames` is included. This way we ensure that the columns and rows are sorted by
 #' the order of the power relation.
@@ -22,12 +22,12 @@
 #'
 #' Call [`transitiveClosure()`] to remove cycles in a [`PowerRelation`] object.
 #'
-#' @template param/powerRelation
+#' @template param/pr
 #' @param domainNames How should the row and column names be formatted?
 #' * `pretty`: Coalitions such as c(1,2) are formatted as 12. To ensure that it's correctly sorted alphabetically, every name is preceded by a certain amount of the invisible Unicode character \\u200b
 #' * `numericPrec`: Coalitions such as c(1,2) are formatted as 1\{12\}, the number in front of the curly brace marking its sorted spot. While less pretty, it won't use Unicode characters.
-#' * `numeric`: Drop coalition names, only count from 1 upwards. Each number corresponds to the index in TODO `powerRelation$rankingCoalitions`
-#' * `function(x)`: A custom function that is passed a number from `1` through `length(powerRelation$rankingCoalitions)`. Must return a `character` object.
+#' * `numeric`: Drop coalition names, only count from 1 upwards. Each number corresponds to the index in TODO `pr$rankingCoalitions`
+#' * `function(x)`: A custom function that is passed a number from `1` through `length(pr$rankingCoalitions)`. Must return a `character` object.
 #'
 #' @seealso [`relations::as.relation()`]
 #'
@@ -35,7 +35,7 @@
 #'
 #' @examples
 #' pr <- as.PowerRelation("12 > 1 > 2")
-#' relation <- powerRelationMatrix(pr)
+#' relation <- prMatrix(pr)
 #'
 #' # do relation stuff
 #' # Incidence matrix
@@ -57,7 +57,7 @@
 #'
 #' # a power relation where coalitions {1} and {2} are indifferent
 #' pr <- as.PowerRelation("12 > (1 ~ 2)")
-#' relation <- powerRelationMatrix(pr)
+#' relation <- prMatrix(pr)
 #'
 #' # Incidence matrix
 #' # 111
@@ -81,7 +81,7 @@
 #'
 #' # a pr with cycles
 #' pr <- suppressWarnings(as.PowerRelation("12 > 1 > 2 > 1"))
-#' relation <- powerRelationMatrix(pr)
+#' relation <- prMatrix(pr)
 #'
 #' # Incidence matrix
 #' # 1111
@@ -91,7 +91,7 @@
 #' relations::relation_incidence(relation)
 #'
 #' # custom naming convention
-#' relation <- powerRelationMatrix(
+#' relation <- prMatrix(
 #'   pr,
 #'   function(x) paste0(letters[x], ":", paste(pr$rankingCoalitions[[x]], collapse = "|"))
 #' )
@@ -105,12 +105,12 @@
 #' # d:1       0   1   1   1
 #'
 #' @export
-powerRelationMatrix <- function(powerRelation, domainNames = c("pretty", "numericPrec", "numeric")) {
+prMatrix <- function(pr, domainNames = c("pretty", "numericPrec", "numeric")) {
   # --- checks (generated) --- #
-  stopifnot(is.PowerRelation(powerRelation))
+  stopifnot(is.PowerRelation(pr))
   # --- end checks --- #
 
-  rankingCoalitions <- unlist(powerRelation$eqs, recursive = FALSE)
+  rankingCoalitions <- unlist(pr$eqs, recursive = FALSE)
 
   headerNameFunc <- if(is.function(domainNames)) {
     domainNames
@@ -118,13 +118,13 @@ powerRelationMatrix <- function(powerRelation, domainNames = c("pretty", "numeri
     function(x) paste0(
       strrep("\u200b", x-1),
       if(length(rankingCoalitions[[x]]) == 0) '{}'
-      else paste(rankingCoalitions[[x]], collapse = if('SingleCharElements' %in% class(powerRelation)) '' else ',')
+      else paste(rankingCoalitions[[x]], collapse = if('SingleCharElements' %in% class(pr)) '' else ',')
     )
   } else if(domainNames[1] == 'numericPrec') {
     function(x) sprintf(
       paste0('%0', nchar(length(rankingCoalitions)), 'd{%s}'),
       x,
-      paste(rankingCoalitions[[x]], collapse = if('SingleCharElements' %in% class(powerRelation)) '' else ',')
+      paste(rankingCoalitions[[x]], collapse = if('SingleCharElements' %in% class(pr)) '' else ',')
     )
   } else if(domainNames[1] == 'numeric') {
     function(x) paste(x)
@@ -136,7 +136,7 @@ powerRelationMatrix <- function(powerRelation, domainNames = c("pretty", "numeri
 
   m <- matrix(0, nrow = length(headerNames), ncol = 0)
   ones <- 0
-  for(eq in powerRelation$eqs) {
+  for(eq in pr$eqs) {
     ones <- ones + length(eq)
     vec <- c(rep(1, ones), rep(0, nrow(m) - ones))
     m <- cbind(m, matrix(vec, nrow = nrow(m), ncol = length(eq)))
@@ -159,12 +159,12 @@ powerRelationMatrix <- function(powerRelation, domainNames = c("pretty", "numeri
   relations::as.relation(m)
 }
 
-#' @rdname powerRelationMatrix
+#' @rdname prMatrix
 #'
 #' @param x A [`PowerRelation`] object
 #' @param ... Further parameters (ignored)
 #'
 #' @exportS3Method as.relation PowerRelation
 as.relation.PowerRelation <- function(x, ...) {
-  powerRelationMatrix(x)
+  prMatrix(x)
 }

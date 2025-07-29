@@ -30,7 +30,7 @@
 #'
 #' Adding the missing coalitions to the power relation then gives us \eqn{12 \succ 13 \succ (1 \sim 2) \succ (123 \sim 23 \sim 3 \sim \emptyset)}{12 > 13 > (1 ~ 2) > (123 ~ 23 ~ 3 ~ \{\})}.
 #'
-#' @template param/powerRelation
+#' @template param/pr
 #' @param includeEmptySet If `TRUE`, include the empty set in the last equivalence class if it is missing from the power relation.
 #'
 #' @template return/PowerRelation
@@ -48,16 +48,26 @@
 #' # 12 > 3 > (123 ~ 13 ~ 23 ~ 1 ~ 2)
 #'
 #' @export
-appendMissingCoalitions <- function(powerRelation, includeEmptySet = TRUE) {
+appendMissingCoalitions <- function(pr, includeEmptySet = TRUE) {
   # --- checks (generated) --- #
-  stopifnot(is.PowerRelation(powerRelation))
+  stopifnot(is.PowerRelation(pr))
   # --- end checks --- #
-  els <- powerRelation$elements
-  missing <- unlist(powerRelation$eqs, recursive = FALSE)
-  if(length(missing) == 2^length(els)) {
-    return(powerRelation)
+  missing <- setdiff(((!includeEmptySet):(2^length(pr$elements)-1)), unlist(pr$eqs))
+  if(length(missing) == 0) {
+    pr
+  } else {
+    PowerRelation(
+      append(pr$eqs, list(missing)),
+      elements=pr$elements,
+      asBits=TRUE
+    )
   }
-  allCoals <- createPowerset(els, includeEmptySet = includeEmptySet)
-  missing <- setdiff(allCoals, unlist(powerRelation$eqs, recursive = FALSE))
-  PowerRelation(append(powerRelation$eqs, list(missing)))
+  # els <- pr$elements
+  # missing <- unlist(pr$eqs, recursive = FALSE)
+  # if(length(missing) == 2^length(els)) {
+  #   return(pr)
+  # }
+  # allCoals <- createPowerset(els, includeEmptySet = includeEmptySet)
+  # missing <- setdiff(allCoals, unlist(pr$eqs, recursive = FALSE))
+  # PowerRelation(append(pr$eqs, list(missing)))
 }

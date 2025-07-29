@@ -4,6 +4,7 @@
 \alias{as.PowerRelation}
 \alias{as.PowerRelation.character}
 \alias{as.PowerRelation.list}
+\alias{as.PowerRelation.integer}
 \title{Create PowerRelation object}
 \usage{
 as.PowerRelation(x, ...)
@@ -11,6 +12,8 @@ as.PowerRelation(x, ...)
 \method{as.PowerRelation}{character}(x, ...)
 
 \method{as.PowerRelation}{list}(x, ..., comparators = c(">"))
+
+\method{as.PowerRelation}{integer}(x, ..., comparators = c(">"), elements = NULL)
 }
 \arguments{
 \item{x}{An object}

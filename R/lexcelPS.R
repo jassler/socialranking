@@ -87,7 +87,7 @@
 #'
 #' For better discoverability, `lexcelPSScores()` and `lexcelPSRanking()` serve as aliases for `LPSScores()` and `LPSRanking()`, respectively.
 #'
-#' @template param/powerRelation
+#' @template param/pr
 #' @template param/elements
 #'
 #' @family ranking solution functions
@@ -95,9 +95,9 @@
 #' @references
 #' \insertRef{beal2022lexicographic}{socialranking}
 #'
-#' @return Score function returns a list of type `LP*Scores` and length of `powerRelation$elements`
+#' @return Score function returns a list of type `LP*Scores` and length of `pr$elements`
 #' (unless parameter `elements` is specified).
-#' Each index contains a matrix with `length(powerRelation$elements)` rows and a variable number of columns, depending on the equivalence class index containing the singleton coalition of that element (matrix can have 0 columns).
+#' Each index contains a matrix with `length(pr$elements)` rows and a variable number of columns, depending on the equivalence class index containing the singleton coalition of that element (matrix can have 0 columns).
 #'
 #' @examples
 #' pr <- as.PowerRelation("(123 ~ 12 ~ 2) > (13 ~ 23) > (1 ~ 3 ~ {})")
@@ -116,12 +116,12 @@
 #' # 2 > 1 > 3
 #'
 #' @export
-LPSScores <- function(powerRelation, elements = powerRelation$elements) {
+LPSScores <- function(pr, elements = pr$elements) {
   # --- checks (generated) --- #
-  stopifnot(is.PowerRelation(powerRelation))
+  stopifnot(is.PowerRelation(pr))
   # --- end checks --- #
 
-  res <- L1Scores(powerRelation, elements)
+  res <- L1Scores(pr, elements)
   cols <- sapply(res, function(m) which(m[1,] > 0)[1])
   structure(
     lapply(seq_along(res), function(i) if(is.na(cols[i])) res[[i]][-1,] else res[[i]][-1,-(cols[i]:ncol(res[[i]])), drop=FALSE]),
@@ -138,8 +138,8 @@ LPSScores <- function(powerRelation, elements = powerRelation$elements) {
 #' @template return/ranking
 #'
 #' @export
-LPSRanking <- function(powerRelation) {
-  doRanking(LPSScores(powerRelation))
+LPSRanking <- function(pr) {
+  doRanking(LPSScores(pr))
 }
 
 #' @rdname LPSScores

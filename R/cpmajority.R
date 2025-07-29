@@ -39,7 +39,7 @@
 #' [`cpMajorityComparison()`] and [`cpMajorityComparisonScore()`] only offers direct comparisons between two elements
 #' and not a ranking of all players. See the other CP-majority based functions that offer a way to rank all players.
 #'
-#' @template param/powerRelation
+#' @template param/pr
 #' @template param/e1and2
 #' @param strictly Only include \eqn{D_{ij}(\succ)}{D_ij(>)} and \eqn{D_{ji}(\succ)}{D_ji(>)}, i.e., coalitions
 #' \eqn{S \in 2^{N \setminus \lbrace i,j\rbrace}}{S in 2^(N-{i,j})} where
@@ -89,11 +89,11 @@
 #' stopifnot(playerCTuple$e2 == 3L)
 #'
 #' @export
-cpMajorityComparison <- function(powerRelation, e1, e2, strictly = FALSE, includeEmptySet = TRUE) {
+cpMajorityComparison <- function(pr, e1, e2, strictly = FALSE, includeEmptySet = TRUE) {
   # --- checks (generated) --- #
-  stopifnot(is.PowerRelation(powerRelation))
-  stopifnot(e1 %in% powerRelation$elements)
-  stopifnot(e2 %in% powerRelation$elements)
+  stopifnot(is.PowerRelation(pr))
+  stopifnot(e1 %in% pr$elements)
+  stopifnot(e2 %in% pr$elements)
   # --- end checks --- #
 
   result <- list(
@@ -111,10 +111,10 @@ cpMajorityComparison <- function(powerRelation, e1, e2, strictly = FALSE, includ
     winner = c(),
     loser = c()
   )
-  class(result) <- c('cpMajority', class(powerRelation)[-1])
+  class(result) <- c('cpMajority', if('SingleCharElements' %in% class(pr)) 'SingleCharElements')
 
   # 2^(N-{i,j})
-  coalitions <- createPowerset(setdiff(powerRelation$elements, c(e1,e2)), includeEmptySet = includeEmptySet)
+  coalitions <- createPowerset(setdiff(pr$elements, c(e1,e2)), includeEmptySet = includeEmptySet)
 
   result$tuples <- lapply(
     coalitions,
@@ -127,9 +127,9 @@ cpMajorityComparison <- function(powerRelation, e1, e2, strictly = FALSE, includ
         e2 = -1
       )
 
-      eq1 <- powerRelation$coalitionLookup(c(S, e1))
-      eq2 <- powerRelation$coalitionLookup(c(S, e2))
-      if(!is.null(eq1) && !is.null(eq2)) {
+      eq1 <- pr$coalitionLookup(c(S, e1))
+      eq2 <- pr$coalitionLookup(c(S, e2))
+      if(!is.na(eq1) && !is.na(eq2)) {
         t$included <- TRUE
         t$e1 <- eq1
         t$e2 <- eq2
@@ -193,34 +193,34 @@ cpMajorityComparison <- function(powerRelation, e1, e2, strictly = FALSE, includ
 #' cpMajorityComparisonScore(pr, "b", "a") # c(0,-1)
 #'
 #' @export
-cpMajorityComparisonScore <- function(powerRelation, e1, e2, strictly = FALSE, includeEmptySet = TRUE) {
+cpMajorityComparisonScore <- function(pr, e1, e2, strictly = FALSE, includeEmptySet = TRUE) {
   # --- checks (generated) --- #
-  stopifnot(is.PowerRelation(powerRelation))
-  stopifnot(e1 %in% powerRelation$elements)
-  stopifnot(e2 %in% powerRelation$elements)
+  stopifnot(is.PowerRelation(pr))
+  stopifnot(e1 %in% pr$elements)
+  stopifnot(e2 %in% pr$elements)
   # --- end checks --- #
 
   if(e1 == e2) {
     if(strictly) {
       return(c(0,0))
     } else {
-      n <- 2^(length(powerRelation$elements)-1)
+      n <- 2^(length(pr$elements)-1)
       return(c(n,-n))
     }
   }
 
   # 2^(N-{i,j})
-  coalitions <- createPowerset(setdiff(powerRelation$elements, c(e1,e2)), includeEmptySet = includeEmptySet)
+  coalitions <- createPowerset(setdiff(pr$elements, c(e1,e2)), includeEmptySet = includeEmptySet)
 
   pos <- 0
   neg <- 0
 
   for(S in coalitions) {
-    c1 <- powerRelation$coalitionLookup(c(S, e1))
-    if(is.null(c1)) next
+    c1 <- pr$coalitionLookup(c(S, e1))
+    if(is.na(c1)) next
 
-    c2 <- powerRelation$coalitionLookup(c(S, e2))
-    if(is.null(c2)) next
+    c2 <- pr$coalitionLookup(c(S, e2))
+    if(is.na(c2)) next
 
     if(strictly) {
       if(c1 < c2) pos <- pos + 1

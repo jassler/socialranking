@@ -74,7 +74,7 @@ is.na.L1Scores <- function(x) FALSE
 #'
 #' For better discoverability, `lexcel1Scores()` and `lexcel1Ranking()` serve as aliases for `L1Scores()` and `L1Ranking()`, respectively.
 #'
-#' @template param/powerRelation
+#' @template param/pr
 #' @template param/elements
 #'
 #' @family ranking solution functions
@@ -82,9 +82,9 @@ is.na.L1Scores <- function(x) FALSE
 #' @references
 #' \insertRef{2021Lexcel}{socialranking}
 #'
-#' @return Score function returns a list of type `L1Scores` and length of `powerRelation$elements`
+#' @return Score function returns a list of type `L1Scores` and length of `pr$elements`
 #' (unless parameter `elements` is specified).
-#' Each index contains a vector of length `powerRelation$eqs`, the number of
+#' Each index contains a vector of length `pr$eqs`, the number of
 #' times the given element appears in each equivalence class.
 #'
 #' @examples
@@ -100,23 +100,31 @@ is.na.L1Scores <- function(x) FALSE
 #' # 2 > 1 > 3
 #'
 #' @export
-L1Scores <- function(powerRelation, elements = powerRelation$elements) {
+L1Scores <- function(pr, elements = pr$elements) {
   # --- checks (generated) --- #
-  stopifnot(is.PowerRelation(powerRelation))
+  stopifnot(is.PowerRelation(pr))
   # --- end checks --- #
-
-  l <- list()
-  for(e in elements) {
-    m <- matrix(0, nrow = length(powerRelation$elements), ncol = length(powerRelation$eqs))
-    for(index in powerRelation$elementLookup(e)) {
-      y <- length(powerRelation$eqs[[index[1]]][[index[2]]])
-      x <- index[1]
-      m[y,x] <- m[y,x] + 1
-    }
-    l[[paste(e)]] <- m
+  
+  els <- if(identical(elements, pr$elements)) {
+    seq_along(elements)
+  } else {
+    match(elements, pr$elements)
   }
 
-  structure(l, class = 'L1Scores')
+  l <- structure(
+    lapply(els, function(x) matrix(0, nrow = length(pr$elements), ncol = length(pr$eqs))),
+    names = paste(elements),
+    class = 'L1Scores'
+  )
+
+  for(i in seq_along(elements)) {
+    apply(pr$elementLookup(elements[i]), 2, function(index) {
+      y <- length(pr$eqs[[index[1]]][[index[2]]])
+      x <- index[1]
+      l[[i]][y,x] <<- l[[i]][y,x] + 1
+    })
+  }
+  l
 }
 
 #' `L1Ranking()` returns the corresponding ranking.
@@ -126,8 +134,8 @@ L1Scores <- function(powerRelation, elements = powerRelation$elements) {
 #' @template return/ranking
 #'
 #' @export
-L1Ranking <- function(powerRelation) {
-  doRanking(L1Scores(powerRelation))
+L1Ranking <- function(pr) {
+  doRanking(L1Scores(pr))
 }
 
 #' @rdname L1Scores

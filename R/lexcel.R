@@ -91,20 +91,17 @@ is.na.DualLexcelScores <- function(x) FALSE
 #' @export
 lexcelScores <- function(pr, elements = pr$elements) {
   eqs <- unclass(pr$eqs)
+  els <- if(identical(elements, pr$elements))
+    seq_along(elements)
+  else
+    match(elements, pr$elements)
+
   structure(
-    if(identical(elements, pr$elements)) {
-      lapply(seq_along(elements), function(x)
-        unlist(lapply(
-          eqs, function(coal) sum(bitwAnd(coal, as.integer(2 ^ (x-1))) != 0)
-        ))
-      )
-    } else {
-      lapply(seq_along(elements), function(x)
-        unlist(lapply(
-          eqs, function(coal) sum(bitwAnd(coal, as.integer(2 ^ (x-1))) != 0)
-        ))
-      )
-    },
+    lapply(els, function(x)
+      unlist(lapply(
+        eqs, function(coal) sum(bitwAnd(coal, as.integer(2 ^ (x-1))) != 0)
+      ))
+    ),
     names = elements,
     class = 'LexcelScores'
   )

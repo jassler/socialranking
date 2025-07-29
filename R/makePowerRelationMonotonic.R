@@ -1,6 +1,6 @@
 #' Make Power Relation monotonic
 #'
-#' Given a `powerRelation` object, make its order monotonic.
+#' Given a `pr` object, make its order monotonic.
 #'
 #' A power relation is monotonic if
 #'
@@ -11,8 +11,8 @@
 #' Calling `makePowerRelationMonotonic()` on some [`PowerRelation`] object moves or adds coalitions to certain equivalence classes
 #' so that the power relation becomes monotonic.
 #'
-#' @template param/powerRelation
-#' @param addMissingCoalitions If `TRUE`, also include all coalitions in the power set of `powerRelation$elements` that are not present in the current power relation.
+#' @template param/pr
+#' @param addMissingCoalitions If `TRUE`, also include all coalitions in the power set of `pr$elements` that are not present in the current power relation.
 #'
 #' @template return/PowerRelation
 #'
@@ -41,35 +41,55 @@
 #' # (abc ~ ab ~ ac ~ a) > (bc ~ b ~ c ~ {})
 #'
 #' @export
-makePowerRelationMonotonic <- function(powerRelation, addMissingCoalitions = TRUE) {
+makePowerRelationMonotonic <- function(pr, addMissingCoalitions = TRUE) {
   # --- checks (generated) --- #
-  stopifnot(is.PowerRelation(powerRelation))
+  stopifnot(is.PowerRelation(pr))
   # --- end checks --- #
 
-  els <- powerRelation$elements
-  allCoals <- createPowerset(els)
-  if(!addMissingCoalitions) {
-    allCoals <- c(
-      intersect(allCoals, unlist(powerRelation$eqs, recursive = FALSE)),
-      setdiff(unlist(powerRelation$eqs, recursive = FALSE), allCoals)
-    )
+  allCoals <- if(addMissingCoalitions) {
+    as.integer(0:((2^length(pr$elements))-1))
+  } else {
+    unlist(pr$eqs)
   }
+
   newEqs <- list()
 
-  subsetInEq <- function(superset, eq) {
-    eq |> sapply(function(coalition) length(eq) == 0 || identical(superset, union(superset, coalition))) |> any()
-  }
-
-  for(eq in powerRelation$eqs) {
-    # indeces <- sapply(allCoals, function(x) any(sets ::set_is_subset(eq, sets ::as.set(x))))
-    indeces <- sapply(allCoals, subsetInEq, eq)
+  for(eq in pr$eqs) {
+    indeces <- sapply(allCoals, function(v) any(bitwAnd(eq, v) == eq))
     if(any(indeces)) {
       newEqs[[length(newEqs) + 1]] <- allCoals[indeces]
       allCoals <- allCoals[!indeces]
-    } else if(length(allCoals) == 0) {
+    }
+    if(length(allCoals) == 0) {
       break
     }
   }
 
-  PowerRelation(equivalenceClasses = newEqs)
+  PowerRelation(newEqs, elements=pr$elements, asBits=TRUE) |> sort(decreasing = TRUE)
+  # els <- pr$elements
+  # allCoals <- createPowerset(els)
+  # if(!addMissingCoalitions) {
+  #   allCoals <- c(
+  #     intersect(allCoals, unlist(pr$eqs, recursive = FALSE)),
+  #     setdiff(unlist(pr$eqs, recursive = FALSE), allCoals)
+  #   )
+  # }
+  # newEqs <- list()
+
+  # subsetInEq <- function(superset, eq) {
+  #   eq |> sapply(function(coalition) length(eq) == 0 || identical(superset, union(superset, coalition))) |> any()
+  # }
+
+  # for(eq in pr$eqs) {
+  #   # indeces <- sapply(allCoals, function(x) any(sets ::set_is_subset(eq, sets ::as.set(x))))
+  #   indeces <- sapply(allCoals, subsetInEq, eq)
+  #   if(any(indeces)) {
+  #     newEqs[[length(newEqs) + 1]] <- allCoals[indeces]
+  #     allCoals <- allCoals[!indeces]
+  #   } else if(length(allCoals) == 0) {
+  #     break
+  #   }
+  # }
+
+  # PowerRelation(equivalenceClasses = newEqs)
 }

@@ -49,9 +49,20 @@ test_that("from list", {
 
   pr <- as.PowerRelation(list(c(1,2), 1, 2), comparators = '~')
   expect_equal(pr, PowerRelation(list(list(c(1,2), 1, 2))))
+})
 
-  pr <- as.PowerRelation(list(c(1,2), 1, 2), comparators = c('>', '~'))
-  expect_equal(pr, PowerRelation(list(list(c(1,2)), list(1, 2))))
+test_that("from int", {
+  pr <- as.PowerRelation(c(3L, 1L, 2L, 0L))
+  expect_equal(pr, PowerRelation(list(list(c(1, 2)), list(1), list(2), list(c()))))
+
+  pr <- as.PowerRelation(c(3L, 1L, 2L, 0L), comparators = '>')
+  expect_equal(pr, PowerRelation(list(list(c(1, 2)), list(1), list(2), list(c()))))
+
+  pr <- as.PowerRelation(c(3L, 1L, 2L, 0L), comparators = '~')
+  expect_equal(pr, PowerRelation(list(list(c(1, 2), 1, 2, c()))))
+
+  pr <- as.PowerRelation(c(3L, 1L, 2L, 0L), comparators = '~', elements = c('a', 'b'))
+  expect_equal(pr, PowerRelation(list(list(c('a', 'b'), 'a', 'b', c()))))
 })
 
 

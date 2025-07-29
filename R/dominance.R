@@ -10,7 +10,7 @@
 #' \eqn{S \in 2^{N \setminus \lbrace i,j \rbrace}}{S in 2^(N-\{i,j\})} such that
 #' \eqn{S \cup \lbrace i \rbrace \succ S \cup \lbrace j \rbrace}{Sn\{i\} > Sn\{j\}}.
 #'
-#' @template param/powerRelation
+#' @template param/pr
 #' @template param/e1and2
 #' @template param/strictly
 #' @template param/includeEmptySet
@@ -35,18 +35,18 @@
 #' stopifnot(all(d1, !d2, d3, !d4))
 #'
 #' @export
-dominates <- function(powerRelation, e1, e2, strictly = FALSE, includeEmptySet = TRUE) {
+dominates <- function(pr, e1, e2, strictly = FALSE, includeEmptySet = TRUE) {
   # --- checks (generated) --- #
-  stopifnot(is.PowerRelation(powerRelation))
-  stopifnot(e1 %in% powerRelation$elements)
-  stopifnot(e2 %in% powerRelation$elements)
+  stopifnot(is.PowerRelation(pr))
+  stopifnot(e1 %in% pr$elements)
+  stopifnot(e2 %in% pr$elements)
   # --- end checks --- #
 
   if(e1 == e2) {
     return(strictly == FALSE)
   }
 
-  score <- cpMajorityComparisonScore(powerRelation, e1, e2, strictly = TRUE, includeEmptySet = includeEmptySet)
+  score <- cpMajorityComparisonScore(pr, e1, e2, strictly = TRUE, includeEmptySet = includeEmptySet)
   if(strictly)
     score[1] > 0 && score[2] == 0
   else

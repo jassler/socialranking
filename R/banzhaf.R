@@ -32,7 +32,7 @@ is.na.OrdinalBanzhafScores <- function(x) FALSE
 #' I.e., if the ordinal Banzhaf score of an element is `c(4, -2, 1)`, it means that it contributed positively to `4` coalitions and negatively to `2` others.
 #' For one coalition, no comparison could be made.
 #'
-#' @template param/powerRelation
+#' @template param/pr
 #' @template param/elements
 #'
 #' @family ranking solution functions
@@ -42,7 +42,7 @@ is.na.OrdinalBanzhafScores <- function(x) FALSE
 #'
 #' \insertRef{1964Banzhaf}{socialranking}
 #'
-#' @return Score function returns list of class type `OrdinalBanzhafScores` and length of `powerRelation$elements`.
+#' @return Score function returns list of class type `OrdinalBanzhafScores` and length of `pr$elements`.
 #' Each index contains a vector of three numbers, the number of positive marginal contributions, the number of negative marginal contributions, and the number of coalitions for which no comparison could be done.
 #' The first two numbers summed together gives us the actual ordinal Banzhaf score.
 #'
@@ -61,17 +61,17 @@ is.na.OrdinalBanzhafScores <- function(x) FALSE
 #' # `2` = c(1, 0, 0)
 #'
 #' @export
-ordinalBanzhafScores <- function(powerRelation, elements = powerRelation$elements) {
+ordinalBanzhafScores <- function(pr, elements = pr$elements) {
   # --- checks (generated) --- #
-  stopifnot(is.PowerRelation(powerRelation))
+  stopifnot(is.PowerRelation(pr))
   # --- end checks --- #
 
   result <- list()
   for(i in seq_along(elements)) {
     score <- c(0,0,0)
-    for(coalition in createPowerset(powerRelation$elements[-i])) {
-      e1 <- powerRelation$coalitionLookup(coalition)
-      e2 <- powerRelation$coalitionLookup(c(coalition, elements[i]))
+    for(coalition in createPowerset(pr$elements[-i])) {
+      e1 <- pr$coalitionLookup(coalition)
+      e2 <- pr$coalitionLookup(c(coalition, elements[i]))
       if(is.null(e1) || is.null(e2)) {
         score[3] <- score[3] + 1
       } else if(e1 < e2) {
@@ -91,7 +91,7 @@ ordinalBanzhafScores <- function(powerRelation, elements = powerRelation$element
 #'
 #' `ordinalBanzhafRanking()` returns the corresponding ranking.
 #'
-#' @template param/powerRelation
+#' @template param/pr
 #'
 #' @rdname ordinalBanzhafScores
 #'
@@ -102,6 +102,6 @@ ordinalBanzhafScores <- function(powerRelation, elements = powerRelation$element
 #' # 1 > 2
 #'
 #' @export
-ordinalBanzhafRanking <- function(powerRelation) {
-  doRanking(ordinalBanzhafScores(powerRelation))
+ordinalBanzhafRanking <- function(pr) {
+  doRanking(ordinalBanzhafScores(pr))
 }

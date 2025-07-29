@@ -28,12 +28,12 @@ is.na.CopelandScores <- function(x) FALSE
 #' [`cpMajorityComparison`]`(pr, i, j) >= 0` and subtract those where
 #' [`cpMajorityComparison`]`(pr, i, j) <= 0`.
 #'
-#' @return Score function returns a list of type `CopelandScores` and length of `powerRelation$elements`
+#' @return Score function returns a list of type `CopelandScores` and length of `pr$elements`
 #' (unless parameter `elements` is specified). Each element is a vector of 2 numbers,
 #' the number of pairwise winning comparisons and the number of pairwise losing comparisons.
 #' Those two numbers summed together gives us the actual ordinal Copeland score.
 #'
-#' @template param/powerRelation
+#' @template param/pr
 #' @template param/elements
 #'
 #' @family CP-majority based functions
@@ -67,15 +67,15 @@ is.na.CopelandScores <- function(x) FALSE
 #' # `2` = c(2, -2)
 #'
 #' @export
-copelandScores <- function(powerRelation, elements = powerRelation$elements) {
+copelandScores <- function(pr, elements = pr$elements) {
   # --- checks (generated) --- #
-  stopifnot(is.PowerRelation(powerRelation))
+  stopifnot(is.PowerRelation(pr))
   # --- end checks --- #
 
   result <- list()
   for(e in elements) {
-    scores <- setdiff(powerRelation$elements, e) |> sapply(function(p2) {
-      sum(cpMajorityComparisonScore(powerRelation, e, p2))
+    scores <- setdiff(pr$elements, e) |> sapply(function(p2) {
+      sum(cpMajorityComparisonScore(pr, e, p2))
     })
     result[[paste(e)]] <- c(sum(scores >= 0), -sum(scores <= 0))
   }
@@ -88,7 +88,7 @@ copelandScores <- function(powerRelation, elements = powerRelation$elements) {
 #'
 #' `copelandRanking()` returns the corresponding ranking.
 #'
-#' @template param/powerRelation
+#' @template param/pr
 #'
 #' @rdname copelandScores
 #'
@@ -99,6 +99,6 @@ copelandScores <- function(powerRelation, elements = powerRelation$elements) {
 #' copelandRanking(pr)
 #'
 #' @export
-copelandRanking <- function(powerRelation) {
-  doRanking(copelandScores(powerRelation))
+copelandRanking <- function(pr) {
+  doRanking(copelandScores(pr))
 }

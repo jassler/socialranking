@@ -17,7 +17,7 @@
 #' As described above, all coalitions within a cycle then are put into the same equivalence class
 #' and all duplicate coalitions are removed.
 #'
-#' @template param/powerRelation
+#' @template param/pr
 #'
 #' @return [`PowerRelation`] object with no cycles.
 #'
@@ -43,28 +43,37 @@
 #' transitiveClosure(pr)
 #'
 #' @export
-transitiveClosure <- function(powerRelation) {
+transitiveClosure <- function(pr) {
   # --- checks (generated) --- #
-  stopifnot(is.PowerRelation(powerRelation))
+  stopifnot(is.PowerRelation(pr))
   # --- end checks --- #
 
-  rankingCoalitions <- unlist(powerRelation$eqs, recursive = FALSE)
-  duplicateTrues <- duplicated(rankingCoalitions)
-  duplicates <- unique(rankingCoalitions[duplicateTrues])
+  rankingCoalitions <- lapply(
+    seq_along(pr$eqs), function(k) sapply(pr$eqs[[k, asBits=TRUE]], function(v) c(k, v))
+  ) |> do.call(what=cbind)
+  idx <- which(duplicated(rankingCoalitions[2,]))
 
-  newEqs <- powerRelation$eqs
-  for(duplicate in rev(duplicates)) {
-    indexes <- sort(unique(powerRelation$coalitionLookup(duplicate)))
-    if(length(indexes) == 1)
-      next
-
-    toAdd <- seq.int(indexes[1]+1, indexes[length(indexes)])
-
-    newEqs[[indexes[1]]] <- append(newEqs[[indexes[1]]], unlist(newEqs[toAdd], recursive = FALSE))
-    newEqs[toAdd] <- rep(list(NULL), length(toAdd))
+  if(length(idx) == 0) {
+    return(pr)
   }
 
-  newEqs <- Filter(function(l) length(l) > 0, newEqs)
-  newEqs <- lapply(newEqs, function(eq) eq[!duplicated(eq)])
-  PowerRelation(newEqs)
+  mrg <- as.list(seq_along(pr$eqs))
+  for(coal in idx) {
+    v <- rankingCoalitions[,coal]
+    first <- suppressWarnings(pr$coalitionLookup(v[2], asBits=TRUE))
+    if(first == v[1]) {
+      next
+    }
+    while(is.null(mrg[[first]])) {
+      first <- first - 1
+    }
+    mrg[[first]] <- unlist(mrg[first:v[1]])
+    mrg[(first+1):v[1]] <- list(c())
+  }
+  mrg <- Filter(function(l) length(l) > 0, mrg)
+  PowerRelation(
+    lapply(mrg, function(i) unique(unlist(unclass(pr$eqs)[i]))),
+    elements = pr$elements,
+    asBits = TRUE
+  )
 }

@@ -7,24 +7,24 @@
 \alias{lexcel2Ranking}
 \title{L2 Ranking}
 \usage{
-L2Scores(powerRelation, elements = powerRelation$elements)
+L2Scores(pr, elements = pr$elements)
 
-L2Ranking(powerRelation)
+L2Ranking(pr)
 
-lexcel2Scores(powerRelation, elements = powerRelation$elements)
+lexcel2Scores(pr, elements = pr$elements)
 
-lexcel2Ranking(powerRelation)
+lexcel2Ranking(pr)
 }
 \arguments{
-\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
+\item{pr}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
 
 \item{elements}{Vector of elements of which to calculate their scores.
 By default, the scores of all elements in \code{powerRelation$elements} are considered.}
 }
 \value{
-Score function returns a list of type \code{L2Scores} and length of \code{powerRelation$elements}
+Score function returns a list of type \code{L2Scores} and length of \code{pr$elements}
 (unless parameter \code{elements} is specified).
-Each index contains a matrix with \code{length(powerRelation$eqs)} columns and \code{1 + length(powerRelation$elements)} rows.
+Each index contains a matrix with \code{length(pr$eqs)} columns and \code{1 + length(pr$elements)} rows.
 
 Ranking function returns corresponding \code{\link{SocialRanking}} object.
 }

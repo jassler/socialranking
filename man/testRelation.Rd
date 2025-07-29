@@ -29,9 +29,9 @@
 \alias{\%>LPS\%}
 \title{Test relation between two elements}
 \usage{
-testRelation(powerRelation, e1)
+testRelation(pr, e1)
 
-powerRelation \%:\% e1
+pr \%:\% e1
 
 pr_e1 \%>=dom\% e2
 
@@ -82,14 +82,14 @@ pr_e1 \%>=LPS\% e2
 pr_e1 \%>LPS\% e2
 }
 \arguments{
-\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
+\item{pr}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
 
 \item{e1, e2}{Elements in \code{powerRelation$elements}}
 
 \item{pr_e1}{\code{\link{PowerRelation}} and \code{e1} element, packed into a list using \code{pr \%:\% e1}}
 }
 \value{
-\code{testRelation()} and \verb{\%:\%} returns \code{list(powerRelation, e1)}.
+\code{testRelation()} and \verb{\%:\%} returns \code{list(pr, e1)}.
 
 Followed by a \verb{\%>=comparison\%} or \verb{\%>comparison\%} it returns \code{TRUE} or \code{FALSE}, depending on the relation between
 \code{e1} and \code{e2}.

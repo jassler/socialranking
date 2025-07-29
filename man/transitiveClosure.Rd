@@ -4,10 +4,10 @@
 \alias{transitiveClosure}
 \title{Transitive Closure}
 \usage{
-transitiveClosure(powerRelation)
+transitiveClosure(pr)
 }
 \arguments{
-\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
+\item{pr}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
 }
 \value{
 \code{\link{PowerRelation}} object with no cycles.

@@ -115,17 +115,22 @@ as.PowerRelation.character <- function(x, ...) {
 #' # (12 ~ 2) > ({} ~ 1)
 #' @export
 as.PowerRelation.list <- function(x, ..., comparators = c(">")) {
-  eqs <- list()
-  eq <- list()
-  comparators <- rep(comparators, length.out = length(x) - 1)
-  comparators <- c(comparators, '>')
-  for(i in seq_along(comparators)) {
-    eq <- append(eq, x[i])
-    if(comparators[i] == '>') {
-      eqs <- append(eqs, list(eq))
-      eq <- list()
-    }
-  }
+  comparators <- rep(comparators, length.out = length(x) - 1) |> c('>')
+  pos <- c(0L, which(comparators == '>'))
 
-  PowerRelation(eqs)
+  PowerRelation(lapply(seq(length(pos) - 1), function(i) x[(pos[i]+1):pos[i+1]]))
 }
+
+#' @rdname as.PowerRelation
+#' @export
+as.PowerRelation.integer <- function(x, ..., comparators = c(">"), elements = NULL) {
+  comparators <- rep(comparators, length.out = length(x) - 1) |> c('>')
+  pos <- c(0L, which(comparators == '>'))
+
+  PowerRelation(
+    lapply(seq(length(pos) - 1), function(i) x[(pos[i]+1):pos[i+1]]),
+    elements = elements,
+    asBits = TRUE
+  )
+}
+

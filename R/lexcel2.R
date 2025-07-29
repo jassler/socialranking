@@ -100,7 +100,7 @@ is.na.L2Scores <- function(x) FALSE
 #'
 #' For better discoverability, `lexcel2Scores()` and `lexcel2Ranking()` serve as aliases for `L2Scores()` and `L2Ranking()`, respectively.
 #'
-#' @template param/powerRelation
+#' @template param/pr
 #' @template param/elements
 #'
 #' @family ranking solution functions
@@ -108,9 +108,9 @@ is.na.L2Scores <- function(x) FALSE
 #' @references
 #' \insertRef{2021Lexcel}{socialranking}
 #'
-#' @return Score function returns a list of type `L2Scores` and length of `powerRelation$elements`
+#' @return Score function returns a list of type `L2Scores` and length of `pr$elements`
 #' (unless parameter `elements` is specified).
-#' Each index contains a matrix with `length(powerRelation$eqs)` columns and `1 + length(powerRelation$elements)` rows.
+#' Each index contains a matrix with `length(pr$eqs)` columns and `1 + length(pr$elements)` rows.
 #'
 #' @examples
 #' pr <- as.PowerRelation("123 ~ 12 ~ 13 ~ 14 ~ 2 ~ 4")
@@ -130,12 +130,12 @@ is.na.L2Scores <- function(x) FALSE
 #' # 2 > 4 > 1 > 3
 #'
 #' @export
-L2Scores <- function(powerRelation, elements = powerRelation$elements) {
+L2Scores <- function(pr, elements = pr$elements) {
   # --- checks (generated) --- #
-  stopifnot(is.PowerRelation(powerRelation))
+  stopifnot(is.PowerRelation(pr))
   # --- end checks --- #
 
-  l <- L1Scores(powerRelation, elements)
+  l <- L1Scores(pr, elements)
   l <- lapply(l, function(m) rbind(apply(m, 2, sum), m))
   class(l) <- 'L2Scores'
   return(l)
@@ -148,8 +148,8 @@ L2Scores <- function(powerRelation, elements = powerRelation$elements) {
 #' @template return/ranking
 #'
 #' @export
-L2Ranking <- function(powerRelation) {
-  doRanking(L2Scores(powerRelation))
+L2Ranking <- function(pr) {
+  doRanking(L2Scores(pr))
 }
 
 #' @rdname L2Scores

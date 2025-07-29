@@ -5,18 +5,18 @@
 \alias{kramerSimpsonRanking}
 \title{Kramer-Simpson-like method}
 \usage{
-kramerSimpsonScores(powerRelation, elements = powerRelation$elements)
+kramerSimpsonScores(pr, elements = pr$elements)
 
-kramerSimpsonRanking(powerRelation)
+kramerSimpsonRanking(pr)
 }
 \arguments{
-\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
+\item{pr}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
 
 \item{elements}{Vector of elements of which to calculate their scores.
 By default, the scores of all elements in \code{powerRelation$elements} are considered.}
 }
 \value{
-Score function returns a vector of type \code{KramerSimpsonScores} and length of \code{powerRelation$elements}
+Score function returns a vector of type \code{KramerSimpsonScores} and length of \code{pr$elements}
 (unless parameter \code{elements} is specified). Higher scoring elements are ranked higher.
 
 Ranking function returns corresponding \code{\link{SocialRanking}} object.

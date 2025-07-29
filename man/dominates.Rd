@@ -4,10 +4,10 @@
 \alias{dominates}
 \title{Dominance}
 \usage{
-dominates(powerRelation, e1, e2, strictly = FALSE, includeEmptySet = TRUE)
+dominates(pr, e1, e2, strictly = FALSE, includeEmptySet = TRUE)
 }
 \arguments{
-\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
+\item{pr}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
 
 \item{e1, e2}{Elements in \code{powerRelation$elements}}
 

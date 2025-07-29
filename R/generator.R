@@ -175,24 +175,24 @@ powerRelationGenerator <- function(coalitions, startWithLinearOrder = FALSE) {
     # Calling PowerRelation like this is 5x slower
     #PowerRelation(eqs)
 
-    coalitionLookup <- eqs |> seq_along() |> lapply(function(i)
-      rep(i, length(eqs[[i]]))
-    ) |> unlist() |> as.list() |> structure(names = sapply(unlist(eqs, recursive = FALSE), toKey))
-
-    elementLookup <- structure(vector('list', length(elements)), names = paste(elements))
-    for(i in seq_along(eqs)) {
-      for(j in seq_along(eqs[[i]])) {
-        for(el in paste(eqs[[i]][[j]])) {
-          elementLookup[[el]] <- append(elementLookup[[el]], list(c(i,j)))
-        }
-      }
-    }
+    # coalitionLookup <- eqs |> seq_along() |> lapply(function(i)
+    #   rep(i, length(eqs[[i]]))
+    # ) |> unlist() |> as.list() |> structure(names = sapply(unlist(eqs, recursive = FALSE), toKey))
+    #
+    # elementLookup <- structure(vector('list', length(elements)), names = paste(elements))
+    # for(i in seq_along(eqs)) {
+    #   for(j in seq_along(eqs[[i]])) {
+    #     for(el in paste(eqs[[i]][[j]])) {
+    #       elementLookup[[el]] <- append(elementLookup[[el]], list(c(i,j)))
+    #     }
+    #   }
+    # }
 
     PowerRelation(
       eqs,
-      elements = elements,
-      coalitionLookup = function(v) coalitionLookup[[toKey(v)]],
-      elementLookup = function(e) elementLookup[[paste(e)]]
+      elements = elements#,
+      # coalitionLookup = function(v) coalitionLookup[[toKey(v)]],
+      # elementLookup = function(e) elementLookup[[paste(e)]]
     )
   }
 }
@@ -269,24 +269,46 @@ generateNextPartition <- function(gen) {
 generateRandomPowerRelation <- function(coalitions, linearOrder = FALSE, monotonic = FALSE) {
   comparators <- if(linearOrder) '>' else sample(c('>','~'), length(coalitions) - 1, replace = TRUE)
 
-  if(monotonic) {
-    pr <- generateRandomPowerRelation(coalitions, linearOrder = TRUE)
-    pr <- makePowerRelationMonotonic(pr)
-    return(as.PowerRelation(
-      unlist(pr$eqs, recursive = FALSE),
-      comparators = comparators
-    ))
-    # sapply(coalitions, function(X) sapply(coalitions, setdiff, x = X) |> sapply(length) |> unlist() |> length())
+  if(is.numeric(coalitions)) {
+    if(monotonic) {
+      pr <- generateRandomPowerRelation(coalitions, linearOrder = TRUE)
+      pr <- makePowerRelationMonotonic(pr)
+      as.PowerRelation(
+        unlist(pr$eqs),
+        comparators = comparators
+      )
+    }
+    PowerRelation(
+      lapply()
+    )
+    as.PowerRelation(
+      sample(seq(2 ^ coalitions)),
+      comparators = comparators,
+      elements = seq(coalitions),
+      asBits = TRUE
+    )
+  } else if(is.list(coalitions)) {
+    if(monotonic) {
+      pr <- generateRandomPowerRelation(coalitions, linearOrder = TRUE)
+      pr <- makePowerRelationMonotonic(pr)
+      as.PowerRelation(
+        unlist(pr$eqs, recursive = FALSE),
+        comparators = comparators
+      )
+    } else if(linearOrder) {
+      as.PowerRelation(
+        sample(coalitions),
+        comparators = comparators
+      )
+    } else {
+      sort(as.PowerRelation(
+        sample(coalitions),
+        comparators = comparators
+      ))
+    }
+  } else {
+    stop('Expected coalitions parameter to be a numeric or list.')
   }
 
-  pr <- as.PowerRelation(
-    sample(coalitions),
-    comparators = comparators
-  )
-  eqs <- pr$eqs
-  els <- pr$elements
-  PowerRelation(lapply(eqs, function(x)
-    x[order(sapply(x, function(coal) length(els) * length(coal) + sum(match(coal, els))))]
-  ))
 }
 

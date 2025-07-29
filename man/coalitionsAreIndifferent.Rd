@@ -4,10 +4,10 @@
 \alias{coalitionsAreIndifferent}
 \title{Are coalitions indifferent}
 \usage{
-coalitionsAreIndifferent(powerRelation, c1, c2, asBits = FALSE)
+coalitionsAreIndifferent(pr, c1, c2, asBits = FALSE)
 }
 \arguments{
-\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
+\item{pr}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
 
 \item{c1}{Coalition \link[base:c]{vector}}
 

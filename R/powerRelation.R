@@ -146,8 +146,7 @@
 PowerRelation <- function(eqs, elements = NULL, asBits = FALSE) {
   if(asBits) {
     if(is.null(elements)) {
-      x <- eqs |> unlist() |> max() |> log2() |> floor()
-      elements <- seq(x + 1)
+      elements <- seq((eqs |> unlist() |> max() |> log2() |> floor()) + 1)
       isSeq <- TRUE
     } else {
       isSeq <- all(elements == seq_along(elements))
@@ -179,6 +178,8 @@ PowerRelation <- function(eqs, elements = NULL, asBits = FALSE) {
     if(isSeq) 'Seq',
     if(all(nchar(elements) == 1)) 'SingleCharElements'
   )
+
+  remove(asBits)
 
   coalTable <- NULL
   elemTable <- NULL
@@ -342,9 +343,9 @@ createCoalitionLookupTable <- function(elements, eqs) {
   table
 }
 
-# toKey <- function(coalition) {
-#   paste('\u200b', coalition |> sort() |> paste(collapse = '\u200b'), sep = '')
-# }
+toKey <- function(coalition) {
+  paste('\u200b', coalition |> sort() |> paste(collapse = '\u200b'), sep = '')
+}
 # createLookupTables <- function(equivalenceClasses) {
 #   if(length(equivalenceClasses) == 0) {
 #     stop('Must supply at least one equivalence class.')
@@ -434,7 +435,7 @@ is.PowerRelation <- function(x, ...) {
 #'
 #' Check if coalitions are indifferent to one another, or, in other words, if they appear in the same equivalence class.
 #'
-#' @template param/powerRelation
+#' @template param/pr
 #' @param c1 Coalition [vector][base::c()]
 #' @param c2 Coalition [vector][base::c()]
 #'
@@ -453,8 +454,8 @@ is.PowerRelation <- function(x, ...) {
 #' stopifnot(coalitionsAreIndifferent(pr, 3, c(1,2,3)) == TRUE)
 #'
 #' @export
-coalitionsAreIndifferent <- function(powerRelation, c1, c2, asBits = FALSE) {
-  powerRelation$coalitionLookup(c1, asBits = asBits) == powerRelation$coalitionLookup(c2, asBits = asBits)
+coalitionsAreIndifferent <- function(pr, c1, c2, asBits = FALSE) {
+  pr$coalitionLookup(c1, asBits = asBits) == pr$coalitionLookup(c2, asBits = asBits)
 }
 
 #' @rdname PowerRelation
@@ -496,17 +497,17 @@ sort.PowerRelation <- function(x, decreasing = FALSE, ...) {
 #'
 #' Given a `coalition` [vector][base::c()], return the equivalence class index it appears in.
 #'
-#' This function calls `powerRelation$coalitionLookup(coalition)`.
+#' This function calls `pr$coalitionLookup(coalition)`.
 #'
 #' `equivalenceClassIndex()` serves as an alias to `coalitionLookup()`.
 #'
-#' @template param/powerRelation
+#' @template param/pr
 #' @template param/asBits
-#' @param coalition a coalition [vector][base::c()] or that is part of `powerRelation`
+#' @param coalition a coalition [vector][base::c()] or that is part of `pr`
 #'
 #' @return Numeric value, equivalence class index containing `coalition`.
 #' `NULL` if the coalition does not exist.
-#' If the `powerRelation` contains cycles, it is possible that multiple values are returned.
+#' If the `pr` contains cycles, it is possible that multiple values are returned.
 #'
 #' @family lookup functions
 #'
@@ -528,8 +529,8 @@ sort.PowerRelation <- function(x, decreasing = FALSE, ...) {
 #' stopifnot(all(c(e1,e2,e3,e4) == c(1,2,2)))
 #'
 #' @export
-equivalenceClassIndex <- function(powerRelation, coalition, asBits = FALSE) {
-  powerRelation$coalitionLookup(coalition, asBits = asBits)
+equivalenceClassIndex <- function(pr, coalition, asBits = FALSE) {
+  pr$coalitionLookup(coalition, asBits = asBits)
 }
 
 #' @rdname equivalenceClassIndex
@@ -540,16 +541,16 @@ coalitionLookup <- equivalenceClassIndex
 #'
 #' List coalitions that an element appears in.
 #'
-#' This function calls `powerRelation$elementLookup(element)`.
-#' The returned list contains tuples containing the index to find the corresponding coalitions in `powerRelation$eqs`.
+#' This function calls `pr$elementLookup(element)`.
+#' The returned list contains tuples containing the index to find the corresponding coalitions in `pr$eqs`.
 #'
-#' If  `elementLookup(powerRelation, 2)` returns `list(c(1,1), c(1,2), c(3,1))`, we can determine that the element `2`
+#' If  `elementLookup(pr, 2)` returns `list(c(1,1), c(1,2), c(3,1))`, we can determine that the element `2`
 #' appears twice in equivalence class `1` and once in equivalence class `3`.
-#' The specific coalition then can be accessed with `powerRelation$eqs[[i]][[j]]`, where `i` is the equivalence class index
+#' The specific coalition then can be accessed with `pr$eqs[[i]][[j]]`, where `i` is the equivalence class index
 #' and `j` is the coalition in that equivalence class containing the element.
 #'
-#' @template param/powerRelation
-#' @param element an element in `powerRelation$elements`
+#' @template param/pr
+#' @param element an element in `pr$elements`
 #'
 #' @return List of tuples, each of size 2.
 #' First value of a tuple indicates the equivalence class index,
@@ -571,7 +572,7 @@ coalitionLookup <- equivalenceClassIndex
 #' elementLookup(pr, 3) |> is.null() |> stopifnot()
 #'
 #' @export
-elementLookup <- function(powerRelation, element) {
-  powerRelation$elementLookup(element)
+elementLookup <- function(pr, element) {
+  pr$elementLookup(element)
 }
 

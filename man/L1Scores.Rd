@@ -7,24 +7,24 @@
 \alias{lexcel1Ranking}
 \title{L1 Ranking}
 \usage{
-L1Scores(powerRelation, elements = powerRelation$elements)
+L1Scores(pr, elements = pr$elements)
 
-L1Ranking(powerRelation)
+L1Ranking(pr)
 
-lexcel1Scores(powerRelation, elements = powerRelation$elements)
+lexcel1Scores(pr, elements = pr$elements)
 
-lexcel1Ranking(powerRelation)
+lexcel1Ranking(pr)
 }
 \arguments{
-\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
+\item{pr}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
 
 \item{elements}{Vector of elements of which to calculate their scores.
 By default, the scores of all elements in \code{powerRelation$elements} are considered.}
 }
 \value{
-Score function returns a list of type \code{L1Scores} and length of \code{powerRelation$elements}
+Score function returns a list of type \code{L1Scores} and length of \code{pr$elements}
 (unless parameter \code{elements} is specified).
-Each index contains a vector of length \code{powerRelation$eqs}, the number of
+Each index contains a vector of length \code{pr$eqs}, the number of
 times the given element appears in each equivalence class.
 
 Ranking function returns corresponding \code{\link{SocialRanking}} object.

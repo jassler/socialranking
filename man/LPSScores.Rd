@@ -7,24 +7,24 @@
 \alias{lexcelPSRanking}
 \title{LP* Ranking}
 \usage{
-LPSScores(powerRelation, elements = powerRelation$elements)
+LPSScores(pr, elements = pr$elements)
 
-LPSRanking(powerRelation)
+LPSRanking(pr)
 
-lexcelPSScores(powerRelation, elements = powerRelation$elements)
+lexcelPSScores(pr, elements = pr$elements)
 
-lexcelPSRanking(powerRelation)
+lexcelPSRanking(pr)
 }
 \arguments{
-\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
+\item{pr}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
 
 \item{elements}{Vector of elements of which to calculate their scores.
 By default, the scores of all elements in \code{powerRelation$elements} are considered.}
 }
 \value{
-Score function returns a list of type \code{LP*Scores} and length of \code{powerRelation$elements}
+Score function returns a list of type \code{LP*Scores} and length of \code{pr$elements}
 (unless parameter \code{elements} is specified).
-Each index contains a matrix with \code{length(powerRelation$elements)} rows and a variable number of columns, depending on the equivalence class index containing the singleton coalition of that element (matrix can have 0 columns).
+Each index contains a matrix with \code{length(pr$elements)} rows and a variable number of columns, depending on the equivalence class index containing the singleton coalition of that element (matrix can have 0 columns).
 
 Ranking function returns corresponding \code{\link{SocialRanking}} object.
 }

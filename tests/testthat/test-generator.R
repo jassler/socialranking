@@ -45,11 +45,11 @@ test_that("Lookups still give correct values", {
   expect_equal(pr$coalitionLookup(c('b','a')), 1)
   expect_equal(pr$coalitionLookup('a'), 2)
   expect_equal(pr$coalitionLookup('b'), 1)
-  expect_null(pr$coalitionLookup(c()))
+  expect_true(is.na(pr$coalitionLookup(c())))
 
-  expect_equal(pr$elementLookup('a'), list(c(1,1), c(2,1)))
-  expect_equal(pr$elementLookup('b'), list(c(1,1), c(1,2)))
-  expect_null(pr$elementLookup('c'))
+  expect_equal(pr$elementLookup('a'), matrix(c(1,1,2,1), nrow=2, dimnames=list(c('E','i'), NULL)))
+  expect_equal(pr$elementLookup('b'), matrix(c(1,1,1,2), nrow=2, dimnames=list(c('E','i'), NULL)))
+  expect_error(pr$elementLookup('c'))
 })
 
 test_that("Skip partition", {

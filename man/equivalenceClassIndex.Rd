@@ -5,14 +5,14 @@
 \alias{coalitionLookup}
 \title{Get index of equivalence class containing a coalition}
 \usage{
-equivalenceClassIndex(powerRelation, coalition, asBits = FALSE)
+equivalenceClassIndex(pr, coalition, asBits = FALSE)
 
-coalitionLookup(powerRelation, coalition, asBits = FALSE)
+coalitionLookup(pr, coalition, asBits = FALSE)
 }
 \arguments{
-\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
+\item{pr}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
 
-\item{coalition}{a coalition \link[base:c]{vector} or that is part of \code{powerRelation}}
+\item{coalition}{a coalition \link[base:c]{vector} or that is part of \code{pr}}
 
 \item{asBits}{Logical, whether the coalition passed is a vector of elements (default, \code{asBits = FALSE}) or an encoded integer (\code{TRUE}).
 Vectors are converted to encoded integers.}
@@ -20,13 +20,13 @@ Vectors are converted to encoded integers.}
 \value{
 Numeric value, equivalence class index containing \code{coalition}.
 \code{NULL} if the coalition does not exist.
-If the \code{powerRelation} contains cycles, it is possible that multiple values are returned.
+If the \code{pr} contains cycles, it is possible that multiple values are returned.
 }
 \description{
 Given a \code{coalition} \link[base:c]{vector}, return the equivalence class index it appears in.
 }
 \details{
-This function calls \code{powerRelation$coalitionLookup(coalition)}.
+This function calls \code{pr$coalitionLookup(coalition)}.
 
 \code{equivalenceClassIndex()} serves as an alias to \code{coalitionLookup()}.
 }

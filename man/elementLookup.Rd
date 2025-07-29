@@ -4,12 +4,12 @@
 \alias{elementLookup}
 \title{Element lookup}
 \usage{
-elementLookup(powerRelation, element)
+elementLookup(pr, element)
 }
 \arguments{
-\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
+\item{pr}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
 
-\item{element}{an element in \code{powerRelation$elements}}
+\item{element}{an element in \code{pr$elements}}
 }
 \value{
 List of tuples, each of size 2.
@@ -21,12 +21,12 @@ Returns \code{NULL} if the element does not exist.
 List coalitions that an element appears in.
 }
 \details{
-This function calls \code{powerRelation$elementLookup(element)}.
-The returned list contains tuples containing the index to find the corresponding coalitions in \code{powerRelation$eqs}.
+This function calls \code{pr$elementLookup(element)}.
+The returned list contains tuples containing the index to find the corresponding coalitions in \code{pr$eqs}.
 
-If  \code{elementLookup(powerRelation, 2)} returns \code{list(c(1,1), c(1,2), c(3,1))}, we can determine that the element \code{2}
+If  \code{elementLookup(pr, 2)} returns \code{list(c(1,1), c(1,2), c(3,1))}, we can determine that the element \code{2}
 appears twice in equivalence class \code{1} and once in equivalence class \code{3}.
-The specific coalition then can be accessed with \code{powerRelation$eqs[[i]][[j]]}, where \code{i} is the equivalence class index
+The specific coalition then can be accessed with \code{pr$eqs[[i]][[j]]}, where \code{i} is the equivalence class index
 and \code{j} is the coalition in that equivalence class containing the element.
 }
 \examples{

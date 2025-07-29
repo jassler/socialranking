@@ -5,18 +5,18 @@
 \alias{ordinalBanzhafRanking}
 \title{Ordinal Banzhaf ranking}
 \usage{
-ordinalBanzhafScores(powerRelation, elements = powerRelation$elements)
+ordinalBanzhafScores(pr, elements = pr$elements)
 
-ordinalBanzhafRanking(powerRelation)
+ordinalBanzhafRanking(pr)
 }
 \arguments{
-\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
+\item{pr}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
 
 \item{elements}{Vector of elements of which to calculate their scores.
 By default, the scores of all elements in \code{powerRelation$elements} are considered.}
 }
 \value{
-Score function returns list of class type \code{OrdinalBanzhafScores} and length of \code{powerRelation$elements}.
+Score function returns list of class type \code{OrdinalBanzhafScores} and length of \code{pr$elements}.
 Each index contains a vector of three numbers, the number of positive marginal contributions, the number of negative marginal contributions, and the number of coalitions for which no comparison could be done.
 The first two numbers summed together gives us the actual ordinal Banzhaf score.
 

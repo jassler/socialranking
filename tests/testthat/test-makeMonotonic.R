@@ -22,6 +22,12 @@ test_that("Make monotonic", {
     makePowerRelationMonotonic(pr),
     as.PowerRelation('abc ~ ab > ac > bc ~ b > a > c ~ {}')
   )
+
+  pr <- as.PowerRelation("ab > ac > abc > abcd > bcd > bd")
+  expect_equal(
+    makePowerRelationMonotonic(pr),
+    as.PowerRelation('abcd ~ abc ~ abd ~ ab > acd ~ ac > bcd > bd')
+  )
 })
 
 test_that("Without adding new coalitions", {
@@ -37,9 +43,15 @@ test_that("Without adding new coalitions", {
     as.PowerRelation('123 ~ 12 > 13')
   )
 
+  pr <- as.PowerRelation("ab > ac > abc > abcd > bcd > bd")
+  expect_equal(
+    makePowerRelationMonotonic(pr, addMissingCoalitions = FALSE),
+    as.PowerRelation('abcd ~ abc ~ ab > ac > bcd > bd')
+  )
+
   pr <- as.PowerRelation('{} > 12 ~ 13 > 123 > 1 > 2 > 3 ~ 23')
   expect_equal(
     makePowerRelationMonotonic(pr, addMissingCoalitions = FALSE),
-    1:3 |> as.numeric() |> createPowerset() |> list() |> PowerRelation()
+    1:3 |> createPowerset() |> list() |> PowerRelation()
   )
 })

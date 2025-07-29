@@ -7,24 +7,24 @@
 \alias{lexcelPRanking}
 \title{LP Ranking}
 \usage{
-LPScores(powerRelation, elements = powerRelation$elements)
+LPScores(pr, elements = pr$elements)
 
-LPRanking(powerRelation)
+LPRanking(pr)
 
-lexcelPScores(powerRelation, elements = powerRelation$elements)
+lexcelPScores(pr, elements = pr$elements)
 
-lexcelPRanking(powerRelation)
+lexcelPRanking(pr)
 }
 \arguments{
-\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
+\item{pr}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
 
 \item{elements}{Vector of elements of which to calculate their scores.
 By default, the scores of all elements in \code{powerRelation$elements} are considered.}
 }
 \value{
-Score function returns a list of type \code{LPScores} and length of \code{powerRelation$elements}
+Score function returns a list of type \code{LPScores} and length of \code{pr$elements}
 (unless parameter \code{elements} is specified).
-Each index contains a vector of length \code{length(powerRelation$elements)}.
+Each index contains a vector of length \code{length(pr$elements)}.
 
 Ranking function returns corresponding \code{\link{SocialRanking}} object.
 }

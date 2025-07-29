@@ -4,12 +4,12 @@
 \alias{makePowerRelationMonotonic}
 \title{Make Power Relation monotonic}
 \usage{
-makePowerRelationMonotonic(powerRelation, addMissingCoalitions = TRUE)
+makePowerRelationMonotonic(pr, addMissingCoalitions = TRUE)
 }
 \arguments{
-\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
+\item{pr}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
 
-\item{addMissingCoalitions}{If \code{TRUE}, also include all coalitions in the power set of \code{powerRelation$elements} that are not present in the current power relation.}
+\item{addMissingCoalitions}{If \code{TRUE}, also include all coalitions in the power set of \code{pr$elements} that are not present in the current power relation.}
 }
 \value{
 \code{\link{PowerRelation}} object containing the following values:
@@ -21,7 +21,7 @@ makePowerRelationMonotonic(powerRelation, addMissingCoalitions = TRUE)
 }
 }
 \description{
-Given a \code{powerRelation} object, make its order monotonic.
+Given a \code{pr} object, make its order monotonic.
 }
 \details{
 A power relation is monotonic if

@@ -16,13 +16,13 @@
 #' While the ranking solution itself is the same, the scores for this package are intentionally multiplied by -1,
 #' as this significantly improves performance when sorting the elements, as well as making simple comparisons between elements more logical to the user.
 #'
-#' @template param/powerRelation
+#' @template param/pr
 #' @template param/elements
 #'
 #' @family CP-majority based functions
 #' @family ranking solution functions
 #'
-#' @return Score function returns a vector of type `KramerSimpsonScores` and length of `powerRelation$elements`
+#' @return Score function returns a vector of type `KramerSimpsonScores` and length of `pr$elements`
 #' (unless parameter `elements` is specified). Higher scoring elements are ranked higher.
 #'
 #' @references
@@ -57,13 +57,13 @@
 #' kramerSimpsonScores(pr, 2)
 #'
 #' @export
-kramerSimpsonScores <- function(powerRelation, elements = powerRelation$elements) {
+kramerSimpsonScores <- function(pr, elements = pr$elements) {
   # --- checks (generated) --- #
-  stopifnot(is.PowerRelation(powerRelation))
+  stopifnot(is.PowerRelation(pr))
   # --- end checks --- #
 
   result <- structure(
-    sapply(elements, function(p1) max(sapply(powerRelation$elements, function(p2) cpMajorityComparisonScore(powerRelation, p2, p1, TRUE)[1]))),
+    sapply(elements, function(p1) max(sapply(pr$elements, function(p2) cpMajorityComparisonScore(pr, p2, p1, TRUE)[1]))),
     names = elements
   )
 
@@ -74,7 +74,7 @@ kramerSimpsonScores <- function(powerRelation, elements = powerRelation$elements
 #'
 #' `kramerSimpsonRanking()` returns the corresponding ranking.
 #'
-#' @template param/powerRelation
+#' @template param/pr
 #'
 #' @rdname kramerSimpsonScores
 #'
@@ -85,6 +85,6 @@ kramerSimpsonScores <- function(powerRelation, elements = powerRelation$elements
 #' kramerSimpsonRanking(pr)
 #'
 #' @export
-kramerSimpsonRanking <- function(powerRelation) {
-  doRanking(kramerSimpsonScores(powerRelation))
+kramerSimpsonRanking <- function(pr) {
+  doRanking(kramerSimpsonScores(pr))
 }

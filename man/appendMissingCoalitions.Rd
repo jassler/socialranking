@@ -4,10 +4,10 @@
 \alias{appendMissingCoalitions}
 \title{Append missing coalitions}
 \usage{
-appendMissingCoalitions(powerRelation, includeEmptySet = TRUE)
+appendMissingCoalitions(pr, includeEmptySet = TRUE)
 }
 \arguments{
-\item{powerRelation}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
+\item{pr}{A \code{\link{PowerRelation}} object created by \code{\link[=PowerRelation]{PowerRelation()}} or \code{\link[=as.PowerRelation]{as.PowerRelation()}}}
 
 \item{includeEmptySet}{If \code{TRUE}, include the empty set in the last equivalence class if it is missing from the power relation.}
 }
